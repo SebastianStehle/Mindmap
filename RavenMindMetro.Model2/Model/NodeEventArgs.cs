@@ -1,4 +1,12 @@
-﻿using SE.Metro;
+﻿// ==========================================================================
+// NodeEventArgs.cs
+// RavenMind Application
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+using SE.Metro;
 using System;
 
 namespace RavenMind.Model

@@ -30,7 +30,7 @@ namespace SE.Metro.UI
             double dx = l.X - r.X;
             double dy = l.Y - r.Y;
 
-            return Math.Sqrt(dx * dx + dy * dy);
+            return Math.Sqrt((dx * dx) + (dy * dy));
         }
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace SE.Metro.UI
             double dx = l.X - r.X;
             double dy = l.Y - r.Y;
 
-            return dx * dx + dy * dy;
+            return (dx * dx) + (dy * dy);
         }
 
         /// <summary>
@@ -84,6 +84,42 @@ namespace SE.Metro.UI
         {
             return new Size(rect.Width, rect.Height);
         }
+
+        /// <summary>
+        /// Calculates the center of the target rect.
+        /// </summary>
+        /// <param name="rect">The rect where to get the center from.</param>
+        /// <returns>
+        /// The center.
+        /// </returns>
+        public static Point Center(this Rect rect)
+        {
+            return new Point(rect.CenterX(), rect.CenterY());
+        } 
+
+        /// <summary>
+        /// Calculates the center of the of the x-Coordinate of the target rect.
+        /// </summary>
+        /// <param name="rect">The rect where to get the center from.</param>
+        /// <returns>
+        /// The center.
+        /// </returns>
+        public static double CenterX(this Rect rect)
+        {
+            return rect.X + (0.5 * rect.Width);
+        } 
+
+        /// <summary>
+        /// Calculates the center of the of the y-Coordinate of the target rect.
+        /// </summary>
+        /// <param name="rect">The rect where to get the center from.</param>
+        /// <returns>
+        /// The center.
+        /// </returns>
+        public static double CenterY(this Rect rect)
+        {
+            return rect.Y + (0.5 * rect.Height);
+        } 
 
         /// <summary>
         /// Interpolates between the first and the second rectangle depending on the fraction value.

@@ -1,11 +1,20 @@
-﻿using RavenMind.Model;
+﻿// ==========================================================================
+// NodeContainer.cs
+// Metro Library SE
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+using RavenMind.Model;
+using RavenMind.Model.Layouting;
 using SE.Metro.UI;
 using System;
 using Windows.Foundation;
 
 namespace RavenMind.Controls
 {
-    public sealed class NodeContainer : INodeView
+    public sealed class NodeContainer : IRenderNode
     {
         private static readonly Point EmptyPoint = new Point(double.PositiveInfinity, double.PositiveInfinity);
 
@@ -21,7 +30,15 @@ namespace RavenMind.Controls
             }
         }
 
-        public Rect Rect
+        public Point Position
+        {
+            get 
+            {
+                return node.Position;
+            }
+        }
+
+        public Rect Bounds
         {
             get
             {
@@ -50,7 +67,7 @@ namespace RavenMind.Controls
             this.node = node;
         }
 
-        public void SetPosition(Point position, AnchorPoint anchor)
+        public void MoveTo(Point position, AnchorPoint anchor)
         {
             node.Anchor = anchor;
 

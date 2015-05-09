@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// INodeView.cs
+// ILayout.cs
 // RavenMind Application
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -13,10 +13,8 @@ namespace RavenMind.Model.Layouting
 {
     public interface ILayout
     {
-        double HorizontalMargin { get; }
+        AttachTarget CalculateAttachTarget(NodeBase parent, IRenderer renderer, Node movingNode, Rect movementBounds, Point mindmapCenter);
 
-        double ElementMargin { get; }
-
-        void UpdateLayout(Document document, IRen  Size availableSize);
+        void UpdateLayout(Document document, IRenderer renderer, Size availableSize);
     }
 }

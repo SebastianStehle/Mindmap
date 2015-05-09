@@ -14,8 +14,10 @@ namespace RavenMind.Model.Layouting
     {
         Point Position { get; }
 
+        Rect Bounds { get; }
+
         Size Size { get; }
 
-        void Move(Point position, AnchorPoint anchor);
+        void MoveTo(Point position, AnchorPoint anchor);
     }
 }

@@ -8,7 +8,8 @@
 
 using GalaSoft.MvvmLight.Messaging;
 using RavenMind.Components;
-using RavenMind.Model.Json;
+using RavenMind.Model.Storing.Json;
+using RavenMind.Model.Storing.Utils;
 using System.Composition;
 using System.Composition.Hosting;
 using Windows.ApplicationModel;
@@ -32,7 +33,7 @@ namespace RavenMind.ViewModels
                         .WithPart<Messenger>()
                         .WithPart<MindmapsViewModel>()
                         .WithPart<EditorViewModel>()
-                        .WithPart<DocumentStore>()
+                        .WithPart<JsonDocumentStore>()
                         .WithPart<ResourcesLocalizationManager>()
                         .WithPart<DefaultSettingsProvider>();
 

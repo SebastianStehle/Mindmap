@@ -1,7 +1,14 @@
-﻿using SE.Metro.UI;
+﻿// ==========================================================================
+// DefaultPath.cs
+// Metro Library SE
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+using SE.Metro.UI;
 using System;
 using Windows.Foundation;
-using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
@@ -34,8 +41,8 @@ namespace RavenMind.Controls
 
         public void Render(NodeContainer container)
         {
-            Rect targetRect = container.Rect;
-            Rect parentRect = container.Parent.Rect;
+            Rect targetRect = container.Bounds;
+            Rect parentRect = container.Parent.Bounds;
 
             Point targetAnchorPosition = container.NodeControl.AnchorPosition;
             Point parentAnchorPosition = container.Parent.NodeControl.AnchorPosition;

@@ -1,4 +1,12 @@
-﻿using RavenMind.Model;
+﻿// ==========================================================================
+// DefaultRenderer.cs
+// Metro Library SE
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+using RavenMind.Model;
 using Windows.UI.Xaml;
 
 namespace RavenMind.Controls

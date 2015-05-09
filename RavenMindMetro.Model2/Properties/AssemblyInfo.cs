@@ -1,4 +1,12 @@
-﻿using System.Reflection;
+﻿// ==========================================================================
+// AssemblyInfo.cs
+// RavenMind Application
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 

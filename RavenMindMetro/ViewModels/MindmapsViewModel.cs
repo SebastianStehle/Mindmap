@@ -11,6 +11,7 @@ using GalaSoft.MvvmLight.Messaging;
 using RavenMind.Components;
 using RavenMind.Messages;
 using RavenMind.Model;
+using RavenMind.Model.Storing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -129,7 +130,7 @@ namespace RavenMind.ViewModels
 
             DocumentRef documentRef = await DocumentStore.StoreAsync(document);
 
-           // Mindmaps.Insert(0, CreateMindmapItem(name, documentRef));
+            //// Mindmaps.Insert(0, CreateMindmapItem(name, documentRef));
 
             SelectedMindmap = Mindmaps.FirstOrDefault();
         }

@@ -115,9 +115,12 @@
     <Compile Include="Model\ChangeTextCommand.cs" />
     <Compile Include="Model\CompositeUndoRedoAction.cs" />
     <Compile Include="Model\Document.cs" />
+    <Compile Include="Model\Layouting\AttachTarget.cs" />
+    <Compile Include="Model\Layouting\Default\DefaultLayout.cs" />
+    <Compile Include="Model\Layouting\Default\DefaultLayoutNode.cs" />
+    <Compile Include="Model\Layouting\Default\PreviewCalculationProcess.cs" />
     <Compile Include="Model\Layouting\ILayout.cs" />
-    <Compile Include="Model\Layouting\INodeView.cs" />
-    <Compile Include="Model\Layouting\IRenderEngine.cs" />
+    <Compile Include="Model\Layouting\IRenderer.cs" />
     <Compile Include="Model\Layouting\IRenderNode.cs" />
     <Compile Include="Model\Storing\DocumentRef.cs" />
     <Compile Include="Model\NodeEventArgs.cs" />
@@ -126,12 +129,9 @@
     <Compile Include="Model\Export\Html\HtmlOutlineGenerator.cs" />
     <Compile Include="Model\IconSize.cs" />
     <Compile Include="Model\Storing\IDocumentStore.cs" />
-    <Compile Include="Model\ILayout.cs" />
-    <Compile Include="Model\INodeView.cs" />
     <Compile Include="Model\CommandBase.cs" />
     <Compile Include="Model\IUndoRedoAction.cs" />
     <Compile Include="Model\IUndoRedoManager.cs" />
-    <Compile Include="Model\Layouting\Layout.cs" />
     <Compile Include="Model\Node.cs" />
     <Compile Include="Model\NodeBase.cs" />
     <Compile Include="Model\NodeSide.cs" />

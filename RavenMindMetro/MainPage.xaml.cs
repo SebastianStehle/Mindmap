@@ -8,6 +8,8 @@
 
 using RavenMind.Controls;
 using RavenMind.Model;
+using RavenMind.Model.Export;
+using RavenMind.Model.Export.Html;
 using RavenMind.ViewModels;
 using SE.Metro.UI;
 using SE.Metro.UI.Interactivity;

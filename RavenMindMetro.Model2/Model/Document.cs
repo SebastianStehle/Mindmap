@@ -91,7 +91,7 @@ namespace RavenMind.Model
         }
 
         public Document(Guid id, string name)
-            :base(id)
+            : base(id)
         {
             Guard.NotNullOrEmpty(name, "name");
 

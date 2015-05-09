@@ -1,4 +1,12 @@
-﻿using Newtonsoft.Json;
+﻿// ==========================================================================
+// JsonHistory.cs
+// RavenMind Application
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+using Newtonsoft.Json;
 using System;
 
 namespace RavenMind.Model.Storing

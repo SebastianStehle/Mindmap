@@ -122,7 +122,7 @@ namespace SE.Metro
         {
             for (int i = 0; i < target.Count; i++)
             {
-                if (Object.Equals(target[i], element))
+                if (object.Equals(target[i], element))
                 {
                     return i;
                 }

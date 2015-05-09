@@ -11,6 +11,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using RavenMind.Messages;
 using RavenMind.Model;
+using RavenMind.Model.Storing;
 using System;
 using System.Collections.Generic;
 using System.Composition;

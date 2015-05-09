@@ -1,12 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// ==========================================================================
+// JsonHistoryItem.cs
+// RavenMind Application
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
 
 namespace RavenMind.Model.Storing
 {
-    class JsonHistoryItem
+    public sealed class JsonHistoryItem
     {
     }
 }

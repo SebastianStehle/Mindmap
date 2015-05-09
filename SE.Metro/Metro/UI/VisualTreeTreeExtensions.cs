@@ -300,17 +300,5 @@ namespace SE.Metro.UI
                 return true;
             }
         }
-
-        /// <summary>
-        /// Calculates the center of the of the y-Coordinate of the target rect.
-        /// </summary>
-        /// <param name="rect">The rect where to get the center from.</param>
-        /// <returns>
-        /// The center.
-        /// </returns>
-        public static double CenterY(this Rect rect)
-        {
-            return rect.Y + (0.5 * rect.Height);
-        } 
     }
 }

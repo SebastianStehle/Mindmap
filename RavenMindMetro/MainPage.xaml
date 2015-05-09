@@ -7,6 +7,7 @@
     xmlns:local="using:RavenMind"
     xmlns:controls="using:RavenMind.Controls"
     xmlns:model="using:RavenMind.Model"
+    xmlns:modelLayout="using:RavenMind.Model.Layouting.Default"
     xmlns:se="using:SE.Metro.UI"
     xmlns:sec="using:SE.Metro.UI.Controls"
     xmlns:sei="using:SE.Metro.UI.Interactivity"
@@ -222,7 +223,7 @@
                     <CompositeTransform />
                 </controls:Mindmap.RenderTransform>
                 <controls:Mindmap.Layout>
-                    <model:Layout ElementMargin="8" HorizontalMargin="50" />
+                    <modelLayout:DefaultLayout ElementMargin="8" HorizontalMargin="50" />
                 </controls:Mindmap.Layout>
                 <i:Interaction.Behaviors>
                     <controls:NodeMovingBehavior />

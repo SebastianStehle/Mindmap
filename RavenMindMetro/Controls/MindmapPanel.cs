@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using RavenMind.Model;
+using RavenMind.Model.Layouting;
 using SE.Metro;
 using SE.Metro.UI;
 using System;
@@ -20,7 +21,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace RavenMind.Controls
 {
-    public sealed class MindmapPanel : Panel
+    public sealed class MindmapPanel : Panel, IRenderer
     {
         private const double AnimationSpeed = 600;
         private readonly Dictionary<NodeBase, NodeContainer> nodeControls = new Dictionary<NodeBase, NodeContainer>();
@@ -159,8 +160,7 @@ namespace RavenMind.Controls
 
                 if (nodeControls.TryGetValue(parent, out parentContainer))
                 {
-                    previewContainer.SetPosition(position.Value, anchor);
-
+                    previewContainer.MoveTo(position.Value, anchor);
                     previewContainer.Parent = parentContainer;
 
                     if (previewContainer.PathHolder != null)
@@ -340,7 +340,7 @@ namespace RavenMind.Controls
         {
             if (requiresLayout)
             {
-                Layout.UpdateLayout(Document, GetControlView, finalSize);
+                Layout.UpdateLayout(Document, this, finalSize);
 
                 requiresLayout = false;
             }
@@ -391,7 +391,7 @@ namespace RavenMind.Controls
 
         public Rect GetBounds(NodeBase node)
         {
-            return nodeControls[node].Rect;
+            return nodeControls[node].Bounds;
         }
 
         public NodeControl GetControl(NodeBase node)
@@ -399,7 +399,7 @@ namespace RavenMind.Controls
             return nodeControls[node].NodeControl;
         }
 
-        public INodeView GetControlView(NodeBase node)
+        public IRenderNode FindRenderNode(NodeBase node)
         {
             return nodeControls[node];
         }

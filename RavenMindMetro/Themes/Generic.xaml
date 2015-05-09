@@ -104,14 +104,14 @@
                         <Style TargetType="local:NodeControl">
                             <Setter Property="Visibility" Value="Collapsed" />
                             <Setter Property="IsHitTestVisible" Value="False" />
-                            <Setter Property="Height" Value="50" />
+                            <Setter Property="Height" Value="30" />
                             <Setter Property="Width" Value="80" />
                             <Setter Property="Background" Value="Red" />
                             <Setter Property="AnchorPosition" Value="6,0" />
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="local:NodeControl">
-                                        <Border Margin="6" Background="Black" Opacity="0.5" CornerRadius="4" />
+                                        <Border Margin="6" Background="Black" Opacity="0.5" />
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>

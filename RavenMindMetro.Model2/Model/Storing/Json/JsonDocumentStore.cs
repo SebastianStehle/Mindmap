@@ -7,36 +7,34 @@
 // ==========================================================================
 
 using Newtonsoft.Json;
+using RavenMind.Model.Storing.Utils;
 using RavenMind.Model.Utils;
 using SE.Metro;
 using System;
 using System.Collections.Generic;
 using System.Composition;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using System.Xml.Serialization;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Streams;
 
-namespace RavenMind.Model.Storing.Utils
+namespace RavenMind.Model.Storing.Json
 {
     [Export]
     [Export(typeof(IDocumentStore))]
-    public sealed class DocumentStore : IDocumentStore
+    public sealed class JsonDocumentStore : IDocumentStore
     {
         private const string DefaultSubfolder = "Mindmaps2";
         private readonly JsonSerializer historySerializer = new JsonSerializer();
         private readonly StorageFolder localFolder;
         private readonly TaskScheduler taskScheduler = new LimitedThreadsScheduler();
         
-        public DocumentStore()
+        public JsonDocumentStore()
             : this(DefaultSubfolder)
         {
         }
 
-        public DocumentStore(string subfolderName)
+        public JsonDocumentStore(string subfolderName)
         {
             Guard.NotNullOrEmpty(subfolderName, "subfolderName");
 
@@ -70,7 +68,7 @@ namespace RavenMind.Model.Storing.Utils
                         }
                     }
 
-                    //return documentReferences.OrderByDescending(x => x.LastUpdate).ToList();
+                    ////return documentReferences.OrderByDescending(x => x.LastUpdate).ToList();
 
                     return new List<DocumentRef>();
                 });
@@ -93,23 +91,23 @@ namespace RavenMind.Model.Storing.Utils
 
                     using (IRandomAccessStream stream = file.Open())
                     {
-                        //Stream normalStream = stream.AsStreamForRead();
+                        ////Stream normalStream = stream.AsStreamForRead();
 
-                        //History history = (History)historySerializer.Deserialize(normalStream);
+                        ////History history = (History)historySerializer.Deserialize(normalStream);
 
-                        //Document document = new Document(history.Id, history.Name);
+                        ////Document document = new Document(history.Id, history.Name);
 
-                        //foreach (HistoryStep step in history.Steps.Reverse<HistoryStep>())
-                        //{
-                        //    document.BeginTransaction(step.Name, timestamp: step.Date);
+                        ////foreach (HistoryStep step in history.Steps.Reverse<HistoryStep>())
+                        ////{
+                        ////    document.BeginTransaction(step.Name, timestamp: step.Date);
 
-                        //    foreach (CommandBase command in step.Commands)
-                        //    {
-                        //        document.Apply(command);
-                        //    }
+                        ////    foreach (CommandBase command in step.Commands)
+                        ////    {
+                        ////        document.Apply(command);
+                        ////    }
 
-                        //    document.CommitTransaction();
-                        //}
+                        ////    document.CommitTransaction();
+                        ////}
 
                         return null;
                     }
@@ -139,7 +137,7 @@ namespace RavenMind.Model.Storing.Utils
             }
         }
 
-        public async Task<DocumentRef> StoreAsync(Document document)
+        public Task<DocumentRef> StoreAsync(Document document)
         {
             if (document == null)
             {
@@ -151,38 +149,38 @@ namespace RavenMind.Model.Storing.Utils
                 throw new ArgumentException("Document name cannot be null or empty.", "document");
             }
 
-            //TaskFactory<DocumentRef> taskFactory = new TaskFactory<DocumentRef>(taskScheduler);
+            ////TaskFactory<DocumentRef> taskFactory = new TaskFactory<DocumentRef>(taskScheduler);
 
-            //History history = new History { Name = document.Name, Id = document.Id };
+            ////History history = new History { Name = document.Name, Id = document.Id };
 
-            //foreach (var item in document.UndoRedoManager.History.OfType<CompositeUndoRedoAction>())
-            //{
-            //    HistoryStep step = new HistoryStep { Name = item.Name, Date = item.Date };
+            ////foreach (var item in document.UndoRedoManager.History.OfType<CompositeUndoRedoAction>())
+            ////{
+            ////    HistoryStep step = new HistoryStep { Name = item.Name, Date = item.Date };
 
-            //    foreach (IUndoRedoAction child in item.Actions)
-            //    {
-            //        step.Commands.Add(child.Command);
-            //    }
+            ////    foreach (IUndoRedoAction child in item.Actions)
+            ////    {
+            ////        step.Commands.Add(child.Command);
+            ////    }
 
-            //    history.Steps.Add(step);
-            //}
+            ////    history.Steps.Add(step);
+            ////}
 
-            //byte[] buffer = history.Serialize(historySerializer);
+            ////byte[] buffer = history.Serialize(historySerializer);
 
-            //try
-            //{
-            //    return await taskFactory.StartNew(() =>
-            //    {
-            //        localFolder.WriteText(document.Id + ".xml", document.Name);
-            //        localFolder.WriteData(document.Id + ".mml", buffer);
+            ////try
+            ////{
+            ////    return await taskFactory.StartNew(() =>
+            ////    {
+            ////        localFolder.WriteText(document.Id + ".xml", document.Name);
+            ////        localFolder.WriteData(document.Id + ".mml", buffer);
                 
-            //        return new DocumentRef(document.Id, document.Name, DateTime.Now);
-            //    });
-            //}
-            //catch (AggregateException e)
-            //{
-            //    throw e.InnerException;
-            //}
+            ////        return new DocumentRef(document.Id, document.Name, DateTime.Now);
+            ////    });
+            ////}
+            ////catch (AggregateException e)
+            ////{
+            ////    throw e.InnerException;
+            ////}
 
             return null;
         }

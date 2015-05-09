@@ -1,22 +1,15 @@
 ﻿// ==========================================================================
-// INodeView.cs
+// IRenderEngine.cs
 // RavenMind Application
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
-using System;
-using Windows.Foundation;
-
-namespace RavenMind.Model
+namespace RavenMind.Model.Layouting
 {
-    public interface ILayout
+    public interface IRenderer
     {
-        double HorizontalMargin { get; }
-
-        double ElementMargin { get; }
-
-        void UpdateLayout(Document document, Func<NodeBase, INodeView> views, Size availableSize);
+        IRenderNode FindRenderNode(NodeBase node);
     }
 }

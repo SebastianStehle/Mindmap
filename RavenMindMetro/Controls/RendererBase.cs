@@ -1,4 +1,12 @@
-﻿using System;
+﻿// ==========================================================================
+// RendererBase.cs
+// Metro Library SE
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+using System;
 using Windows.UI.Xaml;
 
 namespace RavenMind.Controls

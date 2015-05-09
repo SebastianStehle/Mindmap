@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using RavenMind.Model;
+using RavenMind.Model.Layouting;
 using SE.Metro.UI;
 using SE.Metro.UI.Controls;
 using System;
@@ -113,6 +114,11 @@ namespace RavenMind.Controls
         public void ShowPreviewElement(Point? position, NodeBase parent, AnchorPoint anchor)
         {
             nodePanel.ShowPreviewElement(position, parent, anchor);
+        }
+
+        public AttachTarget CalculateAttachTarget(NodeBase parent, Node movingNode, Rect movementBounds)
+        {
+            return Layout.CalculateAttachTarget(parent, nodePanel, movingNode, movementBounds, new Point(0.5 * nodePanel.ActualWidth, 0.5 * nodePanel.ActualHeight));
         }
 
         public Rect GetBounds(NodeBase node)

@@ -21,7 +21,6 @@ namespace RavenMind.Model
         private readonly IUndoRedoManager undoRedoManager = new UndoRedoManager();
         private CompositeUndoRedoAction transaction;
         private NodeBase selectedNode;
-        private NodeBase highlightedNode;
         private string name;
         
         public event EventHandler<NodeEventArgs> NodeAdded;

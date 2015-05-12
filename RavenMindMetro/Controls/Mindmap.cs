@@ -103,6 +103,14 @@ namespace RavenMind.Controls
             }
         }
 
+        public void ClearAdorners()
+        {
+            if (adornerLayer != null)
+            {
+                adornerLayer.Children.Clear();
+            }
+        }
+
         public void RemoveAdorner(UIElement adorner)
         {
             if (adornerLayer != null)
@@ -116,9 +124,9 @@ namespace RavenMind.Controls
             nodePanel.ShowPreviewElement(position, parent, anchor);
         }
 
-        public AttachTarget CalculateAttachTarget(NodeBase parent, Node movingNode, Rect movementBounds)
+        public AttachTarget CalculateAttachTarget(Node movingNode, Rect movementBounds)
         {
-            return Layout.CalculateAttachTarget(parent, nodePanel, movingNode, movementBounds, new Point(0.5 * nodePanel.ActualWidth, 0.5 * nodePanel.ActualHeight));
+            return Layout.CalculateAttachTarget(Document, nodePanel, movingNode, movementBounds, new Point(0.5 * nodePanel.ActualWidth, 0.5 * nodePanel.ActualHeight));
         }
 
         public Rect GetBounds(NodeBase node)

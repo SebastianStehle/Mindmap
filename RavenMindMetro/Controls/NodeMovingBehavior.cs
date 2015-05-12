@@ -8,12 +8,9 @@
 
 using RavenMind.Model;
 using RavenMind.Model.Layouting;
-using SE.Metro;
 using SE.Metro.UI;
 using SE.Metro.UI.Interactivity;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Controls;
@@ -100,7 +97,7 @@ namespace RavenMind.Controls
                 transform.X += dx;
                 transform.Y += dy;
 
-                AttachTarget target = FindAttachTarget();
+                AttachTarget target = AssociatedElement.CalculateAttachTarget(movingNode, new Rect(transform.Position(), new Size(clone.Width, clone.Height)));
 
                 if (target != null)
                 {
@@ -121,7 +118,7 @@ namespace RavenMind.Controls
                 {
                     if (MathHelper.LengthSquared(transform.Position(), initialPosition) > 100)
                     {
-                        AttachTarget target = FindAttachTarget();
+                        AttachTarget target = AssociatedElement.CalculateAttachTarget(movingNode, new Rect(transform.Position(), new Size(clone.Width, clone.Height)));
 
                         if (target != null)
                         {
@@ -136,59 +133,16 @@ namespace RavenMind.Controls
                 }
                 finally
                 {
+                    nodeControl = null;
+
                     AssociatedElement.ShowPreviewElement(null, null, AnchorPoint.Center);
-                    AssociatedElement.RemoveAdorner(clone);
+                    AssociatedElement.ClearAdorners();
 
                     clone = null;
 
                     movingNode = null;
-                    nodeControl = null;
                 }
             }
-        }
-
-        private AttachTarget FindAttachTarget()
-        {
-            NodeControl other = FindOtherNodeControl();
-
-            AttachTarget target = AssociatedElement.CalculateAttachTarget(other != null ? other.AssociatedNode : null, movingNode, new Rect(transform.Position(), new Size(clone.Width, clone.Height)));
-
-            return target;
-        }
-
-        private NodeControl FindOtherNodeControl()
-        {
-            Rect rect = new Rect(clone.TransformToVisual(AssociatedElement).TransformPoint(new Point(0, 0)), nodeControl.RenderSize);
-
-            IEnumerable<NodeControl> otherNodes = VisualTreeHelper.FindElementsInHostCoordinates(rect, AssociatedElement, true).OfType<NodeControl>().Where(x => x != nodeControl).ToList();
-
-            if (otherNodes.Any())
-            {
-                double rectArea = rect.Width * rect.Height;
-
-                foreach (NodeControl otherNodeControl in otherNodes)
-                {
-                    Rect otherRect = new Rect(otherNodeControl.TransformToVisual(AssociatedElement).TransformPoint(new Point(0, 0)), otherNodeControl.RenderSize);
-
-                    double minArea = Math.Min(rectArea, otherRect.Width * otherRect.Height);
-
-                    otherRect.Intersect(rect);
-
-                    double newArea = otherRect.Width * otherRect.Height;
-
-                    if (!double.IsInfinity(newArea) && newArea > 0.5 * minArea)
-                    {
-                        NodeBase otherNode = otherNodeControl.AssociatedNode;
-
-                        if (otherNode != movingNode && otherNode != movingNode.Parent && !movingNode.HasChild(otherNode as Node))
-                        {
-                            return otherNodeControl;
-                        }
-                    }
-                }
-            }
-
-            return null;
         }
     }
 }

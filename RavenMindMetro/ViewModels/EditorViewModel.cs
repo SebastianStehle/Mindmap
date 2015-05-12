@@ -201,7 +201,7 @@ namespace RavenMind.ViewModels
         {
             if (Document != null)
             {
-                await DocumentStore.StoreAsync(Document);
+                ////await DocumentStore.StoreAsync(Document);
 
                 Messenger.Default.Send(new MindmapSavedMessage(Document.Id));
             }

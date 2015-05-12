@@ -15,10 +15,27 @@ namespace RavenMind.Model.Layouting.Default
         private readonly DefaultLayoutNode parent;
         private readonly IRenderNode renderNode;
         private readonly NodeBase node;
+        private readonly Size nodeSize;
+
+        public Point Position { get; set; }
 
         public Size TreeSize { get; set; }
 
-        public Point Position { get; set; }
+        public double TreeWidth
+        {
+            get
+            {
+                return TreeSize.Width;
+            }
+        }
+
+        public double TreeHeight
+        {
+            get
+            {
+                return TreeSize.Height;
+            }
+        }
 
         public Node Node
         {
@@ -36,19 +53,27 @@ namespace RavenMind.Model.Layouting.Default
             }
         }
 
-        public IRenderNode RenderNode
-        {
-            get
-            {
-                return renderNode;
-            }
-        }
-
         public Size NodeSize
         {
             get
             {
-                return renderNode.Size;
+                return nodeSize;
+            }
+        }
+
+        public double NodeWidth
+        {
+            get
+            {
+                return nodeSize.Width;
+            }
+        }
+
+        public double NodeHeight
+        {
+            get
+            {
+                return nodeSize.Height;
             }
         }
 
@@ -56,6 +81,7 @@ namespace RavenMind.Model.Layouting.Default
         {
             this.node = node;
             this.parent = parent;
+            this.nodeSize = renderNode.Size;
             this.renderNode = renderNode;
 
             node.Tag = this;

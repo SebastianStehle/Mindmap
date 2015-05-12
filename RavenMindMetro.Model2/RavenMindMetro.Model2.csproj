@@ -118,6 +118,7 @@
     <Compile Include="Model\Layouting\AttachTarget.cs" />
     <Compile Include="Model\Layouting\Default\DefaultLayout.cs" />
     <Compile Include="Model\Layouting\Default\DefaultLayoutNode.cs" />
+    <Compile Include="Model\Layouting\Default\LayoutProcess.cs" />
     <Compile Include="Model\Layouting\Default\PreviewCalculationProcess.cs" />
     <Compile Include="Model\Layouting\ILayout.cs" />
     <Compile Include="Model\Layouting\IRenderer.cs" />

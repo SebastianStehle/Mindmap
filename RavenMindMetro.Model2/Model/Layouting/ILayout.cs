@@ -13,7 +13,7 @@ namespace RavenMind.Model.Layouting
 {
     public interface ILayout
     {
-        AttachTarget CalculateAttachTarget(NodeBase parent, IRenderer renderer, Node movingNode, Rect movementBounds, Point mindmapCenter);
+        AttachTarget CalculateAttachTarget(Document document, IRenderer renderer, Node movingNode, Rect movementBounds, Point mindmapCenter);
 
         void UpdateLayout(Document document, IRenderer renderer, Size availableSize);
     }

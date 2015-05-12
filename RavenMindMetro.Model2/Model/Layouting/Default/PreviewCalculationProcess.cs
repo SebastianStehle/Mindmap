@@ -20,8 +20,9 @@ namespace RavenMind.Model.Layouting.Default
         private readonly IRenderer renderer;
         private readonly Node movingNode;
         private readonly Point mindmapCenter;
-        private readonly Point movementBounds;
-        private readonly Rect movementRect;
+        private readonly Point movementCenter;
+        private readonly Rect movementBounds;
+        private readonly Document document;
         private DefaultLayout layout;
         private IRenderNode parentRenderNode;
         private IReadOnlyList<NodeBase> children;
@@ -32,76 +33,28 @@ namespace RavenMind.Model.Layouting.Default
         private int renderIndex;
         private int? insertIndex;
 
-        public PreviewCalculationProcess(NodeBase parent, DefaultLayout layout, IRenderer renderer, Node movingNode, Rect movementBounds, Point mindmapCenter)
+        public PreviewCalculationProcess(Document document, DefaultLayout layout, IRenderer renderer, Node movingNode, Rect movementBounds, Point mindmapCenter)
         {
             this.layout = layout;
-            this.parent = parent;
+            this.document = document;
             this.renderer = renderer;
             this.movingNode = movingNode;
             this.mindmapCenter = mindmapCenter;
-            this.movementRect = movementBounds;
-            this.movementBounds = movementBounds.Center();
+            this.movementBounds = movementBounds;
+            this.movementCenter = movementBounds.Center();
         }
 
         public AttachTarget CalculateAttachTarget()
         {
+            FindAttachOnParent();
+
             if (parent != null)
             {
-                IRenderNode parentRenderNode = renderer.FindRenderNode(parent);
-
-                RootNode root = parent as RootNode;
-
-                if (root != null)
-                {
-                    if (movingNode.NodeSide == NodeSide.Right)
-                    {
-                        side = NodeSide.Right;
-
-                        children = root.RightChildren;
-                    }
-                    else
-                    {
-                        side = NodeSide.Left;
-
-                        children = root.LeftChildren;
-                    }
-                }
-                else
-                {
-                    side = parent.NodeSide;
-
-                    children = ((Node)parent).Children;
-                }
+                CalculateParentAttachTarget();
             }
             else
             {
-                RootNode root = movingNode.Document.Root;
-
-                parent = movingNode.Parent;
-
-                if (movingNode.Parent == root)
-                {
-                    if (movingNode.NodeSide == NodeSide.Right && movementBounds.X < mindmapCenter.X)
-                    {
-                        CalculateReorderTarget(root.LeftChildren, NodeSide.Left);
-                    }
-                    else if (movingNode.NodeSide == NodeSide.Right)
-                    {
-                        CalculateReorderTarget(root.RightChildren, NodeSide.Right);
-                    }
-                    else if (movingNode.NodeSide == NodeSide.Left && movementBounds.X > mindmapCenter.X)
-                    {
-                        CalculateReorderTarget(root.RightChildren, NodeSide.Right);
-                    }
-                    else
-                    {
-                        CalculateReorderTarget(root.LeftChildren, NodeSide.Left);
-                    }
-                }
-                else
-                {
-                    CalculateReorderTarget(((Node)movingNode.Parent).Children);
-                }
+                CalculateReorderTarget();
             }
 
             if (children != null)
@@ -112,6 +65,66 @@ namespace RavenMind.Model.Layouting.Default
             }
             
             return null;
+        }
+
+        private void CalculateParentAttachTarget()
+        {
+            IRenderNode parentRenderNode = renderer.FindRenderNode(parent);
+
+            RootNode root = parent as RootNode;
+
+            if (root != null)
+            {
+                if (movingNode.NodeSide == NodeSide.Right)
+                {
+                    side = NodeSide.Right;
+
+                    children = root.RightChildren;
+                }
+                else
+                {
+                    side = NodeSide.Left;
+
+                    children = root.LeftChildren;
+                }
+            }
+            else
+            {
+                side = parent.NodeSide;
+
+                children = ((Node)parent).Children;
+            }
+        }
+
+        private void CalculateReorderTarget()
+        {
+            RootNode root = movingNode.Document.Root;
+
+            parent = movingNode.Parent;
+
+            if (movingNode.Parent == root)
+            {
+                if (movingNode.NodeSide == NodeSide.Right && movementCenter.X < mindmapCenter.X)
+                {
+                    CalculateReorderTarget(root.LeftChildren, NodeSide.Left);
+                }
+                else if (movingNode.NodeSide == NodeSide.Right)
+                {
+                    CalculateReorderTarget(root.RightChildren, NodeSide.Right);
+                }
+                else if (movingNode.NodeSide == NodeSide.Left && movementCenter.X > mindmapCenter.X)
+                {
+                    CalculateReorderTarget(root.RightChildren, NodeSide.Right);
+                }
+                else
+                {
+                    CalculateReorderTarget(root.LeftChildren, NodeSide.Left);
+                }
+            }
+            else
+            {
+                CalculateReorderTarget(((Node)movingNode.Parent).Children);
+            }
         }
 
         private void CalculateReorderTarget(IReadOnlyList<Node> collection, NodeSide targetSide = NodeSide.Undefined)
@@ -135,7 +148,7 @@ namespace RavenMind.Model.Layouting.Default
 
         private void CalculateIndex(IReadOnlyList<Node> collection)
         {
-            double centerY = movementBounds.Y;
+            double centerY = movementCenter.Y;
 
             int nodeIndex = collection.IndexOf(movingNode);
 
@@ -178,13 +191,13 @@ namespace RavenMind.Model.Layouting.Default
                     {
                         Rect bounds = renderer.FindRenderNode(children.Last()).Bounds;
 
-                        y = bounds.Bottom + (layout.ElementMargin * 2) + (movementRect.Height * 0.5);
+                        y = bounds.Bottom + (layout.ElementMargin * 2) + (movementBounds.Height * 0.5);
                     }
                     else if (insertIndex == 0)
                     {
                         Rect bounds = renderer.FindRenderNode(children.First()).Bounds;
 
-                        y = bounds.Top - layout.ElementMargin - (movementRect.Height * 0.5);
+                        y = bounds.Top - layout.ElementMargin - (movementBounds.Height * 0.5);
                     }
                     else
                     {
@@ -234,6 +247,30 @@ namespace RavenMind.Model.Layouting.Default
             }
 
             position = new Point(x, y);
+        }
+
+        private void FindAttachOnParent()
+        {
+            double rectArea = movementBounds.Width * movementBounds.Height;
+
+            foreach (NodeBase node in document.Nodes)
+            {
+                if (node != movingNode && node != movingNode.Parent && !movingNode.HasChild(node as Node))
+                {
+                    Rect nodeBounds = renderer.FindRenderNode(node).Bounds;
+
+                    double minArea = Math.Min(rectArea, nodeBounds.Width * nodeBounds.Height);
+
+                    nodeBounds.Intersect(movementBounds);
+
+                    double newArea = nodeBounds.Width * nodeBounds.Height;
+
+                    if (!double.IsInfinity(newArea) && newArea > 0.5 * minArea)
+                    {
+                        parent = node;
+                    }
+                }
+            }
         }
     }
 }

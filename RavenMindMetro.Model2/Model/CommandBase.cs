@@ -53,9 +53,14 @@ namespace RavenMind.Model
             }
         }
 
-        public abstract void Execute();
+        protected abstract void Execute(bool isRedo);
 
-        public abstract void Revert();
+        protected abstract void Revert();
+
+        public void Execute()
+        {
+            Execute(false);
+        }
 
         public void Undo()
         {
@@ -64,7 +69,7 @@ namespace RavenMind.Model
 
         public void Redo()
         {
-            Execute();
+            Execute(true);
         }
     }
 }

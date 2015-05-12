@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="25800SebastianStehle.RavenMind" Publisher="CN=5D4C76CA-B364-4856-B733-905C99D43D19" Version="1.1.1.12" />
+  <Identity Name="25800SebastianStehle.RavenMind" Publisher="CN=5D4C76CA-B364-4856-B733-905C99D43D19" Version="1.1.1.13" />
   <Properties>
     <DisplayName>RavenMind</DisplayName>
     <PublisherDisplayName>Green Parrot UG</PublisherDisplayName>

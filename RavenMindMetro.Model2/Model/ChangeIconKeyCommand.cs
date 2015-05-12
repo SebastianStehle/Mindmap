@@ -32,15 +32,19 @@ namespace RavenMind.Model
             base.Save(properties);
         }
 
-        public override void Execute()
+        protected override void Execute(bool isRedo)
         {
             oldIconKey = Node.IconKey;
 
             Node.ChangeIconKey(newIconKey);
-            Node.Select();
+
+            if (isRedo)
+            {
+                Node.Select();
+            }
         }
 
-        public override void Revert()
+        protected override void Revert()
         {
             Node.ChangeIconKey(oldIconKey);
             Node.Select();

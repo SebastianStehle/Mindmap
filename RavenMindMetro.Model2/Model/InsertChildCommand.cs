@@ -31,7 +31,7 @@ namespace RavenMind.Model
             this.child = child;
         }
 
-        public override void Execute()
+        protected override void Execute(bool isRedo)
         {
             if (child == null)
             {
@@ -43,7 +43,7 @@ namespace RavenMind.Model
             child.Select();
         }
 
-        public override void Revert()
+        protected override void Revert()
         {
             int index = 0;
 

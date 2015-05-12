@@ -32,15 +32,19 @@ namespace RavenMind.Model
             base.Save(properties);
         }
 
-        public override void Execute()
+        protected override void Execute(bool isRedo)
         {
             oldColor = Node.Color;
 
             Node.ChangeColor(newColor);
-            Node.Select();
+
+            if (isRedo)
+            {
+                Node.Select();
+            }
         }
 
-        public override void Revert()
+        protected override void Revert()
         {
             Node.ChangeColor(oldColor);
             Node.Select();

@@ -20,7 +20,7 @@ namespace RavenMind.Model
             this.child = child;
         }
 
-        public override void Execute()
+        protected override void Execute(bool isRedo)
         {
             oldSide = child.NodeSide;
             
@@ -29,7 +29,7 @@ namespace RavenMind.Model
             child.Select();
         }
 
-        public override void Revert()
+        protected override void Revert()
         {
             Node.Insert(child, oldIndex, oldSide);
 

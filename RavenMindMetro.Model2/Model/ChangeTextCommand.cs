@@ -32,15 +32,19 @@ namespace RavenMind.Model
             base.Save(properties);
         }
 
-        public override void Execute()
+        protected override void Execute(bool isRedo)
         {
             oldText = Node.Text;
 
             Node.ChangeText(newText);
-            Node.Select();
+
+            if (isRedo)
+            {
+                Node.Select();
+            }
         }
 
-        public override void Revert()
+        protected override void Revert()
         {
             Node.ChangeText(oldText);
             Node.Select();

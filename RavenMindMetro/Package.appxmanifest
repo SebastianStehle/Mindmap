@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="25800SebastianStehle.RavenMind" Publisher="CN=5D4C76CA-B364-4856-B733-905C99D43D19" Version="1.1.1.13" />
+  <Identity Name="25800SebastianStehle.RavenMind" Publisher="CN=5D4C76CA-B364-4856-B733-905C99D43D19" Version="1.1.1.18" />
   <Properties>
-    <DisplayName>RavenMind</DisplayName>
+    <DisplayName>RavenMind!</DisplayName>
     <PublisherDisplayName>Green Parrot UG</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -15,7 +15,7 @@
   </Resources>
   <Applications>
     <Application Id="App" Executable="$targetnametoken$.exe" EntryPoint="RavenMindMetro.App">
-      <m2:VisualElements DisplayName="RavenMind" Description="RavenMind" BackgroundColor="#DCDCDC" ForegroundText="dark" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png">
+      <m2:VisualElements DisplayName="RavenMind!" Description="RavenMind" BackgroundColor="#DCDCDC" ForegroundText="dark" Square150x150Logo="Assets\Logo.png" Square30x30Logo="Assets\SmallLogo.png">
         <m2:DefaultTile>
           <m2:ShowNameOnTiles>
             <m2:ShowOn Tile="square150x150Logo" />

@@ -1,0 +1,3 @@
+MainPackage=D:\Mindmap\RavenMindMetro\bin\Debug\RavenMindMetro_1.1.1.18_Bundle\RavenMindMetro_1.1.1.18_AnyCPU_Debug.appx
+SymbolPackage=D:\Mindmap\RavenMindMetro\AppPackages\RavenMindMetro_1.1.1.18_Debug_Test\RavenMindMetro_1.1.1.18_AnyCPU_Debug.appxsym
+ResourcePack=D:\Mindmap\RavenMindMetro\bin\Debug\RavenMindMetro_1.1.1.18_Bundle\RavenMindMetro_1.1.1.18_language-de.appx

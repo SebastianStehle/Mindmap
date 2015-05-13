@@ -12,12 +12,12 @@
     <DefaultLanguage>en-US</DefaultLanguage>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{BC8A1FFA-BEE3-4634-8014-F334798102B3};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <PackageCertificateKeyFile>RavenMindMetro_StoreKey.pfx</PackageCertificateKeyFile>
+    <PackageCertificateKeyFile>RavenMindMetro_TemporaryKey.pfx</PackageCertificateKeyFile>
     <ExpressionBlendVersion>5.0.30514.0</ExpressionBlendVersion>
     <AppxAutoIncrementPackageRevision>True</AppxAutoIncrementPackageRevision>
     <SolutionDir Condition="$(SolutionDir) == '' Or $(SolutionDir) == '*Undefined*'">..\</SolutionDir>
     <RestorePackages>true</RestorePackages>
-    <PackageCertificateThumbprint>855F7F2CC9F1C5823EAFB409108DD20462822B94</PackageCertificateThumbprint>
+    <PackageCertificateThumbprint>CAF30BD1F6FF9A8D6FB914AF6C260EA8DEA9253F</PackageCertificateThumbprint>
     <TargetPlatformVersion>8.1</TargetPlatformVersion>
     <MinimumVisualStudioVersion>12</MinimumVisualStudioVersion>
     <TargetFrameworkVersion />
@@ -137,6 +137,7 @@
     <Compile Include="Controls\Mindmap.cs" />
     <Compile Include="Controls\MindmapExtensions.cs" />
     <Compile Include="Controls\NodeMovingBehavior.cs" />
+    <Compile Include="Controls\NodeMovingOperation.cs" />
     <Compile Include="Controls\NotNullNodeThicknessConverter.cs" />
     <Compile Include="Controls\NotNullRootThicknessConverter.cs" />
     <Compile Include="Controls\NotRootToVisibilityConverter.cs" />
@@ -187,13 +188,13 @@
       <SubType>Designer</SubType>
     </AppxManifest>
     <None Include="RavenMindMetro_StoreKey.pfx" />
-    <None Include="RavenMindMetro_TemporaryKey.pfx" />
     <PRIResource Include="Strings\de-DE\Resources.resw">
       <SubType>Designer</SubType>
     </PRIResource>
     <PRIResource Include="Strings\en-US\Resources.resw">
       <SubType>Designer</SubType>
     </PRIResource>
+    <None Include="RavenMindMetro_TemporaryKey.pfx" />
     <None Include="_RAVENKEY.snk" />
   </ItemGroup>
   <ItemGroup>

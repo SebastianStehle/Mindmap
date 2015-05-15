@@ -6,15 +6,14 @@
 // All rights reserved.
 // ==========================================================================
 
-using System;
 using Windows.Foundation;
 
 namespace RavenMind.Model.Layouting
 {
     public interface ILayout
     {
-        AttachTarget CalculateAttachTarget(Document document, IRenderer renderer, Node movingNode, Rect movementBounds, Point mindmapCenter);
+        AttachTarget CalculateAttachTarget(Document document, IRenderer renderer, Node movingNode, Rect movementBounds);
 
-        void UpdateLayout(Document document, IRenderer renderer, Size availableSize);
+        void UpdateLayout(Document document, IRenderer renderer);
     }
 }

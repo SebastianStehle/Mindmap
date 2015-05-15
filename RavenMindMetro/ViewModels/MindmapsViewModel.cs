@@ -8,6 +8,7 @@
 
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Practices.Unity;
 using RavenMind.Components;
 using RavenMind.Messages;
 using RavenMind.Model;
@@ -15,30 +16,34 @@ using RavenMind.Model.Storing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Composition;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
 namespace RavenMind.ViewModels
 {
-    [Export]
-    [Export(typeof(ViewModelBase))]
     public sealed class MindmapsViewModel : ViewModelBase
     {
+        private readonly ObservableCollection<MindmapItem> mindmaps = new ObservableCollection<MindmapItem>();
         private bool isLoaded;
         private MindmapItem selectedMindmap;
 
-        [Import]
+        [Dependency]
         public IDocumentStore DocumentStore { get; set; }
 
-        [Import]
+        [Dependency]
         public ILocalizationManager LocalizationManager { get; set; }
 
-        [Import]
+        [Dependency]
         public ISettingsProvider SettingsProvider { get; set; }
 
-        public ObservableCollection<MindmapItem> Mindmaps { get; private set; }
+        public ObservableCollection<MindmapItem> Mindmaps
+        {
+            get
+            {
+                return mindmaps;
+            }
+        }
 
         public MindmapItem SelectedMindmap
         {
@@ -63,23 +68,10 @@ namespace RavenMind.ViewModels
 
         public MindmapsViewModel()
         {
-            Mindmaps = new ObservableCollection<MindmapItem>();
-
             Messenger.Default.Register<DeleteMindmapMessage>(this, OnDeleteMindmap);
             Messenger.Default.Register<OpenMindmapMessage>(this, OnOpenMindmap);
             Messenger.Default.Register<NameChangedMessage>(this, OnNameChanged);
             Messenger.Default.Register<MindmapSavedMessage>(this, OnMindmapSaved);
-        }
-
-        [OnImportsSatisfied]
-        public void OnImportsSatisfied()
-        {
-            if (!SettingsProvider.IsAlreadyStarted)
-            {
-                SettingsProvider.IsAlreadyStarted = true;
-
-                CreateNewMindmapAsync(LocalizationManager.GetString("MyMindmap"), LocalizationManager.GetString("Start")).Wait();
-            }
         }
 
         public void OnMindmapSaved(MindmapSavedMessage message)
@@ -130,7 +122,7 @@ namespace RavenMind.ViewModels
 
             DocumentRef documentRef = await DocumentStore.StoreAsync(document);
 
-            //// Mindmaps.Insert(0, CreateMindmapItem(name, documentRef));
+            Mindmaps.Insert(0, CreateMindmapItem(name, documentRef));
 
             SelectedMindmap = Mindmaps.FirstOrDefault();
         }
@@ -139,21 +131,30 @@ namespace RavenMind.ViewModels
         {
             if (!isLoaded)
             {
-                IEnumerable<DocumentRef> documents = await DocumentStore.LoadAllAsync();
-
-                foreach (DocumentRef documentRef in documents)
-                {
-                    if (!Mindmaps.Any(x => x.MindmapId == documentRef.Id))
-                    {
-                        MindmapItem mindmapItem = CreateMindmapItem(documentRef.Name, documentRef);
-
-                        Mindmaps.Add(mindmapItem);
-                    }
-                }
-
-                SelectedMindmap = Mindmaps.FirstOrDefault();
-
                 isLoaded = true;
+
+                if (SettingsProvider.IsAlreadyStarted)
+                {
+                    IEnumerable<DocumentRef> documents = await DocumentStore.LoadAllAsync();
+
+                    foreach (DocumentRef documentRef in documents)
+                    {
+                        if (!Mindmaps.Any(x => x.MindmapId == documentRef.Id))
+                        {
+                            MindmapItem mindmapItem = CreateMindmapItem(documentRef.Name, documentRef);
+
+                            Mindmaps.Add(mindmapItem);
+                        }
+                    }
+
+                    SelectedMindmap = Mindmaps.FirstOrDefault();
+                }
+                else
+                {
+                    SettingsProvider.IsAlreadyStarted = true;
+
+                    await CreateNewMindmapAsync(LocalizationManager.GetString("MyMindmap"), LocalizationManager.GetString("Start"));
+                }
             }
         }
 

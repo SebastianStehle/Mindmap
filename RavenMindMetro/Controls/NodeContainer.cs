@@ -11,6 +11,7 @@ using RavenMind.Model.Layouting;
 using SE.Metro.UI;
 using System;
 using Windows.Foundation;
+using Windows.UI.Xaml;
 
 namespace RavenMind.Controls
 {
@@ -20,6 +21,10 @@ namespace RavenMind.Controls
 
         private readonly NodeControl node;
         private Point startingRenderingPosition = EmptyPoint;
+        private Point currentPosition;
+        private Point targetPosition;
+        private Point layoutPosition;
+        private AnchorPoint anchorPoint;
         private DateTime? animatingEnd;
 
         public Size Size
@@ -34,7 +39,7 @@ namespace RavenMind.Controls
         {
             get 
             {
-                return node.Position;
+                return layoutPosition;
             }
         }
 
@@ -42,7 +47,7 @@ namespace RavenMind.Controls
         {
             get
             {
-                return new Rect(CurrentPosition, node.DesiredSize);
+                return new Rect(currentPosition, node.DesiredSize);
             }
         }
 
@@ -56,10 +61,6 @@ namespace RavenMind.Controls
 
         public IPathHolder PathHolder { get; set; }
 
-        public Point CurrentPosition { get; set; }
-
-        public Point TargetPosition { get; set; }
-
         public NodeContainer Parent { get; set; }
 
         public NodeContainer(NodeControl node)
@@ -67,31 +68,53 @@ namespace RavenMind.Controls
             this.node = node;
         }
 
+        public void Hide()
+        {
+            ChangeVisibility(Visibility.Collapsed);
+
+            startingRenderingPosition = EmptyPoint;
+        }
+
+        public void Show()
+        {
+            ChangeVisibility(Visibility.Visible);
+        }
+
         public void MoveTo(Point position, AnchorPoint anchor)
         {
-            node.Anchor = anchor;
+            anchorPoint = anchor;
 
-            node.Position = position;
+            layoutPosition = position;
+        }
+
+        private void ChangeVisibility(Visibility visible)
+        {
+            NodeControl.Visibility = visible;
+
+            if (PathHolder != null && PathHolder.Path != null)
+            {
+                PathHolder.Path.Visibility = visible;
+            }
         }
 
         public bool UpdateRenderPosition(bool isAnimating, DateTime now, double animationSpeed)
         {
-            Point renderPosition = node.Position;
+            Point renderPosition = layoutPosition;
 
             Size size = NodeControl.DesiredSize;
 
             renderPosition.Y -= 0.5 * size.Height;
 
-            if (node.Anchor == AnchorPoint.Right)
+            if (anchorPoint == AnchorPoint.Right)
             {
                 renderPosition.X -= size.Width;
             }
-            else if (node.Anchor == AnchorPoint.Center)
+            else if (anchorPoint == AnchorPoint.Center)
             {
                 renderPosition.X -= 0.5 * size.Width;
             }
 
-            TargetPosition = renderPosition;
+            targetPosition = renderPosition;
 
             if (isAnimating && startingRenderingPosition != EmptyPoint)
             {
@@ -118,13 +141,13 @@ namespace RavenMind.Controls
                 fractionComplete -= Math.Min(1, Math.Max(0, timeRemaining / animationSpeed));
             }
 
-            CurrentPosition = new Point(
-                MathHelper.Interpolate(fractionComplete, CurrentPosition.X, TargetPosition.X),
-                MathHelper.Interpolate(fractionComplete, CurrentPosition.Y, TargetPosition.Y));
+            currentPosition = new Point(
+                MathHelper.Interpolate(fractionComplete, currentPosition.X, targetPosition.X),
+                MathHelper.Interpolate(fractionComplete, currentPosition.Y, targetPosition.Y));
 
-            node.Arrange(new Rect(CurrentPosition, node.DesiredSize));
+            node.Arrange(new Rect(currentPosition, node.DesiredSize));
 
-            return !MathHelper.AboutEqual(TargetPosition, CurrentPosition);
+            return !MathHelper.AboutEqual(targetPosition, currentPosition);
         }
     }
 }

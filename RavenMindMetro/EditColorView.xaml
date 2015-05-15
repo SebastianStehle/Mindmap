@@ -12,8 +12,6 @@
     
     <UserControl.Resources>
         <se:IntToBrushConverter x:Key="IntToBrushConverter" />
-        
-        <assets:AssetProvider x:Key="AssetProvider" />
     </UserControl.Resources>
     
     <Border Padding="10" BorderBrush="{StaticResource PopupBorderBrush}" BorderThickness="2" Background="{StaticResource PopupBackgroundBrush}">
@@ -25,10 +23,10 @@
             
             <TextBlock x:Uid="ColorsHeader" FontSize="36" FontWeight="Light">Colors</TextBlock>
             
-            <GridView VerticalAlignment="Top" Grid.Row="1" Margin="0,15,0,0" x:Name="ColorsGrid" ItemContainerStyle="{StaticResource CellGridViewItemStyle}" ItemsSource="{Binding Source={StaticResource AssetProvider}, Path=Colors}" Padding="0">
+            <GridView VerticalAlignment="Top" Grid.Row="1" Margin="0,15,0,0" x:Name="ColorsGrid" ItemContainerStyle="{StaticResource CellGridViewItemStyle}" Padding="0">
                 <GridView.ItemTemplate>
                     <DataTemplate>
-                        <Border Background="{Binding Converter={StaticResource IntToBrushConverter}}" Width="32" Height="32" />
+                        <Border Background="{Binding Normal}" Width="32" Height="32" />
                     </DataTemplate>
                 </GridView.ItemTemplate>
             </GridView>

@@ -6,50 +6,56 @@
 // All rights reserved.
 // ==========================================================================
 
-using System;
-
 namespace RavenMind.Model
 {
-    public sealed class InsertChildCommand : CommandBase
+    public sealed class InsertChildCommand : ChildNodeCommandBase
     {
         private NodeSide side;
-        private Node child;
         private int? index;
 
-        public InsertChildCommand(NodeBase parent, int? index, NodeSide side)
-            : base(parent)
+        public InsertChildCommand(CommandProperties properties, Document document)
+            : base(properties, document)
         {
-            this.side = side;
-            this.index = index;
+            side = (NodeSide)properties.GetInteger("NodeSide");
+
+            index = properties.GetNullableInteger("Index");
+        }
+
+        public InsertChildCommand(NodeBase parent, int? index, NodeSide side)
+            : this(parent, index, side, null)
+        {
         }
 
         public InsertChildCommand(NodeBase parent, int? index, NodeSide side, Node child)
-            : base(parent)
+            : base(parent, child)
         {
             this.side = side;
+
             this.index = index;
-            this.child = child;
+        }
+
+        public override void Save(CommandProperties properties)
+        {
+            properties.Set("Index", index);
+            properties.Set("NodeSide", (int)side);
+
+            base.Save(properties);
         }
 
         protected override void Execute(bool isRedo)
         {
-            if (child == null)
-            {
-                child = Node.Document.GetOrCreateNode<Node>(Guid.NewGuid(), id => new Node(id));
-            }
+            Node.Insert(Child, index, side);
 
-            Node.Insert(child, index, side);
-
-            child.Select();
+            Child.Select();
         }
 
         protected override void Revert()
         {
             int index = 0;
 
-            Node.Remove(child, out index);
+            Node.Remove(Child, out index);
 
-            child.Select();
+            Child.Select();
         }
     }
 }

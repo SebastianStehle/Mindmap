@@ -17,7 +17,6 @@ namespace RavenMind.Model.Layouting
         private readonly NodeBase node;
         private readonly NodeSide nodeSide;
         private readonly AnchorPoint anchor;
-        private readonly IReadOnlyList<NodeBase> children;
         private readonly int? index;
 
         public Point Position
@@ -60,21 +59,12 @@ namespace RavenMind.Model.Layouting
             }
         }
 
-        public IReadOnlyList<NodeBase> Children
-        {
-            get
-            {
-                return children;
-            }
-        }
-
-        public AttachTarget(NodeBase node, NodeSide nodeSide, int? index, IReadOnlyList<NodeBase> children, Point position, AnchorPoint anchor)
+        public AttachTarget(NodeBase node, NodeSide nodeSide, int? index, Point position, AnchorPoint anchor)
         {
             this.node = node;
             this.index = index;
             this.anchor = anchor;
             this.nodeSide = nodeSide;
-            this.children = children;
             this.position = position;
         }
     }

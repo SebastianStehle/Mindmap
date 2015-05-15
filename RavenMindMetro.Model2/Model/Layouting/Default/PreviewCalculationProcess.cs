@@ -19,10 +19,10 @@ namespace RavenMind.Model.Layouting.Default
     {
         private readonly IRenderer renderer;
         private readonly Node movingNode;
-        private readonly Point mindmapCenter;
         private readonly Point movementCenter;
         private readonly Rect movementBounds;
         private readonly Document document;
+        private Point mindmapCenter;
         private DefaultLayout layout;
         private IRenderNode parentRenderNode;
         private IReadOnlyList<NodeBase> children;
@@ -33,19 +33,20 @@ namespace RavenMind.Model.Layouting.Default
         private int renderIndex;
         private int? insertIndex;
 
-        public PreviewCalculationProcess(Document document, DefaultLayout layout, IRenderer renderer, Node movingNode, Rect movementBounds, Point mindmapCenter)
+        public PreviewCalculationProcess(Document document, DefaultLayout layout, IRenderer renderer, Node movingNode, Rect movementBounds)
         {
             this.layout = layout;
             this.document = document;
             this.renderer = renderer;
             this.movingNode = movingNode;
-            this.mindmapCenter = mindmapCenter;
             this.movementBounds = movementBounds;
             this.movementCenter = movementBounds.Center();
         }
 
         public AttachTarget CalculateAttachTarget()
         {
+            CalculateCenter();
+
             FindAttachOnParent();
 
             if (parent != null)
@@ -61,10 +62,18 @@ namespace RavenMind.Model.Layouting.Default
             {
                 CalculatePreviewPoint();
 
-                return new AttachTarget(parent, side, insertIndex, children, position, anchor);
+                return new AttachTarget(parent, side, insertIndex, position, anchor);
             }
             
             return null;
+        }
+
+        private void CalculateCenter()
+        {
+            double x = 0.5 * document.Size.Width;
+            double y = 0.5 * document.Size.Height;
+
+            mindmapCenter = new Point(x, y);
         }
 
         private void CalculateParentAttachTarget()

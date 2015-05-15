@@ -24,6 +24,14 @@ namespace RavenMind.Model
             }
         }
 
+        public override bool HasChildren
+        {
+            get
+            {
+                return children.Count > 0;
+            }
+        }
+
         public Node(Guid id)
             : base(id)
         {
@@ -32,11 +40,20 @@ namespace RavenMind.Model
         public override void Insert(Node child, int? index, NodeSide side)
         {
             Add(children, child, index, NodeSide);
+
+            OnPropertyChanged("HasChildren");
         }
 
         public override bool Remove(Node child, out int oldIndex)
         {
-            return Remove(children, child, out oldIndex);
+            bool isRemoved = Remove(children, child, out oldIndex);
+
+            if (isRemoved)
+            {
+                OnPropertyChanged("HasChildren");
+            }
+
+            return isRemoved;
         }
 
         public override bool HasChild(Node child)

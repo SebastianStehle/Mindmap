@@ -10,6 +10,7 @@ using SE.Metro;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using Windows.Foundation;
 
 namespace RavenMind.Model
 {
@@ -19,6 +20,7 @@ namespace RavenMind.Model
         private readonly HashSet<NodeBase> nodes = new HashSet<NodeBase>();
         private readonly RootNode root;
         private readonly IUndoRedoManager undoRedoManager = new UndoRedoManager();
+        private readonly Size size = new Size(5000, 5000);
         private CompositeUndoRedoAction transaction;
         private NodeBase selectedNode;
         private string name;
@@ -54,6 +56,14 @@ namespace RavenMind.Model
             get
             {
                 return root;
+            }
+        }
+
+        public Size Size
+        {
+            get
+            {
+                return size;
             }
         }
 
@@ -139,22 +149,11 @@ namespace RavenMind.Model
             }
         }
 
-        internal T GetOrCreateNode<T>(Guid id, Func<Guid, T> factory) where T : NodeBase
+        internal NodeBase GetOrCreateNode<T>(Guid id, Func<Guid, T> factory) where T : NodeBase
         {
-            T result = null;
+            NodeBase result = null;
 
-            NodeBase temp = null;
-
-            if (nodesHashSet.TryGetValue(id, out temp))
-            {
-                result = temp as T;
-
-                if (result == null)
-                {
-                    throw new InvalidOperationException("There is already a node, but with another type.");
-                }
-            }
-            else
+            if (!nodesHashSet.TryGetValue(id, out result))
             {
                 result = factory(id);
 

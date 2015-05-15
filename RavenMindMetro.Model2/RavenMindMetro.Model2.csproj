@@ -103,7 +103,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DocumentObject.cs" />
-    <Compile Include="Model\AnchorPoint.cs" />
+    <Compile Include="Model\ChildNodeCommandBase.cs" />
+    <Compile Include="Model\Layouting\AnchorPoint.cs" />
     <Compile Include="Model\CommandProperties.cs" />
     <Compile Include="Model\DocumentExtensions.cs" />
     <Compile Include="Model\IDocumentCommands.cs" />
@@ -126,6 +127,7 @@
     <Compile Include="Model\Storing\DocumentRef.cs" />
     <Compile Include="Model\NodeEventArgs.cs" />
     <Compile Include="Model\Storing\Json\JsonDocumentStore.cs" />
+    <Compile Include="Model\Storing\Json\JsonHistoryStepsCommand.cs" />
     <Compile Include="Model\Storing\Utils\FileExtensions.cs" />
     <Compile Include="Model\Export\Html\HtmlOutlineGenerator.cs" />
     <Compile Include="Model\IconSize.cs" />
@@ -139,7 +141,8 @@
     <Compile Include="Model\RemoveChildCommand.cs" />
     <Compile Include="Model\RootNode.cs" />
     <Compile Include="Model\Storing\Json\JsonHistory.cs" />
-    <Compile Include="Model\Storing\Json\JsonHistoryItem.cs" />
+    <Compile Include="Model\Storing\Json\JsonHistoryStep.cs" />
+    <Compile Include="Model\ToggleCollapseCommand.cs" />
     <Compile Include="Model\UndoRedoManager.cs" />
     <Compile Include="Model\Utils\LimitedThreadsScheduler.cs" />
     <Compile Include="Model\NodeExtensions.cs" />
@@ -151,21 +154,6 @@
     </Reference>
     <Reference Include="Newtonsoft.Json">
       <HintPath>..\packages\Newtonsoft.Json.6.0.5\lib\netcore45\Newtonsoft.Json.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.AttributedModel">
-      <HintPath>..\libraries\System.Composition.AttributedModel.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.Convention">
-      <HintPath>..\libraries\System.Composition.Convention.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.Hosting">
-      <HintPath>..\libraries\System.Composition.Hosting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.Runtime">
-      <HintPath>..\libraries\System.Composition.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.TypedParts">
-      <HintPath>..\libraries\System.Composition.TypedParts.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>

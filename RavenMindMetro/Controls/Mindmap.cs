@@ -55,12 +55,12 @@ namespace RavenMind.Controls
             set { SetValue(LayoutProperty, value); }
         }
 
-        public static readonly DependencyProperty RendererProperty =
-            DependencyProperty.Register("Renderer", typeof(RendererBase), typeof(Mindmap), new PropertyMetadata(null));
-        public RendererBase Renderer
+        public static readonly DependencyProperty ThemeProperty =
+            DependencyProperty.Register("Theme", typeof(ThemeBase), typeof(Mindmap), new PropertyMetadata(null));
+        public ThemeBase Theme
         {
-            get { return (RendererBase)GetValue(RendererProperty); }
-            set { SetValue(RendererProperty, value); }
+            get { return (ThemeBase)GetValue(ThemeProperty); }
+            set { SetValue(ThemeProperty, value); }
         }
 
         public static readonly DependencyProperty DocumentProperty =
@@ -126,7 +126,7 @@ namespace RavenMind.Controls
 
         public AttachTarget CalculateAttachTarget(Node movingNode, Rect movementBounds)
         {
-            return Layout.CalculateAttachTarget(Document, nodePanel, movingNode, movementBounds, new Point(0.5 * nodePanel.ActualWidth, 0.5 * nodePanel.ActualHeight));
+            return Layout.CalculateAttachTarget(Document, nodePanel, movingNode, movementBounds);
         }
 
         public Rect GetBounds(NodeBase node)

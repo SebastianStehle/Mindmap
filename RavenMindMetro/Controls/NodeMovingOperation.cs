@@ -40,10 +40,8 @@ namespace RavenMind.Controls
                     if (movingNode != null && movingNode.IsSelected && !nodeControl.IsTextEditing)
                     {
                         return new NodeMovingOperation(mindmap, nodeControl, movingNode);
-                        
                     }
                 }
-
             }
 
             return null;

@@ -35,22 +35,14 @@ namespace RavenMind.Model
             Guard.NotNull(properties, "properties");
             Guard.NotNull(document, "document");
 
-            Guid id = properties.Get<Guid>("NodeId");
-
-            if (id != Guid.Empty)
-            {
-                node = document.GetOrCreateNode(id, x => new Node(id));
-            }
+            node = document.GetOrCreateNode(properties.GetGuid("NodeId"), i => new Node(i));
         }
 
         public virtual void Save(CommandProperties properties)
         {
             Guard.NotNull(properties, "properties");
 
-            if (node != null)
-            {
-                properties.Set("NodeId", node.Id);
-            }
+            properties.Set("NodeId", node.Id);
         }
 
         protected abstract void Execute(bool isRedo);

@@ -6,14 +6,11 @@
 // All rights reserved.
 // ==========================================================================
 
-using System.Composition;
 using System.Globalization;
 using Windows.ApplicationModel.Resources;
 
 namespace RavenMind.Components
 {
-    [Export]
-    [Export(typeof(ILocalizationManager))]
     public sealed class ResourcesLocalizationManager : ILocalizationManager
     {
         public string GetString(string key)

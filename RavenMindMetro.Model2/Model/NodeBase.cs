@@ -16,7 +16,6 @@ namespace RavenMind.Model
 {
     public abstract class NodeBase : DocumentObject
     {
-        public const int DefaultColor = 0x7EA7D8;
         private Document document;
         private NodeBase parent;
         private IconSize iconSize;
@@ -24,9 +23,14 @@ namespace RavenMind.Model
         private int color;
         private string text;
         private string iconKey;
+        private bool isCollapsed;
         private bool isSelected;
 
-        public object Tag { get; set; }
+        public object LayoutData { get; set; }
+
+        public object RenderData { get; set; }
+
+        public abstract bool HasChildren { get; }
 
         public Document Document
         {
@@ -124,6 +128,22 @@ namespace RavenMind.Model
             }
         }
 
+        public bool IsCollapsed
+        {
+            get
+            {
+                return isCollapsed;
+            }
+            protected set
+            {
+                if (isCollapsed != value)
+                {
+                    isCollapsed = value;
+                    OnPropertyChanged("IsCollapsed");
+                }
+            }
+        }
+
         public bool IsSelected
         {
             get
@@ -143,12 +163,16 @@ namespace RavenMind.Model
         protected NodeBase(Guid id)
             : base(id)
         {
-            this.color = DefaultColor;
         }
 
         internal void ChangeIsSelected(bool isSelected)
         {
             IsSelected = isSelected;
+        }
+
+        internal void ChangeIsCollapsed(bool isCollapsed)
+        {
+            IsCollapsed = isCollapsed;
         }
 
         internal void ChangeColor(int newColor)

@@ -6,29 +6,26 @@
 // All rights reserved.
 // ==========================================================================
 
-using System.Composition;
 using Windows.Foundation;
 
 namespace RavenMind.Model.Layouting.Default
 {
-    [Export]
-    [Export(typeof(ILayout))]
     public sealed class DefaultLayout : ILayout
     {
         public double HorizontalMargin { get; set; }
 
         public double ElementMargin { get; set; }
 
-        public void UpdateLayout(Document document, IRenderer renderer, Size availableSize)
+        public void UpdateLayout(Document document, IRenderer renderer)
         {
-            LayoutProcess process = new LayoutProcess(document, this, renderer, availableSize);
+            LayoutProcess process = new LayoutProcess(document, this, renderer);
 
             process.UpdateLayout();
         }
 
-        public AttachTarget CalculateAttachTarget(Document document, IRenderer renderer, Node movingNode, Rect movementBounds, Point mindmapCenter)
+        public AttachTarget CalculateAttachTarget(Document document, IRenderer renderer, Node movingNode, Rect movementBounds)
         {
-            PreviewCalculationProcess process = new PreviewCalculationProcess(document, this, renderer, movingNode, movementBounds, mindmapCenter);
+            PreviewCalculationProcess process = new PreviewCalculationProcess(document, this, renderer, movingNode, movementBounds);
 
             return process.CalculateAttachTarget();
         }

@@ -16,7 +16,7 @@ namespace RavenMind.Model
         public ChangeColorCommand(CommandProperties properties, Document document)
             : base(properties, document)
         {
-            newColor = properties.Get<int>("Color");
+            newColor = properties.GetInteger("Color");
         }
 
         public ChangeColorCommand(NodeBase node, int newColor)
@@ -37,11 +37,7 @@ namespace RavenMind.Model
             oldColor = Node.Color;
 
             Node.ChangeColor(newColor);
-
-            if (isRedo)
-            {
-                Node.Select();
-            }
+            Node.Select();
         }
 
         protected override void Revert()

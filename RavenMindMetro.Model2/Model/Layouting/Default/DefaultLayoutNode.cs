@@ -14,7 +14,6 @@ namespace RavenMind.Model.Layouting.Default
     {
         private readonly DefaultLayoutNode parent;
         private readonly IRenderNode renderNode;
-        private readonly NodeBase node;
         private readonly Size nodeSize;
 
         public Point Position { get; set; }
@@ -34,14 +33,6 @@ namespace RavenMind.Model.Layouting.Default
             get
             {
                 return TreeSize.Height;
-            }
-        }
-
-        public Node Node
-        {
-            get
-            {
-                return node as Node;
             }
         }
 
@@ -77,16 +68,32 @@ namespace RavenMind.Model.Layouting.Default
             }
         }
 
-        public DefaultLayoutNode(NodeBase node, IRenderNode renderNode, DefaultLayoutNode parent)
+        public static DefaultLayoutNode AttachTo(NodeBase node, IRenderNode renderNode, DefaultLayoutNode parent)
         {
-            this.node = node;
+            DefaultLayoutNode layoutNode = new DefaultLayoutNode(node, renderNode, parent);
+
+            node.LayoutData = layoutNode;
+
+            return layoutNode;
+        }
+
+        private DefaultLayoutNode(NodeBase node, IRenderNode renderNode, DefaultLayoutNode parent)
+        {
             this.parent = parent;
             this.nodeSize = renderNode.Size;
             this.renderNode = renderNode;
 
-            node.Tag = this;
-
             TreeSize = renderNode.Size;
+        }
+
+        public void Show()
+        {
+            renderNode.Show();
+        }
+
+        public void Hide()
+        {
+            renderNode.Hide();
         }
 
         public void MoveTo(Point position, AnchorPoint anchor)

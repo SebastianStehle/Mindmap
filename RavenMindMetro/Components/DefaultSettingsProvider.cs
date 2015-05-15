@@ -6,13 +6,10 @@
 // All rights reserved.
 // ==========================================================================
 
-using System.Composition;
 using Windows.Storage;
 
 namespace RavenMind.Components
 {
-    [Export]
-    [Export(typeof(ISettingsProvider))]
     public sealed class DefaultSettingsProvider : ISettingsProvider
     {
         public bool IsAlreadyStarted

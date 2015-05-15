@@ -133,21 +133,22 @@
     <Compile Include="Assets\AssetProvider.cs" />
     <Compile Include="Components\ILocalizationManager.cs" />
     <Compile Include="Components\ResourcesLocalizationManager.cs" />
-    <Compile Include="Controls\BooleanToTranslationManipulationConverter.cs" />
     <Compile Include="Controls\Mindmap.cs" />
     <Compile Include="Controls\MindmapExtensions.cs" />
     <Compile Include="Controls\NodeMovingBehavior.cs" />
     <Compile Include="Controls\NodeMovingOperation.cs" />
+    <Compile Include="Controls\NodeSideToHorizontalAlignmentConverter.cs" />
     <Compile Include="Controls\NotNullNodeThicknessConverter.cs" />
     <Compile Include="Controls\NotNullRootThicknessConverter.cs" />
     <Compile Include="Controls\NotRootToVisibilityConverter.cs" />
-    <Compile Include="Controls\DefaultPath.cs" />
-    <Compile Include="Controls\DefaultRenderer.cs" />
+    <Compile Include="Controls\DefaultThemePath.cs" />
+    <Compile Include="Controls\DefaultTheme.cs" />
     <Compile Include="Controls\IPathHolder.cs" />
     <Compile Include="Controls\NodeControl.cs" />
     <Compile Include="Controls\MindmapPanel.cs" />
     <Compile Include="Controls\NodeContainer.cs" />
-    <Compile Include="Controls\RendererBase.cs" />
+    <Compile Include="Controls\ThemeBase.cs" />
+    <Compile Include="Controls\ThemeColor.cs" />
     <Compile Include="EditIconView.xaml.cs">
       <DependentUpon>EditIconView.xaml</DependentUpon>
     </Compile>
@@ -187,6 +188,7 @@
     <AppxManifest Include="Package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <None Include="packages.config" />
     <None Include="RavenMindMetro_StoreKey.pfx" />
     <PRIResource Include="Strings\de-DE\Resources.resw">
       <SubType>Designer</SubType>
@@ -307,23 +309,17 @@
     <Reference Include="GalaSoft.MvvmLight.Win8">
       <HintPath>..\libraries\GalaSoft.MvvmLight.Win8.dll</HintPath>
     </Reference>
-    <Reference Include="Microsoft.Practices.ServiceLocation">
-      <HintPath>..\libraries\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.2.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommonServiceLocator.1.2\lib\portable-windows8+net40+sl5+windowsphone8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Composition.AttributedModel">
-      <HintPath>..\libraries\System.Composition.AttributedModel.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Unity, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\win8\Microsoft.Practices.Unity.dll</HintPath>
+      <Private>True</Private>
     </Reference>
-    <Reference Include="System.Composition.Convention">
-      <HintPath>..\libraries\System.Composition.Convention.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.Hosting">
-      <HintPath>..\libraries\System.Composition.Hosting.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.Runtime">
-      <HintPath>..\libraries\System.Composition.Runtime.dll</HintPath>
-    </Reference>
-    <Reference Include="System.Composition.TypedParts">
-      <HintPath>..\libraries\System.Composition.TypedParts.dll</HintPath>
+    <Reference Include="Microsoft.Practices.Unity.RegistrationByConvention, Version=3.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Unity.3.5.1404.0\lib\win8\Microsoft.Practices.Unity.RegistrationByConvention.dll</HintPath>
+      <Private>True</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>

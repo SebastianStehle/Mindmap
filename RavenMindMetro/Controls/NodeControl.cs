@@ -14,18 +14,29 @@ using Windows.Foundation;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 
 namespace RavenMind.Controls
 {
     [TemplatePart(Name = PartTextBox, Type = typeof(TextBox))]
+    [TemplatePart(Name = PartToggleButton, Type = typeof(CheckBox))]
     public class NodeControl : LoadableControl
     {
         private const string PartTextBox = "TextBox";
+        private const string PartToggleButton = "ToggleButton";
+        private NodeBase associatedNode;
+        private CheckBox toggleButton;
         private TextBox textBox;
         private bool isCancelled;
+
+        public static readonly DependencyProperty ThemeColorProperty =
+            DependencyProperty.Register("ThemeColor", typeof(ThemeColor), typeof(NodeControl), new PropertyMetadata(ThemeColor.White));
+        public ThemeColor ThemeColor
+        {
+            get { return (ThemeColor)GetValue(ThemeColorProperty); }
+            set { SetValue(ThemeColorProperty, value); }
+        }
 
         public static readonly DependencyProperty IsTextEditingProperty =
             DependencyProperty.Register("IsTextEditing", typeof(bool), typeof(NodeControl), new PropertyMetadata(false));
@@ -33,22 +44,6 @@ namespace RavenMind.Controls
         {
             get { return (bool)GetValue(IsTextEditingProperty); }
             set { SetValue(IsTextEditingProperty, value); }
-        }
-
-        public static readonly DependencyProperty AssociatedNodeProperty =
-            DependencyProperty.Register("AssociatedNode", typeof(NodeBase), typeof(NodeControl), new PropertyMetadata(null));
-        public NodeBase AssociatedNode
-        {
-            get { return (NodeBase)GetValue(AssociatedNodeProperty); }
-            set { SetValue(AssociatedNodeProperty, value); }
-        }
-
-        public static readonly DependencyProperty AnchorProperty =
-            DependencyProperty.Register("Anchor", typeof(AnchorPoint), typeof(NodeControl), new PropertyMetadata(AnchorPoint.Center, new PropertyChangedCallback(OnPositioningChanged)));
-        public AnchorPoint Anchor
-        {
-            get { return (AnchorPoint)GetValue(AnchorProperty); }
-            set { SetValue(AnchorProperty, value); }
         }
 
         public static readonly DependencyProperty AnchorPositionProperty =
@@ -59,30 +54,11 @@ namespace RavenMind.Controls
             set { SetValue(AnchorPositionProperty, value); }
         }
 
-        public static readonly DependencyProperty PositionProperty =
-            DependencyProperty.Register("Position", typeof(Point), typeof(NodeControl), new PropertyMetadata(new Point(), new PropertyChangedCallback(OnPositioningChanged)));
-        public Point Position
+        public NodeBase AssociatedNode
         {
-            get { return (Point)GetValue(PositionProperty); }
-            set { SetValue(PositionProperty, value); }
-        }
-
-        private static void OnPositioningChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            var owner = o as NodeControl;
-            if (owner != null)
+            get
             {
-                owner.OnPositioningChanged();
-            }
-        }
-
-        private void OnPositioningChanged()
-        {
-            MindmapPanel panel = VisualTreeHelper.GetParent(this) as MindmapPanel;
-
-            if (panel != null)
-            {
-                panel.InvalidateArrange();
+                return associatedNode;
             }
         }
 
@@ -93,11 +69,11 @@ namespace RavenMind.Controls
 
         public void Attach(NodeBase node)
         {
-            AssociatedNode = node;
+            associatedNode = node;
 
-            if (AssociatedNode != null)
+            if (associatedNode != null)
             {
-                AssociatedNode.PropertyChanged += AssociatedNode_PropertyChanged;
+                associatedNode.PropertyChanged += AssociatedNode_PropertyChanged;
 
                 DataContext = node;
 
@@ -107,10 +83,10 @@ namespace RavenMind.Controls
 
         public void Detach()
         {
-            if (AssociatedNode != null)
+            if (associatedNode != null)
             {
-                AssociatedNode.PropertyChanged -= AssociatedNode_PropertyChanged;
-                AssociatedNode = null;
+                associatedNode.PropertyChanged -= AssociatedNode_PropertyChanged;
+                associatedNode = null;
 
                 DataContext = null;
             }
@@ -126,15 +102,12 @@ namespace RavenMind.Controls
                 textBox.GotFocus += textBox_GotFocus;
                 textBox.KeyDown += textBox_KeyDown;
             }
-        }
 
-        public void InvalidateLayout()
-        {
-            MindmapPanel panel = VisualTreeHelper.GetParent(this) as MindmapPanel;
+            toggleButton = GetTemplateChild(PartToggleButton) as CheckBox;
 
-            if (panel != null)
+            if (toggleButton != null)
             {
-                panel.InvalidateLayout();
+                toggleButton.Click += toggleButton_Click;
             }
         }
 
@@ -148,7 +121,7 @@ namespace RavenMind.Controls
 
         private void UpdateSelection()
         {
-            if (AssociatedNode.IsSelected)
+            if (associatedNode.IsSelected)
             {
                 ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
 
@@ -160,12 +133,35 @@ namespace RavenMind.Controls
             }
         }
 
+        protected override void OnDoubleTapped(DoubleTappedRoutedEventArgs e)
+        {
+            associatedNode.Select();
+
+            if (textBox != null)
+            {
+                textBox.Focus(FocusState.Pointer);
+            }
+        }
+
         protected override void OnKeyDown(KeyRoutedEventArgs e)
         {
-            if (AssociatedNode.IsSelected && e.Key.IsLetterOrNumber())
+            if (associatedNode.IsSelected && e.Key.IsLetterOrNumber())
             {
                 textBox.Focus(FocusState.Keyboard);
             }
+        }
+
+        protected override void OnPointerPressed(PointerRoutedEventArgs e)
+        {
+            associatedNode.Select();
+        }
+
+        private void toggleButton_Click(object sender, RoutedEventArgs e)
+        {
+            associatedNode.Document.MakeTransaction("Toggle", c =>
+            {
+                c.Apply(new ToggleCollapseCommand(associatedNode));
+            });
         }
 
         private void textBox_KeyDown(object sender, KeyRoutedEventArgs e)
@@ -181,21 +177,6 @@ namespace RavenMind.Controls
 
                 e.Handled = true;
             }
-        }
-
-        protected override void OnDoubleTapped(DoubleTappedRoutedEventArgs e)
-        {
-            AssociatedNode.Select();
-
-            if (textBox != null)
-            {
-                textBox.Focus(FocusState.Pointer);
-            }
-        }
-
-        protected override void OnPointerPressed(PointerRoutedEventArgs e)
-        {
-            AssociatedNode.Select();
         }
 
         private void textBox_GotFocus(object sender, RoutedEventArgs e)
@@ -214,13 +195,13 @@ namespace RavenMind.Controls
         {
             this.MakePanelAnimated(true);
 
-            if (AssociatedNode != null)
+            if (associatedNode != null)
             {
                 if (!isCancelled)
                 {
-                    AssociatedNode.Document.MakeTransaction("Change Text", c =>
+                    associatedNode.Document.MakeTransaction("Change Text", c =>
                     {
-                        c.Apply(new ChangeTextCommand(AssociatedNode, textBox.Text));
+                        c.Apply(new ChangeTextCommand(associatedNode, textBox.Text, true));
                     });
                 }
                 else

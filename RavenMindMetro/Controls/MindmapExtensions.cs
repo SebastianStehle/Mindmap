@@ -25,17 +25,5 @@ namespace RavenMind.Controls
                 panel.IsAnimating = isAnimating;
             }
         }
-
-        public static void MoveBy(this Mindmap mindmap, Node node, Point offset)
-        {
-            NodeControl element = mindmap.GetControl(node);
-
-            element.Position = new Point(element.Position.X + offset.X, element.Position.Y + offset.Y);
-
-            foreach (Node child in node.Children)
-            {
-                MoveBy(mindmap, child, offset);
-            }
-        }
     }
 }

@@ -264,16 +264,19 @@ namespace SE.Metro.UI
         /// </summary>
         /// <param name="panel">The panel where to add the element to.</param>
         /// <param name="element">The element to add.</param>
+        /// <param name="zIndex">The z index.</param>
         /// <returns>
         /// The result of the operation.
         /// </returns>
-        public static bool TryAdd(this Panel panel, UIElement element)
+        public static bool TryAdd(this Panel panel, UIElement element, int zIndex = 0)
         {
             bool result = false;
 
             if (panel != null && panel.Children != null)
             {
                 panel.Children.Add(element);
+
+                Canvas.SetZIndex(element, zIndex);
 
                 result = true;
             }

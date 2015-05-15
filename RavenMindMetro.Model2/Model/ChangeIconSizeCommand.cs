@@ -16,7 +16,7 @@ namespace RavenMind.Model
         public ChangeIconSizeCommand(CommandProperties properties, Document document)
             : base(properties, document)
         {
-            newIconSize = properties.Get<IconSize>("IconSize");
+            newIconSize = (IconSize)properties.GetInteger("IconSize");
         }
 
         public ChangeIconSizeCommand(NodeBase node, IconSize newIconSize)
@@ -27,7 +27,7 @@ namespace RavenMind.Model
 
         public override void Save(CommandProperties properties)
         {
-            properties.Set("IconSize", newIconSize);
+            properties.Set("IconSize", (int)newIconSize);
 
             base.Save(properties);
         }
@@ -37,11 +37,7 @@ namespace RavenMind.Model
             oldIconSize = Node.IconSize;
 
             Node.ChangeIconSize(newIconSize);
-
-            if (isRedo)
-            {
-                Node.Select();
-            }
+            Node.Select();
         }
 
         protected override void Revert()

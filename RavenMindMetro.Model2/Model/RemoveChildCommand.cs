@@ -8,32 +8,39 @@
 
 namespace RavenMind.Model
 {
-    public sealed class RemoveChildCommand : CommandBase
+    public sealed class RemoveChildCommand : ChildNodeCommandBase
     {
-        private Node child;
         private NodeSide oldSide;
         private int oldIndex;
 
         public RemoveChildCommand(NodeBase node, Node child)
-            : base(node)
+            : base(node, child)
         {
-            this.child = child;
+        }
+
+        public RemoveChildCommand(CommandProperties properties, Document document)
+            : base(properties, document)
+        {
+        }
+
+        public override void Save(CommandProperties properties)
+        {
+            base.Save(properties);
         }
 
         protected override void Execute(bool isRedo)
         {
-            oldSide = child.NodeSide;
-            
-            Node.Remove(child, out oldIndex);
+            oldSide = Child.NodeSide;
 
-            child.Select();
+            Node.Remove(Child, out oldIndex);
+            Node.Select();
         }
 
         protected override void Revert()
         {
-            Node.Insert(child, oldIndex, oldSide);
+            Node.Insert(Child, oldIndex, oldSide);
 
-            child.Select();
+            Child.Select();
         }
     }
 }

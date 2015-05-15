@@ -6,7 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
-namespace RavenMind.Model
+namespace RavenMind.Model.Layouting
 {
     public enum AnchorPoint
     {

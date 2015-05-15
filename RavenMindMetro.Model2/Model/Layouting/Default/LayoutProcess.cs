@@ -17,15 +17,13 @@ namespace RavenMind.Model.Layouting.Default
         private readonly Document document;
         private readonly IRenderer renderer;
         private readonly DefaultLayout layout;
-        private readonly Size availableSize;
         private Point mindmapCenter;
 
-        public LayoutProcess(Document document, DefaultLayout layout, IRenderer renderer, Size availableSize)
+        public LayoutProcess(Document document, DefaultLayout layout, IRenderer renderer)
         {
             this.layout = layout;
             this.document = document;
             this.renderer = renderer;
-            this.availableSize = availableSize;
         }
 
         public void UpdateLayout()
@@ -39,79 +37,108 @@ namespace RavenMind.Model.Layouting.Default
 
         private void CalculateCenter()
         {
-            double x = 0.5 * availableSize.Width;
-            double y = 0.5 * availableSize.Height;
+            double x = 0.5 * document.Size.Width;
+            double y = 0.5 * document.Size.Height;
 
             mindmapCenter = new Point(x, y);
         }
 
         private void ArrangeRoot()
         {
-            DefaultLayoutNode layoutNode = new DefaultLayoutNode(document.Root, renderer.FindRenderNode(document.Root), null);
+            DefaultLayoutNode rootLayoutNode = DefaultLayoutNode.AttachTo(document.Root, renderer.FindRenderNode(document.Root), null);
             
-            layoutNode.MoveTo(mindmapCenter, AnchorPoint.Center);
+            rootLayoutNode.MoveTo(mindmapCenter, AnchorPoint.Center);
 
-            Arrange(layoutNode, document.Root.LeftChildren, -1.0, AnchorPoint.Right);
-            Arrange(layoutNode, document.Root.RightChildren, 1.0, AnchorPoint.Left);
+            Arrange(rootLayoutNode, document.Root.LeftChildren, -1.0, AnchorPoint.Right);
+            Arrange(rootLayoutNode, document.Root.RightChildren, 1.0, AnchorPoint.Left);
         }
 
-        private void Arrange(DefaultLayoutNode rootLayout, IReadOnlyList<Node> children, double factor, AnchorPoint anchor)
+        private void Arrange(DefaultLayoutNode root, IReadOnlyList<Node> children, double factor, AnchorPoint anchor)
         {
-            UpdateSizeWithChildren(rootLayout, children);
+            UpdateSizeWithChildren(root, children, document.Root.IsCollapsed);
 
-            double x = mindmapCenter.X - (factor * 0.5 * rootLayout.NodeWidth);
+            double x = mindmapCenter.X - (factor * 0.5 * root.NodeWidth);
             double y = mindmapCenter.Y;
 
-            rootLayout.Position = new Point(x, y);
+            root.Position = new Point(x, y);
 
-            ArrangeNodes(rootLayout, children, factor, anchor);
+            ArrangeNodes(root, children, factor, anchor, document.Root.IsCollapsed);
         }
 
-        private void ArrangeNodes(DefaultLayoutNode parent, IReadOnlyList<Node> children, double factor, AnchorPoint anchor)
+        private void ArrangeNodes(DefaultLayoutNode parent, IReadOnlyList<Node> children, double factor, AnchorPoint anchor, bool isCollapsed)
         {
-            double x = parent.Position.X
-                    + (factor * parent.NodeWidth)
-                    + (factor * layout.HorizontalMargin);
-            double y = parent.Position.Y - (parent.TreeHeight * 0.5) + layout.ElementMargin;
-
-            foreach (Node child in children)
+            if (children.Count > 0)
             {
-                DefaultLayoutNode childData = (DefaultLayoutNode)child.Tag;
+                double x = 0, y = 0;
 
-                double childX = x;
-                double childY = y + (0.5 * childData.TreeHeight);
+                if (!isCollapsed)
+                {
+                    x = parent.Position.X
+                     + (factor * parent.NodeWidth)
+                     + (factor * layout.HorizontalMargin);
+                    y = parent.Position.Y - (parent.TreeHeight * 0.5) + layout.ElementMargin;
+                }
 
-                childData.MoveTo(new Point(childX, childY), anchor);
+                foreach (Node child in children)
+                {
+                    DefaultLayoutNode childLayout = (DefaultLayoutNode)child.LayoutData;
 
-                ArrangeNodes(childData, child.Children, factor, anchor);
+                    if (!isCollapsed)
+                    {
+                        double childX = x;
+                        double childY = y + (0.5 * childLayout.TreeHeight);
 
-                y += childData.TreeSize.Height;
+                        childLayout.MoveTo(new Point(childX, childY), anchor);
+
+                        y += childLayout.TreeSize.Height;
+
+                        childLayout.Show();
+                    }
+                    else
+                    {
+                        childLayout.Hide();
+                    }
+
+                    ArrangeNodes(childLayout, child.Children, factor, anchor, isCollapsed || child.IsCollapsed);
+                }
             }
         }
 
-        private void UpdateSizeWithChildren(DefaultLayoutNode parent, IReadOnlyList<Node> children)
+        private void UpdateSizeWithChildren(DefaultLayoutNode parent, IReadOnlyList<Node> children, bool isCollapsed)
         {
             double treeW = parent.NodeSize.Width;
             double treeH = parent.NodeSize.Height;
 
             if (children.Count > 0)
             {
-                double childsW = 0;
-                double childsH = 0;
-
-                foreach (Node child in children)
+                if (isCollapsed)
                 {
-                    DefaultLayoutNode childData = new DefaultLayoutNode(child, renderer.FindRenderNode(child), parent);
+                    foreach (Node child in children)
+                    {
+                        DefaultLayoutNode childData = DefaultLayoutNode.AttachTo(child, renderer.FindRenderNode(child), parent);
 
-                    UpdateSizeWithChildren(childData, child.Children);
-
-                    childsH += childData.TreeHeight;
-                    childsW = Math.Max(childData.TreeWidth, childsW);
+                        UpdateSizeWithChildren(childData, child.Children, isCollapsed || child.IsCollapsed);
+                    }
                 }
+                else
+                {
+                    double childsW = 0;
+                    double childsH = 0;
 
-                treeW += layout.HorizontalMargin;
-                treeW += childsW;
-                treeH = childsH;
+                    foreach (Node child in children)
+                    {
+                        DefaultLayoutNode childData = DefaultLayoutNode.AttachTo(child, renderer.FindRenderNode(child), parent);
+
+                        UpdateSizeWithChildren(childData, child.Children, isCollapsed || child.IsCollapsed);
+
+                        childsH += childData.TreeHeight;
+                        childsW = Math.Max(childData.TreeWidth, childsW);
+                    }
+
+                    treeW += layout.HorizontalMargin;
+                    treeW += childsW;
+                    treeH = childsH;
+                }
             }
 
             treeH += 2 * layout.ElementMargin;
@@ -123,7 +150,7 @@ namespace RavenMind.Model.Layouting.Default
         {
             foreach (NodeBase node in document.Nodes)
             {
-                node.Tag = null;
+                node.LayoutData = null;
             }
         }
     }

@@ -12,17 +12,20 @@ namespace RavenMind.Model
     {
         private string newText;
         private string oldText;
+        private bool disableSelection;
 
         public ChangeTextCommand(CommandProperties properties, Document document)
             : base(properties, document)
         {
-            newText = properties.Get<string>("Text");
+            newText = properties.GetString("Text");
         }
 
-        public ChangeTextCommand(NodeBase nodeId, string newText)
+        public ChangeTextCommand(NodeBase nodeId, string newText, bool disableSelection)
             : base(nodeId)
         {
             this.newText = newText;
+
+            this.disableSelection = disableSelection;
         }
 
         public override void Save(CommandProperties properties)
@@ -38,7 +41,7 @@ namespace RavenMind.Model
 
             Node.ChangeText(newText);
 
-            if (isRedo)
+            if (!disableSelection)
             {
                 Node.Select();
             }

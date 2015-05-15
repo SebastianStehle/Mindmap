@@ -18,6 +18,10 @@ namespace RavenMind.Model.Layouting
 
         Size Size { get; }
 
+        void Hide();
+
+        void Show();
+
         void MoveTo(Point position, AnchorPoint anchor);
     }
 }

@@ -10,12 +10,13 @@ using SE.Metro.UI;
 using System;
 using Windows.Foundation;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
 namespace RavenMind.Controls
 {
-    public sealed class DefaultPath : IPathHolder
+    public sealed class DefaultThemePath : IPathHolder
     {
         private readonly BezierSegment bezierSegment = new BezierSegment();
         private readonly PathFigure pathFigure = new PathFigure();
@@ -29,7 +30,7 @@ namespace RavenMind.Controls
             }
         }
 
-        public DefaultPath(Style style)
+        public DefaultThemePath(Style style)
         {
             pathFigure.Segments.Add(bezierSegment);
 

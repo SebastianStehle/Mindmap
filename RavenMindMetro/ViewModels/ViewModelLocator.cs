@@ -7,39 +7,41 @@
 // ==========================================================================
 
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Practices.Unity;
 using RavenMind.Components;
+using RavenMind.Model.Storing;
 using RavenMind.Model.Storing.Json;
-using RavenMind.Model.Storing.Utils;
-using System.Composition;
-using System.Composition.Hosting;
 using Windows.ApplicationModel;
 
 namespace RavenMind.ViewModels
 {
     public class ViewModelLocator
     {
-        [Import]
+        [Dependency]
         public EditorViewModel Editor { get; set; }
 
-        [Import]
+        [Dependency]
         public MindmapsViewModel Mindmaps { get; set; }
 
         public ViewModelLocator()
         {
             if (!DesignMode.DesignModeEnabled)
             {
-                ContainerConfiguration configuration =
-                    new ContainerConfiguration()
-                        .WithPart<Messenger>()
-                        .WithPart<MindmapsViewModel>()
-                        .WithPart<EditorViewModel>()
-                        .WithPart<JsonDocumentStore>()
-                        .WithPart<ResourcesLocalizationManager>()
-                        .WithPart<DefaultSettingsProvider>();
+                IUnityContainer unityContainer = new UnityContainer();
+                unityContainer.RegisterType<IMessenger, Messenger>(
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IDocumentStore, JsonDocumentStore>(
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<ISettingsProvider, DefaultSettingsProvider>(
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<ILocalizationManager, ResourcesLocalizationManager>(
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<MindmapsViewModel>(
+                    new PerResolveLifetimeManager());
+                unityContainer.RegisterType<EditorViewModel>(
+                    new PerResolveLifetimeManager());
 
-                CompositionHost host = configuration.CreateContainer();
-
-                host.SatisfyImports(this);
+                unityContainer.BuildUp(this);
             }
         }
     }

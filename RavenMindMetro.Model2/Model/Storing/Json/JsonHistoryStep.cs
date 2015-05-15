@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// JsonHistory.cs
+// JsonHistoryStep.cs
 // RavenMind Application
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -12,20 +12,20 @@ using System.Collections.Generic;
 
 namespace RavenMind.Model.Storing
 {
-    public sealed class JsonHistory
+    public sealed class JsonHistoryStep
     {
-        [JsonProperty("id")]
-        public Guid Id { get; set; }
-
         [JsonProperty("name")]
         public string Name { get; set; }
 
-        [JsonProperty("steps")]
-        public List<JsonHistoryStep> Steps { get; set; }
+        [JsonProperty("date")]
+        public DateTimeOffset Date { get; set; }
 
-        public JsonHistory()
+        [JsonProperty("commands")]
+        public List<JsonHistoryStepCommand> Commands { get; set; }
+
+        public JsonHistoryStep()
         {
-            Steps = new List<JsonHistoryStep>();
+            Commands = new List<JsonHistoryStepCommand>();
         }
     }
 }

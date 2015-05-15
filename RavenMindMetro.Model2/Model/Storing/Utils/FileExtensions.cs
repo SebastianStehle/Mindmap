@@ -7,18 +7,16 @@
 // ==========================================================================
 
 using System;
-using System.Collections.Generic;
 using System.IO;
+using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Windows.Storage;
-using Windows.Storage.FileProperties;
-using Windows.Storage.Streams;
 
 namespace RavenMind.Model.Storing.Utils
 {
     internal static class FileExtensions
     {
-        public static byte[] Serialize(this object content, XmlSerializer xmlSerializer)
+        public static byte[] SerializeXml(this object content, XmlSerializer xmlSerializer)
         {
             using (MemoryStream memoryStream = new MemoryStream())
             {
@@ -28,76 +26,57 @@ namespace RavenMind.Model.Storing.Utils
             }
         }
 
-        public static void WriteData(this StorageFolder localFolder, string name, byte[] contents)
-        {
-            StorageFile file = localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting).AsTask().Result;
+        public static async Task<StorageFolder> GetOrCreateFolderAsync(this StorageFolder localFolder, string name)
+        { 
+            StorageFolder folder = null;
+            try
+            {
+                folder = await localFolder.GetFolderAsync(name);
+            }
+            catch (FileNotFoundException)
+            {
+            }
 
-            FileIO.WriteBytesAsync(file, contents).AsTask().Wait();
+            if (folder == null)
+            {
+                folder = await localFolder.CreateFolderAsync(name);
+            }
+
+            return folder;
         }
 
-        public static void WriteText(this StorageFolder localFolder, string name, string contents)
+        public static async Task WriteDataAsync(this StorageFolder localFolder, string name, byte[] contents)
         {
-            StorageFile file = localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting).AsTask().Result;
+            StorageFile file = await localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
 
-            FileIO.WriteTextAsync(file, contents).AsTask().Wait();
+            await FileIO.WriteBytesAsync(file, contents);
         }
 
-        public static StorageFolder CreateFolder(this StorageFolder localFolder, string name)
+        public static async Task WriteTextAsync(this StorageFolder localFolder, string name, string contents)
         {
-            return localFolder.CreateFolderAsync(name, CreationCollisionOption.OpenIfExists).AsTask().Result;
+            StorageFile file = await localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
+
+            await FileIO.WriteTextAsync(file, contents);
         }
 
-        public static string ReadText(this StorageFile file)
-        {
-            return FileIO.ReadTextAsync(file).AsTask().Result;
-        }
-
-        public static IRandomAccessStream Open(this StorageFile file)
-        {
-            return file.OpenAsync(FileAccessMode.Read).AsTask().Result;
-        }
-
-        public static BasicProperties GetProperties(this StorageFile file)
-        {
-            return file.GetBasicPropertiesAsync().AsTask().Result;
-        }
-
-        public static void Delete(this StorageFolder localFolder)
-        {
-            localFolder.DeleteAsync().AsTask().Wait();
-        }
-
-        public static StorageFile GetFile(this StorageFolder localFolder, string name)
-        {
-            return localFolder.GetFileAsync(name).AsTask().Result;
-        }
-
-        public static IReadOnlyList<StorageFile> GetFiles(this StorageFolder localFolder)
-        {
-            return localFolder.GetFilesAsync().AsTask().Result;
-        }
-
-        public static bool TryDeleteIfExists(this StorageFolder localFolder, string name)
+        public static async Task<bool> TryDeleteIfExistsAsync(this StorageFolder localFolder, string name)
         {
             try
             {
-                StorageFile file = localFolder.GetFileAsync(name).AsTask().Result;
+                StorageFile file = await localFolder.GetFileAsync(name);
 
-                file.DeleteAsync().AsTask().Wait();
+                if (file != null)
+                {
+                    await file.DeleteAsync();
 
-                return true;
+                    return true;
+                }
             }
-            catch (AggregateException e)
+            catch (FileNotFoundException)
             {
-                if (e.InnerException is FileNotFoundException)
-                {
-                    return false;
-                }
-                else
-                {
-                    throw e.InnerException;
-                }
             }
+
+            return false;
         }
     }
 }

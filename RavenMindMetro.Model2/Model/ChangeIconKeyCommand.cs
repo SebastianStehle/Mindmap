@@ -16,7 +16,7 @@ namespace RavenMind.Model
         public ChangeIconKeyCommand(CommandProperties properties, Document document)
             : base(properties, document)
         {
-            newIconKey = properties.Get<string>("IconKey");
+            newIconKey = properties.GetString("IconKey");
         }
 
         public ChangeIconKeyCommand(NodeBase nodeId, string newIconKey)
@@ -37,11 +37,7 @@ namespace RavenMind.Model
             oldIconKey = Node.IconKey;
 
             Node.ChangeIconKey(newIconKey);
-
-            if (isRedo)
-            {
-                Node.Select();
-            }
+            Node.Select();
         }
 
         protected override void Revert()

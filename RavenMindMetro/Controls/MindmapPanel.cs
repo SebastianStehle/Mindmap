@@ -27,68 +27,68 @@ namespace RavenMind.Controls
         private readonly Dictionary<NodeBase, NodeContainer> nodeControls = new Dictionary<NodeBase, NodeContainer>();
         private readonly NodeContainer previewContainer;
         private bool requiresLayout = true;
+        private int canArrangeIfZero;
 
-        public static readonly DependencyProperty RendererProperty =
-            DependencyProperty.Register("Renderer", typeof(RendererBase), typeof(MindmapPanel), new PropertyMetadata(null, new PropertyChangedCallback(OnRendererChanged)));
-        public RendererBase Renderer
+        public static readonly DependencyProperty ThemeProperty =
+            DependencyProperty.Register("Theme", typeof(ThemeBase), typeof(MindmapPanel), new PropertyMetadata(null, new PropertyChangedCallback(OnThemeChanged)));
+        public ThemeBase Theme
         {
-            get { return (RendererBase)GetValue(RendererProperty); }
-            set { SetValue(RendererProperty, value); }
+            get { return (ThemeBase)GetValue(ThemeProperty); }
+            set { SetValue(ThemeProperty, value); }
         }
 
-        private static void OnRendererChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        private static void OnThemeChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
             var owner = o as MindmapPanel;
             if (owner != null)
             {
-                owner.OnRendererChanged(e);
+                owner.OnThemeChanged(e);
             }
         }
 
-        private void OnRendererChanged(DependencyPropertyChangedEventArgs e)
+        private void OnThemeChanged(DependencyPropertyChangedEventArgs e)
         {
-            requiresLayout = false;
-
-            RendererBase renderer = e.NewValue as RendererBase;
-
-            Action<NodeContainer> cleanUpContainer = x =>
+            MakeTransactionalLayoutChange(() =>
             {
-                if (x.PathHolder != null)
+                ThemeBase Theme = e.NewValue as ThemeBase;
+
+                Action<NodeContainer> cleanUpContainer = x =>
                 {
-                    VisualTreeExtensions.TryRemove(this, x.PathHolder.Path);
+                    if (x.PathHolder != null)
+                    {
+                        VisualTreeExtensions.TryRemove(this, x.PathHolder.Path);
 
-                    x.PathHolder = null;
-                }
-            };
+                        x.PathHolder = null;
+                    }
+                };
 
-            Action<NodeContainer> setupContainer = x =>
-            {
-                x.PathHolder = renderer.CreatePath();
+                Action<NodeContainer> setupContainer = x =>
+                {
+                    x.PathHolder = Theme.CreatePath();
 
-                VisualTreeExtensions.TryAdd(this, x.PathHolder.Path);
-            };
+                    VisualTreeExtensions.TryAdd(this, x.PathHolder.Path);
+                };
 
-            foreach (NodeContainer renderContainer in nodeControls.Values)
-            {
-                cleanUpContainer(renderContainer);
-            }
-
-            cleanUpContainer(previewContainer);
-
-            if (renderer != null)
-            {
                 foreach (NodeContainer renderContainer in nodeControls.Values)
                 {
-                    if (renderContainer.Parent != null)
-                    {
-                        setupContainer(renderContainer);
-                    }
+                    cleanUpContainer(renderContainer);
                 }
 
-                setupContainer(previewContainer);
-            }
+                cleanUpContainer(previewContainer);
 
-            requiresLayout = true;
+                if (Theme != null)
+                {
+                    foreach (NodeContainer renderContainer in nodeControls.Values)
+                    {
+                        if (renderContainer.Parent != null)
+                        {
+                            setupContainer(renderContainer);
+                        }
+                    }
+
+                    setupContainer(previewContainer);
+                }
+            });
         }
 
         public static readonly DependencyProperty IsAnimatingProperty =
@@ -126,23 +126,22 @@ namespace RavenMind.Controls
 
         private void OnDocumentChanged(DependencyPropertyChangedEventArgs e)
         {
-            requiresLayout = false;
-
-            Document oldDocument = e.OldValue as Document;
-
-            if (oldDocument != null)
+            MakeTransactionalLayoutChange(() =>
             {
-                HandleDocumentRemoved(oldDocument);
-            }
+                Document oldDocument = e.OldValue as Document;
 
-            Document newDocument = e.NewValue as Document;
+                if (oldDocument != null)
+                {
+                    HandleDocumentRemoved(oldDocument);
+                }
 
-            if (newDocument != null)
-            {
-                HandleDocumentAdded(newDocument);
-            }
+                Document newDocument = e.NewValue as Document;
 
-            requiresLayout = true;
+                if (newDocument != null)
+                {
+                    HandleDocumentAdded(newDocument);
+                }
+            });
         }
 
         public MindmapPanel()
@@ -154,58 +153,67 @@ namespace RavenMind.Controls
 
         public void ShowPreviewElement(Point? position, NodeBase parent, AnchorPoint anchor)
         {
-            if (position.HasValue)
+            MakeTransactionalLayoutChange(() =>
             {
-                NodeContainer parentContainer;
-
-                if (nodeControls.TryGetValue(parent, out parentContainer))
+                if (position.HasValue)
                 {
-                    previewContainer.MoveTo(position.Value, anchor);
-                    previewContainer.Parent = parentContainer;
+                    NodeContainer parentContainer;
+
+                    if (nodeControls.TryGetValue(parent, out parentContainer))
+                    {
+                        previewContainer.MoveTo(position.Value, anchor);
+                        previewContainer.Parent = parentContainer;
+
+                        if (previewContainer.PathHolder != null)
+                        {
+                            previewContainer.PathHolder.Path.Visibility = Visibility.Visible;
+                        }
+
+                        previewContainer.NodeControl.Visibility = Visibility.Visible;
+                    }
+                }
+                else
+                {
+                    previewContainer.Parent = null;
 
                     if (previewContainer.PathHolder != null)
                     {
-                        previewContainer.PathHolder.Path.Visibility = Visibility.Visible;
+                        previewContainer.PathHolder.Path.Visibility = Visibility.Collapsed;
                     }
 
-                    previewContainer.NodeControl.Visibility = Visibility.Visible;
+                    previewContainer.NodeControl.Visibility = Visibility.Collapsed;
                 }
-            }
-            else
-            {
-                previewContainer.Parent = null;
-
-                if (previewContainer.PathHolder != null)
-                {
-                    previewContainer.PathHolder.Path.Visibility = Visibility.Collapsed;
-                }
-
-                previewContainer.NodeControl.Visibility = Visibility.Collapsed;
-            }
+            });
         }
 
         private void HandleDocumentAdded(Document newDocument)
         {
-            newDocument.StateChanged += UndoRedoManager_StateChanged;
-            newDocument.NodeRemoved += oldDocument_NodeRemoved;
-            newDocument.NodeAdded += oldDocument_NodeAdded;
-
-            foreach (NodeBase node in newDocument.Nodes)
+            MakeTransactionalLayoutChange(() =>
             {
-                HandleNodeAdded(node);
-            }
+                newDocument.StateChanged += UndoRedoManager_StateChanged;
+                newDocument.NodeRemoved += oldDocument_NodeRemoved;
+                newDocument.NodeAdded += oldDocument_NodeAdded;
+
+                foreach (NodeBase node in newDocument.Nodes)
+                {
+                    HandleNodeAdded(node);
+                }
+            });
         }
 
         private void HandleDocumentRemoved(Document oldDocument)
         {
-            oldDocument.StateChanged -= UndoRedoManager_StateChanged;
-            oldDocument.NodeRemoved -= oldDocument_NodeRemoved;
-            oldDocument.NodeAdded -= oldDocument_NodeAdded;
-
-            foreach (NodeBase node in nodeControls.Keys.ToList())
+            MakeTransactionalLayoutChange(() =>
             {
-                HandleNodeRemoved(node);
-            }
+                oldDocument.StateChanged -= UndoRedoManager_StateChanged;
+                oldDocument.NodeRemoved -= oldDocument_NodeRemoved;
+                oldDocument.NodeAdded -= oldDocument_NodeAdded;
+
+                foreach (NodeBase node in nodeControls.Keys.ToList())
+                {
+                    HandleNodeRemoved(node);
+                }
+            });
         }
 
         private void oldDocument_NodeRemoved(object sender, NodeEventArgs e)
@@ -230,18 +238,26 @@ namespace RavenMind.Controls
 
         private void TryRemove(NodeBase node)
         {
-            NodeContainer renderContainer = nodeControls[node];
-
-            NodeControl nodeControl = renderContainer.NodeControl;
-            nodeControl.Detach();
-            nodeControls.Remove(node);
-
-            VisualTreeExtensions.TryRemove(this, nodeControl);
-
-            if (renderContainer.PathHolder != null)
+            MakeTransactionalLayoutChange(() =>
             {
-                VisualTreeExtensions.TryRemove(this, renderContainer.PathHolder.Path);
-            }
+                NodeContainer nodeContainer = node.RenderData as NodeContainer;
+
+                if (nodeContainer != null)
+                {
+                    NodeControl nodeControl = nodeContainer.NodeControl;
+                    nodeControl.Detach();
+                    nodeControls.Remove(node);
+
+                    node.RenderData = null;
+
+                    VisualTreeExtensions.TryRemove(this, nodeControl);
+
+                    if (nodeContainer.PathHolder != null)
+                    {
+                        VisualTreeExtensions.TryRemove(this, nodeContainer.PathHolder.Path);
+                    }
+                }
+            });
         }
 
         private NodeContainer TryGetContainer(NodeBase node)
@@ -250,23 +266,29 @@ namespace RavenMind.Controls
             {
                 return nodeControls.GetOrCreateDefault(node, () =>
                 {
-                    NodeControl nodeControl = new NodeControl();
-                    nodeControl.Attach(node);
+                    NodeContainer nodeContainer = null;
 
-                    NodeContainer renderContainer = new NodeContainer(nodeControl) { Parent = TryGetContainer(node.Parent) };
-
-                    Node normalNode = node as Node;
-
-                    if (normalNode != null && Renderer != null)
+                    MakeTransactionalLayoutChange(() =>
                     {
-                        renderContainer.PathHolder = Renderer.CreatePath();
+                        NodeControl nodeControl = new NodeControl();
+                        nodeControl.Attach(node);
+                        nodeContainer = new NodeContainer(nodeControl) { Parent = TryGetContainer(node.Parent) };
 
-                        VisualTreeExtensions.TryAdd(this, renderContainer.PathHolder.Path);
-                    }
+                        Node normalNode = node as Node;
 
-                    VisualTreeExtensions.TryAdd(this, nodeControl);
+                        if (normalNode != null && Theme != null)
+                        {
+                            nodeContainer.PathHolder = Theme.CreatePath();
 
-                    return renderContainer;
+                            VisualTreeExtensions.TryAdd(this, nodeContainer.PathHolder.Path, 0);
+                        }
+
+                        VisualTreeExtensions.TryAdd(this, nodeControl, 1000000);
+
+                        node.RenderData = nodeContainer;
+                    });
+
+                    return nodeContainer;
                 });
             }
 
@@ -288,15 +310,25 @@ namespace RavenMind.Controls
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            RendererBase renderer = Renderer;
+            Document document = Document;
 
-            if (renderer != null && Layout != null)
+            if (document != null)
             {
-                UpdateStyles(renderer);
-                UpdateLayout(finalSize);
-                UpdatePositions();
+                ThemeBase theme = Theme;
 
-                RenderPaths(renderer, finalSize);
+                if (theme != null && Layout != null)
+                {
+                    if (requiresLayout && canArrangeIfZero == 0)
+                    {
+                        UpdateMindmap(document);
+
+                        requiresLayout = false;
+                    }
+
+                    UpdatePositions();
+
+                    RenderPaths(Theme, finalSize);
+                }
             }
 
             return base.ArrangeOverride(finalSize);
@@ -326,27 +358,25 @@ namespace RavenMind.Controls
             }
         }
 
-        private void UpdateStyles(RendererBase renderer)
+        private void UpdateStyles(ThemeBase theme)
         {
-            previewContainer.NodeControl.Style = renderer.CalculateStyle(previewContainer, true);
+            theme.UpdateStyle(previewContainer, true);
 
             foreach (NodeContainer renderContainer in nodeControls.Values)
             {
-                renderContainer.NodeControl.Style = renderer.CalculateStyle(renderContainer, false);
+                if (renderContainer.NodeControl != null && renderContainer.NodeControl.AssociatedNode != null)
+                {
+                    theme.UpdateStyle(renderContainer, false);
+                }
             }
         }
 
-        private void UpdateLayout(Size finalSize)
+        private void UpdateMindmap(Document document)
         {
-            if (requiresLayout)
-            {
-                Layout.UpdateLayout(Document, this, finalSize);
-
-                requiresLayout = false;
-            }
+            Layout.UpdateLayout(document, this);
         }
 
-        private void RenderPaths(RendererBase renderer, Size finalSize)
+        private void RenderPaths(ThemeBase theme, Size finalSize)
         {
             foreach (Path path in Children.OfType<Path>())
             {
@@ -357,31 +387,56 @@ namespace RavenMind.Controls
             {
                 if (renderContainer.PathHolder != null)
                 {
-                    renderer.RenderPath(renderContainer.PathHolder, renderContainer);
+                    theme.RenderPath(renderContainer.PathHolder, renderContainer);
                 }
             }
 
             if (previewContainer.PathHolder != null && previewContainer.Parent != null)
             {
-                renderer.RenderPath(previewContainer.PathHolder, previewContainer);
+                theme.RenderPath(previewContainer.PathHolder, previewContainer);
             }
         }
 
         protected override Size MeasureOverride(Size constraint)
         {
-            requiresLayout = true;
+            ThemeBase theme = Theme;
 
-            Size availableSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
-
-            foreach (UIElement child in Children)
+            if (theme != null)
             {
-                if (child != null)
+                UpdateStyles(theme);
+
+                requiresLayout = true;
+
+                Size availableSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
+
+                foreach (UIElement child in Children)
                 {
-                    child.Measure(availableSize);
+                    if (child != null)
+                    {
+                        child.Measure(availableSize);
+
+                        if (child is NodeControl && child.Visibility == Visibility.Visible && child != previewContainer.NodeControl && child.DesiredSize == new Size(0, 0))
+                        {
+                            requiresLayout = false;
+                        }
+                    }
                 }
             }
 
             return default(Size);
+        }
+
+        private void MakeTransactionalLayoutChange(Action action)
+        {
+            canArrangeIfZero++;
+            try
+            {
+                action();
+            }
+            finally
+            {
+                canArrangeIfZero--;
+            }
         }
 
         private void CompositionTarget_Rendering(object sender, object e)
@@ -391,17 +446,17 @@ namespace RavenMind.Controls
 
         public Rect GetBounds(NodeBase node)
         {
-            return nodeControls[node].Bounds;
+            return ((NodeContainer)node.RenderData).Bounds;
         }
 
         public NodeControl GetControl(NodeBase node)
         {
-            return nodeControls[node].NodeControl;
+            return ((NodeContainer)node.RenderData).NodeControl;
         }
 
         public IRenderNode FindRenderNode(NodeBase node)
         {
-            return nodeControls[node];
+            return (NodeContainer)node.RenderData;
         }
     }
 }

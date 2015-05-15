@@ -37,22 +37,24 @@ namespace RavenMind
 
         private void ColorsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            int selected = (int)ColorsGrid.SelectedItem;
+            int selected = ColorsGrid.SelectedIndex;
 
             Change(selected);
         }
 
         private void EditColorView_Loaded(object sender, RoutedEventArgs e)
         {
+            ColorsGrid.ItemsSource = Mindmap.Theme.Colors;
+
             NodeBase selectedNode = Mindmap.Document.SelectedNode;
 
             oldColor = selectedNode.Color;
             oldIndex = Mindmap.Document.UndoRedoManager.Index;
 
-            ColorsGrid.SelectedItem = oldIndex;
+            ColorsGrid.SelectedIndex = oldIndex;
         }
 
-        private void Change(int selected)
+        private void Change(int index)
         {
             NodeBase selectedNode = Mindmap.Document.SelectedNode;
 
@@ -60,11 +62,11 @@ namespace RavenMind
             {
                 Mindmap.Document.UndoRedoManager.RevertTo(oldIndex);
 
-                if (selected != oldColor)
+                if (index != oldColor)
                 {
                     Mindmap.Document.MakeTransaction("EditColor", c =>
                     {
-                        c.Apply(new ChangeColorCommand(selectedNode, selected));
+                        c.Apply(new ChangeColorCommand(selectedNode, index));
                     });
                 }
             }

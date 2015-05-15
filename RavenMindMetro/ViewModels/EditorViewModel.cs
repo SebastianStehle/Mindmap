@@ -9,20 +9,18 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Microsoft.Practices.Unity;
 using RavenMind.Messages;
 using RavenMind.Model;
 using RavenMind.Model.Storing;
 using System;
 using System.Collections.Generic;
-using System.Composition;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 
 namespace RavenMind.ViewModels
 {
-    [Export]
-    [Export(typeof(ViewModelBase))]
     public sealed class EditorViewModel : ViewModelBase
     {
         private readonly DispatcherTimer autosaveTimer = new DispatcherTimer();
@@ -33,7 +31,7 @@ namespace RavenMind.ViewModels
         private RelayCommand addChildCommand;
         private RelayCommand addSiblingCommand;
 
-        [Import]
+        [Dependency]
         public IDocumentStore DocumentStore { get; set; }
 
         public Document Document
@@ -201,7 +199,7 @@ namespace RavenMind.ViewModels
         {
             if (Document != null)
             {
-                ////await DocumentStore.StoreAsync(Document);
+                await DocumentStore.StoreAsync(Document);
 
                 Messenger.Default.Send(new MindmapSavedMessage(Document.Id));
             }
@@ -223,7 +221,7 @@ namespace RavenMind.ViewModels
                 }
             }
 
-            if (finalId != null)
+            if (finalId != null && (Document == null || Document.Id != finalId))
             {
                 Document = await DocumentStore.LoadAsync(finalId.Value);
             }

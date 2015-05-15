@@ -17,6 +17,14 @@ namespace RavenMind.Model
         private readonly List<Node> leftChildren = new List<Node>();
         private readonly List<Node> rightChildren = new List<Node>();
 
+        public override bool HasChildren
+        {
+            get
+            {
+                return leftChildren.Count + rightChildren.Count > 0;
+            }
+        }
+
         public IReadOnlyList<Node> RightChildren
         {
             get
@@ -41,7 +49,14 @@ namespace RavenMind.Model
 
         public override bool Remove(Node child, out int oldIndex)
         {
-            return Remove(rightChildren, child, out oldIndex) || Remove(leftChildren, child, out oldIndex);
+            bool isRemoved = Remove(rightChildren, child, out oldIndex) || Remove(leftChildren, child, out oldIndex);
+
+            if (isRemoved)
+            {
+                OnPropertyChanged("HasChildren");
+            }
+
+            return isRemoved;
         }
 
         public override void Insert(Node child, int? index, NodeSide side)
@@ -68,6 +83,8 @@ namespace RavenMind.Model
                     Add(leftChildren, child, index, NodeSide.Left);
                 }
             }
+
+            OnPropertyChanged("HasChildren");
         }
 
         public override bool HasChild(Node child)

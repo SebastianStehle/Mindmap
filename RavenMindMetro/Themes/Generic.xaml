@@ -8,13 +8,104 @@
 
     <local:NotNullNodeThicknessConverter x:Key="NotNullNodeThicknessConverter" />
     <local:NotNullRootThicknessConverter x:Key="NotNullRootThicknessConverter" />
+    <local:NodeSideToHorizontalAlignmentConverter x:Key="NodeSideToHorizontalAlignmentConverter" />
+    
     <se:NotNullVisibilityConverter x:Key="NotNullVisibilityConverter" />
     <se:VisibleWhenFalseConverter x:Key="VisibleWhenFalseConverter" />
     <se:VisibleWhenTrueConverter x:Key="VisibleWhenTrueConverter" />
-    <se:IntToBrushConverter x:Key="IntToBrushConverter" />
-    <se:IntToLightBrushConverter x:Key="IntToLightBrushConverter" />
-    <se:IntToDarkBrushConverter x:Key="IntToDarkBrushConverter" />
-    
+
+    <Style x:Key="RadialCheckBox" TargetType="CheckBox">
+        <Setter Property="Background" Value="Transparent"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="CheckBox">
+                    <Grid>
+                        <VisualStateManager.VisualStateGroups>
+                            <VisualStateGroup x:Name="CommonStates">
+                                <VisualState x:Name="Normal"/>
+                                <VisualState x:Name="PointerOver">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="#FF666666" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="HLine" />
+                                        <ColorAnimation Duration="0" To="#FF666666" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="VLine" />
+                                        <ColorAnimation Duration="0" To="#FF666666" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="Ellipse" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Pressed">
+                                    <Storyboard>
+                                        <ColorAnimation Duration="0" To="#FF444444" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="HLine" />
+                                        <ColorAnimation Duration="0" To="#FF444444" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="VLine" />
+                                        <ColorAnimation Duration="0" To="#FF444444" Storyboard.TargetProperty="(Shape.Stroke).(SolidColorBrush.Color)" Storyboard.TargetName="Ellipse" />
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Disabled">
+                                    <Storyboard>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="CheckStates">
+                                <VisualState x:Name="Checked">
+                                    <Storyboard>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unchecked">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="VLine">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Collapsed</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Indeterminate">
+                                    <Storyboard>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="HLine">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Collapsed</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Visibility)" Storyboard.TargetName="VLine">
+                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                <DiscreteObjectKeyFrame.Value>
+                                                    <Visibility>Collapsed</Visibility>
+                                                </DiscreteObjectKeyFrame.Value>
+                                            </DiscreteObjectKeyFrame>
+                                        </ObjectAnimationUsingKeyFrames>
+                                    </Storyboard>
+                                </VisualState>
+                            </VisualStateGroup>
+                            <VisualStateGroup x:Name="FocusStates">
+                                <VisualState x:Name="Focused">
+                                    <Storyboard>
+                                    </Storyboard>
+                                </VisualState>
+                                <VisualState x:Name="Unfocused"/>
+                                <VisualState x:Name="PointerFocused"/>
+                            </VisualStateGroup>
+                        </VisualStateManager.VisualStateGroups>
+                        <Grid>
+                            <Ellipse x:Name="Ellipse"
+							    Fill="White"
+							    Stroke="#888"
+							    StrokeThickness="1">
+                            </Ellipse>
+
+                            <Grid Width="12" Height="12">
+                                <Grid>
+                                    <Line X2="12" Y1="6" Y2="6" Stroke="#888" StrokeThickness="2" x:Name="HLine"></Line>
+                                    <Line Y2="12" X1="6" X2="6" Stroke="#888" StrokeThickness="2" x:Name="VLine"></Line>
+                                </Grid>
+                            </Grid>
+                        </Grid>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style x:Key="NoClearButtonTextBox" TargetType="TextBox">
         <Setter Property="MinWidth" Value="{StaticResource TextControlThemeMinWidth}"/>
         <Setter Property="MinHeight" Value="{StaticResource TextControlThemeMinHeight}"/>
@@ -79,18 +170,18 @@
     </Style>
     
     <Style TargetType="local:Mindmap">
-        <Setter Property="Renderer">
+        <Setter Property="Theme">
             <Setter.Value>
-                <local:DefaultRenderer>
-                    <local:DefaultRenderer.PathStyle>
+                <local:DefaultTheme>
+                    <local:DefaultTheme.PathStyle>
                         <Style TargetType="Path">
                             <Setter Property="Stroke" Value="LightGray" />
                             <Setter Property="StrokeThickness" Value="2" />
                             <Setter Property="IsHitTestVisible" Value="False" />
                             <Setter Property="IsTapEnabled" Value="False" />
                         </Style>
-                    </local:DefaultRenderer.PathStyle>
-                    <local:DefaultRenderer.PathPreviewStyle>
+                    </local:DefaultTheme.PathStyle>
+                    <local:DefaultTheme.PathPreviewStyle>
                         <Style TargetType="Path">
                             <Setter Property="Visibility" Value="Collapsed" />
                             <Setter Property="Opacity" Value="0.5" />
@@ -99,8 +190,8 @@
                             <Setter Property="IsHitTestVisible" Value="False" />
                             <Setter Property="IsTapEnabled" Value="False" />
                         </Style>
-                    </local:DefaultRenderer.PathPreviewStyle>
-                    <local:DefaultRenderer.NodePreviewStyle>
+                    </local:DefaultTheme.PathPreviewStyle>
+                    <local:DefaultTheme.NodePreviewStyle>
                         <Style TargetType="local:NodeControl">
                             <Setter Property="Visibility" Value="Collapsed" />
                             <Setter Property="IsHitTestVisible" Value="False" />
@@ -116,8 +207,8 @@
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                    </local:DefaultRenderer.NodePreviewStyle>
-                    <local:DefaultRenderer.RootStyle>
+                    </local:DefaultTheme.NodePreviewStyle>
+                    <local:DefaultTheme.RootStyle>
                         <Style TargetType="local:NodeControl">
                             <Setter Property="MinHeight" Value="70" />
                             <Setter Property="MinWidth" Value="80" />
@@ -127,31 +218,27 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="local:NodeControl">
                                         <Grid>
-                                            <Grid RenderTransformOrigin="0.5,0.5" x:Name="Container">
-                                                <Grid.RenderTransform>
-                                                    <CompositeTransform />
-                                                </Grid.RenderTransform>
-                                                <Ellipse Margin="-6"
-                                                    StrokeDashArray="2 1"
-                                                    StrokeThickness="2" 
-                                                    Stroke="{Binding AssociatedNode.Color, Converter={StaticResource IntToDarkBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    Visibility="{Binding AssociatedNode.IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleWhenTrueConverter}}" />
+                                            <Ellipse Margin="-5"
+                                                StrokeDashArray="2 1"
+                                                StrokeThickness="2" 
+                                                Stroke="{Binding ThemeColor.Light, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Visibility="{Binding AssociatedNode.IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleWhenTrueConverter}}" />
 
-                                                <Ellipse Fill="DarkGray" Margin="2,2,-2,-2" Opacity="0.4" />
+                                            <Ellipse Fill="DarkGray" Margin="2,2,-2,-2" Opacity="0.4" />
 
-                                                <Ellipse IsHitTestVisible="False"
-                                                    StrokeThickness="1" 
-                                                    Stroke="{Binding AssociatedNode.Color, Converter={StaticResource IntToDarkBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    Visibility="{Binding AssociatedNode.IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleWhenFalseConverter}}"
-                                                    Fill="{Binding AssociatedNode.Color, Converter={StaticResource IntToBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}" />
-                                                <Ellipse IsHitTestVisible="False"
-                                                    StrokeThickness="1" 
-                                                    Stroke="{Binding AssociatedNode.Color, Converter={StaticResource IntToDarkBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}"
-                                                    Visibility="{Binding AssociatedNode.IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleWhenTrueConverter}}"
-                                                    Fill="{Binding AssociatedNode.Color, Converter={StaticResource IntToLightBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}" />
-                                            </Grid>
-
-                                            <TextBox x:Name="TextBox" Style="{StaticResource NoClearButtonTextBox}" MinWidth="0" Padding="{Binding IconKey, Converter={StaticResource NotNullRootThicknessConverter}}" IsHitTestVisible="{TemplateBinding IsTextEditing}"
+                                            <Ellipse IsHitTestVisible="False"
+                                                StrokeThickness="1" 
+                                                Stroke="{Binding ThemeColor.Dark, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Visibility="{Binding AssociatedNode.IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleWhenFalseConverter}}"
+                                                Fill="{Binding ThemeColor.Normal, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            <Ellipse IsHitTestVisible="False"
+                                                StrokeThickness="1" 
+                                                Stroke="{Binding ThemeColor.Dark, RelativeSource={RelativeSource TemplatedParent}}"
+                                                Visibility="{Binding AssociatedNode.IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleWhenTrueConverter}}"
+                                                Fill="{Binding ThemeColor.Light, RelativeSource={RelativeSource TemplatedParent}}" />
+                                            
+                                            <TextBox x:Name="TextBox" Style="{StaticResource NoClearButtonTextBox}" MinWidth="0" IsHitTestVisible="{TemplateBinding IsTextEditing}"
+                                                VerticalAlignment="Center"
                                                 Text="{Binding Text}"
                                                 TextAlignment="Center" 
                                                 Background="Transparent" 
@@ -159,67 +246,83 @@
                                                 BorderThickness="0" />
 
                                             <Image Width="24" Height="24" Margin="10,0,0,0" HorizontalAlignment="Left" Source="{Binding IconKey, Mode=TwoWay}" Visibility="{Binding IconKey, Converter={StaticResource NotNullVisibilityConverter}}" />
+
+                                            <CheckBox x:Name="ToggleButton" 
+                                                IsChecked="{Binding AssociatedNode.IsCollapsed, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}"
+                                                VerticalAlignment="Center"
+                                                Visibility="{Binding AssociatedNode.HasChildren, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleWhenTrueConverter}}"
+                                                Style="{StaticResource RadialCheckBox}" Width="20" Height="20" Margin="0,0,-16,0" HorizontalAlignment="Right" />
                                         </Grid>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                    </local:DefaultRenderer.RootStyle>
-                    <local:DefaultRenderer.MainStyle>
+                    </local:DefaultTheme.RootStyle>
+                    <local:DefaultTheme.MainStyle>
                         <Style TargetType="local:NodeControl">
-                            <Setter Property="AnchorPosition" Value="6,0" />
-                            <Setter Property="MinHeight" Value="52" />
-                            <Setter Property="MinWidth" Value="92" />
+                            <Setter Property="AnchorPosition" Value="15,0" />
+                            <Setter Property="MinHeight" Value="50" />
+                            <Setter Property="MinWidth" Value="100" />
                             <Setter Property="BorderBrush" Value="#444" />
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="local:NodeControl">
                                         <Grid>
-                                            <Grid RenderTransformOrigin="0.5,0.5" x:Name="Container">
-                                                <Grid.RenderTransform>
-                                                    <CompositeTransform />
-                                                </Grid.RenderTransform>
-
+                                            <Grid Margin="10,0">
                                                 <Rectangle
                                                     RadiusX="8"
                                                     RadiusY="8"
                                                     StrokeDashArray="2 1"
                                                     StrokeThickness="2" 
-                                                    Stroke="{Binding AssociatedNode.Color, Converter={StaticResource IntToDarkBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    Stroke="{Binding ThemeColor.Dark, RelativeSource={RelativeSource TemplatedParent}}"
                                                     Visibility="{Binding AssociatedNode.IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleWhenTrueConverter}}">
                                                 </Rectangle>
 
-                                                <Grid Margin="6">
+                                                <Grid Margin="5">
                                                     <Border CornerRadius="6" Background="DarkGray" Margin="2,2,-2,-2" Opacity="0.4" />
 
                                                     <Border CornerRadius="4" IsHitTestVisible="False"
                                                         BorderThickness="1" 
-                                                        BorderBrush="{Binding AssociatedNode.Color, Converter={StaticResource IntToDarkBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        BorderBrush="{Binding ThemeColor.Dark, RelativeSource={RelativeSource TemplatedParent}}"
                                                         Visibility="{Binding AssociatedNode.IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleWhenFalseConverter}}"
-                                                        Background="{Binding AssociatedNode.Color, Converter={StaticResource IntToBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        Background="{Binding ThemeColor.Normal, RelativeSource={RelativeSource TemplatedParent}}" />
                                                     <Border CornerRadius="4" IsHitTestVisible="False"
                                                         BorderThickness="1" 
-                                                        BorderBrush="{Binding AssociatedNode.Color, Converter={StaticResource IntToDarkBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+                                                        BorderBrush="{Binding ThemeColor.Dark, RelativeSource={RelativeSource TemplatedParent}}"
                                                         Visibility="{Binding AssociatedNode.IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleWhenTrueConverter}}"
-                                                        Background="{Binding AssociatedNode.Color, Converter={StaticResource IntToLightBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        Background="{Binding ThemeColor.Light, RelativeSource={RelativeSource TemplatedParent}}" />
 
-                                                    <TextBox x:Name="TextBox" Style="{StaticResource NoClearButtonTextBox}" MinWidth="0" Padding="{Binding IconKey, Converter={StaticResource NotNullNodeThicknessConverter}}" IsHitTestVisible="{TemplateBinding IsTextEditing}"
-                                                        Text="{Binding Text}"
-                                                        TextAlignment="Center" 
-                                                        Background="Transparent" 
-                                                        BorderBrush="Transparent"
-                                                        BorderThickness="0" />
+                                                    <Grid VerticalAlignment="Center">
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="Auto" />
+                                                            <ColumnDefinition Width="*" />
+                                                        </Grid.ColumnDefinitions>
 
-                                                    <Image Width="24" Height="24" Margin="10,0,0,0" HorizontalAlignment="Left" Source="{Binding IconKey, Mode=TwoWay}" Visibility="{Binding IconKey, Converter={StaticResource NotNullVisibilityConverter}}" />
+                                                        <Image Width="24" Height="24" Margin="10,0,0,0" HorizontalAlignment="Left" Source="{Binding IconKey, Mode=TwoWay}" Visibility="{Binding IconKey, Converter={StaticResource NotNullVisibilityConverter}}" />
+                                                        
+                                                        <TextBox x:Name="TextBox" Grid.Column="1" Style="{StaticResource NoClearButtonTextBox}" MinWidth="0" IsHitTestVisible="{TemplateBinding IsTextEditing}"
+                                                            Text="{Binding Text}"
+                                                            TextAlignment="Center" 
+                                                            Background="Transparent" 
+                                                            BorderBrush="Transparent"
+                                                            BorderThickness="0" />
+                                                    </Grid>
                                                 </Grid>
                                             </Grid>
+
+                                            <CheckBox x:Name="ToggleButton"
+                                                HorizontalAlignment="{Binding AssociatedNode.NodeSide, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource NodeSideToHorizontalAlignmentConverter}}" 
+                                                VerticalAlignment="Center" 
+                                                Visibility="{Binding AssociatedNode.HasChildren, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleWhenTrueConverter}}"
+                                                IsChecked="{Binding AssociatedNode.IsCollapsed, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" Style="{StaticResource RadialCheckBox}" 
+                                                Width="20" Height="20" />
                                         </Grid>
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                    </local:DefaultRenderer.MainStyle>
-                    <local:DefaultRenderer.NodeStyle>
+                    </local:DefaultTheme.MainStyle>
+                    <local:DefaultTheme.NodeStyle>
                         <Style TargetType="local:NodeControl">
                             <Setter Property="AnchorPosition" Value="6,12" />
                             <Setter Property="MinHeight" Value="52" />
@@ -239,7 +342,7 @@
                                                     RadiusY="8"
                                                     StrokeDashArray="2 1"
                                                     StrokeThickness="2" 
-                                                    Stroke="{Binding AssociatedNode.Color, Converter={StaticResource IntToDarkBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}"
+                                                    Stroke="{Binding ThemeColor.Dark, RelativeSource={RelativeSource TemplatedParent}}"
                                                     Visibility="{Binding AssociatedNode.IsSelected, RelativeSource={RelativeSource TemplatedParent}, Converter={StaticResource VisibleWhenTrueConverter}}">
                                                 </Rectangle>
 
@@ -257,7 +360,7 @@
                                                         Background="Transparent" 
                                                         BorderBrush="Transparent"
                                                         BorderThickness="0"
-                                                        Foreground="{Binding AssociatedNode.Color, Converter={StaticResource IntToDarkBrushConverter}, RelativeSource={RelativeSource TemplatedParent}}" />
+                                                        Foreground="{Binding ThemeColor.Dark, RelativeSource={RelativeSource TemplatedParent}}" />
 
                                                     <Image Width="24" Height="24" Grid.RowSpan="2" Margin="10,0,0,0" HorizontalAlignment="Left" Source="{Binding IconKey, Mode=TwoWay}" Visibility="{Binding IconKey, Converter={StaticResource NotNullVisibilityConverter}}" />
                                                 </Grid>
@@ -267,8 +370,8 @@
                                 </Setter.Value>
                             </Setter>
                         </Style>
-                    </local:DefaultRenderer.NodeStyle>
-                </local:DefaultRenderer>
+                    </local:DefaultTheme.NodeStyle>
+                </local:DefaultTheme>
             </Setter.Value>
         </Setter>
         <Setter Property="Template">
@@ -284,8 +387,8 @@
                         <i:Interaction.Behaviors>
                             <sei:ScrollViewerBringIntoViewInputPaneBehavior />
                         </i:Interaction.Behaviors>
-                        <Grid Background="Transparent"  Width="5000" Height="5000">
-                            <local:MindmapPanel x:Name="NodePanel" Background="Transparent" Document="{Binding Document}" Layout="{TemplateBinding Layout}" Renderer="{TemplateBinding Renderer}">
+                        <Grid Background="Transparent"  Width="{Binding Document.Size.Width}" Height="{Binding Document.Size.Height}">
+                            <local:MindmapPanel x:Name="NodePanel" Background="Transparent" Document="{Binding Document}" Layout="{TemplateBinding Layout}" Theme="{TemplateBinding Theme}">
                                 <i:Interaction.Behaviors>
                                     <sei:SwallowKeyArrowEventsBehavior />
                                 </i:Interaction.Behaviors>

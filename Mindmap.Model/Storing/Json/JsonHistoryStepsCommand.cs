@@ -8,7 +8,7 @@
 
 using System.Runtime.Serialization;
 
-namespace Mindmap.Model.Storing
+namespace MindmapApp.Model.Storing
 {
     [DataContract]
     public sealed class JsonHistoryStepCommand

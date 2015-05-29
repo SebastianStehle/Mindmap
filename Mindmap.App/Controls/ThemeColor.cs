@@ -9,7 +9,7 @@
 using Windows.UI;
 using Windows.UI.Xaml.Media;
 
-namespace Mindmap.Controls
+namespace MindmapApp.Controls
 {
     public sealed class ThemeColor
     {

@@ -6,13 +6,13 @@
 // All rights reserved.
 // ==========================================================================
 
-using SE.Metro.UI;
+using GreenParrot.Windows.UI;
 using System;
 using System.Collections.Generic;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Media;
 
-namespace Mindmap.Controls
+namespace MindmapApp.Controls
 {
     public class ThemeBase : FrameworkElement
     {

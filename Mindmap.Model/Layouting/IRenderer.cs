@@ -6,7 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
-namespace Mindmap.Model.Layouting
+namespace MindmapApp.Model.Layouting
 {
     public interface IRenderer
     {

@@ -6,9 +6,9 @@
 // All rights reserved.
 // ==========================================================================
 
-using Mindmap.Model;
-using Mindmap.Model.Layouting;
-using SE.Metro.UI;
+using MindmapApp.Model;
+using MindmapApp.Model.Layouting;
+using GreenParrot.Windows.UI;
 using System;
 using System.Threading.Tasks;
 using Windows.Foundation;
@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
 
-namespace Mindmap.Controls
+namespace MindmapApp.Controls
 {
     public sealed class NodeMovingOperation
     {

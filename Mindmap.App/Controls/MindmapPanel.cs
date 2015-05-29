@@ -6,10 +6,10 @@
 // All rights reserved.
 // ==========================================================================
 
-using Mindmap.Model;
-using Mindmap.Model.Layouting;
-using SE.Metro;
-using SE.Metro.UI;
+using MindmapApp.Model;
+using MindmapApp.Model.Layouting;
+using GreenParrot.Windows;
+using GreenParrot.Windows.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +19,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
-namespace Mindmap.Controls
+namespace MindmapApp.Controls
 {
     public sealed class MindmapPanel : Panel, IRenderer
     {

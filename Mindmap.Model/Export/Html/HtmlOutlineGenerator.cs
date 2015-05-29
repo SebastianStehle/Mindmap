@@ -15,7 +15,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 
-namespace Mindmap.Model.Export.Html
+namespace MindmapApp.Model.Export.Html
 {
     public sealed class HtmlOutlineGenerator : IOutlineGenerator
     {

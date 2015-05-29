@@ -6,12 +6,12 @@
 // All rights reserved.
 // ==========================================================================
 
-using Mindmap.Model;
+using MindmapApp.Model;
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
-namespace Mindmap.Controls
+namespace MindmapApp.Controls
 {
     public sealed class NodeSideToHorizontalAlignmentConverter : IValueConverter
     {

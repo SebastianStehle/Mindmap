@@ -8,7 +8,7 @@
 
 using GreenParrot.Windows;
 
-namespace Mindmap.Model
+namespace MindmapApp.Model
 {
     public abstract class CommandBase : IUndoRedoAction
     {

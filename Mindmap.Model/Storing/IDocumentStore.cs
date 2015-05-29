@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace Mindmap.Model.Storing
+namespace MindmapApp.Model.Storing
 {
     public interface IDocumentStore
     {

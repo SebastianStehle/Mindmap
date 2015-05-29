@@ -6,7 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
-using SE.Metro.UI;
+using GreenParrot.Windows.UI;
 using System;
 using Windows.Foundation;
 using Windows.UI.Xaml;
@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
-namespace Mindmap.Controls
+namespace MindmapApp.Controls
 {
     public sealed class DefaultThemePath : IPathHolder
     {

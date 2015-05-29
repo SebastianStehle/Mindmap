@@ -6,7 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
-namespace Mindmap.Components
+namespace MindmapApp.Components
 {
     public interface ILocalizationManager
     {

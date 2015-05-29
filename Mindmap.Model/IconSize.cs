@@ -6,7 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
-namespace Mindmap.Model
+namespace MindmapApp.Model
 {
     public enum IconSize
     {

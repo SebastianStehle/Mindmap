@@ -6,9 +6,9 @@
 // All rights reserved.
 // ==========================================================================
 
-using Mindmap.Model;
-using SE.Metro.UI;
-using SE.Metro.UI.Controls;
+using MindmapApp.Model;
+using GreenParrot.Windows.UI;
+using GreenParrot.Windows.UI.Controls;
 using System.ComponentModel;
 using Windows.Foundation;
 using Windows.System;
@@ -17,7 +17,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 
-namespace Mindmap.Controls
+namespace MindmapApp.Controls
 {
     [TemplatePart(Name = PartTextBox, Type = typeof(TextBox))]
     [TemplatePart(Name = PartToggleButton, Type = typeof(CheckBox))]

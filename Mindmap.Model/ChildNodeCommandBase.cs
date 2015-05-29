@@ -8,7 +8,7 @@
 
 using System;
 
-namespace Mindmap.Model
+namespace MindmapApp.Model
 {
     public abstract class ChildNodeCommandBase : CommandBase
     {

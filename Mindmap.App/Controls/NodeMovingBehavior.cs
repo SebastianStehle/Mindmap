@@ -6,10 +6,10 @@
 // All rights reserved.
 // ==========================================================================
 
-using SE.Metro.UI.Interactivity;
+using GreenParrot.Windows.UI.Interactivity;
 using Windows.UI.Xaml.Input;
 
-namespace Mindmap.Controls
+namespace MindmapApp.Controls
 {
     public sealed class NodeMovingBehavior : Behavior<Mindmap>
     {

@@ -6,10 +6,10 @@
 // All rights reserved.
 // ==========================================================================
 
-using Mindmap.Model;
+using MindmapApp.Model;
 using Windows.UI.Xaml;
 
-namespace Mindmap.Controls
+namespace MindmapApp.Controls
 {
     public sealed class DefaultTheme : ThemeBase
     {

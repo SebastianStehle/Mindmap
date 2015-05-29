@@ -6,16 +6,16 @@
 // All rights reserved.
 // ==========================================================================
 
-using Mindmap.Model;
-using Mindmap.Model.Layouting;
-using SE.Metro.UI;
-using SE.Metro.UI.Controls;
+using MindmapApp.Model;
+using MindmapApp.Model.Layouting;
+using GreenParrot.Windows.UI;
+using GreenParrot.Windows.UI.Controls;
 using System;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
-namespace Mindmap.Controls
+namespace MindmapApp.Controls
 {
     [TemplatePart(Name = PartScrollViewer, Type = typeof(ScrollViewer))]
     [TemplatePart(Name = PartAdornerLayer, Type = typeof(Canvas))]

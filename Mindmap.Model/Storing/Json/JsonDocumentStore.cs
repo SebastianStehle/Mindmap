@@ -6,8 +6,8 @@
 // All rights reserved.
 // ==========================================================================
 
-using Mindmap.Model.Storing.Utils;
-using Mindmap.Model.Utils;
+using MindmapApp.Model.Storing.Utils;
+using MindmapApp.Model.Utils;
 using GreenParrot.Windows;
 using System;
 using System.Collections.Generic;
@@ -20,11 +20,11 @@ using Windows.Storage.Streams;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace Mindmap.Model.Storing.Json
+namespace MindmapApp.Model.Storing.Json
 {
     public sealed class JsonDocumentStore : IDocumentStore
     {
-        private const string DefaultSubfolder = "Mindmaps7";
+        private const string DefaultSubfolder = "Mindmaps1";
         private readonly DataContractJsonSerializer historySerializer = new DataContractJsonSerializer(typeof(JsonHistory));
         private readonly TaskFactory taskFactory = new TaskFactory(new LimitedThreadsScheduler());
         private readonly string subfolderName;
@@ -69,6 +69,8 @@ namespace Mindmap.Model.Storing.Json
 
         private async Task<IList<DocumentRef>> LoadAllInternalAsync()
         {
+            await EnsureFolderAsync();
+
             List<DocumentRef> documentReferences = new List<DocumentRef>();
 
             IEnumerable<StorageFile> files = await localFolder.GetFilesAsync();
@@ -151,11 +153,11 @@ namespace Mindmap.Model.Storing.Json
             {
                 historySerializer.WriteObject(memoryStream, history);
 
-                string json = Encoding.Unicode.GetString(memoryStream.ToArray(), 0, (int)memoryStream.Length);
+                memoryStream.Position = 0;
 
                 await Task.WhenAll(
                     localFolder.WriteTextAsync(document.Id + ".mmn", document.Name),
-                    localFolder.WriteTextAsync(document.Id + ".mmd", json));
+                    localFolder.WriteDataAsync(document.Id + ".mmd", memoryStream));
             }
 
             return new DocumentRef(document.Id, document.Name, DateTime.Now);

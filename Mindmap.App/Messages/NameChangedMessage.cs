@@ -8,7 +8,7 @@
 
 using GalaSoft.MvvmLight.Messaging;
 
-namespace Mindmap.Messages
+namespace MindmapApp.Messages
 {
     public sealed class NameChangedMessage : GenericMessage<string>
     {

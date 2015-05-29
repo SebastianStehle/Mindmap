@@ -9,7 +9,7 @@
 using GreenParrot.Windows;
 using System;
 
-namespace Mindmap.Model.Storing
+namespace MindmapApp.Model.Storing
 {
     public sealed class DocumentRef
     {

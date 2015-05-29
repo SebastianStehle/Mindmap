@@ -8,7 +8,7 @@
 
 using Windows.UI.Xaml.Shapes;
 
-namespace Mindmap.Controls
+namespace MindmapApp.Controls
 {
     public interface IPathHolder
     {

@@ -9,7 +9,7 @@
 using GalaSoft.MvvmLight.Messaging;
 using System;
 
-namespace Mindmap.Messages
+namespace MindmapApp.Messages
 {
     public sealed class DeleteMindmapMessage : GenericMessage<Guid>
     {

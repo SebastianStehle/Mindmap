@@ -6,7 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
-namespace Mindmap.Model.Export
+namespace MindmapApp.Model.Export
 {
     public interface IOutlineGenerator
     {

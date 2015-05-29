@@ -8,7 +8,7 @@
 
 using Windows.Storage;
 
-namespace Mindmap.Components.Implementations
+namespace MindmapApp.Components.Implementations
 {
     public sealed class DefaultSettingsProvider : ISettingsProvider
     {

@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 
-namespace Mindmap.Model
+namespace MindmapApp.Model
 {
     public sealed class CommandProperties : Dictionary<string, string>
     {

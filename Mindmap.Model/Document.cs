@@ -11,7 +11,7 @@ using System;
 using System.Collections.Generic;
 using Windows.Foundation;
 
-namespace Mindmap.Model
+namespace MindmapApp.Model
 {
     public sealed class Document : DocumentObject, IDocumentCommands
     {

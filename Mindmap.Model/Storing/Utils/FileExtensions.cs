@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 using System.Xml.Serialization;
 using Windows.Storage;
 
-namespace Mindmap.Model.Storing.Utils
+namespace MindmapApp.Model.Storing.Utils
 {
     internal static class FileExtensions
     {
@@ -50,6 +50,16 @@ namespace Mindmap.Model.Storing.Utils
             StorageFile file = await localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
 
             await FileIO.WriteBytesAsync(file, contents);
+        }
+
+        public static async Task WriteDataAsync(this StorageFolder localFolder, string name, MemoryStream contents)
+        {
+            StorageFile file = await localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
+
+            using (Stream fileStream = await file.OpenStreamForWriteAsync())
+            {
+                contents.WriteTo(fileStream);
+            }
         }
 
         public static async Task WriteTextAsync(this StorageFolder localFolder, string name, string contents)

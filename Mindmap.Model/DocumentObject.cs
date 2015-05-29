@@ -9,7 +9,7 @@
 using System;
 using System.ComponentModel;
 
-namespace Mindmap.Model
+namespace MindmapApp.Model
 {
     public abstract class DocumentObject : INotifyPropertyChanged
     {

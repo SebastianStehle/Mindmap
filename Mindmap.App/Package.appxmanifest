@@ -14,7 +14,7 @@
   <mp:PhoneIdentity PhoneProductId="b0879cff-8335-49ba-9a5d-797824cf19e4" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
-    <DisplayName>Mindmap.App</DisplayName>
+    <DisplayName>MindmapApp</DisplayName>
     <PublisherDisplayName>Sebastian</PublisherDisplayName>
     <Logo>Assets\StoreLogo.png</Logo>
   </Properties>
@@ -30,12 +30,12 @@
   <Applications>
     <Application Id="App"
       Executable="$targetnametoken$.exe"
-      EntryPoint="Mindmap.App.App">
+      EntryPoint="MindmapApp.App">
       <uap:VisualElements
-        DisplayName="Mindmap.App"
+        DisplayName="MindmapApp"
         Square150x150Logo="Assets\Logo.png"
         Square44x44Logo="Assets\SmallLogo.png"
-        Description="Mindmap.App"
+        Description="MindmapApp"
         BackgroundColor="#464646">
         <uap:SplashScreen Image="Assets\SplashScreen.png" />
       </uap:VisualElements>

@@ -7,7 +7,7 @@
     <ProjectGuid>{0205B289-A2E4-4E97-841C-3E70FB032925}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Mindmap.Model</RootNamespace>
+    <RootNamespace>MindmapApp.Model</RootNamespace>
     <AssemblyName>Mindmap.Model</AssemblyName>
     <DefaultLanguage>de-DE</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>

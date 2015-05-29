@@ -7,10 +7,10 @@
 // ==========================================================================
 
 using GalaSoft.MvvmLight;
-using Mindmap.Model;
+using MindmapApp.Model;
 using System;
 
-namespace Mindmap.ViewModels
+namespace MindmapApp.ViewModels
 {
     public sealed class MindmapItem : ViewModelBase
     {

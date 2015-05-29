@@ -6,13 +6,13 @@
 // All rights reserved.
 // ==========================================================================
 
-using Mindmap.Model;
+using MindmapApp.Model;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
-namespace Mindmap.Controls
+namespace MindmapApp.Controls
 {
     public static class MindmapExtensions
     {

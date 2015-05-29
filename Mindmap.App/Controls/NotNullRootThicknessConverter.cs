@@ -10,7 +10,7 @@ using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
 
-namespace Mindmap.Controls
+namespace MindmapApp.Controls
 {
     public sealed class NotNullRootThicknessConverter : IValueConverter
     {

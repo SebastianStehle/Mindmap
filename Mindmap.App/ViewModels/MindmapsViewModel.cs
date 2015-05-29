@@ -9,10 +9,10 @@
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.Unity;
-using Mindmap.Components;
-using Mindmap.Messages;
-using Mindmap.Model;
-using Mindmap.Model.Storing;
+using MindmapApp.Components;
+using MindmapApp.Messages;
+using MindmapApp.Model;
+using MindmapApp.Model.Storing;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,7 +20,7 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace Mindmap.ViewModels
+namespace MindmapApp.ViewModels
 {
     public sealed class MindmapsViewModel : ViewModelBase
     {

@@ -8,7 +8,7 @@
 
 using Windows.Foundation;
 
-namespace Mindmap.Model.Layouting.Default
+namespace MindmapApp.Model.Layouting.Default
 {
     public sealed class DefaultLayout : ILayout
     {

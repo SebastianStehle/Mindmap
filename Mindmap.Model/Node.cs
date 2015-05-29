@@ -10,7 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Mindmap.Model
+namespace MindmapApp.Model
 {
     public class Node : NodeBase
     {

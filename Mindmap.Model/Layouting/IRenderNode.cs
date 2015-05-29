@@ -8,7 +8,7 @@
 
 using Windows.Foundation;
 
-namespace Mindmap.Model.Layouting
+namespace MindmapApp.Model.Layouting
 {
     public interface IRenderNode
     {

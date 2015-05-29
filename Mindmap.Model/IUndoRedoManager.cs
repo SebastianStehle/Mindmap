@@ -9,7 +9,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace Mindmap.Model
+namespace MindmapApp.Model
 {
     public interface IUndoRedoManager
     {

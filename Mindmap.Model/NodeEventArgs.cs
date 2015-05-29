@@ -9,7 +9,7 @@
 using GreenParrot.Windows;
 using System;
 
-namespace Mindmap.Model
+namespace MindmapApp.Model
 {
     public sealed class NodeEventArgs : EventArgs
     {

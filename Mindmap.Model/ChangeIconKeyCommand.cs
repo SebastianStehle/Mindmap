@@ -6,7 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
-namespace Mindmap.Model
+namespace MindmapApp.Model
 {
     public sealed class ChangeIconKeyCommand : CommandBase
     {

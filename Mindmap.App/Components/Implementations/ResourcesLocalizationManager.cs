@@ -9,7 +9,7 @@
 using System.Globalization;
 using Windows.ApplicationModel.Resources;
 
-namespace Mindmap.Components.Implementations
+namespace MindmapApp.Components.Implementations
 {
     public sealed class ResourcesLocalizationManager : ILocalizationManager
     {

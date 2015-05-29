@@ -14,7 +14,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Windows.System.Threading;
 
-namespace Mindmap.Model.Utils
+namespace MindmapApp.Model.Utils
 {
     public sealed class LimitedThreadsScheduler : TaskScheduler
     {

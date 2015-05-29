@@ -8,12 +8,13 @@
 
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.Unity;
-using Mindmap.Components;
-using Mindmap.Model.Storing;
-using Mindmap.Model.Storing.Json;
+using MindmapApp.Components;
+using MindmapApp.Components.Implementations;
+using MindmapApp.Model.Storing;
+using MindmapApp.Model.Storing.Json;
 using Windows.ApplicationModel;
 
-namespace Mindmap.ViewModels
+namespace MindmapApp.ViewModels
 {
     public class ViewModelLocator
     {

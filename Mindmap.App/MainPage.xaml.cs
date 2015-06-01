@@ -101,36 +101,6 @@ namespace MindmapApp
             PopupHandler.ShowPopupRightTop(new EnterNameView { DataContext = senderElement.DataContext }, new Point(-20, 110));
         }
 
-        private void EditColorButton_Click(object sender, RoutedEventArgs e)
-        {
-            TopAppBar.IsOpen = false;
-
-            if (Mindmap.Document != null && Mindmap.Document.SelectedNode != null)
-            {
-                PopupHandler.ShowPopupLeftBottom(new EditColorView(Mindmap), new Point(170, -90));
-            }
-        }
-
-        private void EditIconButton_Click(object sender, RoutedEventArgs e)
-        {
-            TopAppBar.IsOpen = false;
-
-            if (Mindmap.Document != null && Mindmap.Document.SelectedNode != null)
-            {
-                PopupHandler.ShowPopupLeftBottom(new EditIconView(Mindmap), new Point(270, -90));
-            }
-        }
-
-        private void EditMindmapButton_Click(object sender, RoutedEventArgs e)
-        {
-            TopAppBar.IsOpen = false;
-
-            if (Mindmap.Document != null)
-            {
-                //PopupHandler.ShowPopupLeftBottom(new EditView(Mindmap), new Point(20, -90));
-            }
-        }
-
         private void RemoveButton_Invoking(object sender, CommandInvokingEventHandler e)
         {
             TextBox textBox = FocusManager.GetFocusedElement() as TextBox;

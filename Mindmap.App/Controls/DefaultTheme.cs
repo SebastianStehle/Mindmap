@@ -7,62 +7,73 @@
 // ==========================================================================
 
 using MindmapApp.Model;
+using System;
 using Windows.UI.Xaml;
 
 namespace MindmapApp.Controls
 {
     public sealed class DefaultTheme : ThemeBase
     {
-        public static readonly DependencyProperty PathStyleProperty =
-            DependencyProperty.Register("PathStyle", typeof(Style), typeof(DefaultTheme), new PropertyMetadata(null));
-        public Style PathStyle
+        private readonly ResourceDictionary resources = new ResourceDictionary();
+        private Style pathStyle;
+        private Style pathPreviewStyle;
+        private Style nodePreviewStyle;
+        private Style nodeLevel0Style;
+        private Style nodeLevel1Style;
+        private Style nodeLevel2Style;
+
+        private Style PathStyle
         {
-            get { return (Style)GetValue(PathStyleProperty); }
-            set { SetValue(PathStyleProperty, value); }
+            get
+            {
+                return pathStyle ?? (pathStyle = (Style)resources["PathStyle"]);
+            }
         }
 
-        public static readonly DependencyProperty PathPreviewStyleProperty =
-            DependencyProperty.Register("PathPreviewStyle", typeof(Style), typeof(DefaultTheme), new PropertyMetadata(null));
-        public Style PathPreviewStyle
+        private Style PathPreviewStyle
         {
-            get { return (Style)GetValue(PathPreviewStyleProperty); }
-            set { SetValue(PathPreviewStyleProperty, value); }
+            get
+            {
+                return pathPreviewStyle ?? (pathPreviewStyle = (Style)resources["PathPreviewStyle"]);
+            }
         }
 
-        public static readonly DependencyProperty RootStyleProperty =
-            DependencyProperty.Register("RootStyle", typeof(Style), typeof(DefaultTheme), new PropertyMetadata(null));
-        public Style RootStyle
+        private Style NodePreviewStyle
         {
-            get { return (Style)GetValue(RootStyleProperty); }
-            set { SetValue(RootStyleProperty, value); }
+            get
+            {
+                return nodePreviewStyle ?? (nodePreviewStyle = (Style)resources["NodePreviewStyle"]);
+            }
         }
 
-        public static readonly DependencyProperty NodePreviewStyleProperty =
-            DependencyProperty.Register("NodePreviewStyle", typeof(Style), typeof(DefaultTheme), new PropertyMetadata(null));
-        public Style NodePreviewStyle
+        private Style NodeLevel0Style
         {
-            get { return (Style)GetValue(NodePreviewStyleProperty); }
-            set { SetValue(NodePreviewStyleProperty, value); }
+            get
+            {
+                return nodeLevel0Style ?? (nodeLevel0Style = (Style)resources["NodeLevel0Style"]);
+            }
         }
 
-        public static readonly DependencyProperty MainStyleProperty =
-            DependencyProperty.Register("MainStyle", typeof(Style), typeof(DefaultTheme), new PropertyMetadata(null));
-        public Style MainStyle
+        private Style NodeLevel1Style
         {
-            get { return (Style)GetValue(MainStyleProperty); }
-            set { SetValue(MainStyleProperty, value); }
+            get
+            {
+                return nodeLevel1Style ?? (nodeLevel1Style = (Style)resources["NodeLevel1Style"]);
+            }
         }
 
-        public static readonly DependencyProperty NodeStyleProperty =
-            DependencyProperty.Register("NodeStyle", typeof(Style), typeof(DefaultTheme), new PropertyMetadata(null));
-        public Style NodeStyle
+        private Style NodeLevel2Style
         {
-            get { return (Style)GetValue(NodeStyleProperty); }
-            set { SetValue(NodeStyleProperty, value); }
+            get
+            {
+                return nodeLevel2Style ?? (nodeLevel2Style = (Style)resources["NodeLevel2Style"]);
+            }
         }
 
         public DefaultTheme()
         {
+            Application.LoadComponent(resources, new Uri("ms-appx:///Themes/Theme.Default.xaml"));
+
             AddColors(
                 0xF7977A,
                 0xF9AD81,
@@ -102,21 +113,21 @@ namespace MindmapApp.Controls
             
             if (isPreview)
             {
-                UpdateStyle(nodeControl, NodePreviewStyle);
+                UpdateStyle(nodeControl, (Style)resources["NodePreviewStyle"]);
             }
             else
             {
                 if (nodeControl.AssociatedNode is RootNode)
                 {
-                    UpdateStyle(nodeControl, RootStyle);
+                    UpdateStyle(nodeControl, NodeLevel0Style);
                 }
                 else if (nodeControl.AssociatedNode.Parent is RootNode)
                 {
-                    UpdateStyle(nodeControl, MainStyle);
+                    UpdateStyle(nodeControl, NodeLevel1Style);
                 }
                 else
                 {
-                    UpdateStyle(nodeControl, NodeStyle);
+                    UpdateStyle(nodeControl, NodeLevel2Style);
                 }
 
                 nodeControl.ThemeColor = Colors[nodeControl.AssociatedNode.Color];

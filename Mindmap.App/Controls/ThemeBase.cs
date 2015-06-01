@@ -17,7 +17,7 @@ namespace MindmapApp.Controls
     public class ThemeBase : FrameworkElement
     {
         private readonly List<ThemeColor> colors = new List<ThemeColor>();
-
+        
         public IReadOnlyList<ThemeColor> Colors
         {
             get

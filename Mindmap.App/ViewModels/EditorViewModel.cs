@@ -10,6 +10,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.Unity;
+using MindmapApp.Controls;
 using MindmapApp.Messages;
 using MindmapApp.Model;
 using MindmapApp.Model.Storing;
@@ -24,6 +25,7 @@ namespace MindmapApp.ViewModels
     public sealed class EditorViewModel : ViewModelBase
     {
         private readonly DispatcherTimer autosaveTimer = new DispatcherTimer();
+        private ThemeBase theme = new DefaultTheme();
         private Document document;
         private RelayCommand redoCommand;
         private RelayCommand undoCommand;
@@ -33,6 +35,14 @@ namespace MindmapApp.ViewModels
 
         [Dependency]
         public IDocumentStore DocumentStore { get; set; }
+
+        public ThemeBase Theme
+        {
+            get
+            {
+                return theme;
+            }
+        }
 
         public Document Document
         {
@@ -154,8 +164,6 @@ namespace MindmapApp.ViewModels
             Messenger.Default.Register<SaveMindmapMessage>(this, OnSaveMindmap);
             Messenger.Default.Register<OpenMindmapMessage>(this, OnOpenMindmap);
             Messenger.Default.Register<DeleteMindmapMessage>(this, OnDeleteMindmap);
-
-            Document = new Document(Guid.NewGuid(), "NewMindmap");
         }
 
         private void UndoRedoManager_StateChanged(object sender, EventArgs e)

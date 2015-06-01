@@ -13,26 +13,16 @@ using Windows.UI.Xaml.Controls;
 
 namespace MindmapApp
 {
-    public sealed partial class EditColorView : UserControl
+    public sealed partial class EditColorView : MindmapFlyoutView
     {
         private int oldColor;
         private int oldIndex;
-
-        public Mindmap Mindmap { get; set; }
         
         public EditColorView()
         {
             InitializeComponent();
 
             ColorsGrid.SelectionChanged += ColorsGrid_SelectionChanged;
-        }
-
-        public EditColorView(Mindmap mindmap)
-            : this()
-        {
-            Mindmap = mindmap;
-
-            DataContext = mindmap.Document;
         }
 
         private void ColorsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -42,29 +32,29 @@ namespace MindmapApp
             Change(selected);
         }
 
-        private void EditColorView_Loaded(object sender, RoutedEventArgs e)
+        public override void OnOpened()
         {
-            ColorsGrid.ItemsSource = Mindmap.Theme.Colors;
+            ColorsGrid.ItemsSource = Theme.Colors;
 
-            NodeBase selectedNode = Mindmap.Document.SelectedNode;
+            NodeBase selectedNode = Document.SelectedNode;
 
             oldColor = selectedNode.Color;
-            oldIndex = Mindmap.Document.UndoRedoManager.Index;
+            oldIndex = Document.UndoRedoManager.Index;
 
             ColorsGrid.SelectedIndex = oldIndex;
         }
 
         private void Change(int index)
         {
-            NodeBase selectedNode = Mindmap.Document.SelectedNode;
+            NodeBase selectedNode = Document.SelectedNode;
 
             if (selectedNode != null)
             {
-                Mindmap.Document.UndoRedoManager.RevertTo(oldIndex);
+                Document.UndoRedoManager.RevertTo(oldIndex);
 
                 if (index != oldColor)
                 {
-                    Mindmap.Document.MakeTransaction("EditColor", c =>
+                    Document.MakeTransaction("EditColor", c =>
                     {
                         c.Apply(new ChangeColorCommand(selectedNode, index));
                     });

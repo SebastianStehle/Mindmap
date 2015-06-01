@@ -123,11 +123,17 @@
   <data name="AboutTitle.Text" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="AppBarButtonAddChild.Label" xml:space="preserve">
+    <value>Add Child</value>
+  </data>
   <data name="AppBarButtonAddChild.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Add Child</value>
   </data>
   <data name="AppBarButtonAddChild.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Add child node (CTRL + M)</value>
+  </data>
+  <data name="AppBarButtonAddSibling.Label" xml:space="preserve">
+    <value>Add Sibling</value>
   </data>
   <data name="AppBarButtonAddSibling.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Add Sibling</value>
@@ -135,17 +141,26 @@
   <data name="AppBarButtonAddSibling.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Add sibiling node (CTRL + N)</value>
   </data>
+  <data name="AppBarButtonChangeColor.Label" xml:space="preserve">
+    <value>Colors</value>
+  </data>
   <data name="AppBarButtonChangeColor.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Change Color</value>
   </data>
   <data name="AppBarButtonChangeColor.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Change color of selected node (CTRL + O)</value>
   </data>
+  <data name="AppBarButtonChangeIcon.Label" xml:space="preserve">
+    <value>Icons</value>
+  </data>
   <data name="AppBarButtonChangeIcon.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Change Icon</value>
   </data>
   <data name="AppBarButtonChangeIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Change icon of selected node (CTRL + I)</value>
+  </data>
+  <data name="AppBarButtonEdit.Label" xml:space="preserve">
+    <value>Mindmap</value>
   </data>
   <data name="AppBarButtonEdit.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Edit</value>
@@ -159,14 +174,23 @@
   <data name="AppBarButtonNewMindmap.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>New mindmap (CTRL + SHIFT + N)</value>
   </data>
+  <data name="AppBarButtonRedo.Label" xml:space="preserve">
+    <value>Redo</value>
+  </data>
   <data name="AppBarButtonRedo.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Redo (CTRL + Y)</value>
+  </data>
+  <data name="AppBarButtonRemoveNode.Label" xml:space="preserve">
+    <value>Delete Node</value>
   </data>
   <data name="AppBarButtonRemoveNode.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Remove</value>
   </data>
   <data name="AppBarButtonRemoveNode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Remove selected node (DELETE)</value>
+  </data>
+  <data name="AppBarButtonUndo.Label" xml:space="preserve">
+    <value>Undo</value>
   </data>
   <data name="AppBarButtonUndo.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Undo (CTRL + Z)</value>

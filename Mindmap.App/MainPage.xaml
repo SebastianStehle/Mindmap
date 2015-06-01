@@ -14,34 +14,13 @@
     mc:Ignorable="d"
     DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
     
-    <Page.Resources>
-        <gp:IntToBrushConverter x:Key="IntToBrushConverter" />
-        <gp:NotNullVisibilityConverter x:Key="NotNullVisibilityConverter" />
-        
-        <controls:NotRootToVisibilityConverter x:Key="NotRootToVisibilityConverter" />
-        
+    <Page.Resources>        
         <SolidColorBrush x:Key="GridBrush" Color="#222" />
     </Page.Resources>
         
     <Page.BottomAppBar>
         <CommandBar>
-            <AppBarButton Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}}" Icon="Edit"
-                Click="EditMindmapButton_Click"
-                AutomationProperties.AccessKey="CTRL + E"
-                AutomationProperties.Name="Edit" x:Uid="AppBarButtonEdit">
-                <AppBarButton.Flyout>
-                    <controls:MindmapFlyout>
-                        <local:EditView Document="{Binding Document}" />
-                    </controls:MindmapFlyout>
-                </AppBarButton.Flyout>
-                <i:Interaction.Behaviors>
-                    <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="E" Invoked="EditMindmapButton_Click" />
-                </i:Interaction.Behaviors>
-            </AppBarButton>
-            
-            <AppBarSeparator />
-
-            <AppBarButton Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}}" Icon="Undo"
+            <AppBarButton Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}" Icon="Undo"
                 Command="{Binding UndoCommand}"
                 AutomationProperties.AccessKey="CTRL + Z"
                 AutomationProperties.Name="Undo" x:Uid="AppBarButtonUndo">
@@ -49,8 +28,8 @@
                     <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
                 </i:Interaction.Behaviors>
             </AppBarButton>
-            
-            <AppBarButton Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}}" Icon="Redo"
+
+            <AppBarButton Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}" Icon="Redo"
                 Command="{Binding RedoCommand}"
                 AutomationProperties.AccessKey="CTRL + Y"
                 AutomationProperties.HelpText="Redo" x:Uid="AppBarButtonRedo">
@@ -59,24 +38,75 @@
                 </i:Interaction.Behaviors>
             </AppBarButton>
 
-            <AppBarSeparator Visibility="{Binding Document.SelectedNode, Converter={StaticResource NotNullVisibilityConverter}}" />
+            <AppBarSeparator Visibility="{Binding Document.SelectedNode, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}" />
 
-            <AppBarButton Visibility="{Binding Document.SelectedNode, Converter={StaticResource NotNullVisibilityConverter}}" Icon="Favorite"
-                Click="EditIconButton_Click"
-                AutomationProperties.AccessKey="CTRL + I"
-                AutomationProperties.Name="Change Icon" x:Uid="AppBarButtonChangeIcon">
+            <AppBarButton Visibility="{Binding Document.SelectedNode, Converter={StaticResource NotRootToVisibilityConverter}, FallbackValue=Collapsed}" Icon="Delete"
+                Command="{Binding RemoveCommand}"
+                AutomationProperties.AccessKey="Delete"
+                AutomationProperties.Name="Remove Node" x:Uid="AppBarButtonRemoveNode">
                 <i:Interaction.Behaviors>
-                    <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="I" Invoked="EditIconButton_Click" />
+                    <gpi:CommandShortcutBehavior Invoking="RemoveButton_Invoking" RequiresControlModifier="False" Key="Delete" />
+                    <gpi:CommandShortcutBehavior Invoking="RemoveButton_Invoking" RequiresControlModifier="False" Key="Back" />
                 </i:Interaction.Behaviors>
             </AppBarButton>
-            <AppBarButton Visibility="{Binding Document.SelectedNode, Converter={StaticResource NotNullVisibilityConverter}}" Icon="Bold"
-                Click="EditColorButton_Click"
-                AutomationProperties.AccessKey="CTRL + O"
-                AutomationProperties.Name="Change Color" x:Uid="AppBarButtonChangeColor">
+            <AppBarButton Visibility="{Binding Document.SelectedNode, Converter={StaticResource NotRootToVisibilityConverter}, FallbackValue=Collapsed}" Icon="Add"
+                Command="{Binding AddSiblingCommand}" 
+                AutomationProperties.AccessKey="Control H"
+                AutomationProperties.Name="Add Sibling" x:Uid="AppBarButtonAddSibling">
                 <i:Interaction.Behaviors>
-                    <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="O" Invoked="EditColorButton_Click" />
+                    <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="N" />
                 </i:Interaction.Behaviors>
             </AppBarButton>
+            <AppBarButton Visibility="{Binding Document.SelectedNode, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}" Icon="Add"
+                Command="{Binding AddChildCommand}" 
+                AutomationProperties.AccessKey="Control N"
+                AutomationProperties.Name="Add Child" x:Uid="AppBarButtonAddChild">
+                <i:Interaction.Behaviors>
+                    <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="M" />
+                </i:Interaction.Behaviors>
+            </AppBarButton>
+
+            <CommandBar.SecondaryCommands>
+                <AppBarButton Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}" Icon="Edit" IsCompact="False"
+                    AutomationProperties.AccessKey="CTRL + E"
+                    AutomationProperties.Name="Edit" x:Uid="AppBarButtonEdit">
+                    <AppBarButton.Flyout>
+                        <controls:MindmapFlyout>
+                            <local:EditView Document="{Binding Document}" Theme="{Binding Theme}" />
+                        </controls:MindmapFlyout>
+                    </AppBarButton.Flyout>
+                    <i:Interaction.Behaviors>
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="E" />
+                    </i:Interaction.Behaviors>
+                </AppBarButton>
+
+                <AppBarSeparator Visibility="{Binding Document.SelectedNode, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}" />
+
+                <AppBarButton Visibility="{Binding Document.SelectedNode, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}" Icon="Favorite"
+                    AutomationProperties.AccessKey="CTRL + I"
+                    AutomationProperties.Name="Change Icon" x:Uid="AppBarButtonChangeIcon">
+                    <AppBarButton.Flyout>
+                        <controls:MindmapFlyout>
+                            <local:EditIconView Document="{Binding Document}" Theme="{Binding Theme}" />
+                        </controls:MindmapFlyout>
+                    </AppBarButton.Flyout>
+                    <i:Interaction.Behaviors>
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="I" />
+                    </i:Interaction.Behaviors>
+                </AppBarButton>
+                <AppBarButton Visibility="{Binding Document.SelectedNode, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}" Icon="Bold"
+                    AutomationProperties.AccessKey="CTRL + O"
+                    AutomationProperties.Name="Change Color" x:Uid="AppBarButtonChangeColor">
+                    <AppBarButton.Flyout>
+                        <controls:MindmapFlyout>
+                            <local:EditColorView Document="{Binding Document}" Theme="{Binding Theme}" />
+                        </controls:MindmapFlyout>
+                    </AppBarButton.Flyout>
+                    <i:Interaction.Behaviors>
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="O" />
+                    </i:Interaction.Behaviors>
+                </AppBarButton>
+            </CommandBar.SecondaryCommands>
         </CommandBar>
         
         <!--
@@ -238,7 +268,7 @@
             
             <gpc:TiledBackground TileSize="60" />           
 
-            <controls:Mindmap Document="{Binding Document}" x:Name="Mindmap">
+            <controls:Mindmap Document="{Binding Document}" Theme="{Binding Theme}" x:Name="Mindmap">
                 <controls:Mindmap.RenderTransform>
                     <CompositeTransform />
                 </controls:Mindmap.RenderTransform>

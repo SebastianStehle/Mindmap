@@ -408,7 +408,7 @@ namespace MindmapApp.Controls
                 requiresLayout = true;
 
                 Size availableSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
-
+                
                 foreach (UIElement child in Children)
                 {
                     if (child != null)

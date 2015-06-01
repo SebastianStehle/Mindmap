@@ -14,6 +14,7 @@ using System;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Core;
 
 namespace MindmapApp.Controls
 {
@@ -64,13 +65,32 @@ namespace MindmapApp.Controls
         }
 
         public static readonly DependencyProperty DocumentProperty =
-            DependencyProperty.Register("Document", typeof(Document), typeof(Mindmap), new PropertyMetadata(null));
+            DependencyProperty.Register("Document", typeof(Document), typeof(Mindmap), new PropertyMetadata(null, new PropertyChangedCallback(OnDocumentChanged)));
         public Document Document
         {
             get { return (Document)GetValue(DocumentProperty); }
             set { SetValue(DocumentProperty, value); }
         }
-        
+
+        private static void OnDocumentChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            var owner = o as Mindmap;
+            if (owner != null)
+            {
+                owner.OnDocumentChanged(e);
+            }
+        }
+
+        private void OnDocumentChanged(DependencyPropertyChangedEventArgs e)
+        {
+#pragma warning disable 4014
+            Dispatcher.RunAsync(CoreDispatcherPriority.High, () =>
+            {
+                
+            });
+#pragma warning restore 4014
+        }
+
         public Mindmap()
         {
             DefaultStyleKey = typeof(Mindmap);
@@ -85,6 +105,16 @@ namespace MindmapApp.Controls
             adornerLayer = (Canvas)GetTemplateChild(PartAdornerLayer);
 
             nodePanel = (MindmapPanel)GetTemplateChild(PartNodePanel);
+
+            nodePanel.SizeChanged += NodePanel_SizeChanged;
+        }
+
+        private void NodePanel_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if (scrollViewer != null)
+            {
+                scrollViewer.CenterViewport();
+            }
         }
 
         private void Mindmap_SizeChanged(object sender, SizeChangedEventArgs e)

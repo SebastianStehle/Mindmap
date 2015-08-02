@@ -1,0 +1,38 @@
+﻿<controls:MindmapFlyoutView x:Class="Hercules.App.EditIconView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:controls="using:Hercules.App.Controls"
+    xmlns:assets="using:Hercules.App.Assets"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Width="410">
+    
+    <UserControl.Resources>        
+        <assets:AssetProvider x:Key="AssetProvider" />
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock x:Uid="IconsHeader" FontSize="24" FontWeight="Light" Margin="0,0,0,10">Icons</TextBlock>
+
+        <GridView Grid.Row="1" Margin="0, 10" x:Name="IconsGrid" ItemsSource="{Binding Source={StaticResource AssetProvider}, Path=Images}">
+            <GridView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Background="Transparent">
+                        <Grid Width="32" Height="32">
+                            <Image Source="{Binding}" Width="24" Height="24" />
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </GridView.ItemTemplate>
+        </GridView>
+
+        <Button Grid.Row="2" x:Uid="ClearIconButton" VerticalAlignment="Bottom" Content="Remove Icon" Click="RemoveIconButton_Click" />
+    </Grid>
+</controls:MindmapFlyoutView>

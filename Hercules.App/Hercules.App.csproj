@@ -1,0 +1,287 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProjectGuid>{36491669-D3EF-4EA6-A8E1-5EB82C5BBD84}</ProjectGuid>
+    <OutputType>AppContainerExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Hercules.App</RootNamespace>
+    <AssemblyName>Hercules.App</AssemblyName>
+    <DefaultLanguage>en-US</DefaultLanguage>
+    <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
+    <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
+    <TargetPlatformMinVersion>10.0.10240.0</TargetPlatformMinVersion>
+    <MinimumVisualStudioVersion>14</MinimumVisualStudioVersion>
+    <EnableDotNetNativeCompatibleProfile>true</EnableDotNetNativeCompatibleProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{A5A43C5B-DE2A-4C0C-9213-0A381AF9435A};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <PackageCertificateKeyFile>Hercules.App_TemporaryKey.pfx</PackageCertificateKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|ARM'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\ARM\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|ARM'">
+    <OutputPath>bin\ARM\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>ARM</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x64'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x64\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x64'">
+    <OutputPath>bin\x64\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x64</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
+    <OutputPath>bin\x86\Release\</OutputPath>
+    <DefineConstants>TRACE;NETFX_CORE;WINDOWS_UWP</DefineConstants>
+    <Optimize>true</Optimize>
+    <NoWarn>;2008</NoWarn>
+    <DebugType>pdbonly</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+    <UseDotNetNativeToolchain>true</UseDotNetNativeToolchain>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- A reference to the entire .Net Framework and Windows SDK are automatically included -->
+    <Content Include="ApplicationInsights.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <None Include="project.json" />
+    <PRIResource Include="Strings\en-US\Resources.resw" />
+    <PRIResource Include="Strings\de-DE\Resources.resw" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Assets\AssetProvider.cs" />
+    <Compile Include="Components\ILocalizationManager.cs" />
+    <Compile Include="Components\Implementations\DefaultSettingsProvider.cs" />
+    <Compile Include="Components\Implementations\ResourcesLocalizationManager.cs" />
+    <Compile Include="Components\ISettingsProvider.cs" />
+    <Compile Include="Controls\DefaultTheme.cs" />
+    <Compile Include="Controls\DefaultThemePath.cs" />
+    <Compile Include="Controls\IPathHolder.cs" />
+    <Compile Include="Controls\Mindmap.cs" />
+    <Compile Include="Controls\MindmapExtensions.cs" />
+    <Compile Include="Controls\MindmapFlyout.cs" />
+    <Compile Include="Controls\MindmapFlyoutView.cs" />
+    <Compile Include="Controls\MindmapPanel.cs" />
+    <Compile Include="Controls\NodeContainer.cs" />
+    <Compile Include="Controls\NodeControl.cs" />
+    <Compile Include="Controls\NodeMovingBehavior.cs" />
+    <Compile Include="Controls\NodeMovingOperation.cs" />
+    <Compile Include="Controls\NodeSideToHorizontalAlignmentConverter.cs" />
+    <Compile Include="Controls\NotNullNodeThicknessConverter.cs" />
+    <Compile Include="Controls\NotNullRootThicknessConverter.cs" />
+    <Compile Include="Controls\NotRootToVisibilityConverter.cs" />
+    <Compile Include="Controls\ThemeBase.cs" />
+    <Compile Include="Controls\ThemeColor.cs" />
+    <Compile Include="EditColorView.xaml.cs">
+      <DependentUpon>EditColorView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditIconView.xaml.cs">
+      <DependentUpon>EditIconView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EditView.xaml.cs">
+      <DependentUpon>EditView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EnterNameView.xaml.cs">
+      <DependentUpon>EnterNameView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="MainPage.xaml.cs">
+      <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Messages\DeleteMindmapMessage.cs" />
+    <Compile Include="Messages\MindmapSavedMessage.cs" />
+    <Compile Include="Messages\NameChangedMessage.cs" />
+    <Compile Include="Messages\OpenMindmapMessage.cs" />
+    <Compile Include="Messages\SaveMindmapMessage.cs" />
+    <Compile Include="NodeListItem.xaml.cs">
+      <DependentUpon>NodeListItem.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ViewModels\EditorViewModel.cs" />
+    <Compile Include="ViewModels\MindmapItem.cs" />
+    <Compile Include="ViewModels\MindmapsViewModel.cs" />
+    <Compile Include="ViewModels\ViewModelLocator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <AppxManifest Include="Package.appxmanifest">
+      <SubType>Designer</SubType>
+    </AppxManifest>
+    <None Include="Hercules.App_TemporaryKey.pfx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Icons\Alerts.png" />
+    <Content Include="Assets\Icons\Arrow_Down.png" />
+    <Content Include="Assets\Icons\Arrow_Left.png" />
+    <Content Include="Assets\Icons\Arrow_Right.png" />
+    <Content Include="Assets\Icons\Arrow_Up.png" />
+    <Content Include="Assets\Icons\Buy.png" />
+    <Content Include="Assets\Icons\Calendar_Public.png" />
+    <Content Include="Assets\Icons\Cancel.png" />
+    <Content Include="Assets\Icons\Cash.png" />
+    <Content Include="Assets\Icons\CD.png" />
+    <Content Include="Assets\Icons\Check.png" />
+    <Content Include="Assets\Icons\Clock.png" />
+    <Content Include="Assets\Icons\Emoticon_Happy.png" />
+    <Content Include="Assets\Icons\Encrypt.png" />
+    <Content Include="Assets\Icons\Favorites.png" />
+    <Content Include="Assets\Icons\Fax.png" />
+    <Content Include="Assets\Icons\Function_Logical.png" />
+    <Content Include="Assets\Icons\Games.png" />
+    <Content Include="Assets\Icons\Gift.png" />
+    <Content Include="Assets\Icons\Globe.png" />
+    <Content Include="Assets\Icons\Home.png" />
+    <Content Include="Assets\Icons\Important.png" />
+    <Content Include="Assets\Icons\Information.png" />
+    <Content Include="Assets\Icons\Note.png" />
+    <Content Include="Assets\Icons\Picture.png" />
+    <Content Include="Assets\Icons\Question.png" />
+    <Content Include="Assets\Icons\Status_Flag_Blue.png" />
+    <Content Include="Assets\Icons\Status_Flag_Green.png" />
+    <Content Include="Assets\Icons\Status_Flag_Red.png" />
+    <Content Include="Assets\Icons\Status_Flag_White.png" />
+    <Content Include="Assets\Icons\Status_Flag_Yellow.png" />
+    <Content Include="Assets\Icons\Symbol_Dollar.png" />
+    <Content Include="Assets\Icons\Symbol_Euro.png" />
+    <Content Include="Assets\Icons\Traffic_Light.png" />
+    <Content Include="Assets\Icons\Trash.png" />
+    <Content Include="Assets\Icons\User_Blue.png" />
+    <Content Include="Assets\Icons\User_Green.png" />
+    <Content Include="Assets\Icons\Video.png" />
+    <Content Include="Assets\Icons\Warning.png" />
+    <Content Include="Assets\Images\Tutorial1.png" />
+    <Content Include="Assets\Images\Tutorial2.png" />
+    <Content Include="Assets\Images\Tutorial3.png" />
+    <Content Include="Assets\Images\Tutorial4.png" />
+    <Content Include="Assets\Images\Tutorial5.png" />
+    <Content Include="FodyWeavers.xml" />
+    <Content Include="Properties\Default.rd.xml" />
+    <Content Include="Assets\LockScreenLogo.scale-200.png" />
+    <Content Include="Assets\SplashScreen.scale-200.png" />
+    <Content Include="Assets\Square150x150Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.scale-200.png" />
+    <Content Include="Assets\Square44x44Logo.targetsize-24_altform-unplated.png" />
+    <Content Include="Assets\StoreLogo.png" />
+    <Content Include="Assets\Wide310x150Logo.scale-200.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Page Include="Common\AppStyles.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditColorView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditIconView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EditView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="EnterNameView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="NodeListItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Generic.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\Theme.Default.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\GP.Windows\GP.Windows.csproj">
+      <Project>{bf45f42d-d00c-4ac5-ac3f-ce261da43f99}</Project>
+      <Name>GP.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hercules.Model\Hercules.Model.csproj">
+      <Project>{b0aa10fc-a13f-4d7e-b605-f450bbe9194d}</Project>
+      <Name>Hercules.Model</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
+      <Name>Behaviors SDK %28XAML%29</Name>
+    </SDKReference>
+  </ItemGroup>
+  <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
+    <VisualStudioVersion>14.0</VisualStudioVersion>
+  </PropertyGroup>
+  <Import Project="..\tools\targets\Fody.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\WindowsXaml\v$(VisualStudioVersion)\Microsoft.Windows.UI.Xaml.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,38 @@
+# Build Folders (you can keep bin if you'd like, to store dlls and pdbs)
+bin
+obj
+csx
+Publish
+packages
+Publish
+
+*.log
+*.xap
+*.user
+*.suo
+*.cache
+*.wadcfg
+*.ide
+*.bidx
+
+#node_modules
+/src/SR.BusPortal.Web2/SR.BusPortal.Web2/node_modules/**
+
+#gulp build output
+/src/SR.BusPortal.Web2/SR.BusPortal.Web2/Scripts/scripts.*.min.js
+/src/SR.BusPortal.Web2/SR.BusPortal.Web2/Scripts/scripts.*.js
+/src/SR.BusPortal.Web2/SR.BusPortal.Web2/Scripts/respond.min.js
+/src/SR.BusPortal.Web2/SR.BusPortal.Web2/Styles/plugins.css
+/src/SR.BusPortal.Web2/SR.BusPortal.Web2/Styles/plugins.min.css
+/src/SR.BusPortal.Web2/SR.BusPortal.Web2/Styles/website2.css
+/src/SR.BusPortal.Web2/SR.BusPortal.Web2/Styles/website2.min.css
+/src/SR.BusPortal.Web2/SR.BusPortal.Web2/Styles/_plugins.main.css
+/src/SR.BusPortal.Web2/SR.BusPortal.Web2/Styles/_website2.main.css
+
+
+# mstest test results
+TestResults
+/src/SR.BusPortal.Web/SR.BusPortal.Web/Config/seo_cities.txt
+/src/SR.BusPortal.Web/SR.BusPortal.Web/Config/seo_connections.txt
+
+Downloaded Profiling Logs

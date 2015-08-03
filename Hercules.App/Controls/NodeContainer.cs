@@ -19,12 +19,11 @@ namespace Hercules.App.Controls
         private static readonly Point EmptyPoint = new Point(double.PositiveInfinity, double.PositiveInfinity);
 
         private readonly NodeControl node;
-        private Point startingRenderingPosition = EmptyPoint;
-        private Point currentPosition;
-        private Point targetPosition;
         private Point layoutPosition;
+        private Point renderPosition;
         private AnchorPoint anchorPoint;
-        private DateTime? animatingEnd;
+
+        public IPathHolder PathHolder { get; set; }
 
         public Size Size
         {
@@ -46,7 +45,7 @@ namespace Hercules.App.Controls
         {
             get
             {
-                return new Rect(currentPosition, node.DesiredSize);
+                return new Rect(renderPosition, node.DesiredSize);
             }
         }
 
@@ -58,7 +57,13 @@ namespace Hercules.App.Controls
             }
         }
 
-        public IPathHolder PathHolder { get; set; }
+        public bool IsVisible
+        {
+            get
+            {
+                return node.Visibility == Visibility.Visible;
+            }
+        }
 
         public NodeContainer Parent { get; set; }
 
@@ -69,23 +74,18 @@ namespace Hercules.App.Controls
 
         public void Hide()
         {
-            ChangeVisibility(Visibility.Collapsed);
-
-            startingRenderingPosition = EmptyPoint;
+            if (IsVisible)
+            {
+                ChangeVisibility(Visibility.Collapsed);
+            }
         }
 
         public void Show()
         {
-            ChangeVisibility(Visibility.Visible);
-
-            startingRenderingPosition = EmptyPoint;
-        }
-
-        public void MoveTo(Point position, AnchorPoint anchor)
-        {
-            anchorPoint = anchor;
-
-            layoutPosition = position;
+            if (!IsVisible)
+            {
+                ChangeVisibility(Visibility.Visible);
+            }
         }
 
         private void ChangeVisibility(Visibility visible)
@@ -98,9 +98,16 @@ namespace Hercules.App.Controls
             }
         }
 
-        public bool UpdateRenderPosition(bool isAnimating, DateTime now, double animationSpeed)
+        public void MoveTo(Point position, AnchorPoint anchor)
         {
-            Point renderPosition = layoutPosition;
+            anchorPoint = anchor;
+
+            layoutPosition = position;
+        }
+
+        public void UpdateRenderPosition()
+        {
+            renderPosition = layoutPosition;
 
             Size size = NodeControl.DesiredSize;
 
@@ -114,43 +121,8 @@ namespace Hercules.App.Controls
             {
                 renderPosition.X -= 0.5 * size.Width;
             }
-
-            targetPosition = renderPosition;
-
-            if (isAnimating && startingRenderingPosition != EmptyPoint)
-            {
-                if (startingRenderingPosition != renderPosition)
-                {
-                    animatingEnd = now.AddMilliseconds(animationSpeed);
-
-                    startingRenderingPosition = renderPosition;
-                }
-            }
-            else
-            {
-                animatingEnd = null;
-            }
-
-            startingRenderingPosition = renderPosition;
-
-            double fractionComplete = 1;
-
-            if (animatingEnd.HasValue)
-            {
-                double timeRemaining = (animatingEnd.Value - now).TotalMilliseconds;
-
-                fractionComplete -= Math.Min(1, Math.Max(0, timeRemaining / animationSpeed));
-            }
-
-            currentPosition = new Point(
-                MathHelper.Interpolate(fractionComplete, currentPosition.X, targetPosition.X),
-                MathHelper.Interpolate(fractionComplete, currentPosition.Y, targetPosition.Y));
-
-            node.Arrange(new Rect(currentPosition, node.DesiredSize));
-
-            bool isEndNotReached = !MathHelper.AboutEqual(targetPosition, currentPosition);
-
-            return isEndNotReached;
+            
+            node.Arrange(new Rect(renderPosition, node.DesiredSize));
         }
     }
 }

@@ -22,13 +22,13 @@ namespace Hercules.Model.Layouting.Default
         private readonly Point movementCenter;
         private readonly Rect movementBounds;
         private readonly Document document;
-        private Point HerculesCenter;
         private DefaultLayout layout;
         private IRenderNode parentRenderNode;
         private IReadOnlyList<NodeBase> children;
         private AnchorPoint anchor;
-        private NodeBase parent;
         private NodeSide side;
+        private NodeBase parent;
+        private Point mindmapCenter;
         private Point position;
         private int renderIndex;
         private int? insertIndex;
@@ -73,7 +73,7 @@ namespace Hercules.Model.Layouting.Default
             double x = 0.5 * document.Size.Width;
             double y = 0.5 * document.Size.Height;
 
-            HerculesCenter = new Point(x, y);
+            mindmapCenter = new Point(x, y);
         }
 
         private void CalculateParentAttachTarget()
@@ -113,7 +113,7 @@ namespace Hercules.Model.Layouting.Default
 
             if (movingNode.Parent == root)
             {
-                if (movingNode.NodeSide == NodeSide.Right && movementCenter.X < HerculesCenter.X)
+                if (movingNode.NodeSide == NodeSide.Right && movementCenter.X < mindmapCenter.X)
                 {
                     CalculateReorderTarget(root.LeftChildren, NodeSide.Left);
                 }
@@ -121,7 +121,7 @@ namespace Hercules.Model.Layouting.Default
                 {
                     CalculateReorderTarget(root.RightChildren, NodeSide.Right);
                 }
-                else if (movingNode.NodeSide == NodeSide.Left && movementCenter.X > HerculesCenter.X)
+                else if (movingNode.NodeSide == NodeSide.Left && movementCenter.X > mindmapCenter.X)
                 {
                     CalculateReorderTarget(root.RightChildren, NodeSide.Right);
                 }
@@ -194,7 +194,7 @@ namespace Hercules.Model.Layouting.Default
 
             Action ajustWithChildren = () =>
             {
-                if (children.Count > 0)
+                if (children.Count > 0 && !parent.IsCollapsed)
                 {
                     if (!insertIndex.HasValue || insertIndex >= children.Count - 1)
                     {

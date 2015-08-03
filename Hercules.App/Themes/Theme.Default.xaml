@@ -35,13 +35,13 @@
         <Setter Property="Visibility" Value="Collapsed" />
         <Setter Property="IsHitTestVisible" Value="False" />
         <Setter Property="Height" Value="30" />
-        <Setter Property="Width" Value="80" />
+        <Setter Property="Width" Value="90" />
         <Setter Property="Background" Value="Red" />
-        <Setter Property="AnchorPosition" Value="6,0" />
+        <Setter Property="AnchorPosition" Value="15,0" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:NodeControl">
-                    <Border Margin="6" Background="Black" Opacity="0.5" />
+                    <Border Margin="15,5" Background="Black" Opacity="0.5" />
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
@@ -166,14 +166,14 @@
     </Style>
 
     <Style x:Key="NodeLevel2Style" TargetType="local:NodeControl">
-        <Setter Property="AnchorPosition" Value="6,12" />
+        <Setter Property="AnchorPosition" Value="15,12" />
         <Setter Property="MinHeight" Value="52" />
         <Setter Property="MinWidth" Value="92" />
         <Setter Property="BorderBrush" Value="#444" />
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:NodeControl">
-                    <Grid>
+                    <Grid Margin="9,0">
                         <Grid RenderTransformOrigin="0.5,0.5" x:Name="Container">
                             <Grid.RenderTransform>
                                 <CompositeTransform />

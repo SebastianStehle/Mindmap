@@ -18,6 +18,8 @@ namespace Hercules.Model.Layouting
 
         Size Size { get; }
 
+        bool IsVisible { get; }
+
         void Hide();
 
         void Show();

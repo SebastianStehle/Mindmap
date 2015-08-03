@@ -31,14 +31,6 @@ namespace Hercules.App.Controls
         private Canvas adornerLayer;
         private ScrollViewer scrollViewer;
 
-        public Panel NodePanel
-        {
-            get
-            {
-                return nodePanel;
-            }
-        }
-
         public ScrollViewer ScrollViewer
         {
             get

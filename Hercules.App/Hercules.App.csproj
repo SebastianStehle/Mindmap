@@ -110,7 +110,6 @@
     <Compile Include="Controls\DefaultThemePath.cs" />
     <Compile Include="Controls\IPathHolder.cs" />
     <Compile Include="Controls\Mindmap.cs" />
-    <Compile Include="Controls\MindmapExtensions.cs" />
     <Compile Include="Controls\MindmapFlyout.cs" />
     <Compile Include="Controls\MindmapFlyoutView.cs" />
     <Compile Include="Controls\MindmapPanel.cs" />

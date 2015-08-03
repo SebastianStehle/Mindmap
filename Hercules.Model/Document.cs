@@ -115,10 +115,8 @@ namespace Hercules.Model
 
         internal void Add(Node newNode)
         {
-            if (!nodes.Contains(newNode))
+            if (nodes.Add(newNode))
             {
-                nodes.Add(newNode);
-
                 newNode.LinkTo(this);
 
                 OnNodeAdded(newNode);
@@ -132,9 +130,8 @@ namespace Hercules.Model
 
         internal void Remove(Node oldNode)
         {
-            if (nodes.Contains(oldNode))
+            if (nodes.Remove(oldNode))
             {
-                nodes.Remove(oldNode);
                 nodesHashSet.Remove(oldNode.Id);
 
                 oldNode.LinkTo((Document)null);

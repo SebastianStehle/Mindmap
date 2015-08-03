@@ -16,10 +16,8 @@ using System.Linq;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using System.Diagnostics;
-using Windows.UI.Core;
 
 namespace Hercules.App.Controls
 {
@@ -28,8 +26,6 @@ namespace Hercules.App.Controls
         private const double AnimationSpeed = 600;
         private readonly Dictionary<NodeBase, NodeContainer> nodeControls = new Dictionary<NodeBase, NodeContainer>();
         private readonly NodeContainer previewContainer;
-        private bool requiresLayout = true;
-        private bool requiresLayoutOnNextArrange = true;
         private int canArrangeIfZero;
 
         public static readonly DependencyProperty ThemeProperty =
@@ -93,7 +89,7 @@ namespace Hercules.App.Controls
                 }
             });
 
-            InvalidateLayoutOnArrange();
+            InvalidateLayout();
         }
 
         public static readonly DependencyProperty IsAnimatingProperty =
@@ -123,7 +119,7 @@ namespace Hercules.App.Controls
 
         private void OnLayoutChanged(DependencyPropertyChangedEventArgs e)
         {
-            InvalidateLayoutOnArrange();
+            InvalidateLayout();
         }
 
         public static readonly DependencyProperty DocumentProperty =
@@ -161,8 +157,6 @@ namespace Hercules.App.Controls
                     HandleDocumentAdded(newDocument);
                 }
             });
-
-            InvalidateLayoutOnArrange();
         }
 
         public MindmapPanel()
@@ -204,6 +198,8 @@ namespace Hercules.App.Controls
 
                     previewContainer.NodeControl.Visibility = Visibility.Collapsed;
                 }
+
+                InvalidateArrange();
             });
         }
 
@@ -316,29 +312,13 @@ namespace Hercules.App.Controls
             return null;
         }
 
-        private void InvalidateLayoutOnArrange()
-        {
-            requiresLayoutOnNextArrange = true;
-
-            InvalidateArrange();
-        }
-
         private void InvalidateLayout()
         {
-            ForThemeAndDocument((document, theme, layout) =>
+            if (canArrangeIfZero == 0)
             {
-                if (canArrangeIfZero == 0)
-                {
-                    layout.UpdateVisibility(document, this);
-
-                    requiresLayout = true;
-
-                    UpdateStyles(theme);
-
-                    InvalidateMeasure();
-                    InvalidateArrange();
-                }
-            });
+                InvalidateMeasure();
+                InvalidateArrange();
+            }
         }
 
         private void UpdateStyles(ThemeBase theme)
@@ -373,24 +353,10 @@ namespace Hercules.App.Controls
 
             ForThemeAndDocument((document, theme, layout) =>
             {
-                if (requiresLayoutOnNextArrange)
-                {
-                    InvalidateLayout();
+                Layout.UpdateLayout(document, this);
 
-                    requiresLayoutOnNextArrange = false;
-                }
-                else
-                {
-                    if (requiresLayout)
-                    {
-                        Layout.UpdateLayout(document, this);
-
-                        requiresLayout = false;
-                    }
-
-                    RenderNodes();
-                    RenderPaths(Theme, finalSize);
-                }
+                RenderNodes();
+                RenderPaths(theme, finalSize);
             });
 
             return base.ArrangeOverride(finalSize);
@@ -398,23 +364,12 @@ namespace Hercules.App.Controls
 
         private void RenderNodes()
         {
-            bool isAnimating = false;
-
-            DateTime now = DateTime.Now;
-
             foreach (NodeContainer renderContainer in nodeControls.Values)
             {
-                isAnimating |= renderContainer.UpdateRenderPosition(IsAnimating, now, AnimationSpeed);
+                renderContainer.UpdateRenderPosition();
             }
 
-            previewContainer.UpdateRenderPosition(false, now, AnimationSpeed);
-
-            CompositionTarget.Rendering -= CompositionTarget_Rendering;
-
-            if (isAnimating)
-            {
-                CompositionTarget.Rendering += CompositionTarget_Rendering;
-            }
+            previewContainer.UpdateRenderPosition();
         }
 
         private void RenderPaths(ThemeBase theme, Size finalSize)
@@ -440,6 +395,13 @@ namespace Hercules.App.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
+            ForThemeAndDocument((document, theme, layout) =>
+            {
+                layout.UpdateVisibility(document, this);
+
+                UpdateStyles(theme);
+            });
+
             availableSize = new Size(double.PositiveInfinity, double.PositiveInfinity);
                 
             foreach (UIElement child in Children)

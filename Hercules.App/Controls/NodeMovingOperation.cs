@@ -32,26 +32,18 @@ namespace Hercules.App.Controls
         {
             if (nodeControl != null)
             {
-                if (nodeControl != null)
-                {
-                    Node movingNode = nodeControl.AssociatedNode as Node;
+                Node movingNode = nodeControl.AssociatedNode as Node;
 
-                    if (movingNode != null && movingNode.IsSelected && !nodeControl.IsTextEditing)
-                    {
-                        return new NodeMovingOperation(mindmap, nodeControl, movingNode);
-                    }
+                if (movingNode != null && movingNode.IsSelected && !nodeControl.IsTextEditing)
+                {
+                    return new NodeMovingOperation(mindmap, nodeControl, movingNode);
                 }
             }
 
             return null;
         }
 
-        public NodeMovingOperation(Mindmap mindmap)
-        {
-            this.mindmap = mindmap;
-        }
-
-        public NodeMovingOperation(Mindmap mindmap, NodeControl nodeControl, Node nodeMoving)
+        internal NodeMovingOperation(Mindmap mindmap, NodeControl nodeControl, Node nodeMoving)
         {
             this.mindmap = mindmap;
             this.nodeMoving = nodeMoving;

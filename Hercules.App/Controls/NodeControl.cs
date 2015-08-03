@@ -182,15 +182,11 @@ namespace Hercules.App.Controls
                 textBox.Select(textBox.Text.Length, 1);
             }
 
-            this.MakePanelAnimated(false);
-
             IsTextEditing = true;
         }
 
         private void textBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            this.MakePanelAnimated(true);
-
             if (associatedNode != null)
             {
                 if (!isCancelled)

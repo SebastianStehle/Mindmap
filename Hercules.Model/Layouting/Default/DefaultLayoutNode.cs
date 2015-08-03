@@ -86,16 +86,6 @@ namespace Hercules.Model.Layouting.Default
             TreeSize = renderNode.Size;
         }
 
-        public void Show()
-        {
-            renderNode.Show();
-        }
-
-        public void Hide()
-        {
-            renderNode.Hide();
-        }
-
         public void MoveTo(Point position, AnchorPoint anchor)
         {
             Position = position;

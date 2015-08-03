@@ -91,12 +91,6 @@ namespace Hercules.Model.Layouting.Default
                         childLayout.MoveTo(new Point(childX, childY), anchor);
 
                         y += childLayout.TreeSize.Height;
-
-                        childLayout.Show();
-                    }
-                    else
-                    {
-                        childLayout.Hide();
                     }
 
                     ArrangeNodes(childLayout, child.Children, factor, anchor, isCollapsed || child.IsCollapsed);

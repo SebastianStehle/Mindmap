@@ -140,6 +140,7 @@
     <Compile Include="Layouting\ILayout.cs" />
     <Compile Include="Layouting\IRenderer.cs" />
     <Compile Include="Layouting\IRenderNode.cs" />
+    <Compile Include="Layouting\VisibilityUpdater.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="NodeBase.cs" />
     <Compile Include="NodeEventArgs.cs" />

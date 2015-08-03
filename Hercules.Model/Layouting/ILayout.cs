@@ -15,5 +15,7 @@ namespace Hercules.Model.Layouting
         AttachTarget CalculateAttachTarget(Document document, IRenderer renderer, Node movingNode, Rect movementBounds);
 
         void UpdateLayout(Document document, IRenderer renderer);
+
+        void UpdateVisibility(Document document, IRenderer renderer);
     }
 }

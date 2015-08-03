@@ -27,6 +27,16 @@ namespace Hercules.Model.Layouting.Default
             process.UpdateLayout();
         }
 
+        public void UpdateVisibility(Document document, IRenderer renderer)
+        {
+            Guard.NotNull(document, nameof(document));
+            Guard.NotNull(renderer, nameof(renderer));
+
+            VisibilityUpdater updater = new VisibilityUpdater(document, renderer);
+
+            updater.UpdateVisibility();
+        }
+
         public AttachTarget CalculateAttachTarget(Document document, IRenderer renderer, Node movingNode, Rect movementBounds)
         {
             Guard.NotNull(document, nameof(document));

@@ -77,6 +77,8 @@ namespace Hercules.App.Controls
         public void Show()
         {
             ChangeVisibility(Visibility.Visible);
+
+            startingRenderingPosition = EmptyPoint;
         }
 
         public void MoveTo(Point position, AnchorPoint anchor)
@@ -146,7 +148,9 @@ namespace Hercules.App.Controls
 
             node.Arrange(new Rect(currentPosition, node.DesiredSize));
 
-            return !MathHelper.AboutEqual(targetPosition, currentPosition);
+            bool isEndNotReached = !MathHelper.AboutEqual(targetPosition, currentPosition);
+
+            return isEndNotReached;
         }
     }
 }

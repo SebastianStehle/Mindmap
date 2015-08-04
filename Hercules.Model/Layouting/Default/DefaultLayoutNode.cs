@@ -6,7 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
-using Windows.Foundation;
+using System.Numerics;
 
 namespace Hercules.Model.Layouting.Default
 {
@@ -14,25 +14,25 @@ namespace Hercules.Model.Layouting.Default
     {
         private readonly DefaultLayoutNode parent;
         private readonly IRenderNode renderNode;
-        private readonly Size nodeSize;
+        private readonly Vector2 nodeSize;
 
-        public Point Position { get; set; }
+        public Vector2 Position { get; set; }
 
-        public Size TreeSize { get; set; }
+        public Vector2 TreeSize { get; set; }
 
-        public double TreeWidth
+        public float TreeWidth
         {
             get
             {
-                return TreeSize.Width;
+                return TreeSize.X;
             }
         }
 
-        public double TreeHeight
+        public float TreeHeight
         {
             get
             {
-                return TreeSize.Height;
+                return TreeSize.Y;
             }
         }
 
@@ -44,7 +44,7 @@ namespace Hercules.Model.Layouting.Default
             }
         }
 
-        public Size NodeSize
+        public Vector2 NodeSize
         {
             get
             {
@@ -52,19 +52,19 @@ namespace Hercules.Model.Layouting.Default
             }
         }
 
-        public double NodeWidth
+        public float NodeWidth
         {
             get
             {
-                return nodeSize.Width;
+                return nodeSize.X;
             }
         }
 
-        public double NodeHeight
+        public float NodeHeight
         {
             get
             {
-                return nodeSize.Height;
+                return nodeSize.Y;
             }
         }
 
@@ -86,7 +86,7 @@ namespace Hercules.Model.Layouting.Default
             TreeSize = renderNode.Size;
         }
 
-        public void MoveTo(Point position, AnchorPoint anchor)
+        public void MoveTo(Vector2 position, AnchorPoint anchor)
         {
             Position = position;
 

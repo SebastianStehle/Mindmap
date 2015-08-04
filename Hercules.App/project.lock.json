@@ -1627,6 +1627,16 @@
           "lib/win8/Microsoft.Practices.Unity.dll": {},
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
         }
+      },
+      "Win2D.uwp/1.0.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0/win10-arm": {
@@ -3344,6 +3354,19 @@
           "lib/win8/Microsoft.Practices.Unity.dll": {},
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
         }
+      },
+      "Win2D.uwp/1.0.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "native": {
+          "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0/win10-arm-aot": {
@@ -5032,6 +5055,19 @@
         "runtime": {
           "lib/win8/Microsoft.Practices.Unity.dll": {},
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
+        }
+      },
+      "Win2D.uwp/1.0.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "native": {
+          "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll": {}
         }
       }
     },
@@ -6755,6 +6791,19 @@
           "lib/win8/Microsoft.Practices.Unity.dll": {},
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
         }
+      },
+      "Win2D.uwp/1.0.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "native": {
+          "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0/win10-x86-aot": {
@@ -8443,6 +8492,19 @@
         "runtime": {
           "lib/win8/Microsoft.Practices.Unity.dll": {},
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
+        }
+      },
+      "Win2D.uwp/1.0.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "native": {
+          "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll": {}
         }
       }
     },
@@ -10166,6 +10228,19 @@
           "lib/win8/Microsoft.Practices.Unity.dll": {},
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
         }
+      },
+      "Win2D.uwp/1.0.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "native": {
+          "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0/win10-x64-aot": {
@@ -11854,6 +11929,19 @@
         "runtime": {
           "lib/win8/Microsoft.Practices.Unity.dll": {},
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
+        }
+      },
+      "Win2D.uwp/1.0.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "native": {
+          "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll": {}
         }
       }
     }
@@ -15515,6 +15603,27 @@
         "package/services/metadata/core-properties/9eaa9c3fda1e4b7594c7beb2e6a9c731.psmdcp",
         "[Content_Types].xml"
       ]
+    },
+    "Win2D.uwp/1.0.0": {
+      "sha512": "5AmewMlCEFqan67T63dKLJ+jpViA+X7mNv/3RSJJNzakqoMCb/9t4aSAtFiSwWZ5nRYq0zxUhDsFQm45OUvyVw==",
+      "type": "Package",
+      "files": [
+        "_rels/.rels",
+        "Win2D.uwp.nuspec",
+        "Win2d.githash.txt",
+        "build/native/Win2D.uwp.targets",
+        "include/Microsoft.Graphics.Canvas.h",
+        "include/Microsoft.Graphics.Canvas.native.h",
+        "lib/uap10.0/Microsoft.Graphics.Canvas.winmd",
+        "lib/uap10.0/Microsoft.Graphics.Canvas.xml",
+        "lib/uap10.0/en/Microsoft.Graphics.Canvas.xml",
+        "lib/uap10.0/Workaround1200257.dll",
+        "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll",
+        "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll",
+        "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll",
+        "package/services/metadata/core-properties/ef20644389d24e67ac24c8c720b05a92.psmdcp",
+        "[Content_Types].xml"
+      ]
     }
   },
   "projectFileDependencyGroups": {
@@ -15525,7 +15634,8 @@
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.0.0",
       "MvvmLight >= 5.1.1",
       "PropertyChanged.Fody >= 1.50.1",
-      "Unity >= 3.5.1405-prerelease"
+      "Unity >= 3.5.1405-prerelease",
+      "Win2D.uwp >= 1.0.0"
     ],
     "UAP,Version=v10.0": []
   }

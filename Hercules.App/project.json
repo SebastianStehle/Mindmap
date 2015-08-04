@@ -6,7 +6,8 @@
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
     "MvvmLight": "5.1.1",
     "PropertyChanged.Fody": "1.50.1",
-    "Unity": "3.5.1405-prerelease"
+    "Unity": "3.5.1405-prerelease",
+    "Win2D.uwp": "1.0.0"
   },
   "frameworks": {
     "uap10.0": {}

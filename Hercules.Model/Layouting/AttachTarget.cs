@@ -6,19 +6,19 @@
 // All rights reserved.
 // ==========================================================================
 
-using Windows.Foundation;
+using System.Numerics;
 
 namespace Hercules.Model.Layouting
 {
     public sealed class AttachTarget
     {
-        private readonly Point position;
+        private readonly Vector2 position;
         private readonly NodeBase node;
         private readonly NodeSide nodeSide;
         private readonly AnchorPoint anchor;
         private readonly int? index;
 
-        public Point Position
+        public Vector2 Position
         {
             get
             {
@@ -58,7 +58,7 @@ namespace Hercules.Model.Layouting
             }
         }
 
-        public AttachTarget(NodeBase node, NodeSide nodeSide, int? index, Point position, AnchorPoint anchor)
+        public AttachTarget(NodeBase node, NodeSide nodeSide, int? index, Vector2 position, AnchorPoint anchor)
         {
             this.node = node;
             this.index = index;

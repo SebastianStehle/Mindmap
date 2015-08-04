@@ -106,23 +106,20 @@
     <Compile Include="Components\Implementations\DefaultSettingsProvider.cs" />
     <Compile Include="Components\Implementations\ResourcesLocalizationManager.cs" />
     <Compile Include="Components\ISettingsProvider.cs" />
-    <Compile Include="Controls\DefaultTheme.cs" />
-    <Compile Include="Controls\DefaultThemePath.cs" />
-    <Compile Include="Controls\IPathHolder.cs" />
+    <Compile Include="Controls\Default\DefaultRenderer.cs" />
+    <Compile Include="Controls\Default\DefaultLevel1Node.cs" />
+    <Compile Include="Controls\Default\DefaultRootNode.cs" />
     <Compile Include="Controls\Mindmap.cs" />
     <Compile Include="Controls\MindmapFlyout.cs" />
     <Compile Include="Controls\MindmapFlyoutView.cs" />
     <Compile Include="Controls\MindmapPanel.cs" />
-    <Compile Include="Controls\NodeContainer.cs" />
-    <Compile Include="Controls\NodeControl.cs" />
-    <Compile Include="Controls\NodeMovingBehavior.cs" />
-    <Compile Include="Controls\NodeMovingOperation.cs" />
     <Compile Include="Controls\NodeSideToHorizontalAlignmentConverter.cs" />
     <Compile Include="Controls\NotNullNodeThicknessConverter.cs" />
     <Compile Include="Controls\NotNullRootThicknessConverter.cs" />
     <Compile Include="Controls\NotRootToVisibilityConverter.cs" />
-    <Compile Include="Controls\ThemeBase.cs" />
     <Compile Include="Controls\ThemeColor.cs" />
+    <Compile Include="Controls\ThemeRenderer.cs" />
+    <Compile Include="Controls\ThemeRenderNode.cs" />
     <Compile Include="EditColorView.xaml.cs">
       <DependentUpon>EditColorView.xaml</DependentUpon>
     </Compile>
@@ -248,10 +245,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="Themes\Generic.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Themes\Theme.Default.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

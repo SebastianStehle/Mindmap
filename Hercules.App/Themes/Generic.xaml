@@ -4,31 +4,47 @@
     xmlns:local="using:Hercules.App.Controls"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:gp="using:GP.Windows.UI"
-    xmlns:gpi="using:GP.Windows.UI.Interactivity">
-    
+    xmlns:gpi="using:GP.Windows.UI.Interactivity"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml">
+
+    <Style TargetType="local:MindmapPanel">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:MindmapPanel">
+                    <Grid>
+                        <canvas:CanvasControl  x:Name="Canvas" />
+
+                        <ScrollViewer ZoomMode="Enabled" x:Name="ScrollViewer" MaxZoomFactor="4" Background="Transparent" Padding="0"
+                            VerticalScrollBarVisibility="Auto" 
+                            HorizontalScrollBarVisibility="Auto" 
+                            IsVerticalRailEnabled="False"
+                            IsVerticalScrollChainingEnabled="False" 
+                            IsHorizontalScrollChainingEnabled="False" 
+                            IsHorizontalRailEnabled="False">
+                            <i:Interaction.Behaviors>
+                                <gpi:ScrollViewerBringIntoViewInputPaneBehavior />
+                            </i:Interaction.Behaviors>
+
+                            <Grid x:Name="Placeholder" Width="{Binding Document.Width}" Height="{Binding Document.Height}" Background="Blue" Opacity="0.5">
+                                <Rectangle Fill="Red" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            </Grid>
+                        </ScrollViewer>
+                    </Grid>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
     <Style TargetType="local:Mindmap">
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="local:Mindmap">
-                    <ScrollViewer ZoomMode="Enabled" x:Name="ScrollViewer" MaxZoomFactor="4"
-                        VerticalScrollBarVisibility="Auto" 
-                        HorizontalScrollBarVisibility="Auto" 
-                        IsVerticalRailEnabled="False"
-                        IsVerticalScrollChainingEnabled="False" 
-                        IsHorizontalScrollChainingEnabled="False" 
-                        IsHorizontalRailEnabled="False">
-                        <i:Interaction.Behaviors>
-                            <gpi:ScrollViewerBringIntoViewInputPaneBehavior />
-                        </i:Interaction.Behaviors>
-                        <Grid Background="Transparent"  Width="{Binding Document.Size.Width}" Height="{Binding Document.Size.Height}">
-                            <local:MindmapPanel x:Name="NodePanel" Background="Transparent" Document="{Binding Document}" Layout="{TemplateBinding Layout}" Theme="{TemplateBinding Theme}">
-                                <i:Interaction.Behaviors>
-                                    <gpi:SwallowKeyArrowEventsBehavior />
-                                </i:Interaction.Behaviors>
-                            </local:MindmapPanel>
-                            <Canvas x:Name="AdornerLayer" />
-                        </Grid>
-                    </ScrollViewer>
+                    <Grid Background="Transparent" >
+                        <local:MindmapPanel x:Name="NodePanel" Background="Transparent" Document="{Binding Document}" Layout="{TemplateBinding Layout}">
+                            <i:Interaction.Behaviors>
+                                <gpi:SwallowKeyArrowEventsBehavior />
+                            </i:Interaction.Behaviors>
+                        </local:MindmapPanel>
+                    </Grid>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

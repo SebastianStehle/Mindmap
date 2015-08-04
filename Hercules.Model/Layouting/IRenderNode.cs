@@ -6,17 +6,18 @@
 // All rights reserved.
 // ==========================================================================
 
-using Windows.Foundation;
+using System.Numerics;
+using Hercules.Model.Utils;
 
 namespace Hercules.Model.Layouting
 {
     public interface IRenderNode
     {
-        Point Position { get; }
+        Vector2 Position { get; }
 
-        Rect Bounds { get; }
+        Vector2 Size { get; }
 
-        Size Size { get; }
+        Rect2 Bounds { get; }
 
         bool IsVisible { get; }
 
@@ -24,6 +25,6 @@ namespace Hercules.Model.Layouting
 
         void Show();
 
-        void MoveTo(Point position, AnchorPoint anchor);
+        void MoveTo(Vector2 position, AnchorPoint anchor);
     }
 }

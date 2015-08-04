@@ -6,20 +6,25 @@
 // All rights reserved.
 // ==========================================================================
 
+using GP.Windows;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Brushes;
 using Windows.UI;
-using Windows.UI.Xaml.Media;
 
 namespace Hercules.App.Controls
 {
     public sealed class ThemeColor
     {
-        public static readonly ThemeColor White = new ThemeColor(new SolidColorBrush(Colors.White), new SolidColorBrush(Colors.White), new SolidColorBrush(Colors.White));
+        public static readonly ThemeColor White = new ThemeColor(Colors.White, Colors.White, Colors.White);
 
-        private readonly SolidColorBrush normal;
-        private readonly SolidColorBrush dark;
-        private readonly SolidColorBrush light;
+        private readonly Color normal;
+        private readonly Color dark;
+        private readonly Color light;
+        private ICanvasBrush normalBrush;
+        private ICanvasBrush darkBrush;
+        private ICanvasBrush lightBrush;
 
-        public SolidColorBrush Normal
+        public Color Normal
         {
             get
             {
@@ -27,7 +32,7 @@ namespace Hercules.App.Controls
             }
         }
 
-        public SolidColorBrush Dark
+        public Color Dark
         {
             get
             {
@@ -35,7 +40,7 @@ namespace Hercules.App.Controls
             }
         }
 
-        public SolidColorBrush Light
+        public Color Light
         {
             get
             {
@@ -43,11 +48,32 @@ namespace Hercules.App.Controls
             }
         }
 
-        public ThemeColor(SolidColorBrush normal, SolidColorBrush dark, SolidColorBrush light)
+        public ThemeColor(Color normal, Color dark, Color light)
         {
             this.dark = dark;
             this.light = light;
             this.normal = normal;
+        }
+
+        public ICanvasBrush NormalBrush(CanvasDrawingSession session)
+        {
+            Guard.NotNull(session, nameof(session));
+
+            return normalBrush ?? (normalBrush = new CanvasSolidColorBrush(session.Device, normal));
+        }
+
+        public ICanvasBrush DarkBrush(CanvasDrawingSession session)
+        {
+            Guard.NotNull(session, nameof(session));
+
+            return darkBrush ?? (darkBrush = new CanvasSolidColorBrush(session.Device, dark));
+        }
+
+        public ICanvasBrush LightBrush(CanvasDrawingSession session)
+        {
+            Guard.NotNull(session, nameof(session));
+
+            return lightBrush ?? (lightBrush = new CanvasSolidColorBrush(session.Device, light));
         }
     }
 }

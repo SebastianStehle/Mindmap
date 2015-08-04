@@ -33,8 +33,6 @@ namespace Hercules.App
 
         public override void OnOpened()
         {
-            ColorsGrid.ItemsSource = Theme.Colors;
-
             NodeBase selectedNode = Document.SelectedNode;
 
             oldColor = selectedNode.Color;

@@ -72,7 +72,7 @@
                     AutomationProperties.Name="Edit" x:Uid="AppBarButtonEdit">
                     <AppBarButton.Flyout>
                         <controls:MindmapFlyout>
-                            <local:EditView Document="{Binding Document}" Theme="{Binding Theme}" />
+                            <local:EditView Document="{Binding Document}" />
                         </controls:MindmapFlyout>
                     </AppBarButton.Flyout>
                     <i:Interaction.Behaviors>
@@ -87,7 +87,7 @@
                     AutomationProperties.Name="Change Icon" x:Uid="AppBarButtonChangeIcon">
                     <AppBarButton.Flyout>
                         <controls:MindmapFlyout>
-                            <local:EditIconView Document="{Binding Document}" Theme="{Binding Theme}" />
+                            <local:EditIconView Document="{Binding Document}" />
                         </controls:MindmapFlyout>
                     </AppBarButton.Flyout>
                     <i:Interaction.Behaviors>
@@ -99,7 +99,7 @@
                     AutomationProperties.Name="Change Color" x:Uid="AppBarButtonChangeColor">
                     <AppBarButton.Flyout>
                         <controls:MindmapFlyout>
-                            <local:EditColorView Document="{Binding Document}" Theme="{Binding Theme}" />
+                            <local:EditColorView Document="{Binding Document}" />
                         </controls:MindmapFlyout>
                     </AppBarButton.Flyout>
                     <i:Interaction.Behaviors>
@@ -268,16 +268,13 @@
             
             <gpc:TiledBackground TileSize="60" />           
 
-            <controls:Mindmap Document="{Binding Document}" Theme="{Binding Theme}" x:Name="Mindmap">
+            <controls:Mindmap Document="{Binding Document}" x:Name="Mindmap">
                 <controls:Mindmap.RenderTransform>
                     <CompositeTransform />
                 </controls:Mindmap.RenderTransform>
                 <controls:Mindmap.Layout>
                     <modelLayout:DefaultLayout ElementMargin="8" HorizontalMargin="50" />
                 </controls:Mindmap.Layout>
-                <i:Interaction.Behaviors>
-                    <controls:NodeMovingBehavior />
-                </i:Interaction.Behaviors>
             </controls:Mindmap>
         </Grid>
     </Grid>

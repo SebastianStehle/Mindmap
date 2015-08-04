@@ -6,13 +6,13 @@
 // All rights reserved.
 // ==========================================================================
 
-using Windows.Foundation;
+using Hercules.Model.Utils;
 
 namespace Hercules.Model.Layouting
 {
     public interface ILayout
     {
-        AttachTarget CalculateAttachTarget(Document document, IRenderer renderer, Node movingNode, Rect movementBounds);
+        AttachTarget CalculateAttachTarget(Document document, IRenderer renderer, Node movingNode, Rect2 movementBounds);
 
         void UpdateLayout(Document document, IRenderer renderer);
 

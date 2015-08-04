@@ -12,16 +12,7 @@ namespace Hercules.App.Controls
         {
             get { return (Document)GetValue(DocumentProperty); }
             set { SetValue(DocumentProperty, value); }
-        }
-
-        public static readonly DependencyProperty ThemeProperty =
-            DependencyProperty.Register("Theme", typeof(ThemeBase), typeof(MindmapFlyoutView), new PropertyMetadata(null));
-        public ThemeBase Theme
-        {
-            get { return (ThemeBase)GetValue(ThemeProperty); }
-            set { SetValue(ThemeProperty, value); }
-        }
-       
+        }       
 
         protected MindmapFlyoutView()
         {

@@ -7,11 +7,11 @@
 // ==========================================================================
 
 using GP.Windows;
-using GP.Windows.UI;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Windows.Foundation;
+using System.Numerics;
+using Hercules.Model.Utils;
 
 namespace Hercules.Model.Layouting.Default
 {
@@ -19,8 +19,8 @@ namespace Hercules.Model.Layouting.Default
     {
         private readonly IRenderer renderer;
         private readonly Node movingNode;
-        private readonly Point movementCenter;
-        private readonly Rect movementBounds;
+        private readonly Vector2 movementCenter;
+        private readonly Rect2 movementBounds;
         private readonly Document document;
         private DefaultLayout layout;
         private IRenderNode parentRenderNode;
@@ -28,19 +28,19 @@ namespace Hercules.Model.Layouting.Default
         private AnchorPoint anchor;
         private NodeSide side;
         private NodeBase parent;
-        private Point mindmapCenter;
-        private Point position;
+        private Vector2 mindmapCenter;
+        private Vector2 position;
         private int renderIndex;
         private int? insertIndex;
 
-        public PreviewCalculationProcess(Document document, DefaultLayout layout, IRenderer renderer, Node movingNode, Rect movementBounds)
+        public PreviewCalculationProcess(Document document, DefaultLayout layout, IRenderer renderer, Node movingNode, Rect2 movementBounds)
         {
             this.layout = layout;
             this.document = document;
             this.renderer = renderer;
             this.movingNode = movingNode;
             this.movementBounds = movementBounds;
-            this.movementCenter = movementBounds.Center();
+            this.movementCenter = movementBounds.Center;
         }
 
         public AttachTarget CalculateAttachTarget()
@@ -70,10 +70,10 @@ namespace Hercules.Model.Layouting.Default
 
         private void CalculateCenter()
         {
-            double x = 0.5 * document.Size.Width;
-            double y = 0.5 * document.Size.Height;
+            float x = 0.5f * document.Size.X;
+            float y = 0.5f * document.Size.Y;
 
-            mindmapCenter = new Point(x, y);
+            mindmapCenter = new Vector2(x, y);
         }
 
         private void CalculateParentAttachTarget()
@@ -167,9 +167,9 @@ namespace Hercules.Model.Layouting.Default
             {
                 Node otherNode = collection[i];
 
-                Rect bounds = renderer.FindRenderNode(otherNode).Bounds;
+                Rect2 bounds = renderer.FindRenderNode(otherNode).Bounds;
 
-                if (centerY > bounds.CenterY())
+                if (centerY > bounds.CenterY)
                 {
                     renderIndex = i + 1;
                     insertIndex = renderIndex;
@@ -187,8 +187,8 @@ namespace Hercules.Model.Layouting.Default
         {
             parentRenderNode = renderer.FindRenderNode(parent);
 
-            double y = parentRenderNode.Position.Y;
-            double x = parentRenderNode.Position.X + (1.0 * parentRenderNode.Size.Width) + layout.HorizontalMargin;
+            float y = parentRenderNode.Position.Y;
+            float x = parentRenderNode.Position.X + (1.0f * parentRenderNode.Size.X) + layout.HorizontalMargin;
 
             anchor = AnchorPoint.Left;
 
@@ -198,22 +198,22 @@ namespace Hercules.Model.Layouting.Default
                 {
                     if (!insertIndex.HasValue || insertIndex >= children.Count - 1)
                     {
-                        Rect bounds = renderer.FindRenderNode(children.Last()).Bounds;
+                        Rect2 bounds = renderer.FindRenderNode(children.Last()).Bounds;
 
-                        y = bounds.Bottom + (layout.ElementMargin * 2) + (movementBounds.Height * 0.5);
+                        y = bounds.Bottom + (layout.ElementMargin * 2f) + (movementBounds.Y * 0.5f);
                     }
                     else if (insertIndex == 0)
                     {
-                        Rect bounds = renderer.FindRenderNode(children.First()).Bounds;
+                        Rect2 bounds = renderer.FindRenderNode(children.First()).Bounds;
 
-                        y = bounds.Top - layout.ElementMargin - (movementBounds.Height * 0.5);
+                        y = bounds.Top - layout.ElementMargin - (movementBounds.Y * 0.5f);
                     }
                     else
                     {
-                        Rect bounds1 = renderer.FindRenderNode(children[renderIndex - 1]).Bounds;
-                        Rect bounds2 = renderer.FindRenderNode(children[renderIndex + 0]).Bounds;
+                        Rect2 bounds1 = renderer.FindRenderNode(children[renderIndex - 1]).Bounds;
+                        Rect2 bounds2 = renderer.FindRenderNode(children[renderIndex + 0]).Bounds;
 
-                        y = (bounds1.CenterY() + bounds2.CenterY()) * 0.5;
+                        y = (bounds1.CenterY + bounds2.CenterY) * 0.5f;
                     }
                 }
             };
@@ -224,11 +224,11 @@ namespace Hercules.Model.Layouting.Default
             {
                 if (side == NodeSide.Right)
                 {
-                    x = parentRenderNode.Position.X + parentRenderNode.Size.Width + layout.HorizontalMargin;
+                    x = parentRenderNode.Position.X + parentRenderNode.Size.X + layout.HorizontalMargin;
                 }
                 else
                 {
-                    x = parentRenderNode.Position.X - parentRenderNode.Size.Width - layout.HorizontalMargin;
+                    x = parentRenderNode.Position.X - parentRenderNode.Size.X - layout.HorizontalMargin;
 
                     anchor = AnchorPoint.Right;
                 }
@@ -241,13 +241,13 @@ namespace Hercules.Model.Layouting.Default
 
                 if (side == NodeSide.Right)
                 {
-                    x = parentRenderNode.Position.X + (parentRenderNode.Size.Width * 0.5) + layout.HorizontalMargin;
+                    x = parentRenderNode.Position.X + (parentRenderNode.Size.X * 0.5f) + layout.HorizontalMargin;
 
                     ajustWithChildren();
                 }
                 else
                 {
-                    x = parentRenderNode.Position.X - (parentRenderNode.Size.Width * 0.5) - layout.HorizontalMargin;
+                    x = parentRenderNode.Position.X - (parentRenderNode.Size.X * 0.5f) - layout.HorizontalMargin;
 
                     anchor = AnchorPoint.Right;
 
@@ -255,26 +255,26 @@ namespace Hercules.Model.Layouting.Default
                 }
             }
 
-            position = new Point(x, y);
+            position = new Vector2(x, y);
         }
 
         private void FindAttachOnParent()
         {
-            double rectArea = movementBounds.Width * movementBounds.Height;
+            double rectArea = movementBounds.X * movementBounds.Y;
 
             foreach (NodeBase node in document.Nodes)
             {
                 if (node != movingNode && node != movingNode.Parent && !movingNode.HasChild(node as Node))
                 {
-                    Rect nodeBounds = renderer.FindRenderNode(node).Bounds;
+                    Rect2 nodeBounds = renderer.FindRenderNode(node).Bounds;
 
-                    double minArea = Math.Min(rectArea, nodeBounds.Width * nodeBounds.Height);
+                    double minArea = Math.Min(rectArea, nodeBounds.X * nodeBounds.Y);
 
                     nodeBounds.Intersect(movementBounds);
 
-                    double newArea = nodeBounds.Width * nodeBounds.Height;
+                    double newArea = nodeBounds.X * nodeBounds.Y;
 
-                    if (!double.IsInfinity(newArea) && newArea > 0.5 * minArea)
+                    if (!double.IsInfinity(newArea) && newArea > 0.5f * minArea)
                     {
                         parent = node;
                     }

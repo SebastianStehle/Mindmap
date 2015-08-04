@@ -10,7 +10,6 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.Unity;
-using Hercules.App.Controls;
 using Hercules.App.Messages;
 using Hercules.Model;
 using Hercules.Model.Storing;
@@ -27,7 +26,6 @@ namespace Hercules.App.ViewModels
     public sealed class EditorViewModel : ViewModelBase
     {
         private readonly DispatcherTimer autosaveTimer = new DispatcherTimer();
-        private ThemeBase theme = new DefaultTheme();
         private Document document;
         private RelayCommand redoCommand;
         private RelayCommand undoCommand;
@@ -38,13 +36,6 @@ namespace Hercules.App.ViewModels
         [Dependency]
         public IDocumentStore DocumentStore { get; set; }
 
-        public ThemeBase Theme
-        {
-            get
-            {
-                return theme;
-            }
-        }
 
         public Document Document
         {

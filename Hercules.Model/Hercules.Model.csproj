@@ -163,6 +163,7 @@
     <Compile Include="ToggleCollapseCommand.cs" />
     <Compile Include="UndoRedoManager.cs" />
     <Compile Include="Utils\LimitedThreadsScheduler.cs" />
+    <Compile Include="Utils\Rect2.cs" />
     <Content Include="Properties\Hercules.Model.rd.xml" />
   </ItemGroup>
   <ItemGroup>

@@ -7,15 +7,15 @@
 // ==========================================================================
 
 using GP.Windows;
-using Windows.Foundation;
+using Hercules.Model.Utils;
 
 namespace Hercules.Model.Layouting.Default
 {
     public sealed class DefaultLayout : ILayout
     {
-        public double HorizontalMargin { get; set; }
+        public int HorizontalMargin { get; set; }
 
-        public double ElementMargin { get; set; }
+        public int ElementMargin { get; set; }
 
         public void UpdateLayout(Document document, IRenderer renderer)
         {
@@ -37,7 +37,7 @@ namespace Hercules.Model.Layouting.Default
             updater.UpdateVisibility();
         }
 
-        public AttachTarget CalculateAttachTarget(Document document, IRenderer renderer, Node movingNode, Rect movementBounds)
+        public AttachTarget CalculateAttachTarget(Document document, IRenderer renderer, Node movingNode, Rect2 movementBounds)
         {
             Guard.NotNull(document, nameof(document));
             Guard.NotNull(renderer, nameof(renderer));

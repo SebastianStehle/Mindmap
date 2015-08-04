@@ -9,6 +9,13 @@
 using Hercules.Model;
 using System;
 using Windows.UI.Xaml;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Geometry;
+using Windows.Foundation;
+using GP.Windows.UI;
+using System.Numerics;
+using Microsoft.Graphics.Canvas.Brushes;
+using Windows.UI;
 
 namespace Hercules.App.Controls
 {
@@ -152,9 +159,111 @@ namespace Hercules.App.Controls
             return new DefaultThemePath(PathStyle);
         }
 
-        public override void RenderPath(IPathHolder path, NodeContainer renderContainer)
+        public override void RenderNode(NodeContainer node, CanvasDrawingSession session)
         {
-            ((DefaultThemePath)path).Render(renderContainer);
+            ThemeColor color = Colors[node.NodeControl.AssociatedNode.Color];
+
+            ICanvasBrush brush = node.NodeControl.AssociatedNode.IsSelected ?
+                new CanvasSolidColorBrush(session.Device, color.Light.Color) :
+                new CanvasSolidColorBrush(session.Device, color.Normal.Color);
+            ICanvasBrush darkBrush = new CanvasSolidColorBrush(session.Device, color.Dark.Color);
+
+            if (node.NodeControl.AssociatedNode is RootNode)
+            {
+                session.FillEllipse(
+                    new Vector2(
+                        (float)node.Bounds.CenterX(), 
+                        (float)node.Bounds.CenterY()),
+                    0.5f * (float)node.Size.Width,
+                    0.5f * (float)node.Size.Height,
+                    brush);
+            }
+            else if (node.NodeControl.AssociatedNode.Parent is RootNode)
+            {
+                Vector2 padding = new Vector2(10, 5);
+
+                session.FillRectangle(
+                    (float)node.Position.X + padding.X,
+                    (float)node.Bounds.Y + padding.Y,
+                    (float)node.Size.Width - padding.X * 2,
+                    (float)node.Size.Height - padding.Y * 2,
+                    brush);
+
+                if (node.NodeControl.AssociatedNode.IsSelected)
+                {
+                    session.DrawRectangle(
+                        (float)node.Position.X,
+                        (float)node.Bounds.Y,
+                        (float)node.Size.Width,
+                        (float)node.Size.Height,
+                        darkBrush);
+                }
+            }
+        }
+
+        public override void RenderPath(IPathHolder path, NodeContainer container, CanvasDrawingSession session)
+        {
+            Rect targetRect = container.Bounds;
+            Rect parentRect = container.Parent.Bounds;
+
+            Point targetAnchorPosition = container.NodeControl.AnchorPosition;
+            Point parentAnchorPosition = container.Parent.NodeControl.AnchorPosition;
+
+            Point point1 = VisualTreeExtensions.PointZero;
+            Point point2 = VisualTreeExtensions.PointZero;
+
+            if (CalculateCenterX(targetRect) > CalculateCenterX(parentRect))
+            {
+                CalculateCenterL(targetRect, targetAnchorPosition, ref point1);
+                CalculateCenterR(parentRect, parentAnchorPosition, ref point2);
+            }
+            else
+            {
+                CalculateCenterR(targetRect, targetAnchorPosition, ref point1);
+                CalculateCenterL(parentRect, parentAnchorPosition, ref point2);
+            }
+
+            point1.X = Math.Round(point1.X);
+            point1.Y = Math.Round(point1.Y);
+            point2.X = Math.Round(point2.X);
+            point2.Y = Math.Round(point2.Y);
+
+            double halfX = (point1.X + point2.X) * 0.5;
+
+            CanvasPathBuilder builder = new CanvasPathBuilder(session.Device);
+
+            builder.BeginFigure(new Vector2((float)point1.X, (float)point1.Y));
+
+            builder.AddCubicBezier(
+                new Vector2((float)halfX, (float)point1.Y),
+                new Vector2((float)halfX, (float)point2.Y),
+                new Vector2((float)point2.X, (float)point2.Y));
+
+            builder.EndFigure(CanvasFigureLoop.Open);
+
+            CanvasGeometry pathGeometry = CanvasGeometry.CreatePath(builder);
+
+            ICanvasBrush brush = new CanvasSolidColorBrush(session.Device, Color.FromArgb(255, 0, 0, 0));
+
+            session.DrawGeometry(pathGeometry, brush, 2);
+
+        }
+
+        private static void CalculateCenterL(Rect rect, Point anchorPosition, ref Point point)
+        {
+            point.X = rect.X + anchorPosition.X;
+            point.Y = rect.Y + anchorPosition.Y + (rect.Height * 0.5);
+        }
+
+        private static void CalculateCenterR(Rect rect, Point anchorPosition, ref Point point)
+        {
+            point.X = rect.X - anchorPosition.X + rect.Width;
+            point.Y = rect.Y + anchorPosition.Y + (rect.Height * 0.5);
+        }
+
+        private static double CalculateCenterX(Rect rect)
+        {
+            return rect.X + (rect.Width * 0.5);
         }
     }
 }

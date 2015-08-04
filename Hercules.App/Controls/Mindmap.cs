@@ -10,7 +10,6 @@ using Hercules.Model;
 using Hercules.Model.Layouting;
 using GP.Windows.UI;
 using GP.Windows.UI.Controls;
-using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Core;
@@ -45,14 +44,6 @@ namespace Hercules.App.Controls
         {
             get { return (ILayout)GetValue(LayoutProperty); }
             set { SetValue(LayoutProperty, value); }
-        }
-
-        public static readonly DependencyProperty ThemeProperty =
-            DependencyProperty.Register("Theme", typeof(ThemeBase), typeof(Mindmap), new PropertyMetadata(null));
-        public ThemeBase Theme
-        {
-            get { return (ThemeBase)GetValue(ThemeProperty); }
-            set { SetValue(ThemeProperty, value); }
         }
 
         public static readonly DependencyProperty DocumentProperty =
@@ -138,26 +129,6 @@ namespace Hercules.App.Controls
             {
                 adornerLayer.Children.Remove(adorner);
             }
-        }
-
-        public void ShowPreviewElement(Point? position, NodeBase parent, AnchorPoint anchor)
-        {
-            nodePanel.ShowPreviewElement(position, parent, anchor);
-        }
-
-        public AttachTarget CalculateAttachTarget(Node movingNode, Rect movementBounds)
-        {
-            return Layout.CalculateAttachTarget(Document, nodePanel, movingNode, movementBounds);
-        }
-
-        public Rect GetBounds(NodeBase node)
-        {
-            return nodePanel.GetBounds(node);
-        }
-
-        public NodeControl GetControl(NodeBase node)
-        {
-            return nodePanel.GetControl(node);
         }
     }
 }

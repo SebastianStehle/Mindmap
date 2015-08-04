@@ -8,7 +8,7 @@
 
 using System;
 using System.Collections.Generic;
-using Windows.Foundation;
+using System.Numerics;
 
 namespace Hercules.Model.Layouting.Default
 {
@@ -17,7 +17,7 @@ namespace Hercules.Model.Layouting.Default
         private readonly Document document;
         private readonly IRenderer renderer;
         private readonly DefaultLayout layout;
-        private Point HerculesCenter;
+        private Vector2 minmapCenter;
 
         public LayoutProcess(Document document, DefaultLayout layout, IRenderer renderer)
         {
@@ -37,46 +37,46 @@ namespace Hercules.Model.Layouting.Default
 
         private void CalculateCenter()
         {
-            double x = 0.5 * document.Size.Width;
-            double y = 0.5 * document.Size.Height;
+            float x = 0.5f * document.Size.X;
+            float y = 0.5f * document.Size.Y;
 
-            HerculesCenter = new Point(x, y);
+            minmapCenter = new Vector2(x, y);
         }
 
         private void ArrangeRoot()
         {
             DefaultLayoutNode rootLayoutNode = DefaultLayoutNode.AttachTo(document.Root, renderer.FindRenderNode(document.Root), null);
             
-            rootLayoutNode.MoveTo(HerculesCenter, AnchorPoint.Center);
+            rootLayoutNode.MoveTo(minmapCenter, AnchorPoint.Center);
 
-            Arrange(rootLayoutNode, document.Root.LeftChildren, -1.0, AnchorPoint.Right);
-            Arrange(rootLayoutNode, document.Root.RightChildren, 1.0, AnchorPoint.Left);
+            Arrange(rootLayoutNode, document.Root.LeftChildren, -1.0f, AnchorPoint.Right);
+            Arrange(rootLayoutNode, document.Root.RightChildren, 1.0f, AnchorPoint.Left);
         }
 
-        private void Arrange(DefaultLayoutNode root, IReadOnlyList<Node> children, double factor, AnchorPoint anchor)
+        private void Arrange(DefaultLayoutNode root, IReadOnlyList<Node> children, float factor, AnchorPoint anchor)
         {
             UpdateSizeWithChildren(root, children, document.Root.IsCollapsed);
 
-            double x = HerculesCenter.X - (factor * 0.5 * root.NodeWidth);
-            double y = HerculesCenter.Y;
+            float x = minmapCenter.X - (factor * 0.5f * root.NodeWidth);
+            float y = minmapCenter.Y;
 
-            root.Position = new Point(x, y);
+            root.Position = new Vector2(x, y);
 
             ArrangeNodes(root, children, factor, anchor, document.Root.IsCollapsed);
         }
 
-        private void ArrangeNodes(DefaultLayoutNode parent, IReadOnlyList<Node> children, double factor, AnchorPoint anchor, bool isCollapsed)
+        private void ArrangeNodes(DefaultLayoutNode parent, IReadOnlyList<Node> children, float factor, AnchorPoint anchor, bool isCollapsed)
         {
             if (children.Count > 0)
             {
-                double x = 0, y = 0;
+                float x = 0, y = 0;
 
                 if (!isCollapsed)
                 {
                     x = parent.Position.X
                      + (factor * parent.NodeWidth)
                      + (factor * layout.HorizontalMargin);
-                    y = parent.Position.Y - (parent.TreeHeight * 0.5) + layout.ElementMargin;
+                    y = parent.Position.Y - (parent.TreeHeight * 0.5f) + layout.ElementMargin;
                 }
 
                 foreach (Node child in children)
@@ -85,12 +85,12 @@ namespace Hercules.Model.Layouting.Default
 
                     if (!isCollapsed)
                     {
-                        double childX = x;
-                        double childY = y + (0.5 * childLayout.TreeHeight);
+                        float childX = x;
+                        float childY = y + (0.5f * childLayout.TreeHeight);
 
-                        childLayout.MoveTo(new Point(childX, childY), anchor);
+                        childLayout.MoveTo(new Vector2(childX, childY), anchor);
 
-                        y += childLayout.TreeSize.Height;
+                        y += childLayout.TreeSize.Y;
                     }
 
                     ArrangeNodes(childLayout, child.Children, factor, anchor, isCollapsed || child.IsCollapsed);
@@ -100,8 +100,8 @@ namespace Hercules.Model.Layouting.Default
 
         private void UpdateSizeWithChildren(DefaultLayoutNode parent, IReadOnlyList<Node> children, bool isCollapsed)
         {
-            double treeW = parent.NodeSize.Width;
-            double treeH = parent.NodeSize.Height;
+            float treeW = parent.NodeSize.X;
+            float treeH = parent.NodeSize.Y;
 
             if (children.Count > 0)
             {
@@ -116,8 +116,8 @@ namespace Hercules.Model.Layouting.Default
                 }
                 else
                 {
-                    double childsW = 0;
-                    double childsH = 0;
+                    float childsW = 0;
+                    float childsH = 0;
 
                     foreach (Node child in children)
                     {
@@ -137,7 +137,7 @@ namespace Hercules.Model.Layouting.Default
 
             treeH += 2 * layout.ElementMargin;
 
-            parent.TreeSize = new Size(treeW, treeH);
+            parent.TreeSize = new Vector2(treeW, treeH);
         }
 
         private void ReleaseLayoutNodes()

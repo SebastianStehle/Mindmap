@@ -9,7 +9,7 @@
 using GP.Windows;
 using System;
 using System.Collections.Generic;
-using Windows.Foundation;
+using System.Numerics;
 
 namespace Hercules.Model
 {
@@ -19,7 +19,7 @@ namespace Hercules.Model
         private readonly HashSet<NodeBase> nodes = new HashSet<NodeBase>();
         private readonly RootNode root;
         private readonly IUndoRedoManager undoRedoManager = new UndoRedoManager();
-        private readonly Size size = new Size(5000, 5000);
+        private readonly Vector2 size = new Vector2(5000, 5000);
         private CompositeUndoRedoAction transaction;
         private NodeBase selectedNode;
         private string name;
@@ -50,6 +50,22 @@ namespace Hercules.Model
             }
         }
 
+        public double Width
+        {
+            get
+            {
+                return size.X;
+            }
+        }
+
+        public double Height
+        {
+            get
+            {
+                return size.Y;
+            }
+        }
+
         public RootNode Root
         {
             get
@@ -58,7 +74,7 @@ namespace Hercules.Model
             }
         }
 
-        public Size Size
+        public Vector2 Size
         {
             get
             {

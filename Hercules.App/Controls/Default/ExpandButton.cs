@@ -1,8 +1,9 @@
-﻿using GP.Windows;
+﻿using System.Numerics;
+using GP.Windows;
+using Hercules.App.Components.Implementations;
 using Hercules.Model;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
-using System.Numerics;
 using Windows.UI;
 
 namespace Hercules.App.Controls.Default
@@ -10,9 +11,9 @@ namespace Hercules.App.Controls.Default
     public sealed class ExpandButton
     {
         private readonly NodeBase node;
-        private float radius = 20;
-        private Rect2 bounds;
-        private Vector2 center;
+        private float renderRadius = 20;
+        private Rect2 renderBounds;
+        private Vector2 renderCenter;
 
         public ExpandButton(NodeBase node)
         {
@@ -23,19 +24,21 @@ namespace Hercules.App.Controls.Default
 
         public void Arrange(Vector2 center, float radius = 10)
         {
-            this.radius = radius;
-            this.center = center;
+            renderRadius = radius;
+            renderCenter = center;
 
-            bounds = Rect2.Inflate(new Rect2(center, Vector2.Zero), radius, radius);
+            renderBounds = Rect2.Inflate(new Rect2(center, Vector2.Zero), radius, radius);
         }
 
         public bool HitTest(Vector2 mousePosition)
         {
-            if (bounds.Contains(mousePosition))
+            if (renderBounds.Contains(mousePosition))
             {
-                node.Document.MakeTransaction("Toggle", c =>
+                string transactionName = ResourceManager.GetString("ExpandCollapseTransactionName");
+
+                node.Document.MakeTransaction(transactionName, commands =>
                 {
-                    c.Apply(new ToggleCollapseCommand(node));
+                    commands.Apply(new ToggleCollapseCommand(node));
                 });
 
                 return true;
@@ -50,32 +53,49 @@ namespace Hercules.App.Controls.Default
         {
             if (node.HasChildren)
             {
-                session.FillCircle(center, radius, Colors.White);
-                session.DrawCircle(center, radius, Colors.DarkGray, 1);
+                RenderCircle(session);
 
-                float halfRadius = 0.5f * radius;
+                float halfRadius = 0.5f * renderRadius;
 
-                Vector2 left = new Vector2(
-                    center.X - halfRadius, 
-                    center.Y);
-                Vector2 right = new Vector2(
-                    center.X + halfRadius,
-                    center.Y);
-
-                session.DrawLine(left, right, Colors.DarkGray, 2f);
+                RenderHorizontal(session, halfRadius);
 
                 if (node.IsCollapsed)
                 {
-                    Vector2 top = new Vector2(
-                        center.X,
-                        center.Y - halfRadius);
-                    Vector2 bottom = new Vector2(
-                        center.X,
-                        center.Y + halfRadius);
-
-                    session.DrawLine(top, bottom, Colors.DarkGray, 2f);
+                    RenderVertical(session, halfRadius);
                 }
             }
+        }
+
+        private void RenderCircle(CanvasDrawingSession session)
+        {
+            session.FillCircle(renderCenter, renderRadius, Colors.White);
+
+            session.DrawCircle(renderCenter, renderRadius, Colors.DarkGray);
+        }
+
+        private void RenderVertical(CanvasDrawingSession session, float halfRadius)
+        {
+            Vector2 verticalTop = new Vector2(
+                renderCenter.X,
+                renderCenter.Y - halfRadius);
+            Vector2 verticalBottom = new Vector2(
+                renderCenter.X,
+                renderCenter.Y + halfRadius);
+
+            session.DrawLine(verticalTop, verticalBottom, Colors.DarkGray, 2f);
+        }
+
+        private void RenderHorizontal(CanvasDrawingSession session, float halfRadius)
+        {
+            Vector2 horizontalLeft = new Vector2(
+                renderCenter.X - halfRadius,
+                renderCenter.Y);
+
+            Vector2 horizontalRight = new Vector2(
+                renderCenter.X + halfRadius,
+                renderCenter.Y);
+
+            session.DrawLine(horizontalLeft, horizontalRight, Colors.DarkGray, 2f);
         }
     }
 }

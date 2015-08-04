@@ -212,9 +212,11 @@ namespace Hercules.Model.Utils
             float minX = Math.Max(X, rect.X);
             float minY = Math.Max(Y, rect.Y);
 
-            size = new Vector2(
-                Math.Max(Math.Min(Right, rect.Right) - minX, 0.0f),
-                Math.Max(Math.Min(Bottom, rect.Bottom) - minY, 0.0f));
+            float w = Math.Min(position.X + size.X, rect.Position.X + rect.Size.X) - minX;
+            float h = Math.Min(position.Y + size.Y, rect.Position.Y + rect.Size.Y) - minY;
+
+            size = new Vector2(Math.Max(w, 0.0f), Math.Max(h, 0.0f));
+
             position = new Vector2(minX, minY);
         }
 

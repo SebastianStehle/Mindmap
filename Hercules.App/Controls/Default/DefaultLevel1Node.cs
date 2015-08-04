@@ -5,8 +5,6 @@ using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
-using Microsoft.Graphics.Canvas.Text;
-using Windows.UI;
 
 namespace Hercules.App.Controls.Default
 {
@@ -14,33 +12,41 @@ namespace Hercules.App.Controls.Default
     {
         private static readonly Vector2 ContentPadding = new Vector2(15, 5);
         private static readonly Vector2 SelectionMargin = new Vector2(-5, -5);
-        private static readonly CanvasStrokeStyle StrokeStyle = new CanvasStrokeStyle { DashStyle = CanvasDashStyle.Dash };
         private static readonly float MinHeight = 40;
         private static readonly float MinWidth = 80;
-        private readonly CanvasTextFormat textFormat = new CanvasTextFormat { FontSize = 14.0f, WordWrapping = CanvasWordWrapping.NoWrap, VerticalAlignment = CanvasVerticalAlignment.Top };
-        private Vector2 textSize;
-        
+        private readonly TextRenderer textRenderer;
+
+        public override TextRenderer TextRenderer
+        {
+            get
+            {
+                return textRenderer;
+            }
+        }
+
         public DefaultLevel1Node(NodeBase node, DefaultRenderer renderer) 
             : base(node, renderer)
         {
+            textRenderer = new TextRenderer(14, node);
+        }
+
+        protected override void ArrangeInternal(CanvasDrawingSession session)
+        {
+            Vector2 textPosition = Bounds.Center;
+
+            textPosition.X -= textRenderer.Size.X * 0.5f;
+            textPosition.Y -= textRenderer.Size.Y * 0.5f;
+
+            textRenderer.Arrange(textPosition);
+
+            base.ArrangeInternal(session);
         }
 
         protected override Vector2 MeasureInternal(CanvasDrawingSession session)
         {
-            Vector2 size = Vector2.Zero;
+            textRenderer.Measure(session);
 
-            if (!string.IsNullOrWhiteSpace(Node.Text))
-            {
-                CanvasTextLayout textLayout = new CanvasTextLayout(session, Node.Text, textFormat, 0.0f, 0.0f);
-
-                textSize = new Vector2(
-                    (float)textLayout.DrawBounds.Width,
-                    (float)textLayout.DrawBounds.Height);
-
-                size = textSize;
-            }
-
-            size = size + 2 * ContentPadding;
+            Vector2 size = textRenderer.Size + 2 * ContentPadding;
 
             size.X = Math.Max(size.X, MinWidth);
             size.Y = Math.Max(size.Y, MinHeight);
@@ -60,21 +66,13 @@ namespace Hercules.App.Controls.Default
             session.FillRoundedRectangle(Bounds, 10, 10, backgroundBrush);
             session.DrawRoundedRectangle(Bounds, 10, 10, borderBrush);
 
-            if (!string.IsNullOrWhiteSpace(Node.Text))
-            {
-                Vector2 textPosition = Bounds.Center;
-
-                textPosition.X -= textSize.X * 0.5f;
-                textPosition.Y -= textSize.Y * 0.8f;
-
-                session.DrawText(Node.Text, textPosition, Colors.Black, textFormat);
-            }
+            textRenderer.Render(session);
 
             if (Node.IsSelected)
             {
                 Rect2 rect = Rect2.Deflate(Bounds, SelectionMargin);
 
-                session.DrawRoundedRectangle(rect, 14, 14, borderBrush, 2f, StrokeStyle);
+                session.DrawRoundedRectangle(rect, 14, 14, borderBrush, 2f, SelectionStrokeStyle);
             }
 
             if (Node.HasChildren)

@@ -22,10 +22,21 @@ namespace Hercules.App.Controls
         private CanvasControl currentCanvas;
         private Document currentDocument;
         private Matrix3x2 transform = Matrix3x2.Identity;
+        private Matrix3x2 scale = Matrix3x2.Identity;
         private Matrix3x2 inverseTransform = Matrix3x2.Identity;
+        private Matrix3x2 inverseScale = Matrix3x2.Identity;
         private Rect2 visibleRect = new Rect2(0, 0, float.PositiveInfinity, float.PositiveInfinity);
+        private float zoomFactor;
         private ICanvasBrush pathBrush;
         private ILayout layout;
+
+        public float ZoomFactor
+        {
+            get
+            {
+                return zoomFactor;
+            }
+        }
 
         public IEnumerable<ThemeRenderNode> RenderNodes
         {
@@ -104,17 +115,24 @@ namespace Hercules.App.Controls
         public void Transform(Vector2 translate, float zoom, Rect2 visibleRect)
         {
             this.visibleRect = visibleRect;
+            
+            scale = Matrix3x2.CreateScale(zoom);
 
             transform =
                 Matrix3x2.CreateTranslation(
                     translate.X,
                     translate.Y) *
                 Matrix3x2.CreateScale(zoom);
+
+            inverseScale = Matrix3x2.CreateScale(1f / zoom);
+
             inverseTransform =
                 Matrix3x2.CreateScale(1f / zoom) *
                 Matrix3x2.CreateTranslation(
                     -translate.X,
                     -translate.Y);
+
+            zoomFactor = zoom;
         }
 
         protected void AddColors(params int[] newColors)
@@ -186,7 +204,7 @@ namespace Hercules.App.Controls
 
         private bool CanRenderPath(ThemeRenderNode nodeContainer)
         {
-            return visibleRect.IntersectsWith(nodeContainer.Bounds) || (nodeContainer.Parent != null && visibleRect.IntersectsWith(nodeContainer.Parent.Bounds));
+            return visibleRect.IntersectsWith(nodeContainer.TotalBounds);
         }
 
         private bool CanRenderNode(ThemeRenderNode nodeContainer)
@@ -194,9 +212,19 @@ namespace Hercules.App.Controls
             return visibleRect.IntersectsWith(nodeContainer.Bounds);
         }
 
+        public Vector2 GetMindmapSize(Vector2 position)
+        {
+            return MathHelper.Transform(position, inverseScale);
+        }
+
         public Vector2 GetMindmapPosition(Vector2 position)
         {
             return MathHelper.Transform(position, inverseTransform);
+        }
+
+        public Vector2 GetOverlaySize(Vector2 position)
+        {
+            return MathHelper.Transform(position, scale);
         }
 
         public Vector2 GetOverlayPosition(Vector2 position)
@@ -204,12 +232,16 @@ namespace Hercules.App.Controls
             return MathHelper.Transform(position, transform);
         }
 
-        public bool HandleClick(Vector2 position)
+        public bool HandleClick(Vector2 position, out ThemeRenderNode handledNode)
         {
+            handledNode = null;
+
             foreach (ThemeRenderNode renderNode in renderNodes.Values)
             {
                 if (renderNode.HandleClick(position))
                 {
+                    handledNode = renderNode;
+
                     if (currentCanvas != null)
                     {
                         currentCanvas.Invalidate();
@@ -276,7 +308,7 @@ namespace Hercules.App.Controls
         {
             Guard.NotNull(session, nameof(session));
 
-            return pathBrush ?? (pathBrush = new CanvasSolidColorBrush(session.Device, Color.FromArgb(200, 0, 0, 0)));
+            return pathBrush ?? (pathBrush = new CanvasSolidColorBrush(session.Device, Color.FromArgb(255, 30, 30, 30)));
         }
 
         public IRenderNode FindRenderNode(NodeBase node)

@@ -213,6 +213,9 @@
   <data name="DeleteMindmapTitle" xml:space="preserve">
     <value>Delete Mindmap?</value>
   </data>
+  <data name="ExpandCollapseTransactionName" xml:space="preserve">
+    <value>Toggle</value>
+  </data>
   <data name="IconsHeader.Text" xml:space="preserve">
     <value>Icons</value>
   </data>

@@ -12,8 +12,9 @@ namespace Hercules.App.Controls
     {
         private readonly ThemeRenderer renderer;
         private Vector2 renderPosition;
-        private Vector2 size;
+        private Vector2 renderSize;
         private NodeBase node;
+        private Rect2 totalBounds;
         private bool isVisible = true;
 
         public ThemeRenderNode Parent { get; internal set; }
@@ -34,21 +35,22 @@ namespace Hercules.App.Controls
             }
         }
 
-        public bool IsVisible
-        {
-            get
-            {
-                return isVisible;
-            }
-        }
-
         public Rect2 Bounds
         {
             get
             {
-                return new Rect2(renderPosition, size);
+                return new Rect2(renderPosition, renderSize);
             }
         }
+
+        public Rect2 TotalBounds
+        {
+            get
+            {
+                return totalBounds;
+            }
+        }
+
 
         public Vector2 Position
         {
@@ -62,9 +64,19 @@ namespace Hercules.App.Controls
         {
             get
             {
-                return size;
+                return renderSize;
             }
         }
+
+        public bool IsVisible
+        {
+            get
+            {
+                return isVisible;
+            }
+        }
+
+        public abstract TextRenderer TextRenderer { get; }
 
         protected ThemeRenderNode(NodeBase node, ThemeRenderer renderer)
         {
@@ -80,15 +92,15 @@ namespace Hercules.App.Controls
         {
             renderPosition = position;
 
-            renderPosition.Y -= 0.5f * size.Y;
+            renderPosition.Y -= 0.5f * renderSize.Y;
 
             if (anchor == AnchorPoint.Right)
             {
-                renderPosition.X -= size.X;
+                renderPosition.X -= renderSize.X;
             }
             else if (anchor == AnchorPoint.Center)
             {
-                renderPosition.X -= 0.5f * size.X;
+                renderPosition.X -= 0.5f * renderSize.X;
             }
         }
 
@@ -115,11 +127,26 @@ namespace Hercules.App.Controls
         public void Arrange(CanvasDrawingSession session)
         {
             ArrangeInternal(session);
+                        
+            if (Parent != null)
+            {
+                double minX = Math.Min(renderPosition.X, Parent.Position.X);
+                double minY = Math.Min(renderPosition.Y, Parent.Position.Y);
+
+                double maxX = Math.Max(renderPosition.X + renderSize.X, Parent.Position.X + Parent.Size.X);
+                double maxY = Math.Max(renderPosition.Y + renderSize.Y, Parent.Position.Y + Parent.Size.Y);
+
+                totalBounds = new Rect2((float)minX, (float)minY, (float)(maxX - minX), (float)(maxY - minY));
+            }
+            else
+            {
+                totalBounds = Bounds;
+            }
         }
 
         public void Measure(CanvasDrawingSession session)
         {
-            size = MeasureInternal(session);
+            renderSize = MeasureInternal(session);
         }
 
         public virtual bool HandleClick(Vector2 position)

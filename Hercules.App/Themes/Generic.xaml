@@ -12,7 +12,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:MindmapPanel">
                     <Grid>
-                        <canvas:CanvasControl  x:Name="Canvas" />
+                        <canvas:CanvasControl x:Name="Canvas" />
 
                         <ScrollViewer ZoomMode="Enabled" x:Name="ScrollViewer" MaxZoomFactor="4" Background="Transparent" Padding="0"
                             VerticalScrollBarVisibility="Auto" 
@@ -28,13 +28,17 @@
                             <Grid x:Name="Placeholder" Width="{Binding Document.Width}" Height="{Binding Document.Height}"></Grid>
                         </ScrollViewer>
 
-                        <TextBox x:Name="TextBox" Style="{StaticResource NoClearButtonTextBox}" 
+                        <TextBox x:Name="TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="0"
+                            MinHeight="0"
+                            MinWidth="0"
                             TextAlignment="Center" 
-                            Background="Transparent" 
+                            Background="Red" 
                             BorderBrush="Transparent"
                             BorderThickness="0"
-                            VerticalAlignment="Top" 
                             Visibility="Visible" 
+                            VerticalContentAlignment="Center"
+                            VerticalAlignment="Top"
+                            HorizontalContentAlignment="Center"
                             HorizontalAlignment="Left" />
                     </Grid>
                 </ControlTemplate>

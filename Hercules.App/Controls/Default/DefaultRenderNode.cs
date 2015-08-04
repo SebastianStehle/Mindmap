@@ -10,6 +10,8 @@ namespace Hercules.App.Controls.Default
 {
     public abstract class DefaultRenderNode : ThemeRenderNode
     {
+        protected static readonly CanvasStrokeStyle SelectionStrokeStyle = new CanvasStrokeStyle { DashStyle = CanvasDashStyle.Dash };
+
         private readonly ExpandButton button;
 
         protected ExpandButton Button

@@ -25,7 +25,7 @@ namespace Hercules.App.Controls
     public sealed class MindmapPanel : Control
     {
         private readonly ThemeRenderer renderer = new DefaultRenderer();
-        private readonly TranslateTransform textBoxTransform = new TranslateTransform();
+        private readonly CompositeTransform textBoxTransform = new CompositeTransform();
         private CanvasControl canvasControl;
         private FrameworkElement placeholder;
         private ScrollViewer scrollViewer;
@@ -78,6 +78,8 @@ namespace Hercules.App.Controls
             textBox = (TextBox)GetTemplateChild("TextBox");
             textBox.RenderTransform = textBoxTransform;
             textBox.LostFocus += TextBox_LostFocus;
+            textBox.GotFocus += TextBox_GotFocus;
+            textBox.TextChanged += TextBox_TextChanged;
 
             scrollViewer = (ScrollViewer)GetTemplateChild("ScrollViewer");
             scrollViewer.SizeChanged += ScrollViewer_SizeChanged;
@@ -89,22 +91,29 @@ namespace Hercules.App.Controls
             canvasControl.Draw += CanvasControl_AfterDraw;
         }
 
+        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
+        {
+            if (!string.IsNullOrWhiteSpace(textBox.Text))
+            {
+                textBox.Select(textBox.Text.Length, 1);
+            }
+        }
+
         private void CanvasControl_AfterDraw(CanvasControl sender, CanvasDrawEventArgs args)
         {
             if (textBoxNode != null && textBoxNode.Node.Document != null)
             {
-                Vector2 position = renderer.GetOverlayPosition(textBoxNode.Position);
+                Vector2 position = renderer.GetOverlayPosition(textBoxNode.TextRenderer.Position);
 
-                textBox.Visibility = Visibility.Visible;
+                Vector2 size = renderer.GetOverlaySize(textBoxNode.TextRenderer.Size);
+                
+                textBoxTransform.TranslateX = position.X;
+                textBoxTransform.TranslateY = position.Y;
+                textBoxTransform.ScaleX = renderer.ZoomFactor;
+                textBoxTransform.ScaleY = renderer.ZoomFactor;
 
-                textBoxTransform.X = position.X;
-                textBoxTransform.Y = position.Y;
-
-                textBox.Focus(FocusState.Programmatic);
-            }
-            else
-            {
-                textBox.Visibility = Visibility.Collapsed;
+                textBox.Height = textBoxNode.TextRenderer.Size.Y;
+                textBox.Width = textBoxNode.TextRenderer.Size.X;
             }
         }
 
@@ -138,15 +147,20 @@ namespace Hercules.App.Controls
                     translateY = -inverseZoom * (float)scrollViewer.VerticalOffset;
                 }
 
-                float visibleX = inverseZoom * (float)scrollViewer.HorizontalOffset;
-                float visibleY = inverseZoom * (float)scrollViewer.VerticalOffset;
+                float visibleX = (float)Math.Round(inverseZoom * (float)scrollViewer.HorizontalOffset, 3);
+                float visibleY = (float)Math.Round(inverseZoom * (float)scrollViewer.VerticalOffset, 3);
 
-                float visibleW = Math.Min(Document.Size.X, inverseZoom * (float)scrollViewer.ViewportWidth);
-                float visibleH = Math.Min(Document.Size.Y, inverseZoom * (float)scrollViewer.ViewportHeight);
+                float visibleW = (float)Math.Round(Math.Min(Document.Size.X, inverseZoom * (float)scrollViewer.ViewportWidth), 3);
+                float visibleH = (float)Math.Round(Math.Min(Document.Size.Y, inverseZoom * (float)scrollViewer.ViewportHeight), 3);
 
                 Rect2 visibleRect = new Rect2(visibleX, visibleY, visibleW, visibleH);
 
-                renderer.Transform(new Vector2(translateX, translateY), scrollViewer.ZoomFactor, visibleRect);
+                translateX = (float)Math.Round(translateX, 3);
+                translateY = (float)Math.Round(translateY, 3);
+
+                float zoom = (float)Math.Round(scrollViewer.ZoomFactor, 3);
+
+                renderer.Transform(new Vector2(translateX, translateY), zoom, visibleRect);
             }
         }
 
@@ -162,9 +176,34 @@ namespace Hercules.App.Controls
             canvasControl.Invalidate();
         }
 
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            canvasControl.Invalidate();
+        }
+
+        protected override void OnGotFocus(RoutedEventArgs e)
+        {
+            if (textBoxNode != null)
+            {
+                //textBox.Focus(FocusState.Pointer);
+            }
+        }
+
         private void TextBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            
+            var a = FocusManager.GetFocusedElement();
+        }
+
+        protected override void OnPointerPressed(PointerRoutedEventArgs e)
+        {
+            e.Handled = true;
+            base.OnPointerPressed(e);
+        }
+
+        protected override void OnPointerReleased(PointerRoutedEventArgs e)
+        {
+            e.Handled = true;
+            base.OnPointerReleased(e);
         }
 
         protected override void OnDoubleTapped(DoubleTappedRoutedEventArgs e)
@@ -175,49 +214,75 @@ namespace Hercules.App.Controls
             {
                 if (renderNode.HitTest(position))
                 {
-                    textBoxNode = renderNode;
+                    if (textBoxNode != renderNode)
+                    {
+                        FinishTextEditing();
 
-                    textBox.Text = renderNode.Node.Text ?? string.Empty;
+                        textBoxNode = renderNode;
+
+                        textBoxNode.TextRenderer.BeginEdit(textBox);
+
+                        textBox.Visibility = Visibility.Visible;
+
+                        textBox.Focus(FocusState.Pointer);
+                    }
 
                     if (canvasControl != null)
                     {
                         canvasControl.Invalidate();
                     }
 
+                    // Focus(FocusState.Programmatic);
+
+                    e.Handled = true;
                     break;
                 }
             }
-
-            base.OnDoubleTapped(e);
         }
 
         protected override void OnTapped(TappedRoutedEventArgs e)
         {
             Vector2 position = renderer.GetMindmapPosition(e.GetPosition(this).ToVector2());
 
-            if (!renderer.HandleClick(position))
-            {
-                if (textBoxNode != null)
-                {
-                    textBoxNode = null;
+            ThemeRenderNode handledNode = null;
 
-                    if (canvasControl != null)
-                    {
-                        canvasControl.Invalidate();
-                    }
+            if (renderer.HandleClick(position, out handledNode))
+            {
+                if (textBoxNode == handledNode)
+                {
+                    textBox.Focus(FocusState.Pointer);
                 }
+
+                e.Handled = true;
+            }
+            else
+            {
+                FinishTextEditing();
             }
 
             base.OnTapped(e);
         }
 
-        private Vector2 GetMindmapPosition(PointerPoint point)
+        private void FinishTextEditing()
         {
-            Vector2 position = new Vector2((float)point.Position.X, (float)point.Position.Y);
+            if (textBoxNode != null)
+            {
+                textBoxNode.TextRenderer.EndEdit();
 
-            position = renderer.GetMindmapPosition(position);
+                textBoxNode.Node.Document.MakeTransaction("Change Text", c =>
+                {
+                    c.Apply(new ChangeTextCommand(textBoxNode.Node, textBox.Text, true));
+                });
 
-            return position;
+                textBox.Visibility = Visibility.Collapsed;
+
+                textBoxNode = null;
+            }
+
+            if (canvasControl != null)
+            {
+                canvasControl.Invalidate();
+            }
         }
     }
 }

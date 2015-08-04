@@ -1,16 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using Hercules.Model;
 using GP.Windows;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 using Hercules.Model.Layouting;
 using Microsoft.Graphics.Canvas;
 using GP.Windows.UI;
 using Microsoft.Graphics.Canvas.Brushes;
 using Windows.UI;
 using Hercules.Model.Utils;
-using System.Diagnostics;
+using System.Numerics;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using System;
+using Windows.UI.Input;
 
 namespace Hercules.App.Controls
 {
@@ -18,7 +19,11 @@ namespace Hercules.App.Controls
     {
         private readonly Dictionary<NodeBase, ThemeRenderNode> renderNodes = new Dictionary<NodeBase, ThemeRenderNode>();
         private readonly List<ThemeColor> colors = new List<ThemeColor>();
+        private CanvasControl currentCanvas;
         private Document currentDocument;
+        private Matrix3x2 transform = Matrix3x2.Identity;
+        private Matrix3x2 inverseTransform = Matrix3x2.Identity;
+        private Rect2 visibleRect = new Rect2(0, 0, float.PositiveInfinity, float.PositiveInfinity);
         private ICanvasBrush pathBrush;
         private ILayout layout;
 
@@ -38,11 +43,78 @@ namespace Hercules.App.Controls
             }
         }
 
-        public void Initialize(Document document, ILayout layout)
+        public void Initialize(Document document, ILayout layout, CanvasControl canvas)
         {
             this.layout = layout;
-            
+
+            InitializeCanvas(canvas);
             InitializeDocument(document);
+        }
+
+        private void InitializeCanvas(CanvasControl canvas)
+        {
+            if (currentCanvas != canvas)
+            {
+                if (currentCanvas != null)
+                {
+                    currentCanvas.Draw -= Canvas_Draw;
+                }
+
+                currentCanvas = canvas;
+
+                if (currentCanvas != null)
+                {
+                    currentCanvas.Draw += Canvas_Draw;
+                }
+            }
+        }
+
+        private void InitializeDocument(Document document)
+        {
+            if (currentDocument != document)
+            {
+                if (currentDocument != null)
+                {
+                    currentDocument.StateChanged -= Document_StateChanged;
+                    currentDocument.NodeRemoved -= Document_NodeRemoved;
+                    currentDocument.NodeAdded -= Document_NodeAdded;
+
+                    foreach (NodeBase node in renderNodes.Keys.ToList())
+                    {
+                        TryRemove(node);
+                    }
+                }
+
+                currentDocument = document;
+
+                if (currentDocument != null)
+                {
+                    currentDocument.StateChanged += Document_StateChanged;
+                    currentDocument.NodeRemoved += Document_NodeRemoved;
+                    currentDocument.NodeAdded += Document_NodeAdded;
+
+                    foreach (NodeBase node in currentDocument.Nodes)
+                    {
+                        TryAdd(node);
+                    }
+                }
+            }
+        }
+
+        public void Transform(Vector2 translate, float zoom, Rect2 visibleRect)
+        {
+            this.visibleRect = visibleRect;
+
+            transform =
+                Matrix3x2.CreateTranslation(
+                    translate.X,
+                    translate.Y) *
+                Matrix3x2.CreateScale(zoom);
+            inverseTransform =
+                Matrix3x2.CreateScale(1f / zoom) *
+                Matrix3x2.CreateTranslation(
+                    -translate.X,
+                    -translate.Y);
         }
 
         protected void AddColors(params int[] newColors)
@@ -50,16 +122,29 @@ namespace Hercules.App.Controls
             foreach (int color in newColors)
             {
                 colors.Add(new ThemeColor(
-                    ColorsHelper.ConvertToColor((int)color, 0, 0, 0),
-                    ColorsHelper.ConvertToColor((int)color, 0, 0.2, -0.3),
-                    ColorsHelper.ConvertToColor((int)color, 0, -0.2, 0.2)));
+                    ColorsHelper.ConvertToColor(color, 0, 0, 0),
+                    ColorsHelper.ConvertToColor(color, 0, 0.2, -0.3),
+                    ColorsHelper.ConvertToColor(color, 0, -0.2, 0.2)));
             }
         }
 
-        public void Render(CanvasDrawingSession session, Rect2 bounds)
+        private void Canvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            CanvasDrawingSession session = args.DrawingSession;
+
+            if (session != null)
+            {
+                Render(session);
+            }
+        }
+
+        private void Render(CanvasDrawingSession session)
         {
             if (currentDocument != null && layout != null)
             {
+                session.Units = CanvasUnits.Dips;
+                session.Transform = transform;
+
                 layout.UpdateVisibility(currentDocument, this);
                 
                 foreach (ThemeRenderNode nodeContainer in renderNodes.Values)
@@ -69,12 +154,17 @@ namespace Hercules.App.Controls
 
                 layout.UpdateLayout(currentDocument, this);
 
+                foreach (ThemeRenderNode nodeContainer in renderNodes.Values)
+                {
+                    nodeContainer.Arrange(session);
+                }
+
                 int nodes = 0;
                 int paths = 0;
 
                 foreach (ThemeRenderNode nodeContainer in renderNodes.Values)
                 {
-                    if (nodeContainer.IsVisible && CanRenderPath(ref bounds, nodeContainer))
+                    if (nodeContainer.IsVisible && CanRenderPath(nodeContainer))
                     {
                         paths++;
 
@@ -84,66 +174,65 @@ namespace Hercules.App.Controls
 
                 foreach (ThemeRenderNode nodeContainer in renderNodes.Values)
                 {
-                    if (nodeContainer.IsVisible && CanRenderNode(ref bounds, nodeContainer))
+                    if (nodeContainer.IsVisible && CanRenderNode(nodeContainer))
                     {
                         nodes++;
 
                         nodeContainer.Render(session);
                     }
                 }
-
-                //Debug.WriteLine("Rendering: {0} Nodes, {1} Paths", nodes,paths);
             }
         }
 
-        private static bool CanRenderPath(ref Rect2 bounds, ThemeRenderNode nodeContainer)
+        private bool CanRenderPath(ThemeRenderNode nodeContainer)
         {
-            return bounds.IntersectsWith(nodeContainer.Bounds) || (nodeContainer.Parent != null && bounds.IntersectsWith(nodeContainer.Parent.Bounds));
+            return visibleRect.IntersectsWith(nodeContainer.Bounds) || (nodeContainer.Parent != null && visibleRect.IntersectsWith(nodeContainer.Parent.Bounds));
         }
 
-        private static bool CanRenderNode(ref Rect2 bounds, ThemeRenderNode nodeContainer)
+        private bool CanRenderNode(ThemeRenderNode nodeContainer)
         {
-            return bounds.IntersectsWith(nodeContainer.Bounds);
+            return visibleRect.IntersectsWith(nodeContainer.Bounds);
         }
 
-        private void InitializeDocument(Document document)
+        public Vector2 GetMindmapPosition(Vector2 position)
         {
-            if (currentDocument != null)
+            return MathHelper.Transform(position, inverseTransform);
+        }
+
+        public Vector2 GetOverlayPosition(Vector2 position)
+        {
+            return MathHelper.Transform(position, transform);
+        }
+
+        public bool HandleClick(Vector2 position)
+        {
+            foreach (ThemeRenderNode renderNode in renderNodes.Values)
             {
-                currentDocument.NodeRemoved -= Document_NodeAdded;
-                currentDocument.NodeAdded -= Document_NodeAdded;
-
-                foreach (NodeBase node in renderNodes.Keys.ToList())
+                if (renderNode.HandleClick(position))
                 {
-                    TryRemove(node);
+                    if (currentCanvas != null)
+                    {
+                        currentCanvas.Invalidate();
+                    }
+                    
+                    return true;
                 }
             }
 
-            currentDocument = document;
-
-            if (currentDocument != null)
-            {
-                currentDocument.NodeRemoved += Document_NodeAdded;
-                currentDocument.NodeAdded += Document_NodeAdded;
-
-                foreach (NodeBase node in currentDocument.Nodes)
-                {
-                    TryAdd(node);
-                }
-            }
-        }
-
-        public void Clear()
-        {
-            foreach (NodeBase node in renderNodes.Keys.ToList())
-            {
-                TryRemove(node);
-            }
+            return false;
         }
 
         public ThemeColor FindColor(NodeBase node)
         {
             return Colors[node.Color];
+        }
+
+        private void Document_StateChanged(object sender, System.EventArgs e)
+        {
+            if (currentCanvas != null)
+            {
+                currentCanvas.Invalidate();
+            }
         }
 
         private void Document_NodeAdded(object sender, NodeEventArgs e)

@@ -106,9 +106,12 @@
     <Compile Include="Components\Implementations\DefaultSettingsProvider.cs" />
     <Compile Include="Components\Implementations\ResourcesLocalizationManager.cs" />
     <Compile Include="Components\ISettingsProvider.cs" />
+    <Compile Include="Controls\Default\DefaultLevel2Node.cs" />
     <Compile Include="Controls\Default\DefaultRenderer.cs" />
     <Compile Include="Controls\Default\DefaultLevel1Node.cs" />
+    <Compile Include="Controls\Default\DefaultRenderNode.cs" />
     <Compile Include="Controls\Default\DefaultRootNode.cs" />
+    <Compile Include="Controls\Default\ExpandButton.cs" />
     <Compile Include="Controls\Mindmap.cs" />
     <Compile Include="Controls\MindmapFlyout.cs" />
     <Compile Include="Controls\MindmapFlyoutView.cs" />
@@ -117,6 +120,7 @@
     <Compile Include="Controls\NotNullNodeThicknessConverter.cs" />
     <Compile Include="Controls\NotNullRootThicknessConverter.cs" />
     <Compile Include="Controls\NotRootToVisibilityConverter.cs" />
+    <Compile Include="Controls\TextRenderer.cs" />
     <Compile Include="Controls\ThemeColor.cs" />
     <Compile Include="Controls\ThemeRenderer.cs" />
     <Compile Include="Controls\ThemeRenderNode.cs" />

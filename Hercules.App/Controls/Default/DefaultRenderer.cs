@@ -51,7 +51,7 @@ namespace Hercules.App.Controls.Default
             }
             else
             {
-                return new DefaultLevel1Node(node, this);
+                return new DefaultLevel2Node(node, this);
             }
         }
     }

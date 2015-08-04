@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System;
+using System.Numerics;
 using GP.Windows;
 using Hercules.Model;
 using Hercules.Model.Layouting;
@@ -65,8 +66,6 @@ namespace Hercules.App.Controls
             }
         }
 
-        public abstract Vector2 AnchorPosition { get; }
-
         protected ThemeRenderNode(NodeBase node, ThemeRenderer renderer)
         {
             Guard.NotNull(renderer, nameof(renderer));
@@ -113,14 +112,40 @@ namespace Hercules.App.Controls
             RenderInternal(session, renderer.FindColor(node));
         }
 
+        public void Arrange(CanvasDrawingSession session)
+        {
+            ArrangeInternal(session);
+        }
+
         public void Measure(CanvasDrawingSession session)
         {
             size = MeasureInternal(session);
         }
 
-        public abstract bool HitTest(Vector2 position);
+        public virtual bool HandleClick(Vector2 position)
+        {
+            if (HitTest(position))
+            {
+                node.Select();
 
-        protected abstract void RenderPathInternal(CanvasDrawingSession session);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        protected virtual void ArrangeInternal(CanvasDrawingSession session)
+        {
+        }
+
+        protected virtual void RenderPathInternal(CanvasDrawingSession session)
+        {
+
+        }
+
+        public abstract bool HitTest(Vector2 position);
 
         protected abstract void RenderInternal(CanvasDrawingSession session, ThemeColor color);
 

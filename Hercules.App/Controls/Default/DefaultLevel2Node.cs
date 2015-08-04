@@ -10,7 +10,7 @@ using Windows.UI;
 
 namespace Hercules.App.Controls.Default
 {
-    public sealed class DefaultLevel1Node : DefaultRenderNode
+    public sealed class DefaultLevel2Node : DefaultRenderNode
     {
         private static readonly Vector2 ContentPadding = new Vector2(15, 5);
         private static readonly Vector2 SelectionMargin = new Vector2(-5, -5);
@@ -20,7 +20,7 @@ namespace Hercules.App.Controls.Default
         private readonly CanvasTextFormat textFormat = new CanvasTextFormat { FontSize = 14.0f, WordWrapping = CanvasWordWrapping.NoWrap, VerticalAlignment = CanvasVerticalAlignment.Top };
         private Vector2 textSize;
         
-        public DefaultLevel1Node(NodeBase node, DefaultRenderer renderer) 
+        public DefaultLevel2Node(NodeBase node, DefaultRenderer renderer) 
             : base(node, renderer)
         {
         }
@@ -57,15 +57,17 @@ namespace Hercules.App.Controls.Default
                     color.LightBrush(session) :
                     color.NormalBrush(session);
             
-            session.FillRoundedRectangle(Bounds, 10, 10, backgroundBrush);
-            session.DrawRoundedRectangle(Bounds, 10, 10, borderBrush);
+            Vector2 l = new Vector2(Bounds.Left, Bounds.CenterY);
+            Vector2 r = new Vector2(Bounds.Right, Bounds.CenterY);
+
+            session.DrawLine(l, r, Colors.Black, 2);
 
             if (!string.IsNullOrWhiteSpace(Node.Text))
             {
                 Vector2 textPosition = Bounds.Center;
 
                 textPosition.X -= textSize.X * 0.5f;
-                textPosition.Y -= textSize.Y * 0.8f;
+                textPosition.Y -= textSize.Y * 1.8f;
 
                 session.DrawText(Node.Text, textPosition, Colors.Black, textFormat);
             }
@@ -73,6 +75,8 @@ namespace Hercules.App.Controls.Default
             if (Node.IsSelected)
             {
                 Rect2 rect = Rect2.Deflate(Bounds, SelectionMargin);
+
+                rect = new Rect2(new Vector2(rect.X, rect.Y - 10), rect.Size);
 
                 session.DrawRoundedRectangle(rect, 14, 14, borderBrush, 2f, StrokeStyle);
             }

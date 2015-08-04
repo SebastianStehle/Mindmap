@@ -25,10 +25,17 @@
                                 <gpi:ScrollViewerBringIntoViewInputPaneBehavior />
                             </i:Interaction.Behaviors>
 
-                            <Grid x:Name="Placeholder" Width="{Binding Document.Width}" Height="{Binding Document.Height}" Background="Blue" Opacity="0.5">
-                                <Rectangle Fill="Red" Width="20" Height="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
-                            </Grid>
+                            <Grid x:Name="Placeholder" Width="{Binding Document.Width}" Height="{Binding Document.Height}"></Grid>
                         </ScrollViewer>
+
+                        <TextBox x:Name="TextBox" Style="{StaticResource NoClearButtonTextBox}" 
+                            TextAlignment="Center" 
+                            Background="Transparent" 
+                            BorderBrush="Transparent"
+                            BorderThickness="0"
+                            VerticalAlignment="Top" 
+                            Visibility="Visible" 
+                            HorizontalAlignment="Left" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

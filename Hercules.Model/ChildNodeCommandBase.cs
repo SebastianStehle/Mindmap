@@ -28,7 +28,7 @@ namespace Hercules.Model
         {
             if (child == null)
             {
-                child = (Node)Node.Document.GetOrCreateNode<Node>(Guid.NewGuid(), id => new Node(id));
+                child = (Node)Node.Document.GetOrCreateNode(Guid.NewGuid(), id => new Node(id));
             }
 
             this.child = child;

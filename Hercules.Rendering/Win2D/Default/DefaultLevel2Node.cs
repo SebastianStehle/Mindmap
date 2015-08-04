@@ -7,7 +7,7 @@ using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 using Windows.UI;
 
-namespace Hercules.App.Controls.Default
+namespace Hercules.Rendering.Win2D.Default
 {
     public sealed class DefaultLevel2Node : DefaultRenderNode
     {

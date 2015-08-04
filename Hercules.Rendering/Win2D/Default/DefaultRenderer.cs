@@ -1,6 +1,6 @@
 ﻿using Hercules.Model;
 
-namespace Hercules.App.Controls.Default
+namespace Hercules.Rendering.Win2D.Default
 {
     public class DefaultRenderer : ThemeRenderer
     {

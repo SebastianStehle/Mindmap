@@ -1,23 +1,30 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using Hercules.Model;
-using GP.Windows;
-using Hercules.Model.Layouting;
-using Microsoft.Graphics.Canvas;
-using GP.Windows.UI;
-using Microsoft.Graphics.Canvas.Brushes;
-using Windows.UI;
-using Hercules.Model.Utils;
-using System.Numerics;
-using Microsoft.Graphics.Canvas.UI.Xaml;
-using System;
-using Windows.UI.Input;
+﻿// ==========================================================================
+// ThemeRenderer.cs
+// Metro Library SE
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
 
-namespace Hercules.App.Controls
+using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
+using GP.Windows;
+using GP.Windows.UI;
+using Hercules.Model;
+using Hercules.Model.Layouting;
+using Hercules.Model.Utils;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Brushes;
+using Microsoft.Graphics.Canvas.Text;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+using Windows.UI;
+
+namespace Hercules.Model.Rendering.Win2D
 {
-    public abstract class ThemeRenderer : IRenderer
+    public abstract class Win2DRenderer : IRenderer
     {
-        private readonly Dictionary<NodeBase, ThemeRenderNode> renderNodes = new Dictionary<NodeBase, ThemeRenderNode>();
+        private readonly Dictionary<NodeBase, Win2DRenderNode> renderNodes = new Dictionary<NodeBase, Win2DRenderNode>();
         private readonly List<ThemeColor> colors = new List<ThemeColor>();
         private CanvasControl currentCanvas;
         private Document currentDocument;
@@ -38,7 +45,7 @@ namespace Hercules.App.Controls
             }
         }
 
-        public IEnumerable<ThemeRenderNode> RenderNodes
+        public IEnumerable<Win2DRenderNode> RenderNodes
         {
             get
             {
@@ -160,19 +167,20 @@ namespace Hercules.App.Controls
         {
             if (currentDocument != null && layout != null)
             {
-                session.Units = CanvasUnits.Dips;
+                session.TextAntialiasing = CanvasTextAntialiasing.Grayscale;
+
                 session.Transform = transform;
 
                 layout.UpdateVisibility(currentDocument, this);
                 
-                foreach (ThemeRenderNode nodeContainer in renderNodes.Values)
+                foreach (Win2DRenderNode nodeContainer in renderNodes.Values)
                 {
                     nodeContainer.Measure(session);
                 }
 
                 layout.UpdateLayout(currentDocument, this);
 
-                foreach (ThemeRenderNode nodeContainer in renderNodes.Values)
+                foreach (Win2DRenderNode nodeContainer in renderNodes.Values)
                 {
                     nodeContainer.Arrange(session);
                 }
@@ -180,7 +188,7 @@ namespace Hercules.App.Controls
                 int nodes = 0;
                 int paths = 0;
 
-                foreach (ThemeRenderNode nodeContainer in renderNodes.Values)
+                foreach (Win2DRenderNode nodeContainer in renderNodes.Values)
                 {
                     if (nodeContainer.IsVisible && CanRenderPath(nodeContainer))
                     {
@@ -190,7 +198,7 @@ namespace Hercules.App.Controls
                     }
                 }
 
-                foreach (ThemeRenderNode nodeContainer in renderNodes.Values)
+                foreach (Win2DRenderNode nodeContainer in renderNodes.Values)
                 {
                     if (nodeContainer.IsVisible && CanRenderNode(nodeContainer))
                     {
@@ -202,12 +210,12 @@ namespace Hercules.App.Controls
             }
         }
 
-        private bool CanRenderPath(ThemeRenderNode nodeContainer)
+        private bool CanRenderPath(Win2DRenderNode nodeContainer)
         {
             return visibleRect.IntersectsWith(nodeContainer.TotalBounds);
         }
 
-        private bool CanRenderNode(ThemeRenderNode nodeContainer)
+        private bool CanRenderNode(Win2DRenderNode nodeContainer)
         {
             return visibleRect.IntersectsWith(nodeContainer.Bounds);
         }
@@ -232,11 +240,11 @@ namespace Hercules.App.Controls
             return MathHelper.Transform(position, transform);
         }
 
-        public bool HandleClick(Vector2 position, out ThemeRenderNode handledNode)
+        public bool HandleClick(Vector2 position, out Win2DRenderNode handledNode)
         {
             handledNode = null;
 
-            foreach (ThemeRenderNode renderNode in renderNodes.Values)
+            foreach (Win2DRenderNode renderNode in renderNodes.Values)
             {
                 if (renderNode.HandleClick(position))
                 {
@@ -287,13 +295,13 @@ namespace Hercules.App.Controls
             return false;
         }
 
-        private ThemeRenderNode TryAdd(NodeBase node)
+        private Win2DRenderNode TryAdd(NodeBase node)
         {
             if (node != null)
             {
                 return renderNodes.GetOrCreateDefault(node, () =>
                 {
-                    ThemeRenderNode renderNode = CreateRenderNode(node);
+                    Win2DRenderNode renderNode = CreateRenderNode(node);
 
                     renderNode.Parent = TryAdd(node.Parent);
 
@@ -316,6 +324,6 @@ namespace Hercules.App.Controls
             return TryAdd(node);
         }
 
-        protected abstract ThemeRenderNode CreateRenderNode(NodeBase node);
+        protected abstract Win2DRenderNode CreateRenderNode(NodeBase node);
     }
 }

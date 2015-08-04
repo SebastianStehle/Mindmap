@@ -6,7 +6,7 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
-namespace Hercules.App.Controls.Default
+namespace Hercules.Rendering.Win2D.Default
 {
     public abstract class DefaultRenderNode : ThemeRenderNode
     {

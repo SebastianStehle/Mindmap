@@ -11,7 +11,7 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Windows.UI;
 
-namespace Hercules.App.Controls
+namespace Hercules.Rendering.Win2D
 {
     public sealed class ThemeColor
     {

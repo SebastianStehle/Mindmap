@@ -1,12 +1,11 @@
 ﻿using System.Numerics;
 using GP.Windows;
-using Hercules.App.Components.Implementations;
 using Hercules.Model;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Windows.UI;
 
-namespace Hercules.App.Controls.Default
+namespace Hercules.Rendering.Win2D.Default
 {
     public sealed class ExpandButton
     {

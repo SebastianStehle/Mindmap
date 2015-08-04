@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{B0AA10FC-A13F-4D7E-B605-F450BBE9194D}</ProjectGuid>
+    <ProjectGuid>{22201CEE-0C00-4148-B142-C9E36CA72063}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Hercules.Model</RootNamespace>
-    <AssemblyName>Hercules.Model</AssemblyName>
+    <RootNamespace>Hercules.Rendering</RootNamespace>
+    <AssemblyName>Hercules.Rendering</AssemblyName>
     <DefaultLanguage>en-US</DefaultLanguage>
     <TargetPlatformIdentifier>UAP</TargetPlatformIdentifier>
     <TargetPlatformVersion>10.0.10240.0</TargetPlatformVersion>
@@ -113,74 +113,29 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChangeColorCommand.cs" />
-    <Compile Include="ChangeIconKeyCommand.cs" />
-    <Compile Include="ChangeIconSizeCommand.cs" />
-    <Compile Include="ChangeTextCommand.cs" />
-    <Compile Include="ChildNodeCommandBase.cs" />
-    <Compile Include="CommandBase.cs" />
-    <Compile Include="CompositeUndoRedoAction.cs" />
-    <Compile Include="Document.cs" />
-    <Compile Include="DocumentExtensions.cs" />
-    <Compile Include="DocumentObject.cs" />
-    <Compile Include="Export\Html\HtmlOutlineGenerator.cs" />
-    <Compile Include="Export\IOutlineGenerator.cs" />
     <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="IconSize.cs" />
-    <Compile Include="IDocumentCommands.cs" />
-    <Compile Include="InsertChildCommand.cs" />
-    <Compile Include="IUndoRedoAction.cs" />
-    <Compile Include="IUndoRedoManager.cs" />
-    <Compile Include="Layouting\AnchorPoint.cs" />
-    <Compile Include="Layouting\AttachTarget.cs" />
-    <Compile Include="Layouting\Default\DefaultLayout.cs" />
-    <Compile Include="Layouting\Default\DefaultLayoutNode.cs" />
-    <Compile Include="Layouting\Default\LayoutProcess.cs" />
-    <Compile Include="Layouting\Default\PreviewCalculationProcess.cs" />
-    <Compile Include="Layouting\ILayout.cs" />
-    <Compile Include="Layouting\IRenderer.cs" />
-    <Compile Include="Layouting\IRenderNode.cs" />
-    <Compile Include="Layouting\VisibilityUpdater.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="NodeBase.cs" />
-    <Compile Include="NodeEventArgs.cs" />
-    <Compile Include="NodeExtensions.cs" />
-    <Compile Include="NodeSide.cs" />
-    <Compile Include="PropertiesBag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="PropertyValue.cs" />
-    <Compile Include="RemoveChildCommand.cs" />
-    <Compile Include="Utils\ResourceManager.cs" />
-    <Compile Include="Rendering\Win2D\Default\DefaultLevel1Node.cs" />
-    <Compile Include="Rendering\Win2D\Default\DefaultLevel2Node.cs" />
-    <Compile Include="Rendering\Win2D\Default\DefaultRenderer.cs" />
-    <Compile Include="Rendering\Win2D\Default\DefaultRenderNode.cs" />
-    <Compile Include="Rendering\Win2D\Default\DefaultRootNode.cs" />
-    <Compile Include="Rendering\Win2D\Default\ExpandButton.cs" />
-    <Compile Include="Rendering\Win2D\Win2DTextRenderer.cs" />
-    <Compile Include="Rendering\Win2D\ThemeColor.cs" />
-    <Compile Include="Rendering\Win2D\Win2DRenderer.cs" />
-    <Compile Include="Rendering\Win2D\Win2DRenderNode.cs" />
-    <Compile Include="RootNode.cs" />
-    <Compile Include="Storing\DocumentRef.cs" />
-    <Compile Include="Storing\IDocumentStore.cs" />
-    <Compile Include="Storing\Json\JsonDocumentStore.cs" />
-    <Compile Include="Storing\Json\JsonHistory.cs" />
-    <Compile Include="Storing\Json\JsonHistoryStep.cs" />
-    <Compile Include="Storing\Json\JsonHistoryStepsCommand.cs" />
-    <Compile Include="Storing\Json\PropertiesBagConverter.cs" />
-    <Compile Include="Storing\Utils\FileExtensions.cs" />
-    <Compile Include="Storing\Utils\JsonExtensions.cs" />
-    <Compile Include="ToggleCollapseCommand.cs" />
-    <Compile Include="UndoRedoManager.cs" />
-    <Compile Include="Utils\LimitedThreadsScheduler.cs" />
-    <Compile Include="Utils\Rect2.cs" />
-    <Content Include="Properties\Hercules.Model.rd.xml" />
+    <Compile Include="ResourceManager.cs" />
+    <Compile Include="Win2D\Default\DefaultLevel1Node.cs" />
+    <Compile Include="Win2D\Default\DefaultLevel2Node.cs" />
+    <Compile Include="Win2D\Default\DefaultRenderer.cs" />
+    <Compile Include="Win2D\Default\DefaultRenderNode.cs" />
+    <Compile Include="Win2D\Default\DefaultRootNode.cs" />
+    <Compile Include="Win2D\Default\ExpandButton.cs" />
+    <Compile Include="Win2D\TextRenderer.cs" />
+    <Compile Include="Win2D\ThemeColor.cs" />
+    <Compile Include="Win2D\ThemeRenderer.cs" />
+    <Compile Include="Win2D\ThemeRenderNode.cs" />
+    <Content Include="Properties\Hercules.Rendering.rd.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\GP.Windows\GP.Windows.csproj">
       <Project>{bf45f42d-d00c-4ac5-ac3f-ce261da43f99}</Project>
       <Name>GP.Windows</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hercules.Model\Hercules.Model.csproj">
+      <Project>{b0aa10fc-a13f-4d7e-b605-f450bbe9194d}</Project>
+      <Name>Hercules.Model</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

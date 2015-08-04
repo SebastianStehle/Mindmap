@@ -6,7 +6,7 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
-namespace Hercules.App.Controls.Default
+namespace Hercules.Model.Rendering.Win2D.Default
 {
     public sealed class DefaultLevel1Node : DefaultRenderNode
     {
@@ -14,9 +14,9 @@ namespace Hercules.App.Controls.Default
         private static readonly Vector2 SelectionMargin = new Vector2(-5, -5);
         private static readonly float MinHeight = 40;
         private static readonly float MinWidth = 80;
-        private readonly TextRenderer textRenderer;
+        private readonly Win2DTextRenderer textRenderer;
 
-        public override TextRenderer TextRenderer
+        public override Win2DTextRenderer TextRenderer
         {
             get
             {
@@ -27,7 +27,7 @@ namespace Hercules.App.Controls.Default
         public DefaultLevel1Node(NodeBase node, DefaultRenderer renderer) 
             : base(node, renderer)
         {
-            textRenderer = new TextRenderer(14, node);
+            textRenderer = new Win2DTextRenderer(14, node);
         }
 
         protected override void ArrangeInternal(CanvasDrawingSession session)

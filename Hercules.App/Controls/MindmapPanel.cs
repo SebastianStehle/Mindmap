@@ -17,20 +17,21 @@ using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Hercules.App.Controls.Default;
 using Windows.UI.Xaml.Media;
+using Hercules.Model.Rendering.Win2D;
+using Hercules.Model.Rendering.Win2D.Default;
 
 namespace Hercules.App.Controls
 {
     public sealed class MindmapPanel : Control
     {
-        private readonly ThemeRenderer renderer = new DefaultRenderer();
+        private readonly Win2DRenderer renderer = new DefaultRenderer();
         private readonly CompositeTransform textBoxTransform = new CompositeTransform();
         private CanvasControl canvasControl;
         private FrameworkElement placeholder;
         private ScrollViewer scrollViewer;
         private TextBox textBox;
-        private ThemeRenderNode textBoxNode;
+        private Win2DRenderNode textBoxNode;
 
         public static readonly DependencyProperty LayoutProperty =
             DependencyProperty.Register("Layout", typeof(ILayout), typeof(MindmapPanel), new PropertyMetadata(null, new PropertyChangedCallback(OnDocumentLayoutChanged)));
@@ -210,7 +211,7 @@ namespace Hercules.App.Controls
         {
             Vector2 position = renderer.GetMindmapPosition(e.GetPosition(this).ToVector2());
 
-            foreach (ThemeRenderNode renderNode in renderer.RenderNodes)
+            foreach (Win2DRenderNode renderNode in renderer.RenderNodes)
             {
                 if (renderNode.HitTest(position))
                 {
@@ -220,7 +221,7 @@ namespace Hercules.App.Controls
 
                         textBoxNode = renderNode;
 
-                        textBoxNode.TextRenderer.BeginEdit(textBox);
+                        //textBoxNode.TextRenderer.BeginEdit(textBox);
 
                         textBox.Visibility = Visibility.Visible;
 
@@ -244,7 +245,7 @@ namespace Hercules.App.Controls
         {
             Vector2 position = renderer.GetMindmapPosition(e.GetPosition(this).ToVector2());
 
-            ThemeRenderNode handledNode = null;
+            Win2DRenderNode handledNode = null;
 
             if (renderer.HandleClick(position, out handledNode))
             {
@@ -267,7 +268,7 @@ namespace Hercules.App.Controls
         {
             if (textBoxNode != null)
             {
-                textBoxNode.TextRenderer.EndEdit();
+               // textBoxNode.TextRenderer.EndEdit();
 
                 textBoxNode.Node.Document.MakeTransaction("Change Text", c =>
                 {

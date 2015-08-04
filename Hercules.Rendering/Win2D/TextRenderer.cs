@@ -1,14 +1,20 @@
-﻿using Hercules.Model;
+﻿// ==========================================================================
+// TextRenderer.cs
+// Metro Library SE
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+using System;
+using System.Numerics;
+using Hercules.Model;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
-using System;
-using System.Numerics;
 using Windows.UI;
-using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml;
 
-namespace Hercules.App.Controls
+namespace Hercules.Rendering.Win2D
 {
     public sealed class TextRenderer
     {
@@ -18,8 +24,9 @@ namespace Hercules.App.Controls
         private CanvasTextLayout textLayout;
         private Vector2 renderSize;
         private Vector2 renderPosition;
-        private TextBox editTextBox;
         private float minSize;
+
+        public bool HideText { get; set; }
 
         public Rect2 Bounds
         {
@@ -58,7 +65,7 @@ namespace Hercules.App.Controls
         {
             minSize = textFormat.FontSize * 2;
 
-            string text = editTextBox != null ? editTextBox.Text : node.Text;
+            string text = OverrideText != null ? OverrideText : node.Text;
 
             if (!string.IsNullOrWhiteSpace(text))
             {
@@ -86,70 +93,14 @@ namespace Hercules.App.Controls
 
         public void Render(CanvasDrawingSession session)
         {
-            string text = editTextBox != null ? editTextBox.Text : node.Text;
+            string text = OverrideText != null ? OverrideText : node.Text;
 #if DRAW_OUTLINE
             session.DrawRectangle(Bounds, Colors.Red);
 #endif
-            if (editTextBox == null)
+            if (!HideText)
             {
-                if (!string.IsNullOrWhiteSpace(text))
-                {
-                    session.DrawText(text, Bounds, Colors.Black, textFormat);
-                }
+                session.DrawText(text, Bounds, Colors.Black, textFormat);
             }
-            else
-            {
-                UpdateAlignment();
-            }
-        }
-
-        private void UpdateAlignment()
-        {
-            bool isHandled = false;
-
-            if (renderSize.X > minSize + padding.X)
-            {
-                if (node.NodeSide == NodeSide.Right)
-                {
-                    editTextBox.TextAlignment = TextAlignment.Left;
-
-                    isHandled = true;
-                }
-                else if (node.NodeSide == NodeSide.Left)
-                {
-                    editTextBox.TextAlignment = TextAlignment.Left;
-
-                    isHandled = true;
-                }
-            }
-            
-            if (!isHandled)
-            {
-                editTextBox.TextAlignment = TextAlignment.Center;
-            }
-        }
-
-        public void BeginEdit(TextBox textBox)
-        {
-            editTextBox = textBox;
-
-            textBox.FontWeight = textFormat.FontWeight;
-            textBox.FontStyle = textFormat.FontStyle;
-            textBox.FontSize = textFormat.FontSize;
-
-            textBox.Text = node.Text ?? string.Empty;
-
-            UpdateAlignment();
-        }
-
-        public void EndEdit()
-        {
-            editTextBox = null;
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            OverrideText = ((TextBox)sender).Text;
         }
     }
 }

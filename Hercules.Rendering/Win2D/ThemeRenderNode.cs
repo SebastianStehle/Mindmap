@@ -6,7 +6,7 @@ using Hercules.Model.Layouting;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 
-namespace Hercules.App.Controls
+namespace Hercules.Rendering.Win2D
 {
     public abstract class ThemeRenderNode : IRenderNode
     {

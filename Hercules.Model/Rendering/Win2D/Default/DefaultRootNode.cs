@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Numerics;
-using Hercules.Model;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
-using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Model.Rendering.Win2D.Default
 {
@@ -79,19 +77,27 @@ namespace Hercules.Model.Rendering.Win2D.Default
             
             textRenderer.Render(session);
 
-            if (Node.IsSelected)
+            if (!HideControls)
             {
-                radiusX -= SelectionMargin.X;
-                radiusY -= SelectionMargin.Y;
+                if (Node.IsSelected)
+                {
+                    radiusX -= SelectionMargin.X;
+                    radiusY -= SelectionMargin.Y;
 
-                session.DrawEllipse(
-                    Bounds.Center,
-                    radiusX,
-                    radiusY,
-                    borderBrush, 2f, SelectionStrokeStyle);
+                    session.DrawEllipse(
+                        Bounds.Center,
+                        radiusX,
+                        radiusY,
+                        borderBrush, 2f, SelectionStrokeStyle);
+                }
+
+                Button.Render(session);
             }
+        }
 
-            Button.Render(session);
+        protected override Win2DRenderNode CloneInternal()
+        {
+            return new DefaultRootNode(Node, (DefaultRenderer)Renderer);
         }
     }
 }

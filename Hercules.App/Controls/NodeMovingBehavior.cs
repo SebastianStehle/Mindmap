@@ -6,17 +6,21 @@
 // All rights reserved.
 // ==========================================================================
 
+using System.Numerics;
 using GP.Windows.UI.Interactivity;
+using Hercules.Model.Rendering.Win2D;
 using Windows.UI.Xaml.Input;
 
 namespace Hercules.App.Controls
 {
-    public sealed class NodeMovingBehavior : Behavior<Mindmap>
+    public sealed class NodeMovingBehavior : Behavior<MindmapPanel>
     {
         private NodeMovingOperation movingOperation;
 
         protected override void OnAttached()
         {
+            AssociatedElement.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
+
             AssociatedElement.ManipulationStarted += AssociatedElement_ManipulationStarted;
             AssociatedElement.ManipulationDelta += AssociatedElement_ManipulationDelta;
             AssociatedElement.ManipulationCompleted += AssociatedElement_ManipulationCompleted;
@@ -31,14 +35,25 @@ namespace Hercules.App.Controls
 
         private void AssociatedElement_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
         {
-            movingOperation = NodeMovingOperation.Start(AssociatedElement, e.OriginalSource as NodeControl);
+            Vector2 position = AssociatedElement.Renderer.GetMindmapPosition(e.Position.ToVector2());
+
+            foreach (Win2DRenderNode renderNode in AssociatedElement.Renderer.RenderNodes)
+            {
+                if (renderNode.HitTest(position))
+                {
+                    movingOperation = NodeMovingOperation.Start(AssociatedElement.Renderer, renderNode);
+                    break;
+                }
+            }
         }
 
         private void AssociatedElement_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
             if (movingOperation != null)
             {
-                movingOperation.Move(e.Delta.Translation);
+                Vector2 translation = AssociatedElement.Renderer.GetMindmapSize(e.Delta.Translation.ToVector2());
+
+                movingOperation.Move(translation);
             }
         }
 

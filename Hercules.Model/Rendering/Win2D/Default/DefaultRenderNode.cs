@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Numerics;
-using Hercules.Model;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;

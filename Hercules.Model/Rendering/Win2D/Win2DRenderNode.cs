@@ -19,13 +19,13 @@ namespace Hercules.Model.Rendering.Win2D
     public abstract class Win2DRenderNode : IRenderNode
     {
         private readonly Win2DRenderer renderer;
+        private readonly NodeBase node;
         private Vector2 renderPosition;
         private Vector2 renderSize;
-        private NodeBase node;
         private Rect2 totalBounds;
         private bool isVisible = true;
 
-        public Win2DRenderNode Parent { get; internal set; }
+        public Win2DRenderNode Parent { get; set; }
 
         public Win2DRenderer Renderer
         {
@@ -84,6 +84,8 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
+        public bool HideControls { get; set; }
+
         public abstract Win2DTextRenderer TextRenderer { get; }
 
         protected Win2DRenderNode(NodeBase node, Win2DRenderer renderer)
@@ -94,6 +96,11 @@ namespace Hercules.Model.Rendering.Win2D
             this.renderer = renderer;
 
             this.node = node;
+        }
+
+        public void MoveBy(Vector2 offset)
+        {
+            renderPosition += offset;
         }
 
         public void MoveTo(Vector2 position, AnchorPoint anchor)
@@ -110,6 +117,19 @@ namespace Hercules.Model.Rendering.Win2D
             {
                 renderPosition.X -= 0.5f * renderSize.X;
             }
+        }
+
+        public Win2DRenderNode CloneUnlinked()
+        {
+            Win2DRenderNode clone = CloneInternal();
+
+            clone.HideControls = true;
+            clone.Parent = null;
+            clone.totalBounds = totalBounds;
+            clone.renderSize = renderSize;
+            clone.renderPosition = renderPosition;
+
+            return clone;
         }
 
         public void Hide()
@@ -183,6 +203,8 @@ namespace Hercules.Model.Rendering.Win2D
         public abstract bool HitTest(Vector2 position);
 
         protected abstract void RenderInternal(CanvasDrawingSession session, ThemeColor color);
+
+        protected abstract Win2DRenderNode CloneInternal();
 
         protected abstract Vector2 MeasureInternal(CanvasDrawingSession session);
     }

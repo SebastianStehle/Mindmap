@@ -53,6 +53,8 @@
                         <local:MindmapPanel x:Name="NodePanel" Background="Transparent" Document="{Binding Document}" Layout="{TemplateBinding Layout}">
                             <i:Interaction.Behaviors>
                                 <gpi:SwallowKeyArrowEventsBehavior />
+                                
+                                <local:NodeMovingBehavior />
                             </i:Interaction.Behaviors>
                         </local:MindmapPanel>
                     </Grid>

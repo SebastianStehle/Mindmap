@@ -33,6 +33,14 @@ namespace Hercules.App.Controls
         private TextBox textBox;
         private Win2DRenderNode textBoxNode;
 
+        public Win2DRenderer Renderer
+        {
+            get
+            {
+                return renderer;
+            }
+        }
+
         public static readonly DependencyProperty LayoutProperty =
             DependencyProperty.Register("Layout", typeof(ILayout), typeof(MindmapPanel), new PropertyMetadata(null, new PropertyChangedCallback(OnDocumentLayoutChanged)));
         public ILayout Layout

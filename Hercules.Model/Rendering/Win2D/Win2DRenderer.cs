@@ -6,7 +6,9 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 using GP.Windows;
@@ -26,6 +28,7 @@ namespace Hercules.Model.Rendering.Win2D
     {
         private readonly Dictionary<NodeBase, Win2DRenderNode> renderNodes = new Dictionary<NodeBase, Win2DRenderNode>();
         private readonly List<ThemeColor> colors = new List<ThemeColor>();
+        private readonly List<Win2DRenderNode> customNodes = new List<Win2DRenderNode>();
         private CanvasControl currentCanvas;
         private Document currentDocument;
         private Matrix3x2 transform = Matrix3x2.Identity;
@@ -45,11 +48,19 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
-        public IEnumerable<Win2DRenderNode> RenderNodes
+        public ICollection<Win2DRenderNode> RenderNodes
         {
             get
             {
                 return renderNodes.Values;
+            }
+        }
+
+        public ICollection<Win2DRenderNode> CustomNodes
+        {
+            get
+            {
+                return customNodes;
             }
         }
 
@@ -119,6 +130,14 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
+        public void Invalidate()
+        {
+            if (currentCanvas != null)
+            {
+                currentCanvas.Invalidate();
+            }
+        }
+
         public void Transform(Vector2 translate, float zoom, Rect2 visibleRect)
         {
             this.visibleRect = visibleRect;
@@ -172,52 +191,66 @@ namespace Hercules.Model.Rendering.Win2D
                 session.Transform = transform;
 
                 layout.UpdateVisibility(currentDocument, this);
+
+                List<Win2DRenderNode> allNodes = renderNodes.Values.Union(customNodes).ToList();
                 
-                foreach (Win2DRenderNode nodeContainer in renderNodes.Values)
+                foreach (Win2DRenderNode node in allNodes)
                 {
-                    nodeContainer.Measure(session);
+                    node.Measure(session);
                 }
 
                 layout.UpdateLayout(currentDocument, this);
 
-                foreach (Win2DRenderNode nodeContainer in renderNodes.Values)
+                foreach (Win2DRenderNode node in allNodes)
                 {
-                    nodeContainer.Arrange(session);
+                    node.Arrange(session);
                 }
 
                 int nodes = 0;
                 int paths = 0;
 
-                foreach (Win2DRenderNode nodeContainer in renderNodes.Values)
+                foreach (Win2DRenderNode node in allNodes)
                 {
-                    if (nodeContainer.IsVisible && CanRenderPath(nodeContainer))
+                    if (node.IsVisible && CanRenderPath(node))
                     {
                         paths++;
 
-                        nodeContainer.RenderPath(session);
+                        node.RenderPath(session);
                     }
                 }
 
-                foreach (Win2DRenderNode nodeContainer in renderNodes.Values)
+                foreach (Win2DRenderNode node in allNodes)
                 {
-                    if (nodeContainer.IsVisible && CanRenderNode(nodeContainer))
+                    if (node.IsVisible && CanRenderNode(node))
                     {
                         nodes++;
 
-                        nodeContainer.Render(session);
+                        node.Render(session);
                     }
                 }
+
+                Debug.WriteLine("Nodes: {0}, Paths: {1}", nodes, paths);
             }
         }
 
-        private bool CanRenderPath(Win2DRenderNode nodeContainer)
+        private bool CanRenderPath(Win2DRenderNode node)
         {
-            return visibleRect.IntersectsWith(nodeContainer.TotalBounds);
+            return visibleRect.IntersectsWith(node.TotalBounds);
         }
 
-        private bool CanRenderNode(Win2DRenderNode nodeContainer)
+        private bool CanRenderNode(Win2DRenderNode node)
         {
-            return visibleRect.IntersectsWith(nodeContainer.Bounds);
+            return visibleRect.IntersectsWith(node.Bounds);
+        }
+
+        public void AddCustomNode(Win2DRenderNode node)
+        {
+            customNodes.Add(node);
+        }
+
+        public void RemoveCustomNode(Win2DRenderNode node)
+        {
+            customNodes.Remove(node);
         }
 
         public Vector2 GetMindmapSize(Vector2 position)
@@ -250,10 +283,7 @@ namespace Hercules.Model.Rendering.Win2D
                 {
                     handledNode = renderNode;
 
-                    if (currentCanvas != null)
-                    {
-                        currentCanvas.Invalidate();
-                    }
+                    Invalidate();
                     
                     return true;
                 }
@@ -269,10 +299,7 @@ namespace Hercules.Model.Rendering.Win2D
 
         private void Document_StateChanged(object sender, System.EventArgs e)
         {
-            if (currentCanvas != null)
-            {
-                currentCanvas.Invalidate();
-            }
+            Invalidate();
         }
 
         private void Document_NodeAdded(object sender, NodeEventArgs e)

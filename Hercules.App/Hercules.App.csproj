@@ -111,6 +111,7 @@
     <Compile Include="Controls\MindmapFlyout.cs" />
     <Compile Include="Controls\MindmapFlyoutView.cs" />
     <Compile Include="Controls\MindmapPanel.cs" />
+    <Compile Include="Controls\NodeMovingBehavior.cs" />
     <Compile Include="Controls\NodeMovingOperation.cs" />
     <Compile Include="Controls\NodeSideToHorizontalAlignmentConverter.cs" />
     <Compile Include="Controls\NotNullNodeThicknessConverter.cs" />

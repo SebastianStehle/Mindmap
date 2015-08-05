@@ -96,7 +96,7 @@ namespace Hercules.Model.Rendering.Win2D
 #if DRAW_OUTLINE
             session.DrawRectangle(Bounds, Colors.Red);
 #endif
-            if (!HideText)
+            if (!HideText && !string.IsNullOrWhiteSpace(text))
             {
                 session.DrawText(text, Bounds, Colors.Black, textFormat);
             }

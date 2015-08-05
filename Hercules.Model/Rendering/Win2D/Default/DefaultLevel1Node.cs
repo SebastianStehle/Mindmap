@@ -1,10 +1,8 @@
 ﻿using System;
 using System.Numerics;
-using Hercules.Model;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
-using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Model.Rendering.Win2D.Default
 {
@@ -68,17 +66,25 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
             textRenderer.Render(session);
 
-            if (Node.IsSelected)
+            if (!HideControls)
             {
-                Rect2 rect = Rect2.Deflate(Bounds, SelectionMargin);
+                if (Node.IsSelected)
+                {
+                    Rect2 rect = Rect2.Deflate(Bounds, SelectionMargin);
 
-                session.DrawRoundedRectangle(rect, 14, 14, borderBrush, 2f, SelectionStrokeStyle);
-            }
+                    session.DrawRoundedRectangle(rect, 14, 14, borderBrush, 2f, SelectionStrokeStyle);
+                }
 
-            if (Node.HasChildren)
-            {
-                Button.Render(session);
+                if (Node.HasChildren)
+                {
+                    Button.Render(session);
+                }
             }
+        }
+
+        protected override Win2DRenderNode CloneInternal()
+        {
+            return new DefaultLevel1Node(Node, (DefaultRenderer)Renderer);
         }
     }
 }

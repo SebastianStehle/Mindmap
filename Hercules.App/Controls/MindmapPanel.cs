@@ -156,18 +156,15 @@ namespace Hercules.App.Controls
                     translateY = -inverseZoom * (float)scrollViewer.VerticalOffset;
                 }
 
-                float visibleX = (float)Math.Round(inverseZoom * (float)scrollViewer.HorizontalOffset, 3);
-                float visibleY = (float)Math.Round(inverseZoom * (float)scrollViewer.VerticalOffset, 3);
+                float visibleX = inverseZoom * (float)scrollViewer.HorizontalOffset;
+                float visibleY = inverseZoom * (float)scrollViewer.VerticalOffset; ;
 
-                float visibleW = (float)Math.Round(Math.Min(Document.Size.X, inverseZoom * (float)scrollViewer.ViewportWidth), 3);
-                float visibleH = (float)Math.Round(Math.Min(Document.Size.Y, inverseZoom * (float)scrollViewer.ViewportHeight), 3);
+                float visibleW = Math.Min(Document.Size.X, inverseZoom * (float)scrollViewer.ViewportWidth);
+                float visibleH = Math.Min(Document.Size.Y, inverseZoom * (float)scrollViewer.ViewportHeight);
 
                 Rect2 visibleRect = new Rect2(visibleX, visibleY, visibleW, visibleH);
 
-                translateX = (float)Math.Round(translateX, 3);
-                translateY = (float)Math.Round(translateY, 3);
-
-                float zoom = (float)Math.Round(scrollViewer.ZoomFactor, 3);
+                float zoom = scrollViewer.ZoomFactor;
 
                 renderer.Transform(new Vector2(translateX, translateY), zoom, visibleRect);
             }

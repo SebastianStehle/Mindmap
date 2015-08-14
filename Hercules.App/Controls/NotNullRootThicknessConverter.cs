@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // NotNullRootThicknessConverter.cs
-// Mindmap Application
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;

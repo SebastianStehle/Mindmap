@@ -1,4 +1,11 @@
-﻿using System.Numerics;
+﻿// ==========================================================================
+// ExpandButton.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+using System.Numerics;
 using GP.Windows;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
@@ -32,7 +39,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
         {
             if (renderBounds.Contains(mousePosition))
             {
-                string transactionName = Utils.ResourceManager.GetString("ExpandCollapseTransactionName");
+                string transactionName = ResourceManager.GetString("ExpandCollapseTransactionName");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {

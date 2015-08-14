@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // ChangeIconSizeCommand.cs
-// Hercules Application
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System.Globalization;
 
 namespace Hercules.Model

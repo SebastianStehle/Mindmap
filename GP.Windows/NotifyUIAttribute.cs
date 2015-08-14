@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // NotifyUIAttribute.cs
-// Bus Portal (busliniensuche.de)
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System;
 
 namespace GP.Windows

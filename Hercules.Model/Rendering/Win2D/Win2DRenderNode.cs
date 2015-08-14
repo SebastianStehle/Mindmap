@@ -1,14 +1,13 @@
 ﻿// ==========================================================================
-// ThemeRenderNode.cs
-// Hercules Application
+// Win2DRenderNode.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System;
+using System.Linq;
 using System.Numerics;
-using Windows.Foundation;
 using GP.Windows;
 using GP.Windows.UI;
 using Hercules.Model.Layouting;

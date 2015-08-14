@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
-// EditView.cs
-// RavenMind Application
+// EditView.xaml.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using GalaSoft.MvvmLight.Messaging;
 using Hercules.App.Messages;
 using System;

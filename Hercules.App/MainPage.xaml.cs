@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
-// MainPage.cs
-// Hercules.App Application
+// MainPage.xaml.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using Hercules.Model;
 using Hercules.App.ViewModels;
 using GP.Windows.UI;

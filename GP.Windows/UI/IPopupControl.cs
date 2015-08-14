@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // IPopupControl.cs
-// Green Parrot Windows
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using Windows.UI.Xaml.Controls.Primitives;
 
 namespace GP.Windows.UI

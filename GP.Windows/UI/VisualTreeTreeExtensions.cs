@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
-// VisualTreeExtensions.cs
-// Green Parrot Windows
+// VisualTreeTreeExtensions.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System;
 using Windows.Foundation;
 using Windows.System;

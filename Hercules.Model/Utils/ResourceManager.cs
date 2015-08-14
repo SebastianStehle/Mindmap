@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
-// ChangeColorCommand.cs
-// Hercules Application
+// ResourceManager.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System.Globalization;
 using Windows.ApplicationModel.Resources;
 

@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // NodeMovingBehavior.cs
-// Metro Library SE
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System.Numerics;
 using GP.Windows.UI.Interactivity;
 using Hercules.Model.Rendering.Win2D;

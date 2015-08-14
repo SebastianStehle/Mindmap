@@ -1,17 +1,15 @@
 ﻿// ==========================================================================
-// ThemeRenderer.cs
-// Metro Library SE
+// Win2DRenderer.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System;
 using System.Collections.Generic;
 using GP.Windows;
 using System.Linq;
 using System.Numerics;
-using Windows.UI.Core;
 using GP.Windows.UI;
 using Hercules.Model.Layouting;
 using Hercules.Model.Utils;

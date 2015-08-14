@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
-// RoamingSettingsProvider.cs
-// Mindmap Application
+// DefaultSettingsProvider.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using Windows.Storage;
 
 namespace Hercules.App.Components.Implementations

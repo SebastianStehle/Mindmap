@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // ItemsContainer.cs
-// Green Parrot Windows
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;

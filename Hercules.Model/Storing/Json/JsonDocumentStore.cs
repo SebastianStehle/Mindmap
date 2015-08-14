@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
-// DocumentStore.cs
-// Hercules Application
+// JsonDocumentStore.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using Hercules.Model.Storing.Utils;
 using Hercules.Model.Utils;
 using GP.Windows;

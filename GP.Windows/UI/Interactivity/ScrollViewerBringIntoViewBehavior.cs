@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // ScrollViewerBringIntoViewBehavior.cs
-// Green Parrot Windows
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

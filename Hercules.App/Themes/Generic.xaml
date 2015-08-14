@@ -34,7 +34,7 @@
                                 <gpi:CenterScrollViewerWhenExtendSizeChanged />
                             </i:Interaction.Behaviors>
 
-                            <Grid Width="{Binding Document.Width}" Height="{Binding Document.Height}"></Grid>
+                            <Grid Width="{Binding Document.Width}" Height="{Binding Document.Height}" />
                         </ScrollViewer>
 
                         <TextBox x:Name="TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="0"

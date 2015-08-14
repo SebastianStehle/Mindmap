@@ -1,4 +1,11 @@
-﻿using System.Globalization;
+﻿// ==========================================================================
+// ResourceManager.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+using System.Globalization;
 using Windows.ApplicationModel.Resources;
 
 namespace Hercules.App.Components.Implementations

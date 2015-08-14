@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
-// AssemblyInfo.cs
-// Hercules.App Application
+// NodeListItem.xaml.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using Windows.UI.Xaml;
 
 namespace Hercules.App

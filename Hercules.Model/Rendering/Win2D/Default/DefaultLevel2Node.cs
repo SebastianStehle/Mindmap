@@ -1,4 +1,11 @@
-﻿using System;
+﻿// ==========================================================================
+// DefaultLevel2Node.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+using System;
 using System.Numerics;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;

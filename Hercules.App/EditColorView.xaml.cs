@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
-// EditColorView.cs
-// Hercules.App Application
+// EditColorView.xaml.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using Hercules.Model;
 using Windows.UI.Xaml.Controls;
 using Hercules.App.Components.Implementations;

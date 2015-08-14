@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // Guard.cs
-// Green Parrot Windows
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;

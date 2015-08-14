@@ -1,4 +1,11 @@
-﻿using System;
+﻿// ==========================================================================
+// Rect2.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+using System;
 using System.Numerics;
 using Windows.Foundation;
 

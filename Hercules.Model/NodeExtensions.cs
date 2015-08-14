@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // NodeExtensions.cs
-// Hercules Application
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using GP.Windows;
 using System.Collections.Generic;
 using System.Linq;

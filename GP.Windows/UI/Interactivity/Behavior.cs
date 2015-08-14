@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // Behavior.cs
-// Green Parrot Windows
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using Microsoft.Xaml.Interactivity;
 using System;
 using System.Globalization;

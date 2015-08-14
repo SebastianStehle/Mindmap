@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // Mindmap.cs
-// Mindmap Application
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System;
 using System.Numerics;
 using Hercules.Model;

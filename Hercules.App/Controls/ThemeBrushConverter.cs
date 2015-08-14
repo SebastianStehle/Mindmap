@@ -1,4 +1,11 @@
-﻿using System;
+﻿// ==========================================================================
+// ThemeBrushConverter.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+using System;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
 using Hercules.Model.Rendering.Win2D;

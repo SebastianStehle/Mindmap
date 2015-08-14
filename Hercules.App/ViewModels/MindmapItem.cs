@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // MindmapItem.cs
-// Mindmap Application
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using GalaSoft.MvvmLight;
 using GP.Windows;
 using PropertyChanged;

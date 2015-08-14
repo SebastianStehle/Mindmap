@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // NotRootToVisibilityConverter.cs
-// Mindmap Application
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using Hercules.Model;
 using System;
 using Windows.UI.Xaml;

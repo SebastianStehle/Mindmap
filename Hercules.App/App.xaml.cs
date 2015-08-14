@@ -1,4 +1,11 @@
-﻿using Microsoft.ApplicationInsights;
+﻿// ==========================================================================
+// App.xaml.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+using Microsoft.ApplicationInsights;
 using System;
 using System.Diagnostics;
 using Windows.ApplicationModel;

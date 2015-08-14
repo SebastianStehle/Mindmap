@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // IntToLightBrushConverter.cs
-// Green Parrot Windows
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 namespace GP.Windows.UI
 {
     /// <summary>

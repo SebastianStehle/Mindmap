@@ -1,13 +1,18 @@
-﻿using System.Numerics;
+﻿// ==========================================================================
+// DefaultPreviewNode.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+using System.Numerics;
 using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Brushes;
 
 namespace Hercules.Model.Rendering.Win2D.Default
 {
     public sealed class DefaultPreviewNode : DefaultRootNode
     {
         private static readonly Vector2 Size = new Vector2(100, 16);
-        private ICanvasBrush brush;
 
         public DefaultPreviewNode(NodeBase node, DefaultRenderer renderer) 
             : base(node, renderer)

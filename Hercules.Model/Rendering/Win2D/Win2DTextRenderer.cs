@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
-// TextRenderer.cs
-// Metro Library SE
+// Win2DTextRenderer.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 #define DRAW_OUTLINE
 
 using System;

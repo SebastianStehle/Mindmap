@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // AssetProvider.cs
-// Hercules.App Application
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System.Collections.Generic;
 
 namespace Hercules.App.Assets

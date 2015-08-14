@@ -1,11 +1,10 @@
 // ==========================================================================
-// MainViewModel.cs
-// Mindmap Application
+// EditorViewModel.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;

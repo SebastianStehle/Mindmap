@@ -1,11 +1,10 @@
 // ==========================================================================
 // ViewModelLocator.cs
-// Mindmap Application
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using GalaSoft.MvvmLight.Messaging;
 using Microsoft.Practices.Unity;
 using Hercules.App.Components;

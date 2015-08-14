@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // VisibilityUpdater.cs
-// Hercules Application
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System.Collections.Generic;
 using GP.Windows;
 
@@ -31,7 +30,7 @@ namespace Hercules.Model.Layouting
             UpdateVisibility(document.Root.IsCollapsed, document.Root.RightChildren);
         }
 
-        private void UpdateVisibility(bool isCollapsed, IReadOnlyList<Node> children)
+        private void UpdateVisibility(bool isCollapsed, IEnumerable<Node> children)
         {
             foreach (Node child in children)
             {

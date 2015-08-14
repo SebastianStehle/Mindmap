@@ -1,13 +1,18 @@
-﻿using System;
+﻿// ==========================================================================
+// Win2DResourceManager.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
+using GP.Windows;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.UI;
 using Windows.UI.Core;
-using GP.Windows;
 using GP.Windows.UI;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;

@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // JsonHistoryStep.cs
-// Hercules Application
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;

@@ -273,14 +273,12 @@
                                     </Storyboard>
                                 </VisualState>
                                 <VisualState x:Name="Disabled">
-                                    <Storyboard>
-                                    </Storyboard>
+                                    <Storyboard />
                                 </VisualState>
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="CheckStates">
                                 <VisualState x:Name="Checked">
-                                    <Storyboard>
-                                    </Storyboard>
+                                    <Storyboard />
                                 </VisualState>
                                 <VisualState x:Name="Unchecked">
                                     <Storyboard>
@@ -314,8 +312,7 @@
                             </VisualStateGroup>
                             <VisualStateGroup x:Name="FocusStates">
                                 <VisualState x:Name="Focused">
-                                    <Storyboard>
-                                    </Storyboard>
+                                    <Storyboard />
                                 </VisualState>
                                 <VisualState x:Name="Unfocused"/>
                                 <VisualState x:Name="PointerFocused"/>
@@ -325,13 +322,12 @@
                             <Ellipse x:Name="Ellipse"
 							    Fill="White"
 							    Stroke="#888"
-							    StrokeThickness="1">
-                            </Ellipse>
+							    StrokeThickness="1" />
 
                             <Grid Width="12" Height="12">
                                 <Grid>
-                                    <Line X2="12" Y1="6" Y2="6" Stroke="#888" StrokeThickness="2" x:Name="HLine"></Line>
-                                    <Line Y2="12" X1="6" X2="6" Stroke="#888" StrokeThickness="2" x:Name="VLine"></Line>
+                                    <Line X2="12" Y1="6" Y2="6" Stroke="#888" StrokeThickness="2" x:Name="HLine" />
+                                    <Line Y2="12" X1="6" X2="6" Stroke="#888" StrokeThickness="2" x:Name="VLine" />
                                 </Grid>
                             </Grid>
                         </Grid>

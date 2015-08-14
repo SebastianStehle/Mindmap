@@ -1,4 +1,11 @@
-﻿using Hercules.Model;
+﻿// ==========================================================================
+// MindmapFlyoutView.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+using Hercules.Model;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Hercules.Model.Rendering.Win2D;

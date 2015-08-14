@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // PropertiesBag.cs
-// Hercules
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System;
 using System.Collections.Generic;
 using GP.Windows;

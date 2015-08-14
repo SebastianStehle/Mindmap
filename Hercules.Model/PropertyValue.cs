@@ -1,13 +1,10 @@
 ﻿// ==========================================================================
 // PropertyValue.cs
-// Hercules
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
-// ReSharper disable AssignNullToNotNullAttribute
-
 using System;
 using System.Collections.Generic;
 using System.Globalization;

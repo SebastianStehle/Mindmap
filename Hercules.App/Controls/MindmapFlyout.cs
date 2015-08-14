@@ -1,4 +1,11 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿// ==========================================================================
+// MindmapFlyout.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+using Windows.UI.Xaml.Controls;
 
 namespace Hercules.App.Controls
 {

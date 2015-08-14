@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
-// EditIconView.cs
-// Hercules.App Application
+// EditIconView.xaml.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using Hercules.Model;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

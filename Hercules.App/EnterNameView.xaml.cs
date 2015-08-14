@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
-// MindmapsViewModel.cs
-// Hercules.App Application
+// EnterNameView.xaml.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using Hercules.App.ViewModels;
 using GP.Windows.UI;
 using Windows.UI.Xaml;

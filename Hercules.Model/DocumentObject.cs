@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
-// Document.cs
-// Hercules Application
+// DocumentObject.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System;
 using System.ComponentModel;
 

@@ -1,11 +1,10 @@
 ﻿// ==========================================================================
 // ThemeColor.cs
-// Metro Library SE
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using Windows.UI;
 
 namespace Hercules.Model.Rendering.Win2D

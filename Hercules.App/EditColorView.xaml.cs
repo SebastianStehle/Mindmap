@@ -33,7 +33,7 @@ namespace Hercules.App
 
         public override void OnOpened()
         {
-            ColorsGrid.ItemsSource = Renderer.Colors;
+            ColorsGrid.ItemsSource = Renderer.Resources.Colors;
 
             NodeBase selectedNode = Document.SelectedNode;
 

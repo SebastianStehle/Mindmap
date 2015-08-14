@@ -130,11 +130,11 @@ namespace Hercules.Model.Layouting.Default
             }
             else
             {
-                CalculateReorderTarget(((Node)movingNode.Parent).Children);
+                CalculateReorderTarget(((Node)movingNode.Parent).Children, movingNode.Parent.NodeSide);
             }
         }
 
-        private void CalculateReorderTarget(IReadOnlyList<Node> collection, NodeSide targetSide = NodeSide.Undefined)
+        private void CalculateReorderTarget(IReadOnlyList<Node> collection, NodeSide targetSide)
         {
             CalculateIndex(collection);
 
@@ -254,7 +254,7 @@ namespace Hercules.Model.Layouting.Default
 
         private void FindAttachOnParent()
         {
-            double rectArea = movementBounds.X * movementBounds.Y;
+            double rectArea = movementBounds.Width * movementBounds.Height;
 
             foreach (NodeBase node in document.Nodes)
             {

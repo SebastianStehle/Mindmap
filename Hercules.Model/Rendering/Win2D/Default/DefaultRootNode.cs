@@ -71,12 +71,12 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
         protected override void RenderInternal(CanvasDrawingSession session, ThemeColor color)
         {
-            ICanvasBrush borderBrush = color.DarkBrush(session);
+            ICanvasBrush borderBrush = Resources.ThemeDarkBrush(color);
 
             ICanvasBrush backgroundBrush =
                 Node.IsSelected ?
-                    color.LightBrush(session) :
-                    color.NormalBrush(session);
+                    Resources.ThemeLightBrush(color) :
+                    Resources.ThemeNormalBrush(color);
 
             float radiusX = 0.5f * RenderSize.X;
             float radiusY = 0.5f * RenderSize.Y;
@@ -95,7 +95,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
             if (!string.IsNullOrWhiteSpace(Node.IconKey))
             {
-                ICanvasImage image = Renderer.Image(session, Node.IconKey);
+                ICanvasImage image = Resources.Image(Node.IconKey);
 
                 if (image != null)
                 {

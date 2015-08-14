@@ -6,7 +6,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
     {
         public DefaultRenderer()
         {
-            AddColors(
+            Resources.AddThemeColors(
                 0xF7977A,
                 0xF9AD81,
                 0xFDC68A,

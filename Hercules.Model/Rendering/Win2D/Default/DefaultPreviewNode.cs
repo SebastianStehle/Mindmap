@@ -21,27 +21,15 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
         protected override void RenderPathInternal(CanvasDrawingSession session)
         {
-            RenderPath(session, CreateBrush(session));
+            RenderPath(session, Resources.Brush(PathColor, 0.5f));
         }
 
         protected override void RenderInternal(CanvasDrawingSession session, ThemeColor color)
         {
             if (Parent != null)
             {
-                session.FillRoundedRectangle(Bounds, 4, 4, CreateBrush(session));
+                session.FillRoundedRectangle(Bounds, 4, 4, Resources.Brush(PathColor, 0.5f));
             }
-        }
-
-        private ICanvasBrush CreateBrush(CanvasDrawingSession session)
-        {
-            if (brush == null)
-            {
-                brush = Renderer.PathBrush(session, true);
-
-                brush.Opacity = 0.5f;
-            }
-
-            return brush;
         }
     }
 }

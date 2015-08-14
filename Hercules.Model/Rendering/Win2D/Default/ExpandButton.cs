@@ -32,7 +32,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
         {
             if (renderBounds.Contains(mousePosition))
             {
-                string transactionName = ResourceManager.GetString("ExpandCollapseTransactionName");
+                string transactionName = Utils.ResourceManager.GetString("ExpandCollapseTransactionName");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {

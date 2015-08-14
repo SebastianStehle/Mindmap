@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Numerics;
+using Windows.UI;
 using GP.Windows;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
@@ -10,6 +11,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
 {
     public abstract class DefaultRenderNode : Win2DRenderNode
     {
+        protected static readonly Color PathColor = Color.FromArgb(255, 50, 50, 50);
         protected static readonly Vector2 ImageSizeLarge = new Vector2(64, 64);
         protected static readonly Vector2 ImageSizeSmall = new Vector2(32, 32);
         protected static readonly float ImageMargin = 10;
@@ -65,7 +67,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
         protected override void RenderPathInternal(CanvasDrawingSession session)
         {
-            ICanvasBrush brush = Renderer.PathBrush(session);
+            ICanvasBrush brush = Resources.Brush(PathColor, 1);
 
             RenderPath(session, brush);
         }

@@ -82,9 +82,9 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
         protected override void RenderInternal(CanvasDrawingSession session, ThemeColor color)
         {
-            ICanvasBrush borderBrush = color.DarkBrush(session);
+            ICanvasBrush borderBrush = Resources.ThemeDarkBrush(color);
 
-            ICanvasBrush lineBrush = Renderer.PathBrush(session);
+            ICanvasBrush lineBrush = Resources.Brush(PathColor, 1);
             
             Vector2 left = new Vector2(
                 (float)Math.Round(Bounds.Left -1) ,
@@ -98,7 +98,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
             if (!string.IsNullOrWhiteSpace(Node.IconKey))
             {
-                ICanvasImage image = Renderer.Image(session, Node.IconKey);
+                ICanvasImage image = Resources.Image(Node.IconKey);
 
                 if (image != null)
                 {

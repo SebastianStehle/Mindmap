@@ -155,7 +155,7 @@ namespace Hercules.App.ViewModels
 
                     if (selectedNormalNode != null)
                     {
-                        string tansactionName = ResourceManager.GetString("AddSibilingTransactionName");
+                        string tansactionName = ResourceManager.GetString("AddSiblingTransactionName");
 
                         Document.MakeTransaction(tansactionName, commands =>
                         {

@@ -8,7 +8,9 @@
 
 using System;
 using System.Numerics;
+using Windows.Foundation;
 using GP.Windows;
+using GP.Windows.UI;
 using Hercules.Model.Layouting;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
@@ -17,12 +19,17 @@ namespace Hercules.Model.Rendering.Win2D
 {
     public abstract class Win2DRenderNode : IRenderNode
     {
+        private static readonly Vector2 EmptyVector = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
         private readonly Win2DRenderer renderer;
         private readonly NodeBase node;
+        private Vector2 animationTargetPosition = EmptyVector;
         private Vector2 position;
         private Vector2 renderPosition;
         private Vector2 renderSize;
+        private Vector2 targetPosition;
         private Rect2 boundsWithParent;
+        private DateTime? animatingEndUtc;
+        private bool isMoved;
         private bool isVisible = true;
 
         public Win2DRenderNode Parent { get; set; }
@@ -32,6 +39,14 @@ namespace Hercules.Model.Rendering.Win2D
             get
             {
                 return renderer;
+            }
+        }
+
+        public Win2DResourceManager Resources
+        {
+            get
+            {
+                return renderer.Resources;
             }
         }
 
@@ -108,23 +123,27 @@ namespace Hercules.Model.Rendering.Win2D
         public void MoveBy(Vector2 offset)
         {
             renderPosition += offset;
+
+            isMoved = true;
         }
 
         public void MoveTo(Vector2 layoutPosition, AnchorPoint anchor)
         {
             position = layoutPosition;
 
-            renderPosition = position;
-            renderPosition.Y -= 0.5f * renderSize.Y;
+            targetPosition = position;
+            targetPosition.Y -= 0.5f * renderSize.Y;
 
             if (anchor == AnchorPoint.Right)
             {
-                renderPosition.X -= renderSize.X;
+                targetPosition.X -= renderSize.X;
             }
             else if (anchor == AnchorPoint.Center)
             {
-                renderPosition.X -= 0.5f * renderSize.X;
+                targetPosition.X -= 0.5f * renderSize.X;
             }
+
+            isMoved = false;
         }
 
         public Win2DRenderNode CloneUnlinked()
@@ -132,9 +151,11 @@ namespace Hercules.Model.Rendering.Win2D
             Win2DRenderNode clone = CloneInternal();
 
             clone.HideControls = true;
+            clone.isMoved = true;
             clone.Parent = null;
             clone.renderSize = renderSize;
             clone.renderPosition = renderPosition;
+            clone.targetPosition = targetPosition;
             clone.boundsWithParent = boundsWithParent;
 
             return clone;
@@ -142,12 +163,22 @@ namespace Hercules.Model.Rendering.Win2D
 
         public void Hide()
         {
-            isVisible = false;
+            if (isVisible)
+            {
+                isVisible = false;
+
+                animationTargetPosition = EmptyVector;
+            }
         }
 
         public void Show()
         {
-            isVisible = true;
+            if (!isVisible)
+            {
+                isVisible = true;
+
+                animationTargetPosition = EmptyVector;
+            }
         }
 
         public void RenderPath(CanvasDrawingSession session)
@@ -157,7 +188,46 @@ namespace Hercules.Model.Rendering.Win2D
 
         public void Render(CanvasDrawingSession session)
         {
-            RenderInternal(session, renderer.FindColor(node));
+            RenderInternal(session, Resources.FindColor(node));
+        }
+
+        public bool AnimateRenderPosition(bool isAnimating, DateTime utcNow, float animationSpeed)
+        {
+            if (!isMoved && IsVisible)
+            {
+                if (isAnimating && animationTargetPosition != EmptyVector)
+                {
+                    if (animationTargetPosition != targetPosition)
+                    {
+                        animatingEndUtc = utcNow.AddMilliseconds(animationSpeed);
+                    }
+                }
+                else
+                {
+                    animatingEndUtc = null;
+                }
+
+                animationTargetPosition = targetPosition;
+
+                float fractionComplete = 1;
+
+                if (animatingEndUtc.HasValue)
+                {
+                    float timeRemaining = (float)(animatingEndUtc.Value - utcNow).TotalMilliseconds;
+
+                    fractionComplete -= Math.Min(1, Math.Max(0, timeRemaining / animationSpeed));
+                }
+
+                renderPosition = new Vector2(
+                    MathHelper.Interpolate(fractionComplete, renderPosition.X, targetPosition.X),
+                    MathHelper.Interpolate(fractionComplete, renderPosition.Y, targetPosition.Y));
+
+                return !MathHelper.AboutEqual(targetPosition, renderPosition);
+            }
+
+            animationTargetPosition = EmptyVector;
+
+            return true;
         }
 
         public void Arrange(CanvasDrawingSession session)

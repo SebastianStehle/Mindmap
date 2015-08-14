@@ -44,7 +44,7 @@ namespace GP.Windows.UI
             double x = 0.5 * (scrollViewer.ExtentWidth  - scrollViewer.ViewportWidth);
             double y = 0.5 * (scrollViewer.ExtentHeight - scrollViewer.ActualHeight);
 
-            scrollViewer.ChangeView(x, y, null);
+            scrollViewer.ChangeView(x, y, null, true);
         }
 
         /// <summary>

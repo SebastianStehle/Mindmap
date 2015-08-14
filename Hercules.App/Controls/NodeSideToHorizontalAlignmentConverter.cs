@@ -17,7 +17,7 @@ namespace Hercules.App.Controls
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return object.Equals(value, NodeSide.Left) ? HorizontalAlignment.Left : HorizontalAlignment.Right;
+            return Equals(value, NodeSide.Left) ? HorizontalAlignment.Left : HorizontalAlignment.Right;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

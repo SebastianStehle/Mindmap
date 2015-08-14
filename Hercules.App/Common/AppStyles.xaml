@@ -5,7 +5,6 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:local="using:Hercules.App.Controls"
     xmlns:gp="using:GP.Windows.UI"
-    xmlns:gpi="using:GP.Windows.UI.Interactivity"
     mc:Ignorable="d">
 
     <local:NotNullNodeThicknessConverter x:Key="NotNullNodeThicknessConverter" />
@@ -399,8 +398,8 @@
                         <Border x:Name="BackgroundElement" Background="{TemplateBinding Background}" Grid.ColumnSpan="2" Margin="{TemplateBinding BorderThickness}"/>
                         <Border x:Name="BorderElement" 
                             BorderBrush="{TemplateBinding BorderBrush}" 
-                            BorderThickness="{TemplateBinding BorderThickness}" Grid.ColumnSpan="2"/>
-                        <ScrollViewer x:Name="ContentElement" ZoomMode="Disabled" Margin="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" 
+                            BorderThickness="{TemplateBinding BorderThickness}" Grid.ColumnSpan="2" Grid.Column="0" />
+                        <ScrollViewer Grid.Column="0" x:Name="ContentElement" ZoomMode="Disabled" Margin="{TemplateBinding BorderThickness}" Padding="{TemplateBinding Padding}" 
                             HorizontalScrollMode="{TemplateBinding ScrollViewer.HorizontalScrollMode}" 
                             HorizontalScrollBarVisibility="{TemplateBinding ScrollViewer.HorizontalScrollBarVisibility}" 
                             IsTabStop="False" 

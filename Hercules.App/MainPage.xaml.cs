@@ -6,7 +6,6 @@
 // All rights reserved.
 // ==========================================================================
 
-using Hercules.App.Controls;
 using Hercules.Model;
 using Hercules.App.ViewModels;
 using GP.Windows.UI;
@@ -20,7 +19,7 @@ using Windows.UI.Xaml.Input;
 
 namespace Hercules.App
 {
-    public sealed partial class MainPage : Page
+    public sealed partial class MainPage
     {
         public EditorViewModel EditorViewModel
         {

@@ -5,13 +5,13 @@ using Microsoft.Graphics.Canvas.Brushes;
 
 namespace Hercules.Model.Rendering.Win2D.Default
 {
-    public sealed class DefaultRootNode : DefaultRenderNode
+    public class DefaultRootNode : DefaultRenderNode
     {
         private static readonly Vector2 ContentPadding = new Vector2(15, 5);
         private static readonly Vector2 SelectionMargin = new Vector2(-5, -5);
         private static readonly float MinHeight = 50;
-        private static readonly float MinWidth = 100;
         private readonly Win2DTextRenderer textRenderer;
+        private float textOffset;
 
         public override Win2DTextRenderer TextRenderer
         {
@@ -24,17 +24,18 @@ namespace Hercules.Model.Rendering.Win2D.Default
         public DefaultRootNode(NodeBase node, DefaultRenderer renderer) 
             : base(node, renderer)
         {
-            textRenderer = new Win2DTextRenderer(16, node);
+            textRenderer = new Win2DTextRenderer(20, node, 80);
         }
 
         protected override void ArrangeInternal(CanvasDrawingSession session)
         {
-            Vector2 textPosition = Bounds.Center;
+            float x = RenderPosition.X, y = Bounds.CenterY;
 
-            textPosition.X -= textRenderer.Size.X * 0.5f;
-            textPosition.Y -= textRenderer.Size.Y * 0.5f;
+            x += ContentPadding.X;
+            x += textOffset;
+            y -= textRenderer.RenderSize.Y * 0.5f;
 
-            textRenderer.Arrange(textPosition);
+            textRenderer.Arrange(new Vector2(x, y));
 
             base.ArrangeInternal(session);
         }
@@ -43,9 +44,26 @@ namespace Hercules.Model.Rendering.Win2D.Default
         {
             textRenderer.Measure(session);
 
-            Vector2 size = textRenderer.Size + 2 * ContentPadding;
+            Vector2 size = textRenderer.RenderSize + 2 * ContentPadding;
 
-            size.X = Math.Max(size.X, MinWidth);
+            if (!string.IsNullOrWhiteSpace(Node.IconKey))
+            {
+                if (Node.IconSize == IconSize.Small)
+                {
+                    textOffset = ImageSizeSmall.X + ImageMargin * 2;
+                }
+                else
+                {
+                    textOffset = ImageSizeLarge.X + ImageMargin * 2;
+
+                }
+            }
+            else
+            {
+                textOffset = 0;
+            }
+
+            size.X += textOffset;
             size.Y = Math.Max(size.Y, MinHeight);
 
             return size;
@@ -60,8 +78,8 @@ namespace Hercules.Model.Rendering.Win2D.Default
                     color.LightBrush(session) :
                     color.NormalBrush(session);
 
-            float radiusX = 0.5f * Size.X;
-            float radiusY = 0.5f * Size.Y;
+            float radiusX = 0.5f * RenderSize.X;
+            float radiusY = 0.5f * RenderSize.Y;
 
             session.FillEllipse(
                 Bounds.Center,
@@ -74,7 +92,22 @@ namespace Hercules.Model.Rendering.Win2D.Default
                 radiusX,
                 radiusY,
                 borderBrush);
-            
+
+            if (!string.IsNullOrWhiteSpace(Node.IconKey))
+            {
+                ICanvasImage image = Renderer.Image(session, Node.IconKey);
+
+                if (image != null)
+                {
+                    Vector2 size = Node.IconSize == IconSize.Large ? ImageSizeLarge : ImageSizeSmall;
+
+                    float x = textRenderer.RenderPosition.X - textOffset + ImageMargin;
+                    float y = textRenderer.RenderPosition.Y + (textRenderer.RenderSize.Y - size.Y) * 0.5f;
+
+                    session.DrawImage(image, x, y);
+                }
+            }
+
             textRenderer.Render(session);
 
             if (!HideControls)

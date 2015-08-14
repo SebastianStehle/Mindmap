@@ -6,9 +6,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:local="using:Hercules.App"
     xmlns:controls="using:Hercules.App.Controls"
-    xmlns:model="using:Hercules.Model"
     xmlns:modelLayout="using:Hercules.Model.Layouting.Default"
-    xmlns:gp="using:GP.Windows.UI"
     xmlns:gpc="using:GP.Windows.UI.Controls"
     xmlns:gpi="using:GP.Windows.UI.Interactivity"
     mc:Ignorable="d"
@@ -32,7 +30,7 @@
                         AutomationProperties.Name="Edit" x:Uid="AppBarButtonEdit">
                         <AppBarButton.Flyout>
                             <controls:MindmapFlyout>
-                                <local:EditView Document="{Binding Document}" />
+                                <local:EditView Document="{Binding Document}" Renderer="{Binding Renderer}" />
                             </controls:MindmapFlyout>
                         </AppBarButton.Flyout>
                         <i:Interaction.Behaviors>
@@ -47,7 +45,7 @@
                         AutomationProperties.Name="Change Icon" x:Uid="AppBarButtonChangeIcon">
                         <AppBarButton.Flyout>
                             <controls:MindmapFlyout>
-                                <local:EditIconView Document="{Binding Document}" />
+                                <local:EditIconView Document="{Binding Document}" Renderer="{Binding Renderer}" />
                             </controls:MindmapFlyout>
                         </AppBarButton.Flyout>
                         <i:Interaction.Behaviors>
@@ -59,7 +57,7 @@
                         AutomationProperties.Name="Change Color" x:Uid="AppBarButtonChangeColor">
                         <AppBarButton.Flyout>
                             <controls:MindmapFlyout>
-                                <local:EditColorView Document="{Binding Document}" />
+                                <local:EditColorView Document="{Binding Document}" Renderer="{Binding Renderer}" />
                             </controls:MindmapFlyout>
                         </AppBarButton.Flyout>
                         <i:Interaction.Behaviors>
@@ -195,9 +193,9 @@
                 <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Down" Invoked="MoveBottomCommand_Invoked" />
             </i:Interaction.Behaviors>
             
-            <gpc:TiledBackground TileSize="60" />           
+            <gpc:TiledBackground TileSize="60" />
 
-            <controls:Mindmap Document="{Binding Document}" x:Name="Mindmap">
+            <controls:Mindmap Document="{Binding Document}"  Renderer="{Binding Renderer}" x:Name="Mindmap">
                 <controls:Mindmap.RenderTransform>
                     <CompositeTransform />
                 </controls:Mindmap.RenderTransform>

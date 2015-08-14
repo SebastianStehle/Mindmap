@@ -9,11 +9,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
+using Windows.Storage;
 using GP.Windows;
 using GP.Windows.UI;
-using Hercules.Model;
 using Hercules.Model.Layouting;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
@@ -21,14 +23,19 @@ using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.UI;
+using Windows.UI.Core;
+
+// ReSharper disable DoNotCallOverridableMethodsInConstructor
 
 namespace Hercules.Model.Rendering.Win2D
 {
     public abstract class Win2DRenderer : IRenderer
     {
+        private readonly Dictionary<string, ImageContainer> images = new Dictionary<string, ImageContainer>();
         private readonly Dictionary<NodeBase, Win2DRenderNode> renderNodes = new Dictionary<NodeBase, Win2DRenderNode>();
         private readonly List<ThemeColor> colors = new List<ThemeColor>();
         private readonly List<Win2DRenderNode> customNodes = new List<Win2DRenderNode>();
+        private readonly Win2DRenderNode previewNode;
         private CanvasControl currentCanvas;
         private Document currentDocument;
         private Matrix3x2 transform = Matrix3x2.Identity;
@@ -38,7 +45,34 @@ namespace Hercules.Model.Rendering.Win2D
         private Rect2 visibleRect = new Rect2(0, 0, float.PositiveInfinity, float.PositiveInfinity);
         private float zoomFactor;
         private ICanvasBrush pathBrush;
-        private ILayout layout;
+        private ILayout currentLayout;
+
+        private sealed class ImageContainer
+        {
+            public CanvasBitmap Bitmap;
+
+            public ImageContainer(string image, CanvasDevice device, Win2DRenderer renderer)
+            {
+                LoadFile(image, device).ContinueWith(bitmap =>
+                {
+                    renderer.Invalidate();
+
+                    Bitmap = bitmap.Result;
+                });
+            }
+
+            private async Task<CanvasBitmap> LoadFile(string image, CanvasDevice device)
+            {
+                string uri = string.Format(CultureInfo.InvariantCulture, "ms-appx:///{0}", image);
+
+                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
+
+                using (var stream = await file.OpenReadAsync())
+                {
+                    return await CanvasBitmap.LoadAsync(device, stream).AsTask();
+                }
+            }
+        }
 
         public float ZoomFactor
         {
@@ -72,9 +106,14 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
+        protected Win2DRenderer()
+        {
+            previewNode = CreatePreviewNode();
+        }
+
         public void Initialize(Document document, ILayout layout, CanvasControl canvas)
         {
-            this.layout = layout;
+            currentLayout = layout;
 
             InitializeCanvas(canvas);
             InitializeDocument(document);
@@ -129,18 +168,28 @@ namespace Hercules.Model.Rendering.Win2D
                 }
             }
         }
-
+        
         public void Invalidate()
         {
             if (currentCanvas != null)
             {
-                currentCanvas.Invalidate();
+                if (currentCanvas.Dispatcher.HasThreadAccess)
+                {
+                    currentCanvas.Invalidate();
+                }
+                else
+                {
+                    currentCanvas.Dispatcher.RunAsync(CoreDispatcherPriority.High, () =>
+                    {
+                        currentCanvas.Invalidate();
+                    }).AsTask();
+                }
             }
         }
 
-        public void Transform(Vector2 translate, float zoom, Rect2 visibleRect)
+        public void Transform(Vector2 translate, float zoom, Rect2 rect)
         {
-            this.visibleRect = visibleRect;
+            this.visibleRect = rect;
             
             scale = Matrix3x2.CreateScale(zoom);
 
@@ -184,22 +233,22 @@ namespace Hercules.Model.Rendering.Win2D
 
         private void Render(CanvasDrawingSession session)
         {
-            if (currentDocument != null && layout != null)
+            if (currentDocument != null && currentLayout != null)
             {
                 session.TextAntialiasing = CanvasTextAntialiasing.Grayscale;
 
                 session.Transform = transform;
 
-                layout.UpdateVisibility(currentDocument, this);
+                currentLayout.UpdateVisibility(currentDocument, this);
 
-                List<Win2DRenderNode> allNodes = renderNodes.Values.Union(customNodes).ToList();
+                List<Win2DRenderNode> allNodes = renderNodes.Values.Union(customNodes).Union(new Win2DRenderNode[] { previewNode }).ToList();
                 
                 foreach (Win2DRenderNode node in allNodes)
                 {
                     node.Measure(session);
                 }
 
-                layout.UpdateLayout(currentDocument, this);
+                currentLayout.UpdateLayout(currentDocument, this);
 
                 foreach (Win2DRenderNode node in allNodes)
                 {
@@ -233,9 +282,23 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
+        public void HidePreviewElement()
+        {
+            previewNode.Hide();
+        }
+
+        public void ShowPreviewElement(Vector2 position, NodeBase parent, AnchorPoint anchor)
+        {
+            Win2DRenderNode parentNode = TryAdd(parent);
+
+            previewNode.MoveTo(position, anchor);
+            previewNode.Parent = parentNode;
+            previewNode.Show();
+        }
+
         private bool CanRenderPath(Win2DRenderNode node)
         {
-            return visibleRect.IntersectsWith(node.TotalBounds);
+            return visibleRect.IntersectsWith(node.BoundsWithParent);
         }
 
         private bool CanRenderNode(Win2DRenderNode node)
@@ -312,14 +375,12 @@ namespace Hercules.Model.Rendering.Win2D
             TryRemove(e.Node);
         }
 
-        private bool TryRemove(NodeBase node)
+        private void TryRemove(NodeBase node)
         {
             if (node != null)
             {
-                return renderNodes.Remove(node);
+                renderNodes.Remove(node);
             }
-
-            return false;
         }
 
         private Win2DRenderNode TryAdd(NodeBase node)
@@ -339,17 +400,33 @@ namespace Hercules.Model.Rendering.Win2D
             return null;
         }
 
-        public ICanvasBrush PathBrush(CanvasDrawingSession session)
+        public ICanvasBrush PathBrush(CanvasDrawingSession session, bool copy = false)
         {
             Guard.NotNull(session, nameof(session));
 
-            return pathBrush ?? (pathBrush = new CanvasSolidColorBrush(session.Device, Color.FromArgb(255, 30, 30, 30)));
+            Func<ICanvasBrush> createBrush = () => new CanvasSolidColorBrush(session.Device, Color.FromArgb(255, 30, 30, 30));
+
+            if (copy)
+            {
+                return createBrush();
+            }
+            else
+            {
+                return pathBrush ?? (pathBrush = createBrush());
+            }
+        }
+
+        public ICanvasImage Image(CanvasDrawingSession session, string image)
+        {
+            return images.GetOrCreateDefault(image, () => new ImageContainer(image, session.Device, this)).Bitmap;
         }
 
         public IRenderNode FindRenderNode(NodeBase node)
         {
             return TryAdd(node);
         }
+
+        protected abstract Win2DRenderNode CreatePreviewNode();
 
         protected abstract Win2DRenderNode CreateRenderNode(NodeBase node);
     }

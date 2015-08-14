@@ -18,6 +18,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using Hercules.App.Components.Implementations;
+using Hercules.Model.Rendering.Win2D;
+using Hercules.Model.Rendering.Win2D.Default;
 using PropertyChanged;
 
 namespace Hercules.App.ViewModels
@@ -26,6 +29,7 @@ namespace Hercules.App.ViewModels
     public sealed class EditorViewModel : ViewModelBase
     {
         private readonly DispatcherTimer autosaveTimer = new DispatcherTimer();
+        private readonly Win2DRenderer renderer = new DefaultRenderer();
         private Document document;
         private RelayCommand redoCommand;
         private RelayCommand undoCommand;
@@ -36,6 +40,13 @@ namespace Hercules.App.ViewModels
         [Dependency]
         public IDocumentStore DocumentStore { get; set; }
 
+        public Win2DRenderer Renderer
+        {
+            get
+            {
+                return renderer;
+            }
+        }
 
         public Document Document
         {
@@ -54,7 +65,7 @@ namespace Hercules.App.ViewModels
 
                     document = value;
 
-                    RaisePropertyChanged("Document");
+                    RaisePropertyChanged();
 
                     if (document != null)
                     {
@@ -102,9 +113,11 @@ namespace Hercules.App.ViewModels
 
                         if (selectedNormalNode != null)
                         {
-                            Document.MakeTransaction("RemoveNode", c =>
+                            string tansactionName = ResourceManager.GetString("RemoveNodeTransactionName");
+
+                            Document.MakeTransaction(tansactionName, commands =>
                             {
-                                c.Apply(new RemoveChildCommand(selectedNormalNode.Parent, selectedNormalNode));
+                                commands.Apply(new RemoveChildCommand(selectedNormalNode.Parent, selectedNormalNode));
                             });
                         }
                 }));
@@ -121,9 +134,11 @@ namespace Hercules.App.ViewModels
 
                     if (selectedNode != null)
                     {
-                        Document.MakeTransaction("AddChild", c =>
+                        string tansactionName = ResourceManager.GetString("AddChildTransactionName");
+
+                        Document.MakeTransaction(tansactionName, commands =>
                         {
-                            c.Apply(new InsertChildCommand(selectedNode, null, NodeSide.Undefined));
+                            commands.Apply(new InsertChildCommand(selectedNode, null, NodeSide.Undefined));
                         });
                     }
                 }));
@@ -140,9 +155,11 @@ namespace Hercules.App.ViewModels
 
                     if (selectedNormalNode != null)
                     {
-                        Document.MakeTransaction("AddSibling", c =>
+                        string tansactionName = ResourceManager.GetString("AddSibilingTransactionName");
+
+                        Document.MakeTransaction(tansactionName, commands =>
                         {
-                            c.Apply(new InsertChildCommand(selectedNormalNode.Parent, null, selectedNormalNode.NodeSide));
+                            commands.Apply(new InsertChildCommand(selectedNormalNode.Parent, null, selectedNormalNode.NodeSide));
                         });
                     }
                 }));

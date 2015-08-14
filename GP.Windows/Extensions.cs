@@ -101,7 +101,7 @@ namespace GP.Windows
 
             byte[] buffer = new byte[32768];
 
-            int bytesRead = -1;
+            int bytesRead;
 
             while ((bytesRead = source.Read(buffer, 0, buffer.Length)) > 0)
             {
@@ -122,7 +122,7 @@ namespace GP.Windows
         {
             for (int i = 0; i < target.Count; i++)
             {
-                if (object.Equals(target[i], element))
+                if (Equals(target[i], element))
                 {
                     return i;
                 }
@@ -219,7 +219,7 @@ namespace GP.Windows
             Guard.NotNull(dictionary, "dictionary");
             Guard.NotNull(function, "function");
 
-            TValue value = default(TValue);
+            TValue value;
 
             if (!dictionary.TryGetValue(key, out value))
             {

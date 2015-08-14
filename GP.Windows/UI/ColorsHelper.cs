@@ -77,7 +77,7 @@ namespace GP.Windows.UI
         /// <returns>The resulting color object.</returns>
         public static Color ConvertToColor(int intColor, double offsetH, double offsetS, double offsetV)
         {
-            int integer = (int)intColor;
+            int integer = intColor;
 
             byte b = (byte)(integer & 0xFF);
             byte g = (byte)((integer >> 8) & 0xFF);
@@ -86,9 +86,9 @@ namespace GP.Windows.UI
 
             Color color = Color.FromArgb(a, r, g, b);
 
-            double h = 0;
-            double s = 0;
-            double v = 0;
+            double h;
+            double s;
+            double v;
 
             ColorToHSV(color, out h, out s, out v);
 

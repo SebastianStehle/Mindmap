@@ -12,8 +12,8 @@ namespace Hercules.Model
 {
     public sealed class InsertChildCommand : ChildNodeCommandBase
     {
-        private NodeSide side;
-        private int? index;
+        private readonly NodeSide side;
+        private readonly int? index;
 
         public InsertChildCommand(PropertiesBag properties, Document document)
             : base(properties, document)
@@ -53,9 +53,9 @@ namespace Hercules.Model
 
         protected override void Revert()
         {
-            int index = 0;
+            int tempIndex;
 
-            Node.Remove(Child, out index);
+            Node.Remove(Child, out tempIndex);
 
             Child.Select();
         }

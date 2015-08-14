@@ -7,7 +7,6 @@
 // ==========================================================================
 
 using GalaSoft.MvvmLight.Messaging;
-using Hercules.App.Controls;
 using Hercules.App.Messages;
 using System;
 using Windows.ApplicationModel.Resources;
@@ -17,7 +16,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace Hercules.App
 {
-    public sealed partial class EditView : MindmapFlyoutView
+    public sealed partial class EditView
     {
         private string oldName;
 

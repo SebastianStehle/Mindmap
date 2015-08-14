@@ -61,7 +61,7 @@ namespace Hercules.Model
 
         public override string ToString()
         {
-            return rawValue != null ? rawValue.ToString() : null;
+            return rawValue?.ToString();
         }
 
         public bool ToBoolean(CultureInfo culture)

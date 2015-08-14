@@ -70,20 +70,20 @@ namespace Hercules.Model.Layouting.Default
 
         public static DefaultLayoutNode AttachTo(NodeBase node, IRenderNode renderNode, DefaultLayoutNode parent)
         {
-            DefaultLayoutNode layoutNode = new DefaultLayoutNode(node, renderNode, parent);
+            DefaultLayoutNode layoutNode = new DefaultLayoutNode(renderNode, parent);
 
             node.LayoutData = layoutNode;
 
             return layoutNode;
         }
 
-        private DefaultLayoutNode(NodeBase node, IRenderNode renderNode, DefaultLayoutNode parent)
+        private DefaultLayoutNode(IRenderNode renderNode, DefaultLayoutNode parent)
         {
             this.parent = parent;
-            this.nodeSize = renderNode.Size;
+            this.nodeSize = renderNode.RenderSize;
             this.renderNode = renderNode;
 
-            TreeSize = renderNode.Size;
+            TreeSize = renderNode.RenderSize;
         }
 
         public void MoveTo(Vector2 position, AnchorPoint anchor)

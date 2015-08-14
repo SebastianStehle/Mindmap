@@ -6,13 +6,13 @@
 // All rights reserved.
 // ==========================================================================
 
-using Hercules.App.Controls;
 using Hercules.Model;
 using Windows.UI.Xaml.Controls;
+using Hercules.App.Components.Implementations;
 
 namespace Hercules.App
 {
-    public sealed partial class EditColorView : MindmapFlyoutView
+    public sealed partial class EditColorView
     {
         private int oldColor;
         private int oldIndex;
@@ -33,12 +33,14 @@ namespace Hercules.App
 
         public override void OnOpened()
         {
+            ColorsGrid.ItemsSource = Renderer.Colors;
+
             NodeBase selectedNode = Document.SelectedNode;
 
             oldColor = selectedNode.Color;
             oldIndex = Document.UndoRedoManager.Index;
 
-            ColorsGrid.SelectedIndex = oldIndex;
+            ColorsGrid.SelectedIndex = oldColor;
         }
 
         private void Change(int index)
@@ -51,9 +53,11 @@ namespace Hercules.App
 
                 if (index != oldColor)
                 {
-                    Document.MakeTransaction("EditColor", c =>
+                    string tansactionName = ResourceManager.GetString("EditColorTransactionName");
+
+                    Document.MakeTransaction(tansactionName, commands =>
                     {
-                        c.Apply(new ChangeColorCommand(selectedNode, index));
+                        commands.Apply(new ChangeColorCommand(selectedNode, index));
                     });
                 }
             }

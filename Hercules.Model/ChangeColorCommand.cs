@@ -12,7 +12,7 @@ namespace Hercules.Model
 {
     public sealed class ChangeColorCommand : CommandBase
     {
-        private int newColor;
+        private readonly int newColor;
         private int oldColor;
 
         public ChangeColorCommand(PropertiesBag properties, Document document)

@@ -9,7 +9,7 @@ using Windows.UI.Xaml.Navigation;
 
 namespace Hercules.App
 {
-    sealed partial class App : Application
+    sealed partial class App
     {
         public static TelemetryClient telemetryClient = new TelemetryClient();
 

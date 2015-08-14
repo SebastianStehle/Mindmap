@@ -9,12 +9,11 @@
 using Hercules.App.ViewModels;
 using GP.Windows.UI;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 
 namespace Hercules.App
 {
-    public partial class EnterNameView : UserControl, IPopupControl
+    public partial class EnterNameView : IPopupControl
     {
         public Popup Popup { get; set; }
 

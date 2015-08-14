@@ -31,7 +31,7 @@ namespace GP.Windows.UI.Controls
         /// Defines the <see cref="TileSize"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty TileSizeProperty =
-            DependencyProperty.Register("TileSize", typeof(double), typeof(TiledBackground), new PropertyMetadata(60d, new PropertyChangedCallback(OnTileSizeChanged)));
+            DependencyProperty.Register("TileSize", typeof(double), typeof(TiledBackground), new PropertyMetadata(60d, OnTileSizeChanged));
         /// <summary>
         /// Gets or sets the size of the tiles.
         /// </summary>

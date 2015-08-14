@@ -32,11 +32,11 @@ namespace Hercules.Model
                 {
                     Node normalNode = document.SelectedNode as Node;
 
-                    if (normalNode.NodeSide == NodeSide.Right)
+                    if (normalNode != null && normalNode.NodeSide == NodeSide.Right)
                     {
                         TrySelectMiddle(normalNode.Children, ref result);
                     }
-                    else if (normalNode.NodeSide == NodeSide.Left)
+                    else if (normalNode != null && normalNode.NodeSide == NodeSide.Left)
                     {
                         result = normalNode.Parent;
                     }
@@ -66,11 +66,11 @@ namespace Hercules.Model
                 {
                     Node normalNode = document.SelectedNode as Node;
 
-                    if (normalNode.NodeSide == NodeSide.Left)
+                    if (normalNode != null && normalNode.NodeSide == NodeSide.Left)
                     {
                         TrySelectMiddle(normalNode.Children, ref result);
                     }
-                    else if (normalNode.NodeSide == NodeSide.Right)
+                    else if (normalNode != null && normalNode.NodeSide == NodeSide.Right)
                     {
                         result = normalNode.Parent;
                     }
@@ -176,7 +176,7 @@ namespace Hercules.Model
             return result;
         }
 
-        private static bool TrySelectLast(IReadOnlyList<Node> nodes, ref NodeBase node)
+        public static bool TrySelectLast(IReadOnlyList<Node> nodes, ref NodeBase node)
         {
             bool result = true;
 
@@ -192,7 +192,7 @@ namespace Hercules.Model
             return result;
         }
 
-        private static bool TrySelectMiddle(IReadOnlyList<Node> nodes, ref NodeBase node)
+        public static bool TrySelectMiddle(IReadOnlyList<Node> nodes, ref NodeBase node)
         {
             bool result = true;
 
@@ -208,7 +208,7 @@ namespace Hercules.Model
             return result;
         }
 
-        private static bool TrySelectFirst(IReadOnlyList<Node> nodes, ref NodeBase node)
+        public static bool TrySelectFirst(IReadOnlyList<Node> nodes, ref NodeBase node)
         {
             bool result = true;
 
@@ -224,7 +224,7 @@ namespace Hercules.Model
             return result;
         }
 
-        private static bool TrySelectRoot(this Document document, ref NodeBase node)
+        public static bool TrySelectRoot(this Document document, ref NodeBase node)
         {
             bool result = true;
 

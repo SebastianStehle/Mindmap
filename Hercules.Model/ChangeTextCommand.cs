@@ -10,9 +10,9 @@ namespace Hercules.Model
 {
     public sealed class ChangeTextCommand : CommandBase
     {
-        private string newText;
+        private readonly string newText;
+        private readonly bool disableSelection;
         private string oldText;
-        private bool disableSelection;
 
         public ChangeTextCommand(PropertiesBag properties, Document document)
             : base(properties, document)

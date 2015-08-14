@@ -123,6 +123,12 @@
   <data name="AboutTitle.Text" xml:space="preserve">
     <value>About</value>
   </data>
+  <data name="AddChildTransactionName" xml:space="preserve">
+    <value>Add Child</value>
+  </data>
+  <data name="AddSiblingTransactionName" xml:space="preserve">
+    <value>Add Sibling</value>
+  </data>
   <data name="AppBarButtonAddChild.Label" xml:space="preserve">
     <value>Add Child</value>
   </data>
@@ -195,6 +201,9 @@
   <data name="AppBarButtonUndo.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Undo (CTRL + Z)</value>
   </data>
+  <data name="ChangeTextTransactionName" xml:space="preserve">
+    <value>Change Text</value>
+  </data>
   <data name="ClearIconButton.Content" xml:space="preserve">
     <value>Remove Icon</value>
   </data>
@@ -212,6 +221,12 @@
   </data>
   <data name="DeleteMindmapTitle" xml:space="preserve">
     <value>Delete Mindmap?</value>
+  </data>
+  <data name="EditColorTransactionName" xml:space="preserve">
+    <value>Edit Color</value>
+  </data>
+  <data name="EditIconTransactionName" xml:space="preserve">
+    <value>Edit Icon</value>
   </data>
   <data name="ExpandCollapseTransactionName" xml:space="preserve">
     <value>Toggle</value>
@@ -233,6 +248,9 @@ Deutschland</value>
   <data name="MindmapNameLabel.Text" xml:space="preserve">
     <value>Mindmap Name:</value>
   </data>
+  <data name="MoveNodeTransactionName" xml:space="preserve">
+    <value>Move Node</value>
+  </data>
   <data name="MyMindmap" xml:space="preserve">
     <value>My Mindmap</value>
   </data>
@@ -253,6 +271,9 @@ Deutschland</value>
   </data>
   <data name="PinMindmapButton.Content" xml:space="preserve">
     <value>Pin to Start</value>
+  </data>
+  <data name="RemoveNodeTransactionName" xml:space="preserve">
+    <value>Remove Node</value>
   </data>
   <data name="SettingsHeader.Text" xml:space="preserve">
     <value>Mindmap Settings</value>

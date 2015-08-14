@@ -10,7 +10,7 @@ namespace Hercules.Model
 {
     public sealed class ChangeIconKeyCommand : CommandBase
     {
-        private string newIconKey;
+        private readonly string newIconKey;
         private string oldIconKey;
 
         public ChangeIconKeyCommand(PropertiesBag properties, Document document)

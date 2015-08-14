@@ -20,7 +20,7 @@ namespace Hercules.Model.Storing.Utils
         {
             using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8, 4096, true) { AutoFlush = true })
             {
-                WriteObject(settings, writer, value);
+                WriteObject(settings ?? defaultSettings, writer, value);
 
                 writer.Flush();
             }
@@ -31,7 +31,7 @@ namespace Hercules.Model.Storing.Utils
         {
             using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
             {
-                return ReadObject<T>(settings, reader);
+                return ReadObject<T>(settings ?? defaultSettings, reader);
             }
         }
 
@@ -67,7 +67,7 @@ namespace Hercules.Model.Storing.Utils
 
         private static JsonSerializer CreateJsonSerializer(JsonSerializerSettings settings)
         {
-            JsonSerializer serializer = JsonSerializer.Create(defaultSettings);
+            JsonSerializer serializer = JsonSerializer.Create(settings);
 
             return serializer;
         }

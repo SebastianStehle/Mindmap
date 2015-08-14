@@ -23,7 +23,7 @@ namespace Hercules.Model.Storing.Json
 {
     public sealed class JsonDocumentStore : IDocumentStore
     {
-        private const string DefaultSubfolder = "Herculess55";
+        private const string DefaultSubfolder = "Hercules66";
         private readonly JsonSerializerSettings historySerializerSettings = new JsonSerializerSettings();
         private readonly TaskFactory taskFactory = new TaskFactory(new LimitedThreadsScheduler());
         private readonly string subfolderName;

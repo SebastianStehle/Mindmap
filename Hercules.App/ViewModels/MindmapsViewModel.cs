@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
@@ -87,12 +86,7 @@ namespace Hercules.App.ViewModels
                 predicate = x => x.MindmapId == message.Content.Value;
             }
 
-            SelectedMindmap = Mindmaps.FirstOrDefault(predicate);
-
-            if (SelectedMindmap == null)
-            {
-                SelectedMindmap = Mindmaps.FirstOrDefault();
-            }
+            SelectedMindmap = Mindmaps.FirstOrDefault(predicate) ?? Mindmaps.FirstOrDefault();
         }
 
         public async void OnDeleteMindmap(DeleteMindmapMessage message)
@@ -100,11 +94,6 @@ namespace Hercules.App.ViewModels
             await DocumentStore.DeleteAsync(message.Content);
 
             Mindmaps.Remove(Mindmaps.Single(x => x.MindmapId == message.Content));
-        }
-
-        protected override void RaisePropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            base.RaisePropertyChanged(propertyName);
         }
 
         public void OnSelectedMindmapChanged()
@@ -138,7 +127,7 @@ namespace Hercules.App.ViewModels
 
                     foreach (DocumentRef documentRef in documents)
                     {
-                        if (!Mindmaps.Any(x => x.MindmapId == documentRef.DocumentId))
+                        if (Mindmaps.All(x => x.MindmapId != documentRef.DocumentId))
                         {
                             MindmapItem mindmapItem = new MindmapItem(documentRef);
 

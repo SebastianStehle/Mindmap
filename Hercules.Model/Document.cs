@@ -20,9 +20,9 @@ namespace Hercules.Model
         private readonly RootNode root;
         private readonly IUndoRedoManager undoRedoManager = new UndoRedoManager();
         private readonly Vector2 size = new Vector2(5000, 5000);
+        private readonly string name;
         private CompositeUndoRedoAction transaction;
         private NodeBase selectedNode;
-        private string name;
         
         public event EventHandler<NodeEventArgs> NodeAdded;
 
@@ -163,7 +163,7 @@ namespace Hercules.Model
 
         internal NodeBase GetOrCreateNode<T>(Guid id, Func<Guid, T> factory) where T : NodeBase
         {
-            NodeBase result = null;
+            NodeBase result;
 
             if (!nodesHashSet.TryGetValue(id, out result))
             {
@@ -191,7 +191,7 @@ namespace Hercules.Model
         {
             if (transaction == null)
             {
-                DateTimeOffset date = timestamp.HasValue ? timestamp.Value : DateTimeOffset.Now;
+                DateTimeOffset date = timestamp ?? DateTimeOffset.Now;
 
                 transaction = new CompositeUndoRedoAction(transactionName, date);
             }

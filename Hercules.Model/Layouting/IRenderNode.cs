@@ -15,7 +15,9 @@ namespace Hercules.Model.Layouting
     {
         Vector2 Position { get; }
 
-        Vector2 Size { get; }
+        Vector2 RenderPosition { get; }
+
+        Vector2 RenderSize { get; }
 
         Rect2 Bounds { get; }
 
@@ -25,6 +27,6 @@ namespace Hercules.Model.Layouting
 
         void Show();
 
-        void MoveTo(Vector2 position, AnchorPoint anchor);
+        void MoveTo(Vector2 layoutPosition, AnchorPoint anchor);
     }
 }

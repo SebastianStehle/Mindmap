@@ -9,7 +9,6 @@
 using System;
 using System.Numerics;
 using GP.Windows;
-using Hercules.Model;
 using Hercules.Model.Layouting;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
@@ -20,9 +19,10 @@ namespace Hercules.Model.Rendering.Win2D
     {
         private readonly Win2DRenderer renderer;
         private readonly NodeBase node;
+        private Vector2 position;
         private Vector2 renderPosition;
         private Vector2 renderSize;
-        private Rect2 totalBounds;
+        private Rect2 boundsWithParent;
         private bool isVisible = true;
 
         public Win2DRenderNode Parent { get; set; }
@@ -51,16 +51,23 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
-        public Rect2 TotalBounds
+        public Rect2 BoundsWithParent
         {
             get
             {
-                return totalBounds;
+                return boundsWithParent;
             }
         }
 
-
         public Vector2 Position
+        {
+            get
+            {
+                return position;
+            }
+        }
+
+        public Vector2 RenderPosition
         {
             get
             {
@@ -68,7 +75,7 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
-        public Vector2 Size
+        public Vector2 RenderSize
         {
             get
             {
@@ -103,8 +110,10 @@ namespace Hercules.Model.Rendering.Win2D
             renderPosition += offset;
         }
 
-        public void MoveTo(Vector2 position, AnchorPoint anchor)
+        public void MoveTo(Vector2 layoutPosition, AnchorPoint anchor)
         {
+            this.position = layoutPosition;
+
             renderPosition = position;
 
             renderPosition.Y -= 0.5f * renderSize.Y;
@@ -125,9 +134,9 @@ namespace Hercules.Model.Rendering.Win2D
 
             clone.HideControls = true;
             clone.Parent = null;
-            clone.totalBounds = totalBounds;
             clone.renderSize = renderSize;
             clone.renderPosition = renderPosition;
+            clone.boundsWithParent = boundsWithParent;
 
             return clone;
         }
@@ -158,17 +167,17 @@ namespace Hercules.Model.Rendering.Win2D
                         
             if (Parent != null)
             {
-                double minX = Math.Min(renderPosition.X, Parent.Position.X);
-                double minY = Math.Min(renderPosition.Y, Parent.Position.Y);
+                double minX = Math.Min(renderPosition.X, Parent.RenderPosition.X);
+                double minY = Math.Min(renderPosition.Y, Parent.RenderPosition.Y);
 
-                double maxX = Math.Max(renderPosition.X + renderSize.X, Parent.Position.X + Parent.Size.X);
-                double maxY = Math.Max(renderPosition.Y + renderSize.Y, Parent.Position.Y + Parent.Size.Y);
+                double maxX = Math.Max(renderPosition.X + renderSize.X, Parent.RenderPosition.X + Parent.RenderSize.X);
+                double maxY = Math.Max(renderPosition.Y + renderSize.Y, Parent.RenderPosition.Y + Parent.RenderSize.Y);
 
-                totalBounds = new Rect2((float)minX, (float)minY, (float)(maxX - minX), (float)(maxY - minY));
+                boundsWithParent = new Rect2((float)minX, (float)minY, (float)(maxX - minX), (float)(maxY - minY));
             }
             else
             {
-                totalBounds = Bounds;
+                boundsWithParent = Bounds;
             }
         }
 

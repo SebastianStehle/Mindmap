@@ -171,7 +171,7 @@ namespace GP.Windows.UI
 
         private static void UpdatePopupOffset()
         {
-            if (popupContainer != null)
+            if (popupContainer != null && popupOffset.HasValue)
             {
                 double x = 0;
                 double y = 0;

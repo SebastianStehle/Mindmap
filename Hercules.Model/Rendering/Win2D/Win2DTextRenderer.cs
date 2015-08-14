@@ -6,6 +6,8 @@
 // All rights reserved.
 // ==========================================================================
 
+#define DRAW_OUTLINE
+
 using System;
 using System.Numerics;
 using Hercules.Model.Utils;
@@ -20,12 +22,22 @@ namespace Hercules.Model.Rendering.Win2D
         private readonly Vector2 padding = new Vector2(5, 5);
         private readonly NodeBase node;
         private readonly CanvasTextFormat textFormat;
+        private readonly float fontSize;
+        private readonly float minWidth;
         private CanvasTextLayout textLayout;
         private Vector2 renderSize;
         private Vector2 renderPosition;
         private float minSize;
 
         public bool HideText { get; set; }
+
+        public float FontSize
+        {
+            get
+            {
+                return fontSize;
+            }
+        }
 
         public Rect2 Bounds
         {
@@ -35,7 +47,7 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
-        public Vector2 Position
+        public Vector2 RenderPosition
         {
             get
             {
@@ -43,7 +55,7 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
-        public Vector2 Size
+        public Vector2 RenderSize
         {
             get
             {
@@ -53,8 +65,10 @@ namespace Hercules.Model.Rendering.Win2D
 
         public string OverrideText { get; set; }
 
-        public Win2DTextRenderer(float fontSize, NodeBase node)
+        public Win2DTextRenderer(float fontSize, NodeBase node, float minWidth)
         {
+            this.fontSize = fontSize;
+            this.minWidth = minWidth;
             this.node = node;
 
             textFormat = new CanvasTextFormat { FontSize = fontSize, WordWrapping = CanvasWordWrapping.NoWrap, HorizontalAlignment = CanvasHorizontalAlignment.Center, VerticalAlignment = CanvasVerticalAlignment.Center };
@@ -80,6 +94,7 @@ namespace Hercules.Model.Rendering.Win2D
             }
 
             renderSize.X = (float)Math.Round(Math.Max(renderSize.X, minSize));
+            renderSize.X = (float)Math.Round(Math.Max(renderSize.X, minWidth));
             renderSize.Y = (float)Math.Round(Math.Max(renderSize.Y, minSize));
 
             renderSize += padding;

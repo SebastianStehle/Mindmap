@@ -1,4 +1,4 @@
-﻿using Hercules.Model;
+﻿using System;
 
 namespace Hercules.Model.Rendering.Win2D.Default
 {
@@ -37,6 +37,11 @@ namespace Hercules.Model.Rendering.Win2D.Default
                 0xA763A8,
                 0xF06EA9,
                 0xF26D7D);
+        }
+
+        protected override Win2DRenderNode CreatePreviewNode()
+        {
+            return new DefaultPreviewNode(new Node(Guid.NewGuid()), this);
         }
 
         protected override Win2DRenderNode CreateRenderNode(NodeBase node)

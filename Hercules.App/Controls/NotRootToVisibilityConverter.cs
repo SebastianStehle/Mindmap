@@ -17,7 +17,7 @@ namespace Hercules.App.Controls
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return value as Node != null ? Visibility.Visible : Visibility.Collapsed;
+            return value is Node ? Visibility.Visible : Visibility.Collapsed;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

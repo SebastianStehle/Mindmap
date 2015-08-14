@@ -71,7 +71,7 @@ namespace Hercules.Model
 
         public void Redo()
         {
-            foreach (IUndoRedoAction action in commands.OfType<IUndoRedoAction>())
+            foreach (IUndoRedoAction action in commands)
             {
                 if (action != null)
                 {

@@ -17,7 +17,7 @@ namespace Hercules.Model.Storing.Utils
     {
         public static async Task<StorageFolder> GetOrCreateFolderAsync(this StorageFolder localFolder, string name)
         { 
-            StorageFolder folder = null;
+            StorageFolder folder;
             try
             {
                 folder = await localFolder.GetFolderAsync(name);

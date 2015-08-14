@@ -6,14 +6,14 @@
 // All rights reserved.
 // ==========================================================================
 
-using Hercules.App.Controls;
 using Hercules.Model;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Hercules.App.Components.Implementations;
 
 namespace Hercules.App
 {
-    public sealed partial class EditIconView : MindmapFlyoutView
+    public sealed partial class EditIconView
     {
         private string oldIconKey;
         private int oldIndex;
@@ -64,9 +64,11 @@ namespace Hercules.App
 
                 if (selected != oldIconKey)
                 {
-                    Document.MakeTransaction("EditIcon", c =>
+                    string tansactionName = ResourceManager.GetString("EditIconTransactionName");
+
+                    Document.MakeTransaction(tansactionName, commands =>
                     {
-                        c.Apply(new ChangeIconKeyCommand(selectedNode, selected));
+                        commands.Apply(new ChangeIconKeyCommand(selectedNode, selected));
                     });
                 }
             }

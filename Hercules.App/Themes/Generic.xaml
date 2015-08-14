@@ -3,14 +3,22 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Hercules.App.Controls"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:gp="using:GP.Windows.UI"
     xmlns:gpi="using:GP.Windows.UI.Interactivity"
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml">
 
-    <Style TargetType="local:MindmapPanel">
+    <Style TargetType="local:Mindmap">
+        <Setter Property="i:Interaction.Behaviors">
+            <Setter.Value>
+                <i:BehaviorCollection>
+                    <gpi:SwallowKeyArrowEventsBehavior />
+
+                    <local:NodeMovingBehavior />
+                </i:BehaviorCollection>
+            </Setter.Value>
+        </Setter>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="local:MindmapPanel">
+                <ControlTemplate TargetType="local:Mindmap">
                     <Grid>
                         <canvas:CanvasControl x:Name="Canvas" />
 
@@ -23,16 +31,17 @@
                             IsHorizontalRailEnabled="False">
                             <i:Interaction.Behaviors>
                                 <gpi:ScrollViewerBringIntoViewInputPaneBehavior />
+                                <gpi:CenterScrollViewerWhenExtendSizeChanged />
                             </i:Interaction.Behaviors>
 
-                            <Grid x:Name="Placeholder" Width="{Binding Document.Width}" Height="{Binding Document.Height}"></Grid>
+                            <Grid Width="{Binding Document.Width}" Height="{Binding Document.Height}"></Grid>
                         </ScrollViewer>
 
                         <TextBox x:Name="TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="0"
                             MinHeight="0"
                             MinWidth="0"
                             TextAlignment="Center" 
-                            Background="Red" 
+                            Background="Transparent" 
                             BorderBrush="Transparent"
                             BorderThickness="0"
                             Visibility="Visible" 
@@ -40,23 +49,6 @@
                             VerticalAlignment="Top"
                             HorizontalContentAlignment="Center"
                             HorizontalAlignment="Left" />
-                    </Grid>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style TargetType="local:Mindmap">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="local:Mindmap">
-                    <Grid Background="Transparent" >
-                        <local:MindmapPanel x:Name="NodePanel" Background="Transparent" Document="{Binding Document}" Layout="{TemplateBinding Layout}">
-                            <i:Interaction.Behaviors>
-                                <gpi:SwallowKeyArrowEventsBehavior />
-                                
-                                <local:NodeMovingBehavior />
-                            </i:Interaction.Behaviors>
-                        </local:MindmapPanel>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

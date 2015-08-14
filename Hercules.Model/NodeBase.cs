@@ -162,14 +162,14 @@ namespace Hercules.Model
         {
         }
 
-        internal void ChangeIsSelected(bool isSelected)
+        internal void ChangeIsSelected(bool newIsSelected)
         {
-            IsSelected = isSelected;
+            IsSelected = newIsSelected;
         }
 
-        internal void ChangeIsCollapsed(bool isCollapsed)
+        internal void ChangeIsCollapsed(bool newIsCollapsed)
         {
-            IsCollapsed = isCollapsed;
+            IsCollapsed = newIsCollapsed;
         }
 
         internal void ChangeColor(int newColor)

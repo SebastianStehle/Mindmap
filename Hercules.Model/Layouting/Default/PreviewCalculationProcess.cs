@@ -22,7 +22,7 @@ namespace Hercules.Model.Layouting.Default
         private readonly Vector2 movementCenter;
         private readonly Rect2 movementBounds;
         private readonly Document document;
-        private DefaultLayout layout;
+        private readonly DefaultLayout layout;
         private IRenderNode parentRenderNode;
         private IReadOnlyList<NodeBase> children;
         private AnchorPoint anchor;
@@ -78,8 +78,6 @@ namespace Hercules.Model.Layouting.Default
 
         private void CalculateParentAttachTarget()
         {
-            IRenderNode parentRenderNode = renderer.FindRenderNode(parent);
-
             RootNode root = parent as RootNode;
 
             if (root != null)
@@ -142,8 +140,6 @@ namespace Hercules.Model.Layouting.Default
 
             if (insertIndex.HasValue && insertIndex >= 0)
             {
-                NodeBase parent = movingNode.Parent;
-
                 int currentIndex = collection.IndexOf(movingNode);
 
                 if (currentIndex != insertIndex)
@@ -188,7 +184,7 @@ namespace Hercules.Model.Layouting.Default
             parentRenderNode = renderer.FindRenderNode(parent);
 
             float y = parentRenderNode.Position.Y;
-            float x = parentRenderNode.Position.X + (1.0f * parentRenderNode.Size.X) + layout.HorizontalMargin;
+            float x;
 
             anchor = AnchorPoint.Left;
 
@@ -200,13 +196,13 @@ namespace Hercules.Model.Layouting.Default
                     {
                         Rect2 bounds = renderer.FindRenderNode(children.Last()).Bounds;
 
-                        y = bounds.Bottom + (layout.ElementMargin * 2f) + (movementBounds.Y * 0.5f);
+                        y = bounds.Bottom + (layout.ElementMargin * 2f) + (movementBounds.Height * 0.5f);
                     }
                     else if (insertIndex == 0)
                     {
                         Rect2 bounds = renderer.FindRenderNode(children.First()).Bounds;
 
-                        y = bounds.Top - layout.ElementMargin - (movementBounds.Y * 0.5f);
+                        y = bounds.Top - layout.ElementMargin - (movementBounds.Height * 0.5f);
                     }
                     else
                     {
@@ -224,11 +220,11 @@ namespace Hercules.Model.Layouting.Default
             {
                 if (side == NodeSide.Right)
                 {
-                    x = parentRenderNode.Position.X + parentRenderNode.Size.X + layout.HorizontalMargin;
+                    x = parentRenderNode.Position.X + parentRenderNode.RenderSize.X + layout.HorizontalMargin;
                 }
                 else
                 {
-                    x = parentRenderNode.Position.X - parentRenderNode.Size.X - layout.HorizontalMargin;
+                    x = parentRenderNode.Position.X - parentRenderNode.RenderSize.X - layout.HorizontalMargin;
 
                     anchor = AnchorPoint.Right;
                 }
@@ -237,17 +233,15 @@ namespace Hercules.Model.Layouting.Default
             }
             else
             {
-                RootNode root = (RootNode)parent;
-
                 if (side == NodeSide.Right)
                 {
-                    x = parentRenderNode.Position.X + (parentRenderNode.Size.X * 0.5f) + layout.HorizontalMargin;
+                    x = parentRenderNode.Position.X + (parentRenderNode.RenderSize.X * 0.5f) + layout.HorizontalMargin;
 
                     ajustWithChildren();
                 }
                 else
                 {
-                    x = parentRenderNode.Position.X - (parentRenderNode.Size.X * 0.5f) - layout.HorizontalMargin;
+                    x = parentRenderNode.Position.X - (parentRenderNode.RenderSize.X * 0.5f) - layout.HorizontalMargin;
 
                     anchor = AnchorPoint.Right;
 
@@ -268,11 +262,11 @@ namespace Hercules.Model.Layouting.Default
                 {
                     Rect2 nodeBounds = renderer.FindRenderNode(node).Bounds;
 
-                    double minArea = Math.Min(rectArea, nodeBounds.X * nodeBounds.Y);
+                    double minArea = Math.Min(rectArea, nodeBounds.Width * nodeBounds.Height);
 
                     nodeBounds.Intersect(movementBounds);
 
-                    double newArea = nodeBounds.X * nodeBounds.Y;
+                    double newArea = nodeBounds.Width * nodeBounds.Height;
 
                     if (!double.IsInfinity(newArea) && newArea > 0.5f * minArea)
                     {

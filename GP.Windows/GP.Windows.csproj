@@ -124,6 +124,7 @@
     <Compile Include="UI\Controls\TiledBackground.cs" />
     <Compile Include="UI\GreaterZeroVisibilityConverter.cs" />
     <Compile Include="UI\Interactivity\Behavior.cs" />
+    <Compile Include="UI\Interactivity\CenterScrollViewerWhenExtendSizeChanged.cs" />
     <Compile Include="UI\Interactivity\CommandInvokingEventHandler.cs" />
     <Compile Include="UI\Interactivity\CommandShortcutBehavior.cs" />
     <Compile Include="UI\Interactivity\KeepAppBarOpenBehavior.cs" />

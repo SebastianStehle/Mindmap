@@ -7,11 +7,10 @@
 // ==========================================================================
 
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 
 namespace Hercules.App
 {
-    public sealed partial class NodeListItem : UserControl
+    public sealed partial class NodeListItem
     {
         private bool isCollapsed;
 

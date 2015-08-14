@@ -107,16 +107,16 @@
     <Compile Include="Components\Implementations\ResourceManager.cs" />
     <Compile Include="Components\Implementations\ResourcesLocalizationManager.cs" />
     <Compile Include="Components\ISettingsProvider.cs" />
-    <Compile Include="Controls\Mindmap.cs" />
     <Compile Include="Controls\MindmapFlyout.cs" />
     <Compile Include="Controls\MindmapFlyoutView.cs" />
-    <Compile Include="Controls\MindmapPanel.cs" />
+    <Compile Include="Controls\Mindmap.cs" />
     <Compile Include="Controls\NodeMovingBehavior.cs" />
     <Compile Include="Controls\NodeMovingOperation.cs" />
     <Compile Include="Controls\NodeSideToHorizontalAlignmentConverter.cs" />
     <Compile Include="Controls\NotNullNodeThicknessConverter.cs" />
     <Compile Include="Controls\NotNullRootThicknessConverter.cs" />
     <Compile Include="Controls\NotRootToVisibilityConverter.cs" />
+    <Compile Include="Controls\ThemeBrushConverter.cs" />
     <Compile Include="EditColorView.xaml.cs">
       <DependentUpon>EditColorView.xaml</DependentUpon>
     </Compile>

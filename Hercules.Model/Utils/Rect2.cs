@@ -2,6 +2,8 @@
 using System.Numerics;
 using Windows.Foundation;
 
+// ReSharper disable NonReadonlyMemberInGetHashCode
+
 namespace Hercules.Model.Utils
 {
     public struct Rect2 : IEquatable<Rect2>

@@ -1,6 +1,7 @@
 ﻿using Hercules.Model;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Hercules.Model.Rendering.Win2D;
 
 namespace Hercules.App.Controls
 {
@@ -12,7 +13,15 @@ namespace Hercules.App.Controls
         {
             get { return (Document)GetValue(DocumentProperty); }
             set { SetValue(DocumentProperty, value); }
-        }       
+        }
+
+        public static readonly DependencyProperty RendererProperty =
+            DependencyProperty.Register("Renderer", typeof(Win2DRenderer), typeof(MindmapFlyoutView), new PropertyMetadata(null));
+        public Win2DRenderer Renderer
+        {
+            get { return (Win2DRenderer)GetValue(RendererProperty); }
+            set { SetValue(RendererProperty, value); }
+        }
 
         protected MindmapFlyoutView()
         {

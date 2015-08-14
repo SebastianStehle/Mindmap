@@ -33,7 +33,7 @@ namespace GP.Windows.UI.Controls
         /// Defines the <see cref="Items"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemsProperty =
-            DependencyProperty.Register("Items", typeof(ObservableCollection<TItem>), typeof(ItemsContainer<TItem, TControl>), new PropertyMetadata(null, new PropertyChangedCallback(OnItemsChanged)));
+            DependencyProperty.Register("Items", typeof(ObservableCollection<TItem>), typeof(ItemsContainer<TItem, TControl>), new PropertyMetadata(null, OnItemsChanged));
         /// <summary>
         /// Gets or sets the items to bind.
         /// </summary>

@@ -23,11 +23,6 @@ namespace Hercules.Model
         {
         }
 
-        public override void Save(PropertiesBag properties)
-        {
-            base.Save(properties);
-        }
-
         protected override void Execute(bool isRedo)
         {
             oldSide = Child.NodeSide;

@@ -13,7 +13,7 @@ using Windows.UI.Xaml.Input;
 
 namespace Hercules.App.Controls
 {
-    public sealed class NodeMovingBehavior : Behavior<MindmapPanel>
+    public sealed class NodeMovingBehavior : Behavior<Mindmap>
     {
         private NodeMovingOperation movingOperation;
 
@@ -35,13 +35,19 @@ namespace Hercules.App.Controls
 
         private void AssociatedElement_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
         {
+            if (movingOperation != null)
+            {
+                movingOperation.Cancel();
+                movingOperation = null;
+            }
+
             Vector2 position = AssociatedElement.Renderer.GetMindmapPosition(e.Position.ToVector2());
 
             foreach (Win2DRenderNode renderNode in AssociatedElement.Renderer.RenderNodes)
             {
-                if (renderNode.HitTest(position))
+                if (renderNode.HitTest(position) && renderNode != AssociatedElement.TextEditingNode)
                 {
-                    movingOperation = NodeMovingOperation.Start(AssociatedElement.Renderer, renderNode);
+                    movingOperation = NodeMovingOperation.Start(AssociatedElement, renderNode);
                     break;
                 }
             }
@@ -62,6 +68,7 @@ namespace Hercules.App.Controls
             if (movingOperation != null)
             {
                 movingOperation.Complete();
+                movingOperation = null;
             }
         }
     }

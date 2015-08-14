@@ -111,7 +111,7 @@ namespace Hercules.Model.Layouting.Default
                     {
                         DefaultLayoutNode childData = DefaultLayoutNode.AttachTo(child, renderer.FindRenderNode(child), parent);
 
-                        UpdateSizeWithChildren(childData, child.Children, isCollapsed || child.IsCollapsed);
+                        UpdateSizeWithChildren(childData, child.Children, child.IsCollapsed);
                     }
                 }
                 else
@@ -123,7 +123,7 @@ namespace Hercules.Model.Layouting.Default
                     {
                         DefaultLayoutNode childData = DefaultLayoutNode.AttachTo(child, renderer.FindRenderNode(child), parent);
 
-                        UpdateSizeWithChildren(childData, child.Children, isCollapsed || child.IsCollapsed);
+                        UpdateSizeWithChildren(childData, child.Children, child.IsCollapsed);
 
                         childsH += childData.TreeHeight;
                         childsW = Math.Max(childData.TreeWidth, childsW);

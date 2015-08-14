@@ -150,6 +150,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyValue.cs" />
     <Compile Include="RemoveChildCommand.cs" />
+    <Compile Include="Rendering\Win2D\Default\DefaultPreviewNode.cs" />
     <Compile Include="Utils\ResourceManager.cs" />
     <Compile Include="Rendering\Win2D\Default\DefaultLevel1Node.cs" />
     <Compile Include="Rendering\Win2D\Default\DefaultLevel2Node.cs" />

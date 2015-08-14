@@ -12,7 +12,7 @@ namespace Hercules.Model
 {
     public sealed class ChangeIconSizeCommand : CommandBase
     {
-        private IconSize newIconSize;
+        private readonly IconSize newIconSize;
         private IconSize oldIconSize;
 
         public ChangeIconSizeCommand(PropertiesBag properties, Document document)

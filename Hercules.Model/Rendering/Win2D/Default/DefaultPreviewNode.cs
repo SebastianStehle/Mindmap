@@ -6,7 +6,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
 {
     public sealed class DefaultPreviewNode : DefaultRootNode
     {
-        private static readonly Vector2 Size = new Vector2(80, 20);
+        private static readonly Vector2 Size = new Vector2(100, 16);
         private ICanvasBrush brush;
 
         public DefaultPreviewNode(NodeBase node, DefaultRenderer renderer) 
@@ -28,7 +28,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
         {
             if (Parent != null)
             {
-                session.FillRoundedRectangle(Bounds, 4, 4, Resources.Brush(PathColor, 0.5f));
+                session.FillRoundedRectangle(Bounds, 2, 2, Resources.Brush(PathColor, 0.5f));
             }
         }
     }

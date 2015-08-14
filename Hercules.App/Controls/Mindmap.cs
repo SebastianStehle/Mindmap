@@ -8,7 +8,6 @@
 
 using System;
 using System.Numerics;
-using GP.Windows.UI;
 using Hercules.Model;
 using Hercules.Model.Layouting;
 using Hercules.Model.Utils;
@@ -19,7 +18,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Hercules.App.Components.Implementations;
 using Hercules.Model.Rendering.Win2D;
-using Hercules.Model.Rendering.Win2D.Default;
+
+// ReSharper disable UnusedParameter.Local
 
 namespace Hercules.App.Controls
 {
@@ -139,7 +139,7 @@ namespace Hercules.App.Controls
         {
             Win2DRenderer renderer = Renderer;
 
-            if (textEditingNode != null && textEditingNode.Node.Document != null && renderer != null)
+            if (textEditingNode?.Node.Document != null && renderer != null)
             {
                 Vector2 position = Renderer.GetOverlayPosition(textEditingNode.TextRenderer.RenderPosition);
                 

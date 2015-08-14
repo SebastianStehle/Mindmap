@@ -1,16 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Data;
 
 namespace GP.Windows.UI.Interactivity
 {
+    /// <summary>
+    /// Centers the scroll viewer.
+    /// </summary>
     public sealed class CenterScrollViewerWhenExtendSizeChanged : Behavior<ScrollViewer>
     {
+        // ReSharper disable once NotAccessedField.Local
         private DependencyPropertyListener contentListener;
         private FrameworkElement content;
 
@@ -27,6 +27,10 @@ namespace GP.Windows.UI.Interactivity
             base.OnAttached();
         }
 
+        /// <summary>
+        /// Called when the behavior is being detached from its AssociatedObject, but before it has actually occurred.
+        /// </summary>
+        /// <remarks>Override this to unhook functionality from the AssociatedObject.</remarks>
         protected override void OnDetaching()
         {
             AssociatedElement.SizeChanged -= AssociatedElement_SizeChanged;

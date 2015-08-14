@@ -36,9 +36,9 @@ namespace Hercules.Model.Rendering.Win2D.Default
             return Bounds.Contains(position);
         }
 
-        public override bool HandleClick(Vector2 position)
+        public override bool HandleClick(Vector2 hitPosition)
         {
-            return button.HitTest(position) || base.HandleClick(position);
+            return button.HitTest(hitPosition) || base.HandleClick(hitPosition);
         }
 
         protected override void ArrangeInternal(CanvasDrawingSession session)

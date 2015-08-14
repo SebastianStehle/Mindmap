@@ -97,12 +97,12 @@ namespace Hercules.Model.Rendering.Win2D
 
         protected Win2DRenderNode(NodeBase node, Win2DRenderer renderer)
         {
-            Guard.NotNull(renderer, nameof(renderer));
             Guard.NotNull(node, nameof(node));
-
-            this.renderer = renderer;
+            Guard.NotNull(renderer, nameof(renderer));
 
             this.node = node;
+
+            this.renderer = renderer;
         }
 
         public void MoveBy(Vector2 offset)
@@ -112,10 +112,9 @@ namespace Hercules.Model.Rendering.Win2D
 
         public void MoveTo(Vector2 layoutPosition, AnchorPoint anchor)
         {
-            this.position = layoutPosition;
+            position = layoutPosition;
 
             renderPosition = position;
-
             renderPosition.Y -= 0.5f * renderSize.Y;
 
             if (anchor == AnchorPoint.Right)
@@ -186,9 +185,9 @@ namespace Hercules.Model.Rendering.Win2D
             renderSize = MeasureInternal(session);
         }
 
-        public virtual bool HandleClick(Vector2 position)
+        public virtual bool HandleClick(Vector2 hitPosition)
         {
-            if (HitTest(position))
+            if (HitTest(hitPosition))
             {
                 node.Select();
 

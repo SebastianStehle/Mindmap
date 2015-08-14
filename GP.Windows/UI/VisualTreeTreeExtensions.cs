@@ -272,7 +272,7 @@ namespace GP.Windows.UI
         {
             bool result = false;
 
-            if (panel != null && panel.Children != null)
+            if (panel?.Children != null)
             {
                 panel.Children.Add(element);
 
@@ -294,7 +294,7 @@ namespace GP.Windows.UI
         /// </returns>
         public static bool TryRemove(this Panel panel, UIElement element)
         {
-            if (panel != null && panel.Children != null)
+            if (panel?.Children != null)
             {
                 return panel.Children.Remove(element);
             }

@@ -168,7 +168,7 @@ namespace GP.Windows.UI.Interactivity
 
                 CommandInvokingEventHandler eventArgs = new CommandInvokingEventHandler();
 
-                if (button != null && button.Command != null)
+                if (button?.Command != null)
                 {
                     OnInvoking(eventArgs);
 

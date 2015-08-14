@@ -25,6 +25,7 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.UI;
 using Windows.UI.Core;
 
+// ReSharper disable UnusedParameter.Local
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
 
 namespace Hercules.Model.Rendering.Win2D
@@ -336,13 +337,13 @@ namespace Hercules.Model.Rendering.Win2D
             return MathHelper.Transform(position, transform);
         }
 
-        public bool HandleClick(Vector2 position, out Win2DRenderNode handledNode)
+        public bool HandleClick(Vector2 hitPosition, out Win2DRenderNode handledNode)
         {
             handledNode = null;
 
             foreach (Win2DRenderNode renderNode in renderNodes.Values)
             {
-                if (renderNode.HandleClick(position))
+                if (renderNode.HandleClick(hitPosition))
                 {
                     handledNode = renderNode;
 
@@ -360,7 +361,7 @@ namespace Hercules.Model.Rendering.Win2D
             return Colors[node.Color];
         }
 
-        private void Document_StateChanged(object sender, System.EventArgs e)
+        private void Document_StateChanged(object sender, EventArgs e)
         {
             Invalidate();
         }

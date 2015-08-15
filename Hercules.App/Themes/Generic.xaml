@@ -37,7 +37,7 @@
                             <Grid Width="{Binding Document.Width}" Height="{Binding Document.Height}" />
                         </ScrollViewer>
 
-                        <TextBox x:Name="TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="0"
+                        <local:TextEditor x:Name="TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="0"
                             MinHeight="0"
                             MinWidth="0"
                             TextAlignment="Center" 

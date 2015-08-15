@@ -1,21 +1,16 @@
 ﻿// ==========================================================================
 // MockupAction.cs
-// RavenMind Application
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+using Hercules.Model;
 
-using RavenMind.Model;
-
-namespace RavenMind.Mockups
+namespace UnitTests.Mockups
 {
     internal class MockupAction : IUndoRedoAction
     {
-        public DocumentCommandBase Command { get; set; }
-
-        public string Description { get; set; }
-
         public bool IsUndoInvoked { get; private set; }
         public bool IsRedoInvoked { get; private set; }
 

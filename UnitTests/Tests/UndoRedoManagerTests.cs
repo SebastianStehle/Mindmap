@@ -1,25 +1,31 @@
 ﻿// ==========================================================================
 // UndoRedoManagerTests.cs
-// SD Components
+// Hercules Mindmap App
 // ==========================================================================
-// Copyright (c) Silverlight Shapes Development Group
+// Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 using System;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using RavenMind.Mockups;
-using RavenMind.Model;
+using Hercules.Model;
+using UnitTests.Mockups;
 
-namespace RavenMind.Tests
+namespace UnitTests.Tests
 {
     [TestClass]
     public class UndoRedoManagerTests
     {
+        private readonly UndoRedoManager undoRedoManager = new UndoRedoManager();
+
+        [TestMethod]
+        public void TestConstructor()
+        {
+            new UndoRedoManager();
+        }
+
         [TestMethod]
         public void TestRedoForEmptyLog()
         {
-            UndoRedoManager undoRedoManager = new UndoRedoManager();
             undoRedoManager.Undo();
         }
 
@@ -27,8 +33,7 @@ namespace RavenMind.Tests
         public void TestRedoForSingleItem()
         {
             MockupAction action = new MockupAction();
-
-            UndoRedoManager undoRedoManager = new UndoRedoManager();
+            
             undoRedoManager.RegisterExecutedAction(action);
             undoRedoManager.UndoAll();
             undoRedoManager.Redo();
@@ -44,7 +49,6 @@ namespace RavenMind.Tests
             MockupAction action1 = new MockupAction();
             MockupAction action2 = new MockupAction();
 
-            UndoRedoManager undoRedoManager = new UndoRedoManager();
             undoRedoManager.RegisterExecutedAction(action1);
             undoRedoManager.RegisterExecutedAction(action2);
             undoRedoManager.UndoAll();
@@ -60,7 +64,6 @@ namespace RavenMind.Tests
         [TestMethod]
         public void TestUndoForEmptyLog()
         {
-            UndoRedoManager undoRedoManager = new UndoRedoManager();
             undoRedoManager.Undo();
         }
 
@@ -68,8 +71,7 @@ namespace RavenMind.Tests
         public void TestUndoForSingleItem()
         {
             MockupAction action = new MockupAction();
-
-            UndoRedoManager undoRedoManager = new UndoRedoManager();
+            
             undoRedoManager.RegisterExecutedAction(action);
             undoRedoManager.Undo();
 
@@ -82,7 +84,6 @@ namespace RavenMind.Tests
         [TestMethod]
         public void TestUndoAllForEmptyLog()
         {
-            UndoRedoManager undoRedoManager = new UndoRedoManager();
             undoRedoManager.UndoAll();
         }
 
@@ -90,8 +91,7 @@ namespace RavenMind.Tests
         public void TestUndoAllForSingleItem()
         {
             MockupAction action = new MockupAction();
-
-            UndoRedoManager undoRedoManager = new UndoRedoManager();
+            
             undoRedoManager.RegisterExecutedAction(action);
             undoRedoManager.UndoAll();
 
@@ -106,8 +106,7 @@ namespace RavenMind.Tests
         {
             MockupAction action1 = new MockupAction();
             MockupAction action2 = new MockupAction();
-
-            UndoRedoManager undoRedoManager = new UndoRedoManager();
+            
             undoRedoManager.RegisterExecutedAction(action1);
             undoRedoManager.RegisterExecutedAction(action2);
             undoRedoManager.UndoAll();
@@ -129,13 +128,8 @@ namespace RavenMind.Tests
         [TestMethod]
         public void TestRegisterExecutedAction()
         {
-            UndoRedoManager undoRedoManager = new UndoRedoManager();
-
             MockupAction action1 = new MockupAction();
-            action1.Description = "Action1";
-
             MockupAction action2 = new MockupAction();
-            action2.Description = "Action2";
 
             undoRedoManager.RegisterExecutedAction(action1);
 
@@ -147,8 +141,6 @@ namespace RavenMind.Tests
         [TestMethod]
         public void TestRegisterExecutedActionAfterUndoAll()
         {
-            UndoRedoManager undoRedoManager = new UndoRedoManager();
-
             MockupAction oldAction1 = new MockupAction();
             MockupAction oldAction2 = new MockupAction();
 
@@ -157,10 +149,7 @@ namespace RavenMind.Tests
             undoRedoManager.UndoAll();
 
             MockupAction action1 = new MockupAction();
-            action1.Description = "Action1";
-
             MockupAction action2 = new MockupAction();
-            action2.Description = "Action2";
 
             undoRedoManager.RegisterExecutedAction(action1);
 
@@ -172,35 +161,21 @@ namespace RavenMind.Tests
         [TestMethod]
         public void TestRegisterExecutedActionAfterUndo()
         {
-            UndoRedoManager undoRedoManager = new UndoRedoManager();
-
             MockupAction oldAction1 = new MockupAction();
-            oldAction1.Description = "Action1";
-
             MockupAction oldAction2 = new MockupAction();
-            oldAction2.Description = "Action2";
 
             undoRedoManager.RegisterExecutedAction(oldAction1);
             undoRedoManager.RegisterExecutedAction(oldAction2);
             undoRedoManager.Undo();
 
             MockupAction action1 = new MockupAction();
-            action1.Description = "Action3";
-
             MockupAction action2 = new MockupAction();
-            action2.Description = "Action4";
 
             undoRedoManager.RegisterExecutedAction(action1);
 
             Assert.IsTrue(undoRedoManager.CanUndo);
             undoRedoManager.RegisterExecutedAction(action2);
             Assert.IsTrue(undoRedoManager.CanUndo);
-        }
-
-        [TestMethod]
-        public void TestConstructor()
-        {
-            UndoRedoManager undoRedoManager = new UndoRedoManager();
         }
     }
 }

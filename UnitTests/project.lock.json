@@ -201,6 +201,14 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
+      "Newtonsoft.Json/7.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        }
+      },
       "System.AppContext/4.0.0": {
         "dependencies": {
           "System.Runtime": "[4.0.20, )",
@@ -1535,6 +1543,16 @@
         "runtime": {
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "Win2D.uwp/1.1.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0/win10-arm": {
@@ -1777,6 +1795,14 @@
         },
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
+        }
+      },
+      "Newtonsoft.Json/7.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -3160,6 +3186,19 @@
         "runtime": {
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "Win2D.uwp/1.1.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "native": {
+          "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0/win10-arm-aot": {
@@ -3388,6 +3427,14 @@
         },
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
+        }
+      },
+      "Newtonsoft.Json/7.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -4756,6 +4803,19 @@
         },
         "runtime": {
           "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
+        }
+      },
+      "Win2D.uwp/1.1.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "native": {
+          "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll": {}
         }
       }
     },
@@ -5006,6 +5066,14 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
+      "Newtonsoft.Json/7.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        }
+      },
       "System.AppContext/4.0.0": {
         "dependencies": {
           "System.Runtime": "[4.0.20, )",
@@ -6387,6 +6455,19 @@
         "runtime": {
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "Win2D.uwp/1.1.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "native": {
+          "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0/win10-x86-aot": {
@@ -6615,6 +6696,14 @@
         },
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
+        }
+      },
+      "Newtonsoft.Json/7.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -7983,6 +8072,19 @@
         },
         "runtime": {
           "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
+        }
+      },
+      "Win2D.uwp/1.1.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "native": {
+          "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll": {}
         }
       }
     },
@@ -8233,6 +8335,14 @@
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
         }
       },
+      "Newtonsoft.Json/7.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        }
+      },
       "System.AppContext/4.0.0": {
         "dependencies": {
           "System.Runtime": "[4.0.20, )",
@@ -9614,6 +9724,19 @@
         "runtime": {
           "lib/netcore50/System.Xml.XmlSerializer.dll": {}
         }
+      },
+      "Win2D.uwp/1.1.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "native": {
+          "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll": {}
+        }
       }
     },
     "UAP,Version=v10.0/win10-x64-aot": {
@@ -9842,6 +9965,14 @@
         },
         "runtime": {
           "lib/dotnet/Microsoft.Win32.Primitives.dll": {}
+        }
+      },
+      "Newtonsoft.Json/7.0.1": {
+        "compile": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -11210,6 +11341,19 @@
         },
         "runtime": {
           "runtimes/win8-aot/lib/netcore50/System.Xml.XmlSerializer.dll": {}
+        }
+      },
+      "Win2D.uwp/1.1.0": {
+        "compile": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "runtime": {
+          "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
+          "lib/uap10.0/Workaround1200257.dll": {}
+        },
+        "native": {
+          "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll": {}
         }
       }
     }
@@ -11865,6 +12009,29 @@
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._",
         "package/services/metadata/core-properties/1d4eb9d0228b48b88d2df3822fba2d86.psmdcp",
+        "[Content_Types].xml"
+      ]
+    },
+    "Newtonsoft.Json/7.0.1": {
+      "sha512": "q3V4KLetMLnt1gpAVWgtXnHjKs0UG/RalBc29u2ZKxd5t5Ze4JBL5WiiYIklJyK/5CRiIiNwigVQUo0FgbsuWA==",
+      "type": "Package",
+      "files": [
+        "_rels/.rels",
+        "Newtonsoft.Json.nuspec",
+        "lib/net20/Newtonsoft.Json.dll",
+        "lib/net20/Newtonsoft.Json.xml",
+        "lib/net35/Newtonsoft.Json.dll",
+        "lib/net35/Newtonsoft.Json.xml",
+        "lib/net40/Newtonsoft.Json.dll",
+        "lib/net40/Newtonsoft.Json.xml",
+        "lib/net45/Newtonsoft.Json.dll",
+        "lib/net45/Newtonsoft.Json.xml",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.dll",
+        "lib/portable-net40+sl5+wp80+win8+wpa81/Newtonsoft.Json.xml",
+        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll",
+        "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.xml",
+        "tools/install.ps1",
+        "package/services/metadata/core-properties/49e907fc018c4c7ab632e6d4ad4766f8.psmdcp",
         "[Content_Types].xml"
       ]
     },
@@ -14560,6 +14727,27 @@
         "ref/xamarinmac20/_._",
         "runtime.json",
         "package/services/metadata/core-properties/1cffc42bca944f1d81ef3c3abdb0f0be.psmdcp",
+        "[Content_Types].xml"
+      ]
+    },
+    "Win2D.uwp/1.1.0": {
+      "sha512": "S7s+SjfharRHWEugh50y5M4uVWkAFVGSkADeyK7KvOXM6IePgZpFU82Crk3T1Rdkq6IR7h7m4RrGKI0NUfpvtQ==",
+      "type": "Package",
+      "files": [
+        "_rels/.rels",
+        "Win2D.uwp.nuspec",
+        "Win2d.githash.txt",
+        "build/native/Win2D.uwp.targets",
+        "include/Microsoft.Graphics.Canvas.h",
+        "include/Microsoft.Graphics.Canvas.native.h",
+        "lib/uap10.0/Microsoft.Graphics.Canvas.winmd",
+        "lib/uap10.0/Microsoft.Graphics.Canvas.xml",
+        "lib/uap10.0/en/Microsoft.Graphics.Canvas.xml",
+        "lib/uap10.0/Workaround1200257.dll",
+        "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll",
+        "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll",
+        "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll",
+        "package/services/metadata/core-properties/0b17de6427b240e4a1b0fa1d7a2c7acb.psmdcp",
         "[Content_Types].xml"
       ]
     }

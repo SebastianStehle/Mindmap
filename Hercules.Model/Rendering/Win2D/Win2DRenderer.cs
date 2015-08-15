@@ -157,7 +157,7 @@ namespace Hercules.Model.Rendering.Win2D
         {
             Win2DRenderNode parentNode = TryAdd(parent);
 
-            previewNode.MoveTo(position, anchor);
+            previewNode.MoveToLayout(position, anchor);
             previewNode.Parent = parentNode;
             previewNode.Show();
         }

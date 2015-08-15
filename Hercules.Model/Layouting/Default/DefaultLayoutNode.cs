@@ -89,7 +89,7 @@ namespace Hercules.Model.Layouting.Default
         {
             Position = position;
 
-            renderNode.MoveTo(position, anchor);
+            renderNode.MoveToLayout(position, anchor);
         }
     }
 }

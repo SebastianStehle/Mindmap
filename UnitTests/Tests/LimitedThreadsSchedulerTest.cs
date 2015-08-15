@@ -1,25 +1,25 @@
 ﻿// ==========================================================================
-// ExtensionsTest.cs
-// RavenMind Application
+// LimitedThreadsSchedulerTest.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
+using Hercules.Model.Utils;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using RavenMind.Model.Utils;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace RavenMind.Tests
+namespace UnitTests.Tests
 {
     [TestClass]
     public class LimitedThreadsSchedulerTest
     {
+        private readonly TaskFactory taskFactory = new TaskFactory(new LimitedThreadsScheduler());
+
         [TestMethod]
-        public void TestSingleTask()
+        public void SingleTask()
         {
-            TaskFactory taskFactory = new TaskFactory(new LimitedThreadsScheduler());
 
             Task task = taskFactory.StartNew(() => { });
             task.Wait();
@@ -28,10 +28,8 @@ namespace RavenMind.Tests
         }
 
         [TestMethod]
-        public void TestMultipleTasks()
+        public void MultipleTasks()
         {
-            TaskFactory taskFactory = new TaskFactory(new LimitedThreadsScheduler());
-
             List<int> results = new List<int>();
 
             Task task1 = taskFactory.StartNew(() => results.Add(1));

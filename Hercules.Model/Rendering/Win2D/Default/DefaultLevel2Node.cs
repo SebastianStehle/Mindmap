@@ -10,6 +10,7 @@ using System.Numerics;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
+using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Model.Rendering.Win2D.Default
 {
@@ -18,7 +19,9 @@ namespace Hercules.Model.Rendering.Win2D.Default
         private static readonly Vector2 ContentPadding = new Vector2(15, 5);
         private static readonly Vector2 SelectionMargin = new Vector2(-5, -5);
         private static readonly float MinHeight = 40;
+        private static readonly float TextOffset = 6;
         private static readonly float VerticalOffset = 20;
+        private static readonly CanvasStrokeStyle StrokeStyle = new CanvasStrokeStyle { StartCap = CanvasCapStyle.Square, EndCap = CanvasCapStyle.Square };
         private readonly Win2DTextRenderer textRenderer;
         private float textOffset;
 
@@ -27,6 +30,22 @@ namespace Hercules.Model.Rendering.Win2D.Default
             get
             {
                 return textRenderer;
+            }
+        }
+
+        public override float VerticalPathOffset
+        {
+            get
+            {
+                return VerticalOffset;
+            }
+        }
+
+        public override Vector2 BoundsOffset
+        {
+            get
+            {
+                return new Vector2(0, -VerticalOffset);
             }
         }
 
@@ -44,7 +63,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             x += ContentPadding.X;
             x += textOffset;
             y -= textRenderer.RenderSize.Y * 0.5f;
-            y -= VerticalOffset;
+            y += TextOffset;
 
             textRenderer.Arrange(new Vector2(x, y));
 
@@ -80,13 +99,6 @@ namespace Hercules.Model.Rendering.Win2D.Default
             return size;
         }
 
-        public override bool HitTest(Vector2 position)
-        {
-            Rect2 bounds = new Rect2(RenderPosition.X, RenderPosition.Y - VerticalOffset, RenderSize.X, RenderSize.Y);
-
-            return bounds.Contains(position);
-        }
-
         protected override void RenderInternal(CanvasDrawingSession session, ThemeColor color)
         {
             ICanvasBrush borderBrush = Resources.ThemeDarkBrush(color);
@@ -95,13 +107,13 @@ namespace Hercules.Model.Rendering.Win2D.Default
             
             Vector2 left = new Vector2(
                 (float)Math.Round(Bounds.Left -1) ,
-                (float)Math.Round(Bounds.CenterY));
+                (float)Math.Round(Bounds.CenterY) + VerticalOffset);
 
             Vector2 right = new Vector2(
                 (float)Math.Round(Bounds.Right + 1),
-                (float)Math.Round(Bounds.CenterY));
+                (float)Math.Round(Bounds.CenterY) + VerticalOffset);
 
-            session.DrawLine(left, right, lineBrush, 2);
+            session.DrawLine(left, right, lineBrush, 2, StrokeStyle);
 
             if (!string.IsNullOrWhiteSpace(Node.IconKey))
             {
@@ -125,8 +137,6 @@ namespace Hercules.Model.Rendering.Win2D.Default
                 if (Node.IsSelected)
                 {
                     Rect2 rect = Rect2.Deflate(Bounds, SelectionMargin);
-
-                    rect = new Rect2(new Vector2(rect.X, rect.Y - VerticalOffset), rect.Size);
 
                     session.DrawRoundedRectangle(rect, 14, 14, borderBrush, 2f, SelectionStrokeStyle);
                 }

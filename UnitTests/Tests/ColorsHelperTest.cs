@@ -1,21 +1,20 @@
 ﻿// ==========================================================================
-// DocumentStoreTest.cs
-// RavenMind Application
+// ColorsHelperTest.cs
+// Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
+using GP.Windows.UI;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
-using RavenMind.Model;
 
-namespace RavenMind.Tests
+namespace UnitTests.Tests
 {
     [TestClass]
     public class ColorsHelperTest
     {
         [TestMethod]
-        public void TestColorToRGBString1()
+        public void ColorToRGBString1()
         {
             string actual = ColorsHelper.ConvertToRGBString(0xFF0000);
 
@@ -23,7 +22,7 @@ namespace RavenMind.Tests
         }
 
         [TestMethod]
-        public void TestColorToRGBString2()
+        public void ColorToRGBString2()
         {
             string actual = ColorsHelper.ConvertToRGBString(0x0000FF);
 

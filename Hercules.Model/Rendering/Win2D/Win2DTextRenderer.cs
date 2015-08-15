@@ -5,8 +5,6 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-#define DRAW_OUTLINE
-
 using System;
 using System.Numerics;
 using Hercules.Model.Utils;

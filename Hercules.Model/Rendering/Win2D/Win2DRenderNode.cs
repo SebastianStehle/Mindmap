@@ -13,6 +13,7 @@ using GP.Windows.UI;
 using Hercules.Model.Layouting;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
+using Windows.UI;
 
 namespace Hercules.Model.Rendering.Win2D
 {
@@ -26,6 +27,7 @@ namespace Hercules.Model.Rendering.Win2D
         private Vector2 renderPosition;
         private Vector2 renderSize;
         private Vector2 targetPosition;
+        private Rect2 bounds;
         private Rect2 boundsWithParent;
         private DateTime? animatingEndUtc;
         private bool isMoved;
@@ -61,7 +63,7 @@ namespace Hercules.Model.Rendering.Win2D
         {
             get
             {
-                return new Rect2(renderPosition, renderSize);
+                return bounds;
             }
         }
 
@@ -97,6 +99,14 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
+        public virtual Vector2 BoundsOffset
+        {
+            get
+            {
+                return Vector2.Zero;
+            }
+        }
+
         public bool IsVisible
         {
             get
@@ -126,7 +136,14 @@ namespace Hercules.Model.Rendering.Win2D
             isMoved = true;
         }
 
-        public void MoveTo(Vector2 layoutPosition, AnchorPoint anchor)
+        public void MoveTo(Vector2 position)
+        {
+            renderPosition = position;
+
+            isMoved = true;
+        }
+
+        public void MoveToLayout(Vector2 layoutPosition, AnchorPoint anchor)
         {
             position = layoutPosition;
 
@@ -187,6 +204,14 @@ namespace Hercules.Model.Rendering.Win2D
 
         public void Render(CanvasDrawingSession session)
         {
+#if DRAW_OUTLINE
+            session.DrawRectangle(Bounds, Colors.Green);
+
+            if (Parent != null)
+            {
+                session.DrawRectangle(BoundsWithParent, Colors.Blue);
+            }
+#endif
             RenderInternal(session, Resources.FindColor(node));
         }
 
@@ -229,10 +254,15 @@ namespace Hercules.Model.Rendering.Win2D
             return true;
         }
 
+        public void Measure(CanvasDrawingSession session)
+        {
+            renderSize = MeasureInternal(session);
+        }
+
         public void Arrange(CanvasDrawingSession session)
         {
-            ArrangeInternal(session);
-                        
+            bounds = new Rect2(renderPosition + BoundsOffset, renderSize);
+
             if (Parent != null)
             {
                 double minX = Math.Min(renderPosition.X, Parent.RenderPosition.X);
@@ -247,11 +277,13 @@ namespace Hercules.Model.Rendering.Win2D
             {
                 boundsWithParent = Bounds;
             }
+
+            ArrangeInternal(session);
         }
 
-        public void Measure(CanvasDrawingSession session)
+        public virtual bool HitTest(Vector2 position)
         {
-            renderSize = MeasureInternal(session);
+            return Bounds.Contains(position);
         }
 
         public virtual bool HandleClick(Vector2 hitPosition)
@@ -274,10 +306,7 @@ namespace Hercules.Model.Rendering.Win2D
 
         protected virtual void RenderPathInternal(CanvasDrawingSession session)
         {
-
         }
-
-        public abstract bool HitTest(Vector2 position);
 
         protected abstract void RenderInternal(CanvasDrawingSession session, ThemeColor color);
 

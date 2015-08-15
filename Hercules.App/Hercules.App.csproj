@@ -116,6 +116,7 @@
     <Compile Include="Controls\NotNullNodeThicknessConverter.cs" />
     <Compile Include="Controls\NotNullRootThicknessConverter.cs" />
     <Compile Include="Controls\NotRootToVisibilityConverter.cs" />
+    <Compile Include="Controls\TextEditor.cs" />
     <Compile Include="Controls\ThemeBrushConverter.cs" />
     <Compile Include="EditColorView.xaml.cs">
       <DependentUpon>EditColorView.xaml</DependentUpon>

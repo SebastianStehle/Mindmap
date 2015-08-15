@@ -26,6 +26,14 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
         private readonly ExpandButton button;
 
+        public virtual float VerticalPathOffset
+        {
+            get
+            {
+                return 0; 
+            }
+        }
+
         protected ExpandButton Button
         {
             get
@@ -38,11 +46,6 @@ namespace Hercules.Model.Rendering.Win2D.Default
             : base(node, renderer)
         {
             button = new ExpandButton(node);
-        }
-
-        public override bool HitTest(Vector2 position)
-        {
-            return Bounds.Contains(position);
         }
 
         public override bool HandleClick(Vector2 hitPosition)
@@ -89,56 +92,64 @@ namespace Hercules.Model.Rendering.Win2D.Default
                 Rect2 targetRect = Bounds;
                 Rect2 parentRect = Parent.Bounds;
 
+                float targetOffset = VerticalPathOffset;
+                float parentOffset = ((DefaultRenderNode)Parent).VerticalPathOffset;
+
                 Vector2 point1 = Vector2.Zero;
                 Vector2 point2 = Vector2.Zero;
 
                 if (CalculateCenterX(targetRect) > CalculateCenterX(parentRect))
                 {
-                    CalculateCenterL(targetRect, ref point1);
-                    CalculateCenterR(parentRect, ref point2);
+                    CalculateCenterR(parentRect, ref point1, parentOffset);
+                    CalculateCenterL(targetRect, ref point2, targetOffset);
                 }
                 else
                 {
-                    CalculateCenterR(targetRect, ref point1);
-                    CalculateCenterL(parentRect, ref point2);
+                    CalculateCenterL(parentRect, ref point1, parentOffset);
+                    CalculateCenterR(targetRect, ref point2, targetOffset);
                 }
 
-                point1.X = (float) Math.Round(point1.X);
-                point1.Y = (float) Math.Round(point1.Y);
-                point2.X = (float) Math.Round(point2.X);
-                point2.Y = (float) Math.Round(point2.Y);
+                point2.X = (float)Math.Round(point2.X);
+                point2.Y = (float)Math.Round(point2.Y);
+                point1.X = (float)Math.Round(point1.X);
+                point1.Y = (float)Math.Round(point1.Y);
 
-                float halfX = (point1.X + point2.X)*0.5f;
+                RenderPath(session, brush, point1, point2);
+            }
+        }
 
-                using (CanvasPathBuilder builder = new CanvasPathBuilder(session.Device))
+        protected virtual void RenderPath(CanvasDrawingSession session, ICanvasBrush brush, Vector2 point1, Vector2 point2)
+        {
+            float halfX = (point1.X + point2.X) * 0.5f;
+
+            using (CanvasPathBuilder builder = new CanvasPathBuilder(session.Device))
+            {
+                builder.BeginFigure(point1);
+
+                builder.AddCubicBezier(
+                    new Vector2(halfX, point1.Y),
+                    new Vector2(halfX, point2.Y),
+                    point2);
+
+                builder.EndFigure(CanvasFigureLoop.Open);
+
+                using (CanvasGeometry pathGeometry = CanvasGeometry.CreatePath(builder))
                 {
-                    builder.BeginFigure(new Vector2(point1.X, point1.Y));
-
-                    builder.AddCubicBezier(
-                        new Vector2(halfX, point1.Y),
-                        new Vector2(halfX, point2.Y),
-                        new Vector2(point2.X, point2.Y));
-
-                    builder.EndFigure(CanvasFigureLoop.Open);
-
-                    using (CanvasGeometry pathGeometry = CanvasGeometry.CreatePath(builder))
-                    {
-                        session.DrawGeometry(pathGeometry, brush, 2);
-                    }
+                    session.DrawGeometry(pathGeometry, brush, 2);
                 }
             }
         }
 
-        private static void CalculateCenterL(Rect2 rect, ref Vector2 point)
+        private static void CalculateCenterL(Rect2 rect, ref Vector2 point, float offset)
         {
             point.X = rect.X;
-            point.Y = rect.Y + (rect.Height * 0.5f);
+            point.Y = rect.Y + (rect.Height * 0.5f) + offset;
         }
 
-        private static void CalculateCenterR(Rect2 rect, ref Vector2 point)
+        private static void CalculateCenterR(Rect2 rect, ref Vector2 point, float offset)
         {
             point.X = rect.X + (rect.Width);
-            point.Y = rect.Y + (rect.Height * 0.5f);
+            point.Y = rect.Y + (rect.Height * 0.5f) + offset;
         }
 
         private static double CalculateCenterX(Rect2 rect)

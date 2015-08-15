@@ -14,8 +14,6 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Hercules.App.Components.Implementations;
 using Hercules.Model.Rendering.Win2D;
 
 // ReSharper disable UnusedParameter.Local
@@ -23,24 +21,22 @@ using Hercules.Model.Rendering.Win2D;
 namespace Hercules.App.Controls
 {
     [TemplatePart(Name = CanvasPart, Type = typeof(CanvasControl))]
-    [TemplatePart(Name = TextBoxPart, Type = typeof(TextBox))]
+    [TemplatePart(Name = TextBoxPart, Type = typeof(TextEditor))]
     [TemplatePart(Name = ScrollViewerPart, Type = typeof(ScrollViewer))]
     public sealed class Mindmap : Control
     {
         private const string ScrollViewerPart = "ScrollViewer";
         private const string TextBoxPart = "TextBox";
         private const string CanvasPart = "Canvas";
-        private readonly CompositeTransform textBoxTransform = new CompositeTransform();
         private CanvasControl canvasControl;
         private ScrollViewer scrollViewer;
-        private TextBox textBox;
-        private Win2DRenderNode textEditingNode;
+        private TextEditor textEditor;
 
         public Win2DRenderNode TextEditingNode
         {
             get
             {
-                return textEditingNode;
+                return textEditor.EditingNode;
             }
         }
 
@@ -99,14 +95,7 @@ namespace Hercules.App.Controls
                 canvasControl.Draw += CanvasControl_BeforeDraw;
             }
 
-            textBox = GetTemplateChild(TextBoxPart) as TextBox;
-
-            if (textBox != null)
-            {
-                textBox.GotFocus += TextBox_GotFocus;
-                textBox.TextChanged += TextBox_TextChanged;
-                textBox.RenderTransform = textBoxTransform;
-            }
+            textEditor = GetTemplateChild(TextBoxPart) as TextEditor;
 
             scrollViewer = GetTemplateChild(ScrollViewerPart) as ScrollViewer;
 
@@ -126,111 +115,75 @@ namespace Hercules.App.Controls
             }
         }
 
-        private void TextBox_GotFocus(object sender, RoutedEventArgs e)
-        {
-            if (!string.IsNullOrWhiteSpace(textBox.Text))
-            {
-                textBox.Select(textBox.Text.Length, 1);
-            }
-        }
-
         private void CanvasControl_AfterDraw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            Win2DRenderer renderer = Renderer;
-
-            if (textEditingNode?.Node.Document != null && renderer != null)
+            WithRenderer(renderer =>
             {
-                Vector2 position = Renderer.GetOverlayPosition(textEditingNode.TextRenderer.RenderPosition);
-                
-                textBoxTransform.TranslateX = position.X;
-                textBoxTransform.TranslateY = position.Y;
-
-                textBoxTransform.ScaleX = renderer.ZoomFactor;
-                textBoxTransform.ScaleY = renderer.ZoomFactor;
-
-                textBox.Height = textEditingNode.TextRenderer.RenderSize.Y;
-
-                textBox.Width = textEditingNode.TextRenderer.RenderSize.X;
-            }
+                if (textEditor != null)
+                {
+                    textEditor.Transform(renderer);
+                }
+            });
         }
 
         private void CanvasControl_BeforeDraw(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            Win2DRenderer renderer = Renderer;
-
-            if (Document != null && scrollViewer != null && renderer != null)
+            WithRenderer(renderer =>
             {
-                double zoomFactor = scrollViewer.ZoomFactor;
-
-                double vOffset = scrollViewer.VerticalOffset;
-                double hOffset = scrollViewer.HorizontalOffset;
-
-                double inverseZoom = 1f / zoomFactor;
-
-                double scaledContentW = Document.Size.X * zoomFactor;
-                double scaledContentH = Document.Size.Y * zoomFactor;
-
-                double translateX;
-                double translateY;
-
-                if (scaledContentW < scrollViewer.ViewportWidth)
+                if (Document != null && scrollViewer != null)
                 {
-                    translateX = (scrollViewer.ViewportWidth * inverseZoom - Document.Size.X) * 0.5;
+                    double zoomFactor = scrollViewer.ZoomFactor;
+
+                    double vOffset = scrollViewer.VerticalOffset;
+                    double hOffset = scrollViewer.HorizontalOffset;
+
+                    double inverseZoom = 1f / zoomFactor;
+
+                    double scaledContentW = Document.Size.X * zoomFactor;
+                    double scaledContentH = Document.Size.Y * zoomFactor;
+
+                    double translateX;
+                    double translateY;
+
+                    if (scaledContentW < scrollViewer.ViewportWidth)
+                    {
+                        translateX = (scrollViewer.ViewportWidth * inverseZoom - Document.Size.X) * 0.5;
+                    }
+                    else
+                    {
+                        translateX = -inverseZoom * scrollViewer.HorizontalOffset;
+                    }
+
+                    if (scaledContentH < scrollViewer.ViewportHeight)
+                    {
+                        translateY = (scrollViewer.ViewportHeight * inverseZoom - Document.Size.Y) * 0.5;
+                    }
+                    else
+                    {
+                        translateY = -inverseZoom * vOffset;
+                    }
+
+                    double visibleX = inverseZoom * hOffset;
+                    double visibleY = inverseZoom * vOffset;
+
+                    double visibleW = Math.Min(Document.Size.X, inverseZoom * scrollViewer.ViewportWidth);
+                    double visibleH = Math.Min(Document.Size.Y, inverseZoom * scrollViewer.ViewportHeight);
+
+                    Rect2 visibleRect = new Rect2((float)visibleX, (float)visibleY, (float)visibleW, (float)visibleH);
+
+                    renderer.Transform(new Vector2((float)translateX, (float)translateY), (float)zoomFactor, visibleRect);
                 }
-                else
-                {
-                    translateX = -inverseZoom * scrollViewer.HorizontalOffset;
-                }
-
-                if (scaledContentH < scrollViewer.ViewportHeight)
-                {
-                    translateY = (scrollViewer.ViewportHeight * inverseZoom - Document.Size.Y) * 0.5;
-                }
-                else
-                {
-                    translateY = -inverseZoom * vOffset;
-                }
-
-                double visibleX = inverseZoom * hOffset;
-                double visibleY = inverseZoom * vOffset;
-
-                double visibleW = Math.Min(Document.Size.X, inverseZoom * scrollViewer.ViewportWidth);
-                double visibleH = Math.Min(Document.Size.Y, inverseZoom * scrollViewer.ViewportHeight);
-
-                Rect2 visibleRect = new Rect2((float)visibleX, (float)visibleY, (float)visibleW, (float)visibleH);
-
-                renderer.Transform(new Vector2((float)translateX, (float)translateY), (float)zoomFactor, visibleRect);
-            }
+            });
         }
 
         private void Mindmap_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            Win2DRenderer renderer = Renderer;
-
-            if (renderer != null)
-            {
-                Renderer.Invalidate();
-            }
+            WithRenderer(renderer => renderer.Invalidate());
         }
 
         private void ScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
         {
-            Win2DRenderer renderer = Renderer;
-
-            if (renderer != null)
-            {
-                Renderer.Invalidate();
-            }
-        }
-
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Win2DRenderer renderer = Renderer;
-
-            if (renderer != null)
-            {
-                Renderer.Invalidate();
-            }
+            WithRenderer(renderer => renderer.Invalidate());
         }
 
         protected override void OnPointerPressed(PointerRoutedEventArgs e)
@@ -245,9 +198,7 @@ namespace Hercules.App.Controls
 
         protected override void OnDoubleTapped(DoubleTappedRoutedEventArgs e)
         {
-            Win2DRenderer renderer = Renderer;
-
-            if (renderer != null)
+            WithRenderer(renderer =>
             {
                 Vector2 position = renderer.GetMindmapPosition(e.GetPosition(this).ToVector2());
 
@@ -255,84 +206,43 @@ namespace Hercules.App.Controls
                 {
                     if (renderNode.HitTest(position))
                     {
-                        if (textEditingNode != renderNode)
-                        {
-                            FinishTextEditing();
-
-                            textEditingNode = renderNode;
-                            textEditingNode.TextRenderer.HideText = true;
-
-                            textBox.Text = renderNode.Node.Text ?? string.Empty;
-                            textBox.FontSize = renderNode.TextRenderer.FontSize;
-                            textBox.Visibility = Visibility.Visible;
-
-                            textBox.Focus(FocusState.Pointer);
-                        }
+                        textEditor.BeginEdit(renderNode);
 
                         renderer.Invalidate();
-
-                        e.Handled = true;
+                        
                         break;
                     }
                 }
-            }
+            });
         }
 
         protected override void OnTapped(TappedRoutedEventArgs e)
         {
-            Win2DRenderer renderer = Renderer;
-
-            if (renderer != null)
+            WithRenderer(renderer =>
             {
-                Vector2 position = renderer.GetMindmapPosition(e.GetPosition(this).ToVector2());
-
-                Win2DRenderNode handledNode;
-
-                if (renderer.HandleClick(position, out handledNode))
+                if (textEditor != null)
                 {
-                    if (textEditingNode == handledNode)
-                    {
-                        textBox.Focus(FocusState.Pointer);
-                    }
-                    else
-                    {
-                        FinishTextEditing();
-                    }
+                    Vector2 position = renderer.GetMindmapPosition(e.GetPosition(this).ToVector2());
 
-                    e.Handled = true;
-                }
-                else
-                {
-                    FinishTextEditing();
-                }
+                    Win2DRenderNode handledNode;
 
-                base.OnTapped(e);
-            }
+                    if (!renderer.HandleClick(position, out handledNode) || handledNode != textEditor.EditingNode)
+                    {
+                        textEditor.EndEdit();
+
+                        renderer.Invalidate();
+                    }
+                }
+            });
         }
 
-        private void FinishTextEditing()
+        private void WithRenderer(Action<Win2DRenderer> action)
         {
             Win2DRenderer renderer = Renderer;
 
             if (renderer != null)
             {
-                if (textEditingNode != null)
-                {
-                    textEditingNode.TextRenderer.HideText = false;
-
-                    string transactionName = ResourceManager.GetString("ChangeTextTransactionName");
-
-                    textEditingNode.Node.Document.MakeTransaction(transactionName, commands =>
-                    {
-                        commands.Apply(new ChangeTextCommand(textEditingNode.Node, textBox.Text, true));
-                    });
-
-                    textBox.Visibility = Visibility.Collapsed;
-
-                    textEditingNode = null;
-                }
-
-                renderer.Invalidate();
+                action(renderer);
             }
         }
     }

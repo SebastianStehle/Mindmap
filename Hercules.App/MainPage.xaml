@@ -200,7 +200,7 @@
                     <CompositeTransform />
                 </controls:Mindmap.RenderTransform>
                 <controls:Mindmap.Layout>
-                    <modelLayout:DefaultLayout ElementMargin="8" HorizontalMargin="50" />
+                    <modelLayout:DefaultLayout ElementMargin="10" HorizontalMargin="50" />
                 </controls:Mindmap.Layout>
             </controls:Mindmap>
         </Grid>

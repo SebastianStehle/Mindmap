@@ -99,7 +99,7 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
-        public virtual Vector2 BoundsOffset
+        public virtual Vector2 RenderPositionOffset
         {
             get
             {
@@ -127,39 +127,6 @@ namespace Hercules.Model.Rendering.Win2D
             this.node = node;
 
             this.renderer = renderer;
-        }
-
-        public void MoveBy(Vector2 offset)
-        {
-            renderPosition += offset;
-
-            isMoved = true;
-        }
-
-        public void MoveTo(Vector2 position)
-        {
-            renderPosition = position;
-
-            isMoved = true;
-        }
-
-        public void MoveToLayout(Vector2 layoutPosition, AnchorPoint anchor)
-        {
-            position = layoutPosition;
-
-            targetPosition = position;
-            targetPosition.Y -= 0.5f * renderSize.Y;
-
-            if (anchor == AnchorPoint.Right)
-            {
-                targetPosition.X -= renderSize.X;
-            }
-            else if (anchor == AnchorPoint.Center)
-            {
-                targetPosition.X -= 0.5f * renderSize.X;
-            }
-
-            isMoved = false;
         }
 
         public Win2DRenderNode CloneUnlinked()
@@ -215,6 +182,42 @@ namespace Hercules.Model.Rendering.Win2D
             RenderInternal(session, Resources.FindColor(node));
         }
 
+        public void MoveBy(Vector2 offset)
+        {
+            renderPosition += offset;
+
+            isMoved = true;
+        }
+
+        public void MoveTo(Vector2 position)
+        {
+            renderPosition = position;
+
+            isMoved = true;
+        }
+
+        public void MoveToLayout(Vector2 layoutPosition, AnchorPoint anchor)
+        {
+            position = layoutPosition;
+
+            Vector2 offset = RenderPositionOffset;
+
+            targetPosition = new Vector2(
+                position.X + offset.X,
+                position.Y + offset.Y - 0.5f * renderSize.Y);
+
+            if (anchor == AnchorPoint.Right)
+            {
+                targetPosition.X -= renderSize.X;
+            }
+            else if (anchor == AnchorPoint.Center)
+            {
+                targetPosition.X -= 0.5f * renderSize.X;
+            }
+
+            isMoved = false;
+        }
+
         public bool AnimateRenderPosition(bool isAnimating, DateTime utcNow, float animationSpeed)
         {
             if (!isMoved && IsVisible)
@@ -261,7 +264,7 @@ namespace Hercules.Model.Rendering.Win2D
 
         public void Arrange(CanvasDrawingSession session)
         {
-            bounds = new Rect2(renderPosition + BoundsOffset, renderSize);
+            bounds = new Rect2(renderPosition, renderSize);
 
             if (Parent != null)
             {

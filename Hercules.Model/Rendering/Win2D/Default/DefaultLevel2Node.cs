@@ -17,11 +17,9 @@ namespace Hercules.Model.Rendering.Win2D.Default
     public sealed class DefaultLevel2Node : DefaultRenderNode
     {
         private static readonly Vector2 ContentPadding = new Vector2(15, 5);
-        private static readonly Vector2 SelectionMargin = new Vector2(-5, -5);
         private static readonly float MinHeight = 40;
-        private static readonly float TextOffset = 6;
-        private static readonly float VerticalOffset = 20;
-        private static readonly CanvasStrokeStyle StrokeStyle = new CanvasStrokeStyle { StartCap = CanvasCapStyle.Square, EndCap = CanvasCapStyle.Square };
+        private static readonly float VerticalOffset = 15;
+        private static readonly CanvasStrokeStyle StrokeStyle = new CanvasStrokeStyle { StartCap = CanvasCapStyle.Round, EndCap = CanvasCapStyle.Round };
         private readonly Win2DTextRenderer textRenderer;
         private float textOffset;
 
@@ -41,7 +39,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             }
         }
 
-        public override Vector2 BoundsOffset
+        public override Vector2 RenderPositionOffset
         {
             get
             {
@@ -63,7 +61,6 @@ namespace Hercules.Model.Rendering.Win2D.Default
             x += ContentPadding.X;
             x += textOffset;
             y -= textRenderer.RenderSize.Y * 0.5f;
-            y += TextOffset;
 
             textRenderer.Arrange(new Vector2(x, y));
 
@@ -136,9 +133,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             {
                 if (Node.IsSelected)
                 {
-                    Rect2 rect = Rect2.Deflate(Bounds, SelectionMargin);
-
-                    session.DrawRoundedRectangle(rect, 14, 14, borderBrush, 2f, SelectionStrokeStyle);
+                    session.DrawRoundedRectangle(Bounds, 14, 14, borderBrush, 2f, SelectionStrokeStyle);
                 }
 
                 if (Node.HasChildren)

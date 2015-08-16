@@ -16,7 +16,7 @@ namespace Hercules.Model.Rendering.Win2D
 {
     public sealed class Win2DTextRenderer
     {
-        private readonly Vector2 padding = new Vector2(5, 5);
+        private readonly Vector2 padding = new Vector2(2, 2);
         private readonly NodeBase node;
         private readonly CanvasTextFormat textFormat;
         private readonly float fontSize;
@@ -94,7 +94,12 @@ namespace Hercules.Model.Rendering.Win2D
             renderSize.X = (float)Math.Round(Math.Max(renderSize.X, minWidth));
             renderSize.Y = (float)Math.Round(Math.Max(renderSize.Y, minSize));
 
-            renderSize += padding;
+            if (renderSize.Y % 2 == 1)
+            {
+                renderSize.Y += 1;
+            }
+
+            renderSize += 2 * padding;
         }
 
         public void Arrange(Vector2 position)

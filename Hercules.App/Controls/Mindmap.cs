@@ -28,6 +28,8 @@ namespace Hercules.App.Controls
         private const string ScrollViewerPart = "ScrollViewer";
         private const string TextBoxPart = "TextBox";
         private const string CanvasPart = "Canvas";
+        private IRendererFactory lastRendererFactory;
+        private Win2DRenderer renderer;
         private CanvasControl canvasControl;
         private ScrollViewer scrollViewer;
         private TextEditor textEditor;
@@ -40,43 +42,48 @@ namespace Hercules.App.Controls
             }
         }
 
+        public Win2DRenderer Renderer
+        {
+            get
+            {
+                return renderer;
+            }
+        }
+
         public static readonly DependencyProperty LayoutProperty =
-            DependencyProperty.Register("Layout", typeof(ILayout), typeof(Mindmap), new PropertyMetadata(null, OnDocumentLayoutChanged));
+            DependencyProperty.Register("Layout", typeof(ILayout), typeof(Mindmap), new PropertyMetadata(null, OnDocumentRendererLayoutChanged));
         public ILayout Layout
         {
             get { return (ILayout)GetValue(LayoutProperty); }
             set { SetValue(LayoutProperty, value); }
         }
 
-        public static readonly DependencyProperty RendererProperty =
-            DependencyProperty.Register("Renderer", typeof(Win2DRenderer), typeof(Mindmap), new PropertyMetadata(null, OnDocumentLayoutChanged));
-        public Win2DRenderer Renderer
+        public static readonly DependencyProperty RendererFactoryProperty =
+            DependencyProperty.Register("RendererFactory", typeof(IRendererFactory), typeof(Mindmap), new PropertyMetadata(null, OnDocumentRendererLayoutChanged));
+        public IRendererFactory RendererFactory
         {
-            get { return (Win2DRenderer)GetValue(RendererProperty); }
-            set { SetValue(RendererProperty, value); }
+            get { return (IRendererFactory)GetValue(RendererFactoryProperty); }
+            set { SetValue(RendererFactoryProperty, value); }
         }
 
         public static readonly DependencyProperty DocumentProperty =
-            DependencyProperty.Register("Document", typeof(Document), typeof(Mindmap), new PropertyMetadata(null, OnDocumentLayoutChanged));
+            DependencyProperty.Register("Document", typeof(Document), typeof(Mindmap), new PropertyMetadata(null, OnDocumentRendererLayoutChanged));
         public Document Document
         {
             get { return (Document)GetValue(DocumentProperty); }
             set { SetValue(DocumentProperty, value); }
         }
 
-        private static void OnDocumentLayoutChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        private static void OnDocumentRendererLayoutChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
             var owner = o as Mindmap;
 
-            owner?.OnDocumentLayoutChanged();
+            owner?.OnDocumentRendererLayoutChanged();
         }
 
-        private void OnDocumentLayoutChanged()
+        private void OnDocumentRendererLayoutChanged()
         {
-            if (Renderer != null)
-            {
-                Renderer.Initialize(Document, Layout, canvasControl);
-            }
+            InitializeRenderer();
         }
 
         public Mindmap()
@@ -104,33 +111,32 @@ namespace Hercules.App.Controls
                 scrollViewer.ViewChanging += ScrollViewer_ViewChanging;
             }
 
-            if (Renderer != null)
-            {
-                Renderer.Initialize(Document, Layout, canvasControl);
-            }
-
-            if (canvasControl != null)
-            {
-                canvasControl.Draw += CanvasControl_AfterDraw;
-            }
+            InitializeRenderer();
         }
 
-        private void CanvasControl_AfterDraw(CanvasControl sender, CanvasDrawEventArgs args)
+        private void InitializeRenderer()
         {
-            WithRenderer(renderer =>
+            if (canvasControl != null && Document != null && RendererFactory != null)
             {
-                if (textEditor != null)
+                if (renderer == null || renderer.Document != Document || renderer.Canvas != canvasControl || RendererFactory != lastRendererFactory)
                 {
-                    textEditor.Transform(renderer);
+                    renderer = RendererFactory.CreateRenderer(Document, canvasControl);
+
+                    lastRendererFactory = RendererFactory;
                 }
-            });
+            }
+
+            if (renderer != null && Layout != null)
+            {
+                renderer.Layout = Layout;
+            }
         }
 
         private void CanvasControl_BeforeDraw(CanvasControl sender, CanvasDrawEventArgs args)
         {
             WithRenderer(renderer =>
             {
-                if (Document != null && scrollViewer != null)
+                if (scrollViewer != null)
                 {
                     double zoomFactor = scrollViewer.ZoomFactor;
 
@@ -172,6 +178,11 @@ namespace Hercules.App.Controls
                     Rect2 visibleRect = new Rect2((float)visibleX, (float)visibleY, (float)visibleW, (float)visibleH);
 
                     renderer.Transform(new Vector2((float)translateX, (float)translateY), (float)zoomFactor, visibleRect);
+                }
+
+                if (textEditor != null)
+                {
+                    textEditor.Transform(renderer);
                 }
             });
         }
@@ -238,8 +249,6 @@ namespace Hercules.App.Controls
 
         private void WithRenderer(Action<Win2DRenderer> action)
         {
-            Win2DRenderer renderer = Renderer;
-
             if (renderer != null)
             {
                 action(renderer);

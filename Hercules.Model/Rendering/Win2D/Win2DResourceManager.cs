@@ -17,6 +17,7 @@ using GP.Windows.UI;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+using Windows.Storage.Streams;
 
 namespace Hercules.Model.Rendering.Win2D
 {
@@ -25,19 +26,19 @@ namespace Hercules.Model.Rendering.Win2D
         private readonly Dictionary<Tuple<Color, float>, ICanvasBrush> cachedColors = new Dictionary<Tuple<Color, float>, ICanvasBrush>();
         private readonly Dictionary<string, ImageContainer> cachedImages = new Dictionary<string, ImageContainer>();
         private readonly List<ThemeColor> colors = new List<ThemeColor>();
-        private CanvasControl canvasControl;
+        private readonly CanvasControl canvas;
 
         private sealed class ImageContainer
         {
-            public CanvasBitmap Bitmap;
+            public CanvasBitmap Bitmap { get; set; }
 
-            public ImageContainer(string image, CanvasDevice device, CanvasControl canvas)
+            public ImageContainer(string image, CanvasControl canvasControl)
             {
-                LoadFile(image, device).ContinueWith(bitmap =>
+                LoadFile(image, canvasControl.Device).ContinueWith(bitmap =>
                 {
-                    canvas.Dispatcher.RunAsync(CoreDispatcherPriority.High, () =>
+                    canvasControl.Dispatcher.RunAsync(CoreDispatcherPriority.High, () =>
                     {
-                        canvas.Invalidate();
+                        canvasControl.Invalidate();
                     }).AsTask();
 
                     Bitmap = bitmap.Result;
@@ -50,7 +51,7 @@ namespace Hercules.Model.Rendering.Win2D
 
                 StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
 
-                using (var stream = await file.OpenReadAsync())
+                using (IRandomAccessStream stream = await file.OpenReadAsync())
                 {
                     return await CanvasBitmap.LoadAsync(device, stream).AsTask();
                 }
@@ -65,6 +66,13 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
+        public Win2DResourceManager(CanvasControl canvas)
+        {
+            Guard.NotNull(canvas, nameof(canvas));
+
+            this.canvas = canvas;
+        }
+
         public void AddThemeColors(params int[] newColors)
         {
             foreach (int color in newColors)
@@ -74,14 +82,6 @@ namespace Hercules.Model.Rendering.Win2D
                     ColorsHelper.ConvertToColor(color, 0, 0.2, -0.3),
                     ColorsHelper.ConvertToColor(color, 0, -0.2, 0.2)));
             }
-        }
-
-        public void Initialize(CanvasControl canvas)
-        {
-            canvasControl = canvas;
-
-            cachedColors.Clear();
-            cachedImages.Clear();
         }
 
         public ThemeColor FindColor(NodeBase node)
@@ -135,33 +135,19 @@ namespace Hercules.Model.Rendering.Win2D
 
         public ICanvasBrush Brush(Color color, float opacity)
         {
-            if (canvasControl != null)
+            return cachedColors.GetOrCreateDefault(new Tuple<Color, float>(color, opacity), () =>
             {
-                return cachedColors.GetOrCreateDefault(new Tuple<Color, float>(color, opacity), () =>
-                {
-                    CanvasSolidColorBrush brush = new CanvasSolidColorBrush(canvasControl.Device, color);
+                CanvasSolidColorBrush brush = new CanvasSolidColorBrush(canvas.Device, color);
 
-                    brush.Opacity = opacity;
+                brush.Opacity = opacity;
 
-                    return brush;
-                });
-            }
-            else
-            {
-                return null;
-            }
+                return brush;
+            });
         }
-        
+
         public ICanvasImage Image(string image)
         {
-            if (canvasControl != null)
-            {
-                return cachedImages.GetOrCreateDefault(image, () => new ImageContainer(image, canvasControl.Device, canvasControl)).Bitmap;
-            }
-            else
-            {
-                return null;
-            }
+            return cachedImages.GetOrCreateDefault(image, () => new ImageContainer(image, canvas)).Bitmap;
         }
     }
 }

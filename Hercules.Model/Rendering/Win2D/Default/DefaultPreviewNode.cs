@@ -29,7 +29,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             RenderPath(session, Resources.Brush(PathColor, 0.5f));
         }
 
-        protected override void RenderInternal(CanvasDrawingSession session, ThemeColor color)
+        protected override void RenderInternal(CanvasDrawingSession session, ThemeColor color, bool renderControls)
         {
             if (Parent != null)
             {

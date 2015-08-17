@@ -133,9 +133,9 @@ namespace Hercules.Model.Rendering.Win2D
         {
             Win2DRenderNode clone = CloneInternal();
 
-            clone.HideControls = true;
-            clone.isMoved = true;
             clone.Parent = null;
+            clone.isMoved = true;
+            clone.position = position;
             clone.renderSize = renderSize;
             clone.renderPosition = renderPosition;
             clone.targetPosition = targetPosition;
@@ -169,7 +169,7 @@ namespace Hercules.Model.Rendering.Win2D
             RenderPathInternal(session);
         }
 
-        public void Render(CanvasDrawingSession session)
+        public void Render(CanvasDrawingSession session, bool renderControls)
         {
 #if DRAW_OUTLINE
             session.DrawRectangle(Bounds, Colors.Green);
@@ -179,7 +179,7 @@ namespace Hercules.Model.Rendering.Win2D
                 session.DrawRectangle(BoundsWithParent, Colors.Blue);
             }
 #endif
-            RenderInternal(session, Resources.FindColor(node));
+            RenderInternal(session, Resources.FindColor(node), renderControls);
         }
 
         public void MoveBy(Vector2 offset)
@@ -311,7 +311,7 @@ namespace Hercules.Model.Rendering.Win2D
         {
         }
 
-        protected abstract void RenderInternal(CanvasDrawingSession session, ThemeColor color);
+        protected abstract void RenderInternal(CanvasDrawingSession session, ThemeColor color, bool renderControls);
 
         protected abstract Win2DRenderNode CloneInternal();
 

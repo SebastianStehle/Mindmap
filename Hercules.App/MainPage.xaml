@@ -195,7 +195,7 @@
             
             <gpc:TiledBackground TileSize="60" />
 
-            <controls:Mindmap Document="{Binding Document}"  Renderer="{Binding Renderer}" x:Name="Mindmap">
+            <controls:Mindmap Document="{Binding Document}"  RendererFactory="{Binding RendererFactory}" x:Name="Mindmap">
                 <controls:Mindmap.RenderTransform>
                     <CompositeTransform />
                 </controls:Mindmap.RenderTransform>

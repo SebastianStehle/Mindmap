@@ -5,17 +5,15 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 
 namespace Hercules.Model.Rendering.Win2D.Default
 {
-    public class DefaultRenderer : Win2DRenderer
+    public class DefaultTheme : ThemeBase
     {
-        public DefaultRenderer(Document document, CanvasControl canvas)
-            : base(document, canvas)
+        public DefaultTheme()
         {
-            Resources.AddThemeColors(
+            AddThemeColors(
                 0xF7977A,
                 0xF9AD81,
                 0xFDC68A,

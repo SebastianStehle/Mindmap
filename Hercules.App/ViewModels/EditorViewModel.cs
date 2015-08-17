@@ -28,7 +28,7 @@ namespace Hercules.App.ViewModels
     public sealed class EditorViewModel : ViewModelBase
     {
         private readonly DispatcherTimer autosaveTimer = new DispatcherTimer();
-        private readonly Win2DRenderer renderer = new DefaultRenderer();
+        private readonly IRendererFactory rendererFactory = new DefaultRendererFactory();
         private Document document;
         private RelayCommand redoCommand;
         private RelayCommand undoCommand;
@@ -39,11 +39,11 @@ namespace Hercules.App.ViewModels
         [Dependency]
         public IDocumentStore DocumentStore { get; set; }
 
-        public Win2DRenderer Renderer
+        public IRendererFactory RendererFactory
         {
             get
             {
-                return renderer;
+                return rendererFactory;
             }
         }
 

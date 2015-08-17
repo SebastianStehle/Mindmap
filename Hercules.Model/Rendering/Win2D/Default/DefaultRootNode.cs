@@ -76,7 +76,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             return size;
         }
 
-        protected override void RenderInternal(CanvasDrawingSession session, ThemeColor color)
+        protected override void RenderInternal(CanvasDrawingSession session, ThemeColor color, bool renderControls)
         {
             ICanvasBrush borderBrush = Resources.ThemeDarkBrush(color);
 
@@ -117,7 +117,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
             textRenderer.Render(session);
 
-            if (!HideControls)
+            if (renderControls)
             {
                 if (Node.IsSelected)
                 {

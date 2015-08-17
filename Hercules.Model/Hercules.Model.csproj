@@ -151,6 +151,8 @@
     <Compile Include="PropertyValue.cs" />
     <Compile Include="RemoveChildCommand.cs" />
     <Compile Include="Rendering\Win2D\Default\DefaultPreviewNode.cs" />
+    <Compile Include="Rendering\Win2D\Default\DefaultRendererFactory.cs" />
+    <Compile Include="Rendering\Win2D\IRendererFactory.cs" />
     <Compile Include="Rendering\Win2D\Win2DResourceManager.cs" />
     <Compile Include="Utils\ResourceManager.cs" />
     <Compile Include="Rendering\Win2D\Default\DefaultLevel1Node.cs" />

@@ -12,6 +12,7 @@ using Hercules.App.Components.Implementations;
 using Hercules.Model.Rendering.Win2D;
 using Windows.UI.Xaml.Media;
 using System.Numerics;
+using Windows.Foundation;
 
 namespace Hercules.App.Controls
 {
@@ -43,24 +44,6 @@ namespace Hercules.App.Controls
             }
         }
 
-        public void Transform(Win2DRenderer renderer)
-        {
-            if (editingNode?.Node.Document != null && renderer != null)
-            {
-                Vector2 position = renderer.GetOverlayPosition(editingNode.TextRenderer.RenderPosition);
-
-                renderTransform.TranslateX = position.X;
-                renderTransform.TranslateY = position.Y;
-
-                renderTransform.ScaleX = renderer.ZoomFactor;
-                renderTransform.ScaleY = renderer.ZoomFactor;
-
-                Height = editingNode.TextRenderer.RenderSize.Y;
-
-                Width = editingNode.TextRenderer.RenderSize.X;
-            }
-        }
-
         public void BeginEdit(Win2DRenderNode renderNode)
         {
             if (renderNode != null)
@@ -71,6 +54,9 @@ namespace Hercules.App.Controls
 
                     editingNode = renderNode;
                     editingNode.TextRenderer.HideText = true;
+
+                    InvalidateMeasure();
+                    InvalidateArrange();
 
                     Text = renderNode.Node.Text ?? string.Empty;
 
@@ -105,6 +91,35 @@ namespace Hercules.App.Controls
                     editingNode.TextRenderer.HideText = false;
                     editingNode = null;
                 }
+            }
+        }
+
+        protected override Size ArrangeOverride(Size finalSize)
+        {
+            if (editingNode != null)
+            {
+                Vector2 position = editingNode.TextRenderer.RenderPosition;
+
+                renderTransform.TranslateX = position.X;
+                renderTransform.TranslateY = position.Y;
+            }
+
+            return base.ArrangeOverride(finalSize);
+        }
+
+        protected override Size MeasureOverride(Size availableSize)
+        {
+            if (editingNode != null)
+            {
+                Size size = editingNode.TextRenderer.RenderSize.ToSize();
+
+                base.MeasureOverride(size);
+
+                return size;
+            }
+            else
+            {
+                return new Size(0, 0);
             }
         }
 

@@ -5,12 +5,12 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using Microsoft.Graphics.Canvas.UI.Xaml;
+using GP.Windows.UI.Controls;
 
 namespace Hercules.Model.Rendering.Win2D
 {
     public interface IRendererFactory
     {
-        Win2DRenderer CreateRenderer(Document document, CanvasControl canvas);
+        Win2DRenderer CreateRenderer(Document document, ICanvasControl canvas);
     }
 }

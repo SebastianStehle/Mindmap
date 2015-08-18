@@ -22,7 +22,7 @@ namespace GP.Windows.UI.Controls
         /// <summary>
         /// Identifies the name of the path template part that is used for rendering the tiles.
         /// </summary>
-        public const string PathPart = "Path";
+        public const string PathPart = "PART_Path";
 
         private Path path;
 
@@ -110,7 +110,9 @@ namespace GP.Windows.UI.Controls
         /// </summary>
         protected override void OnApplyTemplate()
         {
-            path = (Path)GetTemplateChild("Path");
+            path = GetTemplateChild(PathPart) as Path;
+
+            Render();
         }
     }
 }

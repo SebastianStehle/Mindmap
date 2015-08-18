@@ -16,6 +16,7 @@ using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+using GP.Windows.UI.Controls;
 
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
@@ -28,26 +29,12 @@ namespace Hercules.Model.Rendering.Win2D
         private readonly List<Win2DRenderNode> customNodes = new List<Win2DRenderNode>();
         private readonly Win2DRenderNode previewNode;
         private readonly Win2DResourceManager resources;
-        private readonly CanvasControl canvas;
         private readonly Document document;
-        private Matrix3x2 transform = Matrix3x2.Identity;
-        private Matrix3x2 scale = Matrix3x2.Identity;
-        private Matrix3x2 inverseTransform = Matrix3x2.Identity;
-        private Matrix3x2 inverseScale = Matrix3x2.Identity;
-        private Rect2 visibleRect = new Rect2(0, 0, float.PositiveInfinity, float.PositiveInfinity);
+        private readonly ICanvasControl canvas;
         private ILayout layout;
         private bool layoutInvalidated;
-        private float zoomFactor;
-        
-        public float ZoomFactor
-        {
-            get
-            {
-                return zoomFactor;
-            }
-        }
 
-        public CanvasControl Canvas
+        public ICanvasControl Canvas
         {
             get
             {
@@ -114,7 +101,7 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
-        public Win2DRenderer(Document document, CanvasControl canvas)
+        public Win2DRenderer(Document document, ICanvasControl canvas)
         {
             Guard.NotNull(document, nameof(document));
             Guard.NotNull(canvas, nameof(canvas));
@@ -191,30 +178,7 @@ namespace Hercules.Model.Rendering.Win2D
             canvas.Invalidate();
         }
 
-        public void Transform(Vector2 translate, float zoom, Rect2 rect)
-        {
-            visibleRect = rect;
-            
-            scale = Matrix3x2.CreateScale(zoom);
-
-            transform =
-                Matrix3x2.CreateTranslation(
-                    translate.X,
-                    translate.Y) *
-                Matrix3x2.CreateScale(zoom);
-
-            inverseScale = Matrix3x2.CreateScale(1f / zoom);
-
-            inverseTransform =
-                Matrix3x2.CreateScale(1f / zoom) *
-                Matrix3x2.CreateTranslation(
-                    -translate.X,
-                    -translate.Y);
-
-            zoomFactor = zoom;
-        }
-
-        private void Canvas_Draw(CanvasControl sender, CanvasDrawEventArgs args)
+        private void Canvas_Draw(object sender, CanvasDrawEventArgs args)
         {
             Render(args.DrawingSession);
         }
@@ -223,8 +187,6 @@ namespace Hercules.Model.Rendering.Win2D
         {
             if (layout != null)
             {
-                session.Transform = transform;
-
                 bool needsRedraw = false;
 
                 UpdateLayout(session);
@@ -282,7 +244,7 @@ namespace Hercules.Model.Rendering.Win2D
             
             foreach (Win2DRenderNode node in AllNodes)
             {
-                if (node.IsVisible && CanRenderPath(node))
+                if (node.IsVisible)
                 {
                     node.RenderPath(session);
                 }
@@ -290,21 +252,11 @@ namespace Hercules.Model.Rendering.Win2D
 
             foreach (Win2DRenderNode node in AllNodes)
             {
-                if (node.IsVisible && CanRenderNode(node))
+                if (node.IsVisible)
                 {
                     node.Render(session, renderControls && !customNodes.Contains(node) && previewNode != node);
                 }
             }
-        }
-
-        private bool CanRenderPath(Win2DRenderNode node)
-        {
-            return visibleRect.IntersectsWith(node.BoundsWithParent);
-        }
-
-        private bool CanRenderNode(Win2DRenderNode node)
-        {
-            return visibleRect.IntersectsWith(node.Bounds);
         }
 
         public void AddCustomNode(Win2DRenderNode node)
@@ -315,26 +267,6 @@ namespace Hercules.Model.Rendering.Win2D
         public void RemoveCustomNode(Win2DRenderNode node)
         {
             customNodes.Remove(node);
-        }
-
-        public Vector2 GetMindmapSize(Vector2 position)
-        {
-            return MathHelper.Transform(position, inverseScale);
-        }
-
-        public Vector2 GetMindmapPosition(Vector2 position)
-        {
-            return MathHelper.Transform(position, inverseTransform);
-        }
-
-        public Vector2 GetOverlaySize(Vector2 position)
-        {
-            return MathHelper.Transform(position, scale);
-        }
-
-        public Vector2 GetOverlayPosition(Vector2 position)
-        {
-            return MathHelper.Transform(position, transform);
         }
 
         public bool HandleClick(Vector2 hitPosition, out Win2DRenderNode handledNode)

@@ -18,6 +18,7 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using Windows.Storage.Streams;
+using GP.Windows.UI.Controls;
 
 namespace Hercules.Model.Rendering.Win2D
 {
@@ -26,13 +27,13 @@ namespace Hercules.Model.Rendering.Win2D
         private readonly Dictionary<Tuple<Color, float>, ICanvasBrush> cachedColors = new Dictionary<Tuple<Color, float>, ICanvasBrush>();
         private readonly Dictionary<string, ImageContainer> cachedImages = new Dictionary<string, ImageContainer>();
         private readonly List<ThemeColor> colors = new List<ThemeColor>();
-        private readonly CanvasControl canvas;
+        private readonly ICanvasControl canvas;
 
         private sealed class ImageContainer
         {
             public CanvasBitmap Bitmap { get; set; }
 
-            public ImageContainer(string image, CanvasControl canvasControl)
+            public ImageContainer(string image, ICanvasControl canvasControl)
             {
                 LoadFile(image, canvasControl.Device).ContinueWith(bitmap =>
                 {
@@ -66,7 +67,7 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
-        public Win2DResourceManager(CanvasControl canvas)
+        public Win2DResourceManager(ICanvasControl canvas)
         {
             Guard.NotNull(canvas, nameof(canvas));
 

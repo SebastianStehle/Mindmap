@@ -120,9 +120,11 @@
     <Compile Include="NotifyUIAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\ColorsHelper.cs" />
+    <Compile Include="UI\Controls\ICanvasControl.cs" />
     <Compile Include="UI\Controls\ItemsContainer.cs" />
     <Compile Include="UI\Controls\LoadableControl.cs" />
     <Compile Include="UI\Controls\TiledBackground.cs" />
+    <Compile Include="UI\Controls\ZoomableCanvasControl.cs" />
     <Compile Include="UI\GreaterZeroVisibilityConverter.cs" />
     <Compile Include="UI\Interactivity\Behavior.cs" />
     <Compile Include="UI\Interactivity\CenterScrollViewerWhenExtendSizeChanged.cs" />

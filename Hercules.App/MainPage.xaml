@@ -195,14 +195,27 @@
             
             <gpc:TiledBackground TileSize="60" />
 
-            <controls:Mindmap Document="{Binding Document}"  RendererFactory="{Binding RendererFactory}" x:Name="Mindmap">
-                <controls:Mindmap.RenderTransform>
-                    <CompositeTransform />
-                </controls:Mindmap.RenderTransform>
-                <controls:Mindmap.Layout>
-                    <modelLayout:DefaultLayout ElementMargin="10" HorizontalMargin="50" />
-                </controls:Mindmap.Layout>
-            </controls:Mindmap>
+            <ScrollViewer ZoomMode="Enabled" MaxZoomFactor="4" Background="Transparent" Padding="0"
+                VerticalScrollBarVisibility="Auto" 
+                HorizontalScrollBarVisibility="Auto" 
+                IsVerticalRailEnabled="False"
+                IsVerticalScrollChainingEnabled="False" 
+                IsHorizontalScrollChainingEnabled="False" 
+                IsHorizontalRailEnabled="False">
+                <i:Interaction.Behaviors>
+                    <gpi:CenterScrollViewerWhenExtendSizeChanged />
+                    <gpi:ScrollViewerBringIntoViewInputPaneBehavior />
+                </i:Interaction.Behaviors>
+                
+                <controls:Mindmap Document="{Binding Document}"  RendererFactory="{Binding RendererFactory}" x:Name="Mindmap">
+                    <controls:Mindmap.RenderTransform>
+                        <CompositeTransform />
+                    </controls:Mindmap.RenderTransform>
+                    <controls:Mindmap.Layout>
+                        <modelLayout:DefaultLayout ElementMargin="10" HorizontalMargin="50" />
+                    </controls:Mindmap.Layout>
+                </controls:Mindmap>
+            </ScrollViewer>
         </Grid>
     </Grid>
 </Page>

@@ -114,6 +114,7 @@ namespace Hercules.App
             if (Mindmap.Document != null)
             {
                 Mindmap.Document.SelectLeftOfSelectedNode();
+                Mindmap.Renderer.Invalidate();
             }
         }
 
@@ -122,6 +123,7 @@ namespace Hercules.App
             if (Mindmap.Document != null)
             {
                 Mindmap.Document.SelectRightOfSelectedNode();
+                Mindmap.Renderer.Invalidate();
             }
         }
 
@@ -130,6 +132,7 @@ namespace Hercules.App
             if (Mindmap.Document != null)
             {
                 Mindmap.Document.SelectedTopOfSelectedNode();
+                Mindmap.Renderer.Invalidate();
             }
         }
 
@@ -138,6 +141,7 @@ namespace Hercules.App
             if (Mindmap.Document != null)
             {
                 Mindmap.Document.SelectedBottomOfSelectedNode();
+                Mindmap.Renderer.Invalidate();
             }
         }
     }

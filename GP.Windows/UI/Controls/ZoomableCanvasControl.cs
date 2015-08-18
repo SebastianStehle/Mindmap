@@ -7,6 +7,7 @@
 // ==========================================================================
 using System;
 using System.Numerics;
+using Windows.ApplicationModel;
 using Windows.Graphics.Display;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -97,6 +98,11 @@ namespace GP.Windows.UI.Controls
 
         private void ResizeOrCreateSwapChain()
         {
+            if (DesignMode.DesignModeEnabled)
+            {
+                return;
+            }
+
             if (swapChainPanel != null)
             {
                 scaleX = swapChainPanel.CompositionScaleX;

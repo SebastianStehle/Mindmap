@@ -32,12 +32,6 @@ namespace Hercules.App.Modules.Mindmaps.Views
 
         protected override async void OnNavigatedTo(NavigationEventArgs e)
         {
-            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.BackgroundColor = Colors.DarkGoldenrod;
-            titleBar.ForegroundColor = Colors.White;
-            titleBar.ButtonBackgroundColor = Colors.DarkGoldenrod;
-            titleBar.ButtonForegroundColor = Colors.White;
-
             MindmapsViewModel viewModel = (MindmapsViewModel)DataContext;
 
             await viewModel.LoadAsync();

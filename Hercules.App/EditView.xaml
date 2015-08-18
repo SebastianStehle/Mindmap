@@ -16,8 +16,8 @@
         <TextBlock x:Uid="SettingsHeader" FontSize="24" FontWeight="Light" Margin="0,0,0,10">Mindmap Settings</TextBlock>
 
         <StackPanel Grid.Row="1" Margin="0, 10">
-            <TextBlock x:Uid="MindmapNameError" Text="You cannot leave the name blank!" Foreground="Red" Visibility="Collapsed" x:Name="ErrorTextBlock" />
-            <TextBlock x:Uid="MindmapNameLabel" Text="Mindmap Name:" Margin="0,0,0,4" />
+            <TextBlock x:Uid="MindmapTitleError" Text="You cannot leave the name blank!" Foreground="Red" Visibility="Collapsed" x:Name="ErrorTextBlock" />
+            <TextBlock x:Uid="MindmapTitleLabel" Text="Mindmap Title:" Margin="0,0,0,4" />
 
             <TextBox Text="{Binding Name, Mode=TwoWay}" x:Name="NameTextBox" TextChanged="NameTextBox_TextChanged" />
         </StackPanel>

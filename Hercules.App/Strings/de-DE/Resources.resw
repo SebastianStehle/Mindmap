@@ -228,19 +228,19 @@ Deutschland</value>
     <value>Gespeichert:</value>
   </data>
   <data name="MindmapNameError.Text" xml:space="preserve">
-    <value>Name darf nicht leer sein!</value>
+    <value>Title darf nicht leer sein!</value>
   </data>
   <data name="MindmapNameLabel.Text" xml:space="preserve">
-    <value>Mindmap Name:</value>
+    <value>Mindmap Title:</value>
   </data>
   <data name="MyMindmap" xml:space="preserve">
     <value>Meine Mindmap</value>
   </data>
   <data name="NewMindmapNameError.Text" xml:space="preserve">
-    <value>Name darf nicht leer sein!</value>
+    <value>Title darf nicht leer sein!</value>
   </data>
   <data name="NewMindmapNameLabel.Text" xml:space="preserve">
-    <value>Name Eingeben</value>
+    <value>Title Eingeben</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>Nein</value>

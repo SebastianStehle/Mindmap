@@ -13,6 +13,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Hercules.App.Modules.Mindmaps.Views;
 
 namespace Hercules.App
 {
@@ -47,7 +48,7 @@ namespace Hercules.App
 
             if (rootFrame.Content == null)
             {
-                rootFrame.Navigate(typeof(MainPage), args.Arguments);
+                rootFrame.Navigate(typeof(MindmapsPage), args.Arguments);
             }
 
             Window.Current.Activate();

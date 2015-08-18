@@ -243,10 +243,10 @@ Deutschland</value>
     <value>Last Saved:</value>
   </data>
   <data name="MindmapNameError.Text" xml:space="preserve">
-    <value>Name cannot be empty!</value>
+    <value>Title cannot be empty!</value>
   </data>
   <data name="MindmapNameLabel.Text" xml:space="preserve">
-    <value>Mindmap Name:</value>
+    <value>Mindmap Title:</value>
   </data>
   <data name="MoveNodeTransactionName" xml:space="preserve">
     <value>Move Node</value>
@@ -255,10 +255,10 @@ Deutschland</value>
     <value>My Mindmap</value>
   </data>
   <data name="NewMindmapNameError.Text" xml:space="preserve">
-    <value>Name cannot be empty!</value>
+    <value>Title cannot be empty!</value>
   </data>
   <data name="NewMindmapNameLabel.Text" xml:space="preserve">
-    <value>Enter Name:</value>
+    <value>Enter Title:</value>
   </data>
   <data name="No" xml:space="preserve">
     <value>No</value>

@@ -12,6 +12,7 @@ using Hercules.App.Components.Implementations;
 using Hercules.Model.Storing;
 using Hercules.Model.Storing.Json;
 using Windows.ApplicationModel;
+using GalaSoft.MvvmLight.Views;
 
 namespace Hercules.App.ViewModels
 {
@@ -22,6 +23,9 @@ namespace Hercules.App.ViewModels
 
         [Dependency]
         public MindmapsViewModel Mindmaps { get; set; }
+
+        [Dependency]
+        public Hercules.App.Modules.Mindmaps.ViewModels.MindmapsViewModel Mindmaps2 { get; set; }
 
         public ViewModelLocator()
         {
@@ -36,6 +40,8 @@ namespace Hercules.App.ViewModels
                 unityContainer.RegisterType<ISettingsProvider, DefaultSettingsProvider>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<ILocalizationManager, ResourcesLocalizationManager>(
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<INavigationService, NavigationService>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<MindmapsViewModel>(
                     new PerResolveLifetimeManager());

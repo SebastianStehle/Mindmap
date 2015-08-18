@@ -15,8 +15,8 @@
             </Grid.RowDefinitions>
             
             <StackPanel>
-                <TextBlock x:Uid="NewMindmapNameError" Text="You cannot leave the name blank!" Foreground="Red" Visibility="Collapsed" x:Name="ErrorTextBlock" />
-                <TextBlock x:Uid="NewMindmapNameLabel" Text="Enter Name:" Margin="0,0,0,4" />
+                <TextBlock x:Uid="NewMindmapTitleError" Text="You cannot leave the name blank!" Foreground="Red" Visibility="Collapsed" x:Name="ErrorTextBlock" />
+                <TextBlock x:Uid="NewMindmapTitleLabel" Text="Enter Title:" Margin="0,0,0,4" />
                 <TextBox x:Name="NameTextBox" />
             </StackPanel>
 

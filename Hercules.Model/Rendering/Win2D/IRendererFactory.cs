@@ -11,6 +11,8 @@ namespace Hercules.Model.Rendering.Win2D
 {
     public interface IRendererFactory
     {
+        Win2DRenderer Current { get; }
+
         Win2DRenderer CreateRenderer(Document document, ICanvasControl canvas);
     }
 }

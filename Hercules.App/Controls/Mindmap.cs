@@ -126,17 +126,17 @@ namespace Hercules.App.Controls
 
         protected override void OnDoubleTapped(DoubleTappedRoutedEventArgs e)
         {
-            WithRenderer(renderer =>
+            WithRenderer(r =>
             {
                 Vector2 position = e.GetPosition(this).ToVector2();
 
-                foreach (Win2DRenderNode renderNode in renderer.RenderNodes)
+                foreach (Win2DRenderNode renderNode in r.RenderNodes)
                 {
                     if (renderNode.HitTest(position))
                     {
                         textEditor.BeginEdit(renderNode);
 
-                        renderer.Invalidate();
+                        r.Invalidate();
                         
                         break;
                     }
@@ -146,7 +146,7 @@ namespace Hercules.App.Controls
 
         protected override void OnTapped(TappedRoutedEventArgs e)
         {
-            WithRenderer(renderer =>
+            WithRenderer(r =>
             {
                 if (textEditor != null)
                 {
@@ -154,11 +154,11 @@ namespace Hercules.App.Controls
 
                     Win2DRenderNode handledNode;
 
-                    if (!renderer.HandleClick(position, out handledNode) || handledNode != textEditor.EditingNode)
+                    if (!r.HandleClick(position, out handledNode) || handledNode != textEditor.EditingNode)
                     {
                         textEditor.EndEdit();
 
-                        renderer.Invalidate();
+                        r.Invalidate();
                     }
                 }
             });

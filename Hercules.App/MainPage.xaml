@@ -30,7 +30,7 @@
                         AutomationProperties.Name="Edit" x:Uid="AppBarButtonEdit">
                         <AppBarButton.Flyout>
                             <controls:MindmapFlyout>
-                                <local:EditView Document="{Binding Document}" Renderer="{Binding Renderer}" />
+                                <local:EditView Document="{Binding Document}" Renderer="{Binding RendererFactory.Current}" />
                             </controls:MindmapFlyout>
                         </AppBarButton.Flyout>
                         <i:Interaction.Behaviors>
@@ -45,7 +45,7 @@
                         AutomationProperties.Name="Change Icon" x:Uid="AppBarButtonChangeIcon">
                         <AppBarButton.Flyout>
                             <controls:MindmapFlyout>
-                                <local:EditIconView Document="{Binding Document}" Renderer="{Binding Renderer}" />
+                                <local:EditIconView Document="{Binding Document}" Renderer="{Binding RendererFactory.Current}" />
                             </controls:MindmapFlyout>
                         </AppBarButton.Flyout>
                         <i:Interaction.Behaviors>
@@ -57,7 +57,7 @@
                         AutomationProperties.Name="Change Color" x:Uid="AppBarButtonChangeColor">
                         <AppBarButton.Flyout>
                             <controls:MindmapFlyout>
-                                <local:EditColorView Document="{Binding Document}" Renderer="{Binding Renderer}" />
+                                <local:EditColorView Document="{Binding Document}" Renderer="{Binding RendererFactory.Current}" />
                             </controls:MindmapFlyout>
                         </AppBarButton.Flyout>
                         <i:Interaction.Behaviors>

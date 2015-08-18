@@ -5,17 +5,16 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
-using System.Diagnostics;
 using System.Numerics;
-using Windows.Foundation;
 using Windows.Graphics.Display;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.UI.Xaml;
+// ReSharper disable UnusedParameter.Local
 
 namespace GP.Windows.UI.Controls
 {

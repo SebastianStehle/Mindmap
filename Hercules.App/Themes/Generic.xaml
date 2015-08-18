@@ -3,8 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Hercules.App.Controls"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:gpi="using:GP.Windows.UI.Interactivity"
-    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     xmlns:controls="using:GP.Windows.UI.Controls">
 
     <Style TargetType="local:Mindmap">

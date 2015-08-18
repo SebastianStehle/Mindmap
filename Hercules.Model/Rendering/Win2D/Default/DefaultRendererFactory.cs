@@ -11,9 +11,13 @@ namespace Hercules.Model.Rendering.Win2D.Default
 {
     public class DefaultRendererFactory : IRendererFactory
     {
+        public Win2DRenderer Current { get; set;  }
+
         public Win2DRenderer CreateRenderer(Document document, ICanvasControl canvas)
         {
-            return new DefaultRenderer(document, canvas);
+            Current =  new DefaultRenderer(document, canvas);
+
+            return Current;
         }
     }
 }

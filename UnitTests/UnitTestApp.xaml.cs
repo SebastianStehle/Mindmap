@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Controls;
 
 namespace UnitTests
 {
-    sealed partial class App : Application
+    sealed partial class App
     {
         public App()
         {

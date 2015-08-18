@@ -189,9 +189,9 @@ namespace Hercules.Model.Rendering.Win2D
             isMoved = true;
         }
 
-        public void MoveTo(Vector2 position)
+        public void MoveTo(Vector2 newPosition)
         {
-            renderPosition = position;
+            renderPosition = newPosition;
 
             isMoved = true;
         }
@@ -284,9 +284,9 @@ namespace Hercules.Model.Rendering.Win2D
             ArrangeInternal(session);
         }
 
-        public virtual bool HitTest(Vector2 position)
+        public virtual bool HitTest(Vector2 hitPosition)
         {
-            return Bounds.Contains(position);
+            return Bounds.Contains(hitPosition);
         }
 
         public virtual bool HandleClick(Vector2 hitPosition)

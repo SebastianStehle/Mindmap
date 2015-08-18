@@ -120,8 +120,6 @@ namespace UnitTests.Tests
         [TestMethod]
         public void TestRegisterExecutedActionNullActionException()
         {
-            UndoRedoManager undoRedoManager = new UndoRedoManager();
-            
             Assert.ThrowsException<ArgumentNullException>(() => undoRedoManager.RegisterExecutedAction(null));
         }
 
@@ -134,7 +132,9 @@ namespace UnitTests.Tests
             undoRedoManager.RegisterExecutedAction(action1);
 
             Assert.IsTrue(undoRedoManager.CanUndo);
+
             undoRedoManager.RegisterExecutedAction(action2);
+
             Assert.IsTrue(undoRedoManager.CanUndo);
         }
 
@@ -154,7 +154,9 @@ namespace UnitTests.Tests
             undoRedoManager.RegisterExecutedAction(action1);
 
             Assert.IsTrue(undoRedoManager.CanUndo);
+
             undoRedoManager.RegisterExecutedAction(action2);
+
             Assert.IsTrue(undoRedoManager.CanUndo);
         }
 
@@ -174,7 +176,9 @@ namespace UnitTests.Tests
             undoRedoManager.RegisterExecutedAction(action1);
 
             Assert.IsTrue(undoRedoManager.CanUndo);
+
             undoRedoManager.RegisterExecutedAction(action2);
+
             Assert.IsTrue(undoRedoManager.CanUndo);
         }
     }

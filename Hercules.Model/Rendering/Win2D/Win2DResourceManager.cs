@@ -8,17 +8,16 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using GP.Windows;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Core;
+using GP.Windows;
 using GP.Windows.UI;
+using GP.Windows.UI.Controls;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
-using Microsoft.Graphics.Canvas.UI.Xaml;
-using Windows.Storage.Streams;
-using GP.Windows.UI.Controls;
 
 namespace Hercules.Model.Rendering.Win2D
 {

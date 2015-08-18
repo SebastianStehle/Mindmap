@@ -7,16 +7,14 @@
 // ==========================================================================
 using System;
 using System.Collections.Generic;
-using GP.Windows;
 using System.Linq;
 using System.Numerics;
-using GP.Windows.UI;
+using GP.Windows;
+using GP.Windows.UI.Controls;
 using Hercules.Model.Layouting;
-using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using GP.Windows.UI.Controls;
 
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
@@ -101,7 +99,7 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
-        public Win2DRenderer(Document document, ICanvasControl canvas)
+        protected Win2DRenderer(Document document, ICanvasControl canvas)
         {
             Guard.NotNull(document, nameof(document));
             Guard.NotNull(canvas, nameof(canvas));
@@ -187,7 +185,7 @@ namespace Hercules.Model.Rendering.Win2D
         {
             if (layout != null)
             {
-                bool needsRedraw = false;
+                bool needsRedraw;
 
                 UpdateLayout(session);
                 UpdateArrangement(session, true, out needsRedraw);

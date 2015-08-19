@@ -14,9 +14,9 @@ namespace Hercules.Model.Rendering.Win2D.Default
 {
     public class DefaultRootNode : DefaultRenderNode
     {
+        private const float MinHeight = 50;
         private static readonly Vector2 ContentPadding = new Vector2(15, 5);
         private static readonly Vector2 SelectionMargin = new Vector2(-5, -5);
-        private static readonly float MinHeight = 50;
         private readonly Win2DTextRenderer textRenderer;
         private float textOffset;
 

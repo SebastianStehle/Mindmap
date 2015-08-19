@@ -23,7 +23,7 @@ namespace Hercules.Model.Storing.Json
 {
     public sealed class JsonDocumentStore : IDocumentStore
     {
-        private const string DefaultSubfolder = "Hercules66";
+        private const string DefaultSubfolder = "Hercules77";
         private readonly JsonSerializerSettings historySerializerSettings = new JsonSerializerSettings();
         private readonly TaskFactory taskFactory = new TaskFactory(new LimitedThreadsScheduler());
         private readonly string subfolderName;
@@ -52,7 +52,7 @@ namespace Hercules.Model.Storing.Json
         {
             Guard.NotNull(document, nameof(document));
 
-            InMemoryRandomAccessStream screenshot = await WriteScreenshotToMemoryAsync(document.Id, saveScreenshot);
+            InMemoryRandomAccessStream screenshot = await WriteScreenshotToMemoryAsync(saveScreenshot);
 
             return await taskFactory.StartNew(() => StoreInternalAsync(document, screenshot)).Unwrap();
         }
@@ -122,7 +122,7 @@ namespace Hercules.Model.Storing.Json
 
         private async Task<DocumentRef> StoreInternalAsync(Document document, InMemoryRandomAccessStream screenshot)
         {
-            Guard.NotNull(document, nameof(document));;
+            Guard.NotNull(document, nameof(document));
 
             await EnsureFolderAsync();
 
@@ -136,7 +136,7 @@ namespace Hercules.Model.Storing.Json
             return new DocumentRef(document.Id, document.Title, DateTime.Now, LoadScreenshotAsync);
         }
 
-        private async Task<InMemoryRandomAccessStream> WriteScreenshotToMemoryAsync(Guid documentId, Func<IRandomAccessStream, Task> saveScreenshot)
+        private async Task<InMemoryRandomAccessStream> WriteScreenshotToMemoryAsync(Func<IRandomAccessStream, Task> saveScreenshot)
         {
             InMemoryRandomAccessStream stream = null;
 

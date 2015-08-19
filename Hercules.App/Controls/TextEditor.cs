@@ -81,17 +81,26 @@ namespace Hercules.App.Controls
                     {
                         commands.Apply(new ChangeTextCommand(editingNode.Node, Text, true));
                     });
-
-                    Text = string.Empty;
                 }
                 finally
                 {
-                    Hide();
-
-                    editingNode.TextRenderer.HideText = false;
-                    editingNode = null;
+                    CancelEdit();
                 }
             }
+        }
+
+        public void CancelEdit()
+        {
+            Text = string.Empty;
+
+            Hide();
+
+            if (editingNode != null)
+            {
+                editingNode.TextRenderer.HideText = false;
+            }
+
+            editingNode = null;
         }
 
         protected override Size ArrangeOverride(Size finalSize)

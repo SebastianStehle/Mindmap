@@ -36,10 +36,7 @@ namespace Hercules.Model.Rendering.Win2D
             {
                 LoadFile(image, canvasControl.Device).ContinueWith(bitmap =>
                 {
-                    canvasControl.Dispatcher.RunAsync(CoreDispatcherPriority.High, () =>
-                    {
-                        canvasControl.Invalidate();
-                    }).AsTask();
+                    canvasControl.Dispatcher.RunAsync(CoreDispatcherPriority.High, canvasControl.Invalidate).AsTask();
 
                     Bitmap = bitmap.Result;
                 });

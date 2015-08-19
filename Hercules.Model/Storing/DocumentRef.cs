@@ -63,7 +63,7 @@ namespace Hercules.Model.Storing
             this.imageLoader = imageLoader;
         }
 
-        public async Task<bool> EnsureImageLoaded()
+        public async Task<bool> LoadImageAsync()
         {
             if (screenshot == null)
             {

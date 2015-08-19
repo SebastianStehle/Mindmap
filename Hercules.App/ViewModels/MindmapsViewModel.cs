@@ -58,13 +58,15 @@ namespace Hercules.App.ViewModels
             Messenger.Default.Register<MindmapSavedMessage>(this, OnMindmapSaved);
         }
 
-        public void OnMindmapSaved(MindmapSavedMessage message)
+        public async void OnMindmapSaved(MindmapSavedMessage message)
         {
             MindmapItem item = Mindmaps.FirstOrDefault(x => x.DocumentId == message.Content);
 
             if (item != null)
             {
                 item.LastUpdate = DateTimeOffset.UtcNow;
+
+                await item.RefreshImageAsync();
             }
         }
 
@@ -128,7 +130,7 @@ namespace Hercules.App.ViewModels
                     {
                         if (Mindmaps.All(x => x.DocumentId != documentRef.DocumentId))
                         {
-                            await documentRef.EnsureImageLoaded();
+                            await documentRef.LoadImageAsync();
 
                             MindmapItem mindmapItem = new MindmapItem(documentRef);
 

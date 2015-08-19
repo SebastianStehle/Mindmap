@@ -47,15 +47,22 @@ namespace Hercules.App.Controls
         }
 
         public static readonly DependencyProperty LayoutProperty =
-            DependencyProperty.Register("Layout", typeof(ILayout), typeof(Mindmap), new PropertyMetadata(null, OnDocumentRendererLayoutChanged));
+            DependencyProperty.Register("Layout", typeof(ILayout), typeof(Mindmap), new PropertyMetadata(null, OnLayoutChanged));
         public ILayout Layout
         {
             get { return (ILayout)GetValue(LayoutProperty); }
             set { SetValue(LayoutProperty, value); }
         }
 
+        private static void OnLayoutChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            var owner = o as Mindmap;
+
+            owner?.InitializeLayout();
+        }
+
         public static readonly DependencyProperty RendererFactoryProperty =
-            DependencyProperty.Register("RendererFactory", typeof(IRendererFactory), typeof(Mindmap), new PropertyMetadata(null, OnDocumentRendererLayoutChanged));
+            DependencyProperty.Register("RendererFactory", typeof(IRendererFactory), typeof(Mindmap), new PropertyMetadata(null, OnDocumentRendererChanged));
         public IRendererFactory RendererFactory
         {
             get { return (IRendererFactory)GetValue(RendererFactoryProperty); }
@@ -63,23 +70,18 @@ namespace Hercules.App.Controls
         }
 
         public static readonly DependencyProperty DocumentProperty =
-            DependencyProperty.Register("Document", typeof(Document), typeof(Mindmap), new PropertyMetadata(null, OnDocumentRendererLayoutChanged));
+            DependencyProperty.Register("Document", typeof(Document), typeof(Mindmap), new PropertyMetadata(null, OnDocumentRendererChanged));
         public Document Document
         {
             get { return (Document)GetValue(DocumentProperty); }
             set { SetValue(DocumentProperty, value); }
         }
 
-        private static void OnDocumentRendererLayoutChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        private static void OnDocumentRendererChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
             var owner = o as Mindmap;
 
-            owner?.OnDocumentRendererLayoutChanged();
-        }
-
-        private void OnDocumentRendererLayoutChanged()
-        {
-            InitializeRenderer();
+            owner?.InitializeRenderer();
         }
 
         public Mindmap()
@@ -98,21 +100,32 @@ namespace Hercules.App.Controls
 
         private void InitializeRenderer()
         {
+            if (textEditor != null)
+            {
+                textEditor.CancelEdit();
+            }
+
+            if (renderer != null)
+            {
+                renderer.Dispose();
+                renderer = null;
+            }
+
             if (canvasControl != null && Document != null && RendererFactory != null)
             {
                 if (renderer == null || renderer.Document != Document || renderer.Canvas != canvasControl || RendererFactory != lastRendererFactory)
                 {
-                    if (renderer != null)
-                    {
-                        renderer.Dispose();
-                    }
-
                     renderer = RendererFactory.CreateRenderer(Document, canvasControl);
 
                     lastRendererFactory = RendererFactory;
                 }
             }
 
+            InitializeLayout();
+        }
+
+        private void InitializeLayout()
+        {
             if (renderer != null && Layout != null)
             {
                 renderer.Layout = Layout;

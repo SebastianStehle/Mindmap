@@ -14,7 +14,9 @@ using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
+using Hercules.App.Controls;
 
 namespace Hercules.App
 {
@@ -142,6 +144,30 @@ namespace Hercules.App
             {
                 Mindmap.Document.SelectedBottomOfSelectedNode();
                 Mindmap.Renderer.Invalidate();
+            }
+        }
+
+        private void BottomBar_Closed(object sender, object e)
+        {
+            BottomAppBar.IsOpen = true;
+        }
+
+        private void IconButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Mindmap.Document != null)
+            {
+                MindmapFlyout flyout = new MindmapFlyout
+                {
+                    Placement = FlyoutPlacementMode.Top
+                };
+
+                flyout.Content = new EditIconView
+                {
+                    Document = Mindmap.Document,
+                    Renderer = Mindmap.Renderer
+                };
+
+                flyout.ShowAt(BottomAppBar);
             }
         }
     }

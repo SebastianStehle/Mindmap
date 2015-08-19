@@ -243,8 +243,6 @@ namespace Hercules.Model.Rendering.Win2D
             foreach (Win2DRenderNode node in AllNodes)
             {
                 node.Measure(session);
-
-                Rect2 bounds = node.Bounds;
             }
 
             if (layoutInvalidated)
@@ -263,7 +261,9 @@ namespace Hercules.Model.Rendering.Win2D
 
             foreach (Win2DRenderNode node in AllNodes)
             {
-                needsRedraw |= node.AnimateRenderPosition(animate, utcNow, 600);
+                bool isCustomNode = IsCustomNode(node);
+
+                needsRedraw |= node.AnimateRenderPosition(animate && !isCustomNode, utcNow, 600);
             }
 
             double minX = double.MaxValue;
@@ -309,7 +309,7 @@ namespace Hercules.Model.Rendering.Win2D
 
                     if (renderCustoms || !isCustomNode)
                     {
-                        node.Render(session, renderControls && !renderCustoms);
+                        node.Render(session, renderControls && !isCustomNode);
                     }
                 }
             }

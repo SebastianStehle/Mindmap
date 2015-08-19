@@ -5,16 +5,19 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
+using Windows.ApplicationModel;
 using GalaSoft.MvvmLight.Messaging;
-using Microsoft.Practices.Unity;
+using GalaSoft.MvvmLight.Views;
 using Hercules.App.Components;
 using Hercules.App.Components.Implementations;
+using Hercules.App.Modules.Editor.ViewModels;
+using Hercules.App.Modules.Mindmaps.ViewModels;
 using Hercules.Model.Storing;
 using Hercules.Model.Storing.Json;
-using Windows.ApplicationModel;
-using GalaSoft.MvvmLight.Views;
+using Microsoft.Practices.Unity;
 
-namespace Hercules.App.ViewModels
+namespace Hercules.App.Modules
 {
     public class ViewModelLocator
     {
@@ -23,9 +26,6 @@ namespace Hercules.App.ViewModels
 
         [Dependency]
         public MindmapsViewModel Mindmaps { get; set; }
-
-        [Dependency]
-        public Hercules.App.Modules.Mindmaps.ViewModels.MindmapsViewModel Mindmaps2 { get; set; }
 
         public ViewModelLocator()
         {

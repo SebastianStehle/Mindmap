@@ -1,19 +1,20 @@
 ﻿// ==========================================================================
-// MindmapSavedMessage.cs
+// MindmapDeletedMessage.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using GalaSoft.MvvmLight.Messaging;
-using System;
+using Hercules.App.Modules;
 
 namespace Hercules.App.Messages
 {
-    public sealed class MindmapSavedMessage : GenericMessage<Guid>
+    public sealed class MindmapDeletedMessage : GenericMessage<MindmapItem>
     {
-        public MindmapSavedMessage(Guid content)
-            : base(content)
+        public MindmapDeletedMessage(MindmapItem documentRef)
+            : base(documentRef)
         {
         }
     }

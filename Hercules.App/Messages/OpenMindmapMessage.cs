@@ -5,20 +5,16 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using GalaSoft.MvvmLight.Messaging;
-using System;
+using Hercules.App.Modules;
 
 namespace Hercules.App.Messages
 {
-    public sealed class OpenMindmapMessage : GenericMessage<Guid?>
+    public sealed class OpenMindmapMessage : GenericMessage<MindmapItem>
     {
-        public OpenMindmapMessage()
-            : base(null)
-        {
-        }
-
-        public OpenMindmapMessage(Guid id)
-            : base(id)
+        public OpenMindmapMessage(MindmapItem documentRef)
+            : base(documentRef)
         {
         }
     }

@@ -6,7 +6,6 @@
 // All rights reserved.
 // ==========================================================================
 using Hercules.Model;
-using Hercules.App.ViewModels;
 using GP.Windows.UI;
 using GP.Windows.UI.Interactivity;
 using System;
@@ -17,6 +16,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Hercules.App.Controls;
+using Hercules.App.Modules.Editor.ViewModels;
+using Hercules.App.Modules.Mindmaps.ViewModels;
 
 namespace Hercules.App
 {
@@ -27,14 +28,6 @@ namespace Hercules.App
             get 
             { 
                 return MainGrid.DataContext as EditorViewModel; 
-            }
-        }
-
-        public MindmapsViewModel MindmapsViewModel
-        {
-            get 
-            { 
-                return TopGrid.DataContext as MindmapsViewModel; 
             }
         }
         
@@ -87,18 +80,6 @@ namespace Hercules.App
 
                 args.EnsuredFocusedElementInView = true;
             }
-        }
-
-        private async void TopGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            await MindmapsViewModel.LoadAsync();
-        }
-
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            Control senderElement = (Control)sender;
-
-            PopupHandler.ShowPopupRightTop(new EnterNameView { DataContext = senderElement.DataContext }, new Point(-20, 110));
         }
 
         private void RemoveButton_Invoking(object sender, CommandInvokingEventHandler e)

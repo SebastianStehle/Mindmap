@@ -1,10 +1,10 @@
-﻿<vm:MindmapsViewModel xmlns:vm="using:Hercules.App.Modules.Mindmaps.ViewModels">
+﻿<vm:MindmapsViewModel xmlns:vm="using:Hercules.App.Modules.Mindmaps.ViewModels" xmlns:v="using:Hercules.App.Modules">
     <vm:MindmapsViewModel.Mindmaps>
-        <vm:MindmapItem Title="Mindmap1" />
-        <vm:MindmapItem Title="Mindmap2" />
-        <vm:MindmapItem Title="Mindmap3" />
-        <vm:MindmapItem Title="Mindmap4" />
-        <vm:MindmapItem Title="Mindmap5" />
-        <vm:MindmapItem Title="Mindmap6" />
+        <v:MindmapItem Title="Mindmap1" />
+        <v:MindmapItem Title="Mindmap2" />
+        <v:MindmapItem Title="Mindmap3" />
+        <v:MindmapItem Title="Mindmap4" />
+        <v:MindmapItem Title="Mindmap5" />
+        <v:MindmapItem Title="Mindmap6" />
     </vm:MindmapsViewModel.Mindmaps>
 </vm:MindmapsViewModel>

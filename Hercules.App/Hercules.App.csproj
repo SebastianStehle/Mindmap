@@ -134,24 +134,19 @@
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Messages\DeleteMindmapMessage.cs" />
-    <Compile Include="Messages\MindmapSavedMessage.cs" />
-    <Compile Include="Messages\NameChangedMessage.cs" />
+    <Compile Include="Messages\MindmapDeletedMessage.cs" />
     <Compile Include="Messages\OpenMindmapMessage.cs" />
-    <Compile Include="Messages\SaveMindmapMessage.cs" />
-    <Compile Include="Modules\Mindmaps\ViewModels\MindmapItem.cs" />
     <Compile Include="Modules\Mindmaps\ViewModels\MindmapsViewModel.cs" />
-    <Compile Include="Modules\Mindmaps\Views\MindmapsPage.xaml.cs">
-      <DependentUpon>MindmapsPage.xaml</DependentUpon>
+    <Compile Include="Modules\Mindmaps\Views\EnterNameView.xaml.cs">
+      <DependentUpon>EnterNameView.xaml</DependentUpon>
     </Compile>
-    <Compile Include="NodeListItem.xaml.cs">
-      <DependentUpon>NodeListItem.xaml</DependentUpon>
+    <Compile Include="Modules\Mindmaps\Views\MindmapsView.xaml.cs">
+      <DependentUpon>MindmapsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="ViewModels\EditorViewModel.cs" />
-    <Compile Include="ViewModels\MindmapItem.cs" />
-    <Compile Include="ViewModels\MindmapsViewModel.cs" />
-    <Compile Include="ViewModels\ViewModelLocator.cs" />
+    <Compile Include="Modules\Editor\ViewModels\EditorViewModel.cs" />
+    <Compile Include="Modules\MindmapItem.cs" />
+    <Compile Include="Modules\ViewModelLocator.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -243,18 +238,27 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Modules\Mindmaps\Views\MindmapsPage.xaml">
+    <Page Include="Modules\Mindmaps\Views\EnterNameView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="NodeListItem.xaml">
-      <Generator>MSBuild:Compile</Generator>
+    <Page Include="Modules\Mindmaps\Views\MindmapsView.xaml">
       <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Mindmaps\Views\NewMindmapView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <DesignData Include="SampleData\MindmapsViewModelSampleData.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </DesignData>
+    <Page Include="Modules\Mindmaps\Views\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -275,7 +279,9 @@
       <Name>Behaviors SDK %28XAML%29</Name>
     </SDKReference>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ViewModels\" />
+  </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

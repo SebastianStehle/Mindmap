@@ -1,0 +1,24 @@
+﻿<UserControl
+    x:Class="Hercules.App.Modules.Mindmaps.Views.EnterNameView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Height="150" Width="250">
+
+    <Grid BorderBrush="{ThemeResource FlyoutBorderThemeBrush}" Background="{ThemeResource FlyoutBackgroundThemeBrush}" BorderThickness="{ThemeResource FlyoutBorderThemeThickness}" Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBlock x:Uid="NewMindmapTitleError" Text="You cannot leave the name blank!" Foreground="Red" Opacity="0" x:Name="ErrorTextBlock" />
+            <TextBlock x:Uid="NewMindmapTitleLabel" Text="Enter Title:" Margin="0,0,0,4" />
+            <TextBox x:Name="NameTextBox" />
+        </StackPanel>
+
+        <Button Margin="0,10,0,0" Grid.Row="1" Content="Create" x:Uid="CreateButton" Click="CreateButton_Click" />
+    </Grid>
+</UserControl>

@@ -1,19 +1,13 @@
-﻿// ==========================================================================
-// EnterNameView.xaml.cs
-// Hercules Mindmap App
-// ==========================================================================
-// Copyright (c) Sebastian Stehle
-// All rights reserved.
-// ==========================================================================
-
-using GP.Windows.UI;
+﻿using System;
+using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
+using GP.Windows.UI;
 using Hercules.App.Modules.Mindmaps.ViewModels;
 
-namespace Hercules.App
+namespace Hercules.App.Modules.Mindmaps.Views
 {
-    public partial class EnterNameView : IPopupControl
+    public sealed partial class EnterNameView : IPopupControl
     {
         public Popup Popup { get; set; }
 
@@ -26,15 +20,13 @@ namespace Hercules.App
         {
             if (string.IsNullOrWhiteSpace(NameTextBox.Text))
             {
-                ErrorTextBlock.Visibility = Visibility.Visible;
+                ErrorTextBlock.Opacity = 1;
             }
             else
             {
                 MindmapsViewModel viewModel = (MindmapsViewModel)DataContext;
 
                 await viewModel.CreateNewMindmapAsync(NameTextBox.Text, NameTextBox.Text);
-
-                Popup.IsOpen = false;
             }
         }
     }

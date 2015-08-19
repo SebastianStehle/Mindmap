@@ -33,7 +33,7 @@ namespace Hercules.App
         {
             if (oldName != Document.Title)
             {
-                Messenger.Default.Send(new NameChangedMessage(Document.Title));
+                //Messenger.Default.Send(new NameChangedMessage(Document.Title));
             }
         }
 
@@ -54,7 +54,6 @@ namespace Hercules.App
             ResourceLoader resourceLoader = new ResourceLoader();
 
             MessageDialog messageDialog = new MessageDialog(resourceLoader.GetString("DeleteMindmapText"), resourceLoader.GetString("DeleteMindmapTitle"));
-
             messageDialog.Commands.Add(new UICommand(resourceLoader.GetString("Yes"), null, 0));
             messageDialog.Commands.Add(new UICommand(resourceLoader.GetString("No"), null, 1));
             messageDialog.DefaultCommandIndex = 1;
@@ -63,7 +62,7 @@ namespace Hercules.App
 
             if (commandChosen == messageDialog.Commands[0])
             {
-                Messenger.Default.Send(new DeleteMindmapMessage(Document.Id));
+                //Messenger.Default.Send(new DeleteMindmapMessage(Document.Id));
             }
         }
     }

@@ -25,7 +25,6 @@ namespace GP.Windows.UI.Controls
     [TemplatePart(Name = SwapChainPanelPart, Type = typeof(CanvasSwapChainPanel))]
     public sealed class ZoomableCanvasControl : Control, ICanvasControl
     {
-        private const float MaxSize = 15000;
         private const string SwapChainPanelPart = "PART_SwapChainPanel";
         private CanvasSwapChainPanel swapChainPanel;
         private CanvasSwapChain swapChain;
@@ -105,6 +104,8 @@ namespace GP.Windows.UI.Controls
 
             if (swapChainPanel != null)
             {
+                CanvasDevice device = swapChain != null ? swapChain.Device : CanvasDevice.GetSharedDevice(false);
+
                 scaleX = swapChainPanel.CompositionScaleX;
                 scaleY = swapChainPanel.CompositionScaleY;
 
@@ -117,18 +118,18 @@ namespace GP.Windows.UI.Controls
 
                     if (w > h)
                     {
-                        if (w > MaxSize || h > MaxSize)
+                        if (w > device.MaximumBitmapSizeInPixels || h > device.MaximumBitmapSizeInPixels)
                         {
-                            w = MaxSize;
-                            h = MaxSize / aspectRatio;
+                            w = device.MaximumBitmapSizeInPixels;
+                            h = device.MaximumBitmapSizeInPixels / aspectRatio;
                         }
                     }
                     else
                     {
-                        if (w > MaxSize || h > MaxSize)
+                        if (w > device.MaximumBitmapSizeInPixels || h > device.MaximumBitmapSizeInPixels)
                         {
-                            h = MaxSize;
-                            w = MaxSize * aspectRatio;
+                            h = device.MaximumBitmapSizeInPixels;
+                            w = device.MaximumBitmapSizeInPixels * aspectRatio;
                         }
                     }
 
@@ -139,7 +140,7 @@ namespace GP.Windows.UI.Controls
                     {
                         float dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
 
-                        swapChainPanel.SwapChain = swapChain = new CanvasSwapChain(CanvasDevice.GetSharedDevice(false), w, h, dpi);
+                        swapChainPanel.SwapChain = swapChain = new CanvasSwapChain(device, w, h, dpi);
                     }
                     else
                     {

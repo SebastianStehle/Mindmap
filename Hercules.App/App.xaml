@@ -1,14 +1,14 @@
 <Application x:Class="Hercules.App.App" 
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="using:Hercules.App.ViewModels"
+    xmlns:v="using:Hercules.App.Modules"
     RequestedTheme="Light">
     
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
-                    <vm:ViewModelLocator x:Key="ViewModelLocator" />
+                    <v:ViewModelLocator x:Key="ViewModelLocator" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="Common/AppStyles.xaml" />
             </ResourceDictionary.MergedDictionaries>

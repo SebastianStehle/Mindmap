@@ -4,6 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:m="using:Hercules.App.Modules.Mindmaps.Views"
     xmlns:local="using:Hercules.App"
     xmlns:controls="using:Hercules.App.Controls"
     xmlns:modelLayout="using:Hercules.Model.Layouting.Default"
@@ -266,52 +267,8 @@
         </AppBar>
     </Page.BottomAppBar>
 
-    <Page.TopAppBar>
-        <AppBar x:Name="TopBar" BorderBrush="{StaticResource NavigationBarBackground}" Background="{StaticResource NavigationBarBackground}">
-            <Grid DataContext="{Binding Mindmaps, Source={StaticResource ViewModelLocator}}" x:Name="TopGrid" Loaded="TopGrid_Loaded" Height="260">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                <GridView Margin="20" ItemsSource="{Binding Mindmaps}" SelectedItem="{Binding SelectedMindmap, Mode=TwoWay}" Background="Transparent" VerticalAlignment="Center">
-                    <GridView.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Height="200" Width="300" Background="White">
-                                <Image Stretch="Uniform" Source="{Binding Screenshot}" />
-
-                                <Grid VerticalAlignment="Bottom">
-                                    <Rectangle Fill="Black" Opacity="0.7" />
-                                    
-                                    <StackPanel Padding="5">
-                                        <TextBlock Foreground="White" Margin="2" UseLayoutRounding="True" Text="{Binding Title}" FontSize="20" TextTrimming="WordEllipsis" FontWeight="Light" />
-
-                                        <StackPanel Orientation="Horizontal" Margin="2">
-                                            <TextBlock Foreground="White" FontSize="12" UseLayoutRounding="True" x:Uid="LastUpdateLabel"
-                                                Text="Modified: "
-                                                TextWrapping="NoWrap"/>
-                                            <TextBlock Foreground="White" FontSize="12" UseLayoutRounding="True" Margin="5,0,0,0"
-                                                Text="{Binding LastUpdate}" 
-                                                TextWrapping="NoWrap" />
-                                        </StackPanel>
-                                    </StackPanel>
-                                </Grid>
-                            </Grid>
-                        </DataTemplate>
-                    </GridView.ItemTemplate>
-                </GridView>
-
-                <StackPanel Grid.Column="1">
-                    <Button Click="AddButton_Click" Content="Add Mindmap"
-                        AutomationProperties.AccessKey="Control SHIFT N"
-                        AutomationProperties.Name="New Mindmap" x:Uid="AppBarButtonNewMindmap" />
-                </StackPanel>
-            </Grid>
-        </AppBar>
-    </Page.TopAppBar>
-
-    <Grid x:Name="MainGrid" Margin="0,0,0,36">
-        <Grid>
+    <Grid x:Name="MainGrid">
+        <Grid Margin="0,40,0,60">
             <i:Interaction.Behaviors>
                 <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Left" Invoked="MoveLeftCommand_Invoked" />
                 <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Right" Invoked="MoveRightCommand_Invoked" />
@@ -343,5 +300,7 @@
                 </controls:Mindmap>
             </ScrollViewer>
         </Grid>
+        
+        <m:MindmapsView />
     </Grid>
 </Page>

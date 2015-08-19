@@ -172,7 +172,7 @@
     <value>Neue Mindmap</value>
   </data>
   <data name="AppBarButtonNewMindmap.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Neue mindmap erstellen</value>
+    <value>Neue Mindmap erstellen</value>
   </data>
   <data name="AppBarButtonRedo.Label" xml:space="preserve">
     <value>Redo</value>

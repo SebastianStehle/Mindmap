@@ -40,14 +40,17 @@ namespace Hercules.App.Controls
                 movingOperation = null;
             }
 
-            Vector2 position = e.Position.ToVector2();
-
-            foreach (Win2DRenderNode renderNode in AssociatedElement.Renderer.RenderNodes)
+            if (AssociatedElement.Renderer != null)
             {
-                if (renderNode.HitTest(position) && renderNode != AssociatedElement.TextEditingNode)
+                Vector2 position = e.Position.ToVector2();
+
+                foreach (Win2DRenderNode renderNode in AssociatedElement.Renderer.RenderNodes)
                 {
-                    movingOperation = NodeMovingOperation.Start(AssociatedElement, renderNode);
-                    break;
+                    if (renderNode.HitTest(position) && renderNode != AssociatedElement.TextEditingNode)
+                    {
+                        movingOperation = NodeMovingOperation.Start(AssociatedElement, renderNode);
+                        break;
+                    }
                 }
             }
         }

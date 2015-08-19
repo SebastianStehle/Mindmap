@@ -30,10 +30,6 @@ namespace Hercules.App.Controls
             set { SetValue(RendererProperty, value); }
         }
 
-        protected MindmapFlyoutView()
-        {
-        }
-
         public virtual void OnOpening()
         {
         }

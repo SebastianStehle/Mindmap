@@ -5,25 +5,24 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
+using System;
+using System.Threading.Tasks;
+using Windows.UI;
+using Windows.UI.Xaml;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using Microsoft.Practices.Unity;
+using Hercules.App.Components.Implementations;
 using Hercules.App.Messages;
 using Hercules.Model;
-using Hercules.Model.Storing;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using Hercules.App.Components.Implementations;
 using Hercules.Model.Rendering.Win2D;
 using Hercules.Model.Rendering.Win2D.Default;
+using Hercules.Model.Storing;
+using Microsoft.Practices.Unity;
 using PropertyChanged;
-using Windows.UI;
 
-namespace Hercules.App.ViewModels
+namespace Hercules.App.Modules.Editor.ViewModels
 {
     [ImplementPropertyChanged]
     public sealed class EditorViewModel : ViewModelBase
@@ -31,6 +30,7 @@ namespace Hercules.App.ViewModels
         private readonly DispatcherTimer autosaveTimer = new DispatcherTimer();
         private readonly IRendererFactory rendererFactory = new DefaultRendererFactory();
         private Document document;
+        private MindmapItem mindmapItem;
         private RelayCommand redoCommand;
         private RelayCommand undoCommand;
         private RelayCommand removeCommand;
@@ -167,13 +167,17 @@ namespace Hercules.App.ViewModels
         }
         public EditorViewModel()
         {
+            Messenger.Default.Register<MindmapDeletedMessage>(this, OnMindmapDeleted);
+            Messenger.Default.Register<OpenMindmapMessage>(this, OnOpenMindmap);
+
+            StartTimer();
+        }
+
+        private void StartTimer()
+        {
             autosaveTimer.Interval = TimeSpan.FromMinutes(5);
             autosaveTimer.Tick += autosaveTimer_Tick;
             autosaveTimer.Start();
-
-            Messenger.Default.Register<SaveMindmapMessage>(this, OnSaveMindmap);
-            Messenger.Default.Register<OpenMindmapMessage>(this, OnOpenMindmap);
-            Messenger.Default.Register<DeleteMindmapMessage>(this, OnDeleteMindmap);
         }
 
         private void UndoRedoManager_StateChanged(object sender, EventArgs e)
@@ -182,30 +186,24 @@ namespace Hercules.App.ViewModels
             RedoCommand.RaiseCanExecuteChanged();
         }
 
-        public void OnDeleteMindmap(DeleteMindmapMessage message)
+        private void OnMindmapDeleted(MindmapDeletedMessage message)
         {
-            Document = null;
+            if (message.Content == mindmapItem)
+            {
+                Document = null;
+
+                mindmapItem = null;
+            }
         }
 
         public async void OnOpenMindmap(OpenMindmapMessage message)
         {
             await SaveAsync();
+
             await LoadAsync(message.Content);
 
             UndoCommand.RaiseCanExecuteChanged();
             RedoCommand.RaiseCanExecuteChanged();
-        }
-
-        public async void OnSaveMindmap(SaveMindmapMessage message)
-        {
-            try
-            {
-                await SaveAsync();
-            }
-            finally
-            {
-                message.Complete();
-            }
         }
 
         private async void autosaveTimer_Tick(object sender, object e)
@@ -219,29 +217,17 @@ namespace Hercules.App.ViewModels
             {
                 await DocumentStore.StoreAsync(Document, async x => await RendererFactory.Current.RenderScreenshotAsync(x, Colors.White));
 
-                Messenger.Default.Send(new MindmapSavedMessage(Document.Id));
+                await mindmapItem.RefreshAfterSaveAsync();
             }
         }
 
-        public async Task LoadAsync(Guid? id)
+        public async Task LoadAsync(MindmapItem mindmapToLoad)
         {
-            Guid? finalId = id;
-
-            if (finalId == null)
+            if (mindmapToLoad != null && (mindmapItem == null || mindmapItem.DocumentId != mindmapToLoad.DocumentId))
             {
-                IEnumerable<DocumentRef> all = await DocumentStore.LoadAllAsync();
+                Document = await DocumentStore.LoadAsync(mindmapToLoad.DocumentId);
 
-                DocumentRef first = all.FirstOrDefault();
-
-                if (first != null)
-                {
-                    finalId = first.DocumentId;
-                }
-            }
-
-            if (finalId != null && (Document == null || Document.Id != finalId))
-            {
-                Document = await DocumentStore.LoadAsync(finalId.Value);
+                mindmapItem = mindmapToLoad;
             }
         }
     }

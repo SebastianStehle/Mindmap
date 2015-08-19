@@ -5,22 +5,24 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using GalaSoft.MvvmLight;
-using GP.Windows;
-using PropertyChanged;
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using Hercules.Model.Storing;
 using Windows.UI.Xaml.Media;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Messaging;
+using GP.Windows;
+using Hercules.App.Messages;
+using Hercules.Model.Storing;
+using PropertyChanged;
 
-namespace Hercules.App.ViewModels
+namespace Hercules.App.Modules
 {
     [ImplementPropertyChanged]
     public sealed class MindmapItem : ViewModelBase
     {
         private readonly DocumentRef documentRef;
-        
+
         public Guid DocumentId
         {
             get
@@ -29,7 +31,7 @@ namespace Hercules.App.ViewModels
             }
         }
 
-     
+
         public ImageSource Screenshot
         {
             get
@@ -40,7 +42,7 @@ namespace Hercules.App.ViewModels
 
         [NotifyUI]
         public string Title { get; set; }
-        
+
         [NotifyUI]
         public DateTimeOffset LastUpdate { get; set; }
 
@@ -67,7 +69,6 @@ namespace Hercules.App.ViewModels
             LastUpdate = documentRef.LastUpdate;
         }
 
-
         public async Task RefreshImageAsync()
         {
             if (documentRef != null)
@@ -76,6 +77,22 @@ namespace Hercules.App.ViewModels
 
                 RaisePropertyChanged(nameof(Screenshot));
             }
+        }
+
+        public Task RefreshAfterSaveAsync()
+        {
+            LastUpdate = DateTimeOffset.Now;
+
+            return RefreshImageAsync();
+        }
+
+        public async Task RemoveAsync(IDocumentStore store)
+        {
+            Guard.NotNull(store, nameof(store));
+
+            await store.DeleteAsync(documentRef.DocumentId);
+
+            Messenger.Default.Send(new MindmapDeletedMessage(this));
         }
     }
 }

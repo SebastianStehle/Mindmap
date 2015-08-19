@@ -107,7 +107,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         {
             Document document = new Document(Guid.NewGuid(), name);
 
-            DocumentRef documentRef = await DocumentStore.StoreAsync(document);
+            DocumentRef documentRef = await DocumentStore.StoreAsync(document, null);
 
             Mindmaps.Insert(0, new MindmapItem(documentRef));
 

@@ -102,6 +102,11 @@ namespace Hercules.App.Controls
             {
                 if (renderer == null || renderer.Document != Document || renderer.Canvas != canvasControl || RendererFactory != lastRendererFactory)
                 {
+                    if (renderer != null)
+                    {
+                        renderer.Dispose();
+                    }
+
                     renderer = RendererFactory.CreateRenderer(Document, canvasControl);
 
                     lastRendererFactory = RendererFactory;

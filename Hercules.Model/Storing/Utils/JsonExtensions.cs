@@ -5,15 +5,36 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+using System;
 using System.IO;
 using System.Text;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
+using Windows.Storage;
 
 namespace Hercules.Model.Storing.Utils
 {
     internal static class JsonExtensions
     {
         private static readonly JsonSerializerSettings defaultSettings = new JsonSerializerSettings();
+
+        public static async Task SerializeAsJsonAsync<T>(this T value, StorageFolder folder, string fileName, JsonSerializerSettings settings = null)
+        {
+            StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+
+            using (Stream fileStream = await file.OpenStreamForWriteAsync())
+            {
+                value.SerializeAsJsonToStream(fileStream, settings ?? defaultSettings);
+            }
+        }
+
+        public static async Task SerializeAsJsonAsync<T>(this T value, StorageFile file, JsonSerializerSettings settings = null)
+        {
+            using (Stream fileStream = await file.OpenStreamForWriteAsync())
+            {
+                value.SerializeAsJsonToStream(fileStream, settings ?? defaultSettings);
+            }
+        }
 
         public static void SerializeAsJsonToStream<T>(this T value, Stream stream, JsonSerializerSettings settings = null)
         {
@@ -25,7 +46,6 @@ namespace Hercules.Model.Storing.Utils
             }
         }
         
-
         public static T DeserializeAsJsonFromStream<T>(this Stream stream, JsonSerializerSettings settings = null)
         {
             using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))

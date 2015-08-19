@@ -9,8 +9,9 @@ using GalaSoft.MvvmLight;
 using GP.Windows;
 using PropertyChanged;
 using System;
-using Hercules.Model.Storing;
 using System.Globalization;
+using Hercules.Model.Storing;
+using Windows.UI.Xaml.Media;
 
 namespace Hercules.App.ViewModels
 {
@@ -18,10 +19,13 @@ namespace Hercules.App.ViewModels
     public sealed class MindmapItem : ViewModelBase
     {
         [NotifyUI]
-        public Guid MindmapId { get; set; }
+        public string Title { get; set; }
 
         [NotifyUI]
-        public string Name { get; set; }
+        public Guid DocumentId { get; set; }
+
+        [NotifyUI]
+        public ImageSource Screenshot { get; set; }
 
         [NotifyUI]
         public DateTimeOffset LastUpdate { get; set; }
@@ -40,11 +44,13 @@ namespace Hercules.App.ViewModels
 
         public MindmapItem(DocumentRef documentRef)
         {
-            Name = documentRef.DocumentName;
+            Title = documentRef.DocumentTitle;
 
-            MindmapId = documentRef.DocumentId;
+            DocumentId = documentRef.DocumentId;
 
             LastUpdate = documentRef.LastUpdate;
+
+            Screenshot = documentRef.Screenshot;
         }
     }
 }

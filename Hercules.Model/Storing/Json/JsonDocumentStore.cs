@@ -13,10 +13,11 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Streams;
-using Newtonsoft.Json;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Hercules.Model.Storing.Json
 {
@@ -47,18 +48,26 @@ namespace Hercules.Model.Storing.Json
             return taskFactory.StartNew(() => LoadAllInternalAsync()).Unwrap();
         }
 
-        public Task<DocumentRef> StoreAsync(Document document)
+        public async Task<DocumentRef> StoreAsync(Document document, Func<IRandomAccessStream, Task> saveScreenshot)
         {
-            return taskFactory.StartNew(() => StoreInternalAsync(document)).Unwrap();
+            Guard.NotNull(document, nameof(document));
+
+            InMemoryRandomAccessStream screenshot = await WriteScreenshotToMemoryAsync(document.Id, saveScreenshot);
+
+            return await taskFactory.StartNew(() => StoreInternalAsync(document, screenshot)).Unwrap();
         }
 
         public Task<Document> LoadAsync(Guid documentId)
         {
+            Guard.NotEmpty(documentId, nameof(documentId));
+
             return taskFactory.StartNew(() => LoadInternalAsync(documentId)).Unwrap();
         }
 
         public Task DeleteAsync(Guid documentId)
         {
+            Guard.NotEmpty(documentId, nameof(documentId));
+
             return taskFactory.StartNew(() => DeleteInternalAsync(documentId)).Unwrap();
         }
 
@@ -85,7 +94,7 @@ namespace Hercules.Model.Storing.Json
 
                     if (!string.IsNullOrWhiteSpace(name))
                     {
-                        documentReferences.Add(new DocumentRef(Guid.Parse(file.DisplayName), name, properties.DateModified));
+                        documentReferences.Add(new DocumentRef(Guid.Parse(file.DisplayName), name, properties.DateModified, LoadScreenshotAsync));
                     }
                 }
             }
@@ -111,17 +120,43 @@ namespace Hercules.Model.Storing.Json
             }
         }
 
-        private async Task<DocumentRef> StoreInternalAsync(Document document)
+        private async Task<DocumentRef> StoreInternalAsync(Document document, InMemoryRandomAccessStream screenshot)
         {
+            Guard.NotNull(document, nameof(document));;
+
             await EnsureFolderAsync();
 
             JsonHistory jsonHistory = new JsonHistory(document);
 
             await Task.WhenAll(
+                WriteScreenshotAsync(jsonHistory, screenshot),
                 WriteNameAsync(jsonHistory),
                 WriteContentAsync(jsonHistory));
             
-            return new DocumentRef(document.Id, document.Name, DateTime.Now);
+            return new DocumentRef(document.Id, document.Title, DateTime.Now, LoadScreenshotAsync);
+        }
+
+        private async Task<InMemoryRandomAccessStream> WriteScreenshotToMemoryAsync(Guid documentId, Func<IRandomAccessStream, Task> saveScreenshot)
+        {
+            InMemoryRandomAccessStream stream = null;
+
+            if (saveScreenshot != null)
+            {
+                stream = new InMemoryRandomAccessStream();
+
+                await saveScreenshot(stream);
+
+                stream.Seek(0);
+            }
+
+            return stream;
+        }
+
+        private Task WriteScreenshotAsync(JsonHistory history, InMemoryRandomAccessStream screenshotStream)
+        {
+            string fileName = $"{history.Id}.png";
+
+            return localFolder.TryWriteDataAsync(fileName, screenshotStream);
         }
 
         private Task WriteNameAsync(JsonHistory history)
@@ -131,23 +166,40 @@ namespace Hercules.Model.Storing.Json
             return localFolder.WriteTextAsync(fileName, history.Name);
         }
 
-        private async Task WriteContentAsync(JsonHistory history)
+        private Task WriteContentAsync(JsonHistory history)
         {
             string fileName = $"{history.Id}.mmd";
 
-            StorageFile file = await localFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
+            return history.SerializeAsJsonAsync(localFolder, fileName, historySerializerSettings);
+        }
 
-            using (Stream fileStream = await file.OpenStreamForWriteAsync())
+        private async Task<bool> LoadScreenshotAsync(Guid documentId, BitmapImage image)
+        {
+            try
             {
-                history.SerializeAsJsonToStream(fileStream, historySerializerSettings);
+                string fileName = $"{documentId}.png";
+
+                StorageFile file = await localFolder.GetFileAsync(fileName);
+
+                using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    await image.SetSourceAsync(stream);
+                }
+
+                return true;
             }
-        } 
+            catch (FileNotFoundException)
+            {
+                return false;
+            }
+        }
 
         private async Task DeleteInternalAsync(Guid documentId)
         {
             await EnsureFolderAsync();
 
             await Task.WhenAll(
+                localFolder.TryDeleteIfExistsAsync(documentId + ".png"),
                 localFolder.TryDeleteIfExistsAsync(documentId + ".mmn"),
                 localFolder.TryDeleteIfExistsAsync(documentId + ".mmd"));
         }

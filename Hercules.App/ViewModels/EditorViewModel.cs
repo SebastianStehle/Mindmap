@@ -21,6 +21,7 @@ using Hercules.App.Components.Implementations;
 using Hercules.Model.Rendering.Win2D;
 using Hercules.Model.Rendering.Win2D.Default;
 using PropertyChanged;
+using Windows.UI;
 
 namespace Hercules.App.ViewModels
 {
@@ -216,7 +217,7 @@ namespace Hercules.App.ViewModels
         {
             if (Document != null)
             {
-                await DocumentStore.StoreAsync(Document);
+                await DocumentStore.StoreAsync(Document, async x => await RendererFactory.Current.RenderScreenshotAsync(x, Colors.White));
 
                 Messenger.Default.Send(new MindmapSavedMessage(Document.Id));
             }

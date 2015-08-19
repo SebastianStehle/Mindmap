@@ -19,7 +19,7 @@ namespace Hercules.Model
         private readonly RootNode root;
         private readonly IUndoRedoManager undoRedoManager = new UndoRedoManager();
         private readonly Vector2 size = new Vector2(5000, 5000);
-        private readonly string name;
+        private readonly string title;
         private CompositeUndoRedoAction transaction;
         private NodeBase selectedNode;
         
@@ -89,11 +89,11 @@ namespace Hercules.Model
             }
         }
 
-        public string Name
+        public string Title
         {
             get
             {
-                return name;
+                return title;
             }
         }
 
@@ -113,14 +113,14 @@ namespace Hercules.Model
             }
         }
 
-        public Document(Guid id, string name)
+        public Document(Guid id, string title)
             : base(id)
         {
-            Guard.NotNullOrEmpty(name, nameof(name));
+            Guard.NotNullOrEmpty(title, nameof(title));
 
-            this.name = name;
+            this.title = title;
 
-            root = new RootNode(id, name);
+            root = new RootNode(id, title);
 
             nodes.Add(root);
             nodesHashSet[root.Id] = root;

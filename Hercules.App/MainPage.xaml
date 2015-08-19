@@ -528,7 +528,10 @@
                                     <RowDefinition Height="*" />
                                     <RowDefinition Height="Auto" />
                                 </Grid.RowDefinitions>
+                                
+                                <Image Source="{Binding Screenshot}" />
 
+                                <!--
                                 <Canvas Width="100" Height="105" Margin="10">
                                     <Ellipse Canvas.Left="0" Canvas.Top="10" Width="20" Height="20" 
 										Stroke="{StaticResource GridBrush}" StrokeThickness="3" />
@@ -541,10 +544,10 @@
                                     <Path Data="M17,26 L36,41" Stroke="{StaticResource GridBrush}" StrokeThickness="3" />
                                     <Path Data="M84,16 L63,38" Stroke="{StaticResource GridBrush}" StrokeThickness="3" />
                                     <Path Data="M71,89 L57,64" Stroke="{StaticResource GridBrush}" StrokeThickness="3" />
-                                </Canvas>
+                                </Canvas>-->
 
                                 <StackPanel Grid.Row="1" Margin="5">
-                                    <TextBlock x:Name="MainText" Margin="5" UseLayoutRounding="True" Text="{Binding Name}" FontSize="26" TextTrimming="WordEllipsis" FontWeight="Light" />
+                                    <TextBlock x:Name="MainText" Margin="5" UseLayoutRounding="True" Text="{Binding Title}" FontSize="26" TextTrimming="WordEllipsis" FontWeight="Light" />
 
                                     <StackPanel Orientation="Horizontal" Margin="5">
                                         <TextBlock FontSize="12" UseLayoutRounding="True" x:Uid="LastUpdateLabel"

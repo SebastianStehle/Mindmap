@@ -7,15 +7,20 @@
 // ==========================================================================
 using GP.Windows;
 using System;
+using System.Threading.Tasks;
+using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Media.Imaging;
 
 namespace Hercules.Model.Storing
 {
     public sealed class DocumentRef
     {
         private readonly Guid documentId;
-        private readonly string documentName;
+        private readonly string documentTitle;
         private readonly DateTimeOffset lastUpdate;
-        
+        private readonly Func<Guid, BitmapImage, Task<bool>> imageLoader;
+        private BitmapImage screenshot;
+
         public Guid DocumentId
         {
             get
@@ -24,11 +29,19 @@ namespace Hercules.Model.Storing
             }
         }
 
-        public string DocumentName
+        public string DocumentTitle
         {
             get
             {
-                return documentName;
+                return documentTitle;
+            }
+        }
+
+        public ImageSource Screenshot
+        {
+            get
+            {
+                return screenshot;
             }
         }
 
@@ -40,13 +53,24 @@ namespace Hercules.Model.Storing
             }
         }
 
-        public DocumentRef(Guid documentId, string documentName, DateTimeOffset lastUpdate)
+        public DocumentRef(Guid documentId, string documentTitle, DateTimeOffset lastUpdate, Func<Guid, BitmapImage, Task<bool>> imageLoader)
         {
-            Guard.NotNull(documentName, nameof(documentName));
+            Guard.NotNull(documentTitle, nameof(documentTitle));
 
-            this.documentName = documentName;
+            this.documentTitle = documentTitle;
             this.documentId = documentId;
             this.lastUpdate = lastUpdate;
+            this.imageLoader = imageLoader;
+        }
+
+        public async Task<bool> EnsureImageLoaded()
+        {
+            if (screenshot == null)
+            {
+                screenshot = new BitmapImage();
+            }
+
+            return await imageLoader(documentId, screenshot);
         }
     }
 }

@@ -26,14 +26,14 @@ namespace Hercules.App
 
         public override void OnOpened()
         {
-            NameTextBox.Name = oldName = Document.Name;
+            NameTextBox.Name = oldName = Document.Title;
         }
 
         public override void OnClosed()
         {
-            if (oldName != Document.Name)
+            if (oldName != Document.Title)
             {
-                Messenger.Default.Send(new NameChangedMessage(Document.Name));
+                Messenger.Default.Send(new NameChangedMessage(Document.Title));
             }
         }
 

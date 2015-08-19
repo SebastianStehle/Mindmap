@@ -40,7 +40,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
         public MindmapItem(DocumentRef documentRef)
         {
-            Title = documentRef.DocumentName;
+            Title = documentRef.DocumentTitle;
 
             MindmapId = documentRef.DocumentId;
 

@@ -8,6 +8,7 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Windows.Storage.Streams;
 
 namespace Hercules.Model.Storing
 {
@@ -19,6 +20,6 @@ namespace Hercules.Model.Storing
 
         Task DeleteAsync(Guid documentId);
 
-        Task<DocumentRef> StoreAsync(Document document);
+        Task<DocumentRef> StoreAsync(Document document, Func<IRandomAccessStream, Task> saveScreenshot);
     }
 }

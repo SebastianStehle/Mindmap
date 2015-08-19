@@ -9,6 +9,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
+using Windows.Storage.Streams;
 
 namespace Hercules.Model.Storing.Utils
 {
@@ -29,11 +30,17 @@ namespace Hercules.Model.Storing.Utils
             return folder;
         }
 
-        public static async Task WriteDataAsync(this StorageFolder localFolder, string name, byte[] contents)
+        public static async Task TryWriteDataAsync(this StorageFolder localFolder, string name, IRandomAccessStream contents)
         {
-            StorageFile file = await localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
+            if (contents != null)
+            {
+                StorageFile file = await localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
 
-            await FileIO.WriteBytesAsync(file, contents);
+                using (Stream fileStream = await file.OpenStreamForWriteAsync())
+                {
+                    await contents.AsStream().CopyToAsync(fileStream);
+                }
+            }
         }
 
         public static async Task WriteDataAsync(this StorageFolder localFolder, string name, MemoryStream contents)
@@ -44,6 +51,13 @@ namespace Hercules.Model.Storing.Utils
             {
                 contents.WriteTo(fileStream);
             }
+        }
+
+        public static async Task WriteDataAsync(this StorageFolder localFolder, string name, byte[] contents)
+        {
+            StorageFile file = await localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
+
+            await FileIO.WriteBytesAsync(file, contents);
         }
 
         public static async Task WriteTextAsync(this StorageFolder localFolder, string name, string contents)

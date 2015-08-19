@@ -41,7 +41,7 @@ namespace Hercules.Model.Storing.Json
                 Steps.Add(jsonStep);
             }
 
-            Name = document.Name;
+            Name = document.Title;
         }
 
         private static JsonHistoryStep CreateJsonStep(CompositeUndoRedoAction transaction)

@@ -234,6 +234,41 @@ namespace GP.Windows
 
         /// <summary>
         /// Verifies, that the method parameter with specified object value and message  
+        /// is not empty and throws an exception if the object is empty.
+        /// </summary>
+        /// <param name="target">The target object, which cannot be empty.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="target"/> is
+        /// empty.</exception>
+        [DebuggerStepThrough]
+        public static void NotEmpty(Guid target, string parameterName)
+        {
+            if (target == Guid.Empty)
+            {
+                throw new ArgumentException("Value cannot be empty.", parameterName);
+            }
+        }
+
+        /// <summary>
+        /// Verifies, that the method parameter with specified object value and message
+        /// is not empty and throws an exception with the passed message if the object is empty.
+        /// </summary>
+        /// <param name="target">The target object, which cannot be empty.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="message">The message for the exception to throw.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="target"/> is
+        /// empty.</exception>
+        [DebuggerStepThrough]
+        public static void NotEmpty(Guid target, string parameterName, string message)
+        {
+            if (target == Guid.Empty)
+            {
+                throw new ArgumentException(message, parameterName);
+            }
+        }
+
+        /// <summary>
+        /// Verifies, that the method parameter with specified object value and message  
         /// is not null and throws an exception if the object is null.
         /// </summary>
         /// <param name="target">The target object, which cannot be null.</param>

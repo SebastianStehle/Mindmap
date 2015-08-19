@@ -60,7 +60,7 @@ namespace Hercules.App.ViewModels
 
         public void OnMindmapSaved(MindmapSavedMessage message)
         {
-            MindmapItem item = Mindmaps.FirstOrDefault(x => x.MindmapId == message.Content);
+            MindmapItem item = Mindmaps.FirstOrDefault(x => x.DocumentId == message.Content);
 
             if (item != null)
             {
@@ -72,7 +72,7 @@ namespace Hercules.App.ViewModels
         {
             if (SelectedMindmap != null)
             {
-                SelectedMindmap.Name = message.Content;
+                SelectedMindmap.Title = message.Content;
             }
         }
 
@@ -82,7 +82,7 @@ namespace Hercules.App.ViewModels
 
             if (message.Content != null)
             {
-                predicate = x => x.MindmapId == message.Content.Value;
+                predicate = x => x.DocumentId == message.Content.Value;
             }
 
             SelectedMindmap = Mindmaps.FirstOrDefault(predicate) ?? Mindmaps.FirstOrDefault();
@@ -92,14 +92,14 @@ namespace Hercules.App.ViewModels
         {
             await DocumentStore.DeleteAsync(message.Content);
 
-            Mindmaps.Remove(Mindmaps.Single(x => x.MindmapId == message.Content));
+            Mindmaps.Remove(Mindmaps.Single(x => x.DocumentId == message.Content));
         }
 
         public void OnSelectedMindmapChanged()
         {
             if (IsLoaded && SelectedMindmap != null)
             {
-                Messenger.Default.Send(new OpenMindmapMessage(SelectedMindmap.MindmapId));
+                Messenger.Default.Send(new OpenMindmapMessage(SelectedMindmap.DocumentId));
             }
         }
 
@@ -107,7 +107,7 @@ namespace Hercules.App.ViewModels
         {
             Document document = new Document(Guid.NewGuid(), name);
 
-            DocumentRef documentRef = await DocumentStore.StoreAsync(document);
+            DocumentRef documentRef = await DocumentStore.StoreAsync(document, null);
 
             Mindmaps.Insert(0, new MindmapItem(documentRef));
 
@@ -126,8 +126,10 @@ namespace Hercules.App.ViewModels
 
                     foreach (DocumentRef documentRef in documents)
                     {
-                        if (Mindmaps.All(x => x.MindmapId != documentRef.DocumentId))
+                        if (Mindmaps.All(x => x.DocumentId != documentRef.DocumentId))
                         {
+                            await documentRef.EnsureImageLoaded();
+
                             MindmapItem mindmapItem = new MindmapItem(documentRef);
 
                             Mindmaps.Add(mindmapItem);

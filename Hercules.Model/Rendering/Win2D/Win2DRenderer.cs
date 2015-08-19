@@ -15,6 +15,11 @@ using Hercules.Model.Layouting;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+using Hercules.Model.Utils;
+using Windows.Storage.Streams;
+using Windows.Graphics.Display;
+using System.Threading.Tasks;
+using Windows.UI;
 
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
@@ -29,6 +34,7 @@ namespace Hercules.Model.Rendering.Win2D
         private readonly Win2DResourceManager resources;
         private readonly Document document;
         private readonly ICanvasControl canvas;
+        private Rect2 sceneBounds;
         private ILayout layout;
         private bool layoutInvalidated;
 
@@ -181,6 +187,34 @@ namespace Hercules.Model.Rendering.Win2D
             Render(args.DrawingSession);
         }
 
+        public async Task RenderScreenshotAsync(IRandomAccessStream stream, Color background, float padding = 20)
+        {
+            Guard.NotNull(stream, nameof(stream));
+            Guard.GreaterThan(padding, 0, nameof(padding));
+
+            float w = sceneBounds.Size.X + 2 * padding;
+            float h = sceneBounds.Size.Y + 2 * padding;
+
+            float dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+
+            using (CanvasRenderTarget target = new CanvasRenderTarget(canvas.Device, w, h, dpi))
+            {
+                using (CanvasDrawingSession session = target.CreateDrawingSession())
+                {
+                    session.Clear(background);
+
+                    session.Transform =
+                        Matrix3x2.CreateTranslation(
+                            -sceneBounds.Position.X + padding,
+                            -sceneBounds.Position.Y + padding);
+
+                    RenderIt(session, false, false);
+                }
+
+                await target.SaveAsync(stream, CanvasBitmapFileFormat.Png);
+            }
+        }
+
         private void Render(CanvasDrawingSession session)
         {
             if (layout != null)
@@ -190,7 +224,7 @@ namespace Hercules.Model.Rendering.Win2D
                 UpdateLayout(session);
                 UpdateArrangement(session, true, out needsRedraw);
 
-                RenderIt(session, true);
+                RenderIt(session, true, true);
 
                 if (needsRedraw)
                 {
@@ -209,6 +243,8 @@ namespace Hercules.Model.Rendering.Win2D
             foreach (Win2DRenderNode node in AllNodes)
             {
                 node.Measure(session);
+
+                Rect2 bounds = node.Bounds;
             }
 
             if (layoutInvalidated)
@@ -230,13 +266,30 @@ namespace Hercules.Model.Rendering.Win2D
                 needsRedraw |= node.AnimateRenderPosition(animate, utcNow, 600);
             }
 
+            double minX = double.MaxValue;
+            double minY = double.MaxValue;
+            double maxX = double.MinValue;
+            double maxY = double.MinValue;
+
             foreach (Win2DRenderNode node in AllNodes)
             {
                 node.Arrange(session);
+
+                if (node.IsVisible && !IsCustomNode(node))
+                {
+                    Rect2 bounds = node.Bounds;
+
+                    minX = Math.Min(minX, bounds.Left);
+                    minY = Math.Min(minY, bounds.Top);
+                    maxX = Math.Max(maxX, bounds.Right);
+                    maxY = Math.Max(maxY, bounds.Bottom);
+                }
             }
+
+            sceneBounds = new Rect2((float)minX, (float)minY, (float)(maxX - minX), (float)(maxY - minY));
         }
 
-        private void RenderIt(CanvasDrawingSession session, bool renderControls)
+        private void RenderIt(CanvasDrawingSession session, bool renderControls, bool renderCustoms)
         {
             session.TextAntialiasing = CanvasTextAntialiasing.Grayscale;
             
@@ -252,9 +305,19 @@ namespace Hercules.Model.Rendering.Win2D
             {
                 if (node.IsVisible)
                 {
-                    node.Render(session, renderControls && !customNodes.Contains(node) && previewNode != node);
+                    bool isCustomNode = IsCustomNode(node);
+
+                    if (renderCustoms || !isCustomNode)
+                    {
+                        node.Render(session, renderControls && !renderCustoms);
+                    }
                 }
             }
+        }
+
+        private bool IsCustomNode(Win2DRenderNode node)
+        {
+            return customNodes.Contains(node) || node == previewNode;
         }
 
         public void AddCustomNode(Win2DRenderNode node)

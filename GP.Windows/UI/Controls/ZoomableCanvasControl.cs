@@ -5,6 +5,7 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using System;
 using System.Numerics;
 using Windows.ApplicationModel;
@@ -15,6 +16,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+
 // ReSharper disable UnusedParameter.Local
 
 namespace GP.Windows.UI.Controls

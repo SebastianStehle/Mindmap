@@ -5,19 +5,18 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using Hercules.Model;
-using GP.Windows.UI;
-using GP.Windows.UI.Interactivity;
+
 using System;
-using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
+using GP.Windows.UI;
+using GP.Windows.UI.Interactivity;
 using Hercules.App.Controls;
 using Hercules.App.Modules.Editor.ViewModels;
-using Hercules.App.Modules.Mindmaps.ViewModels;
+using Hercules.Model;
 
 namespace Hercules.App
 {

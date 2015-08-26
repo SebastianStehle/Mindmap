@@ -5,6 +5,7 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using Windows.UI;
 
 namespace Hercules.Model.Rendering.Win2D

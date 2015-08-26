@@ -5,6 +5,7 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using Windows.UI.Xaml.Controls;
 
 namespace Hercules.App.Controls

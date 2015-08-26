@@ -5,22 +5,23 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Threading.Tasks;
+using Windows.Graphics.Display;
+using Windows.Storage.Streams;
+using Windows.UI;
 using GP.Windows;
+using GP.Windows.UI;
 using GP.Windows.UI.Controls;
 using Hercules.Model.Layouting;
+using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-using Hercules.Model.Utils;
-using Windows.Storage.Streams;
-using Windows.Graphics.Display;
-using System.Threading.Tasks;
-using Windows.UI;
-using GP.Windows.UI;
 
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable DoNotCallOverridableMethodsInConstructor

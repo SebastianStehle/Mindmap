@@ -5,19 +5,20 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using Hercules.Model.Storing.Utils;
-using Hercules.Model.Utils;
-using GP.Windows;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml.Media.Imaging;
+using GP.Windows;
+using Hercules.Model.Storing.Utils;
+using Hercules.Model.Utils;
+using Newtonsoft.Json;
 
 namespace Hercules.Model.Storing.Json
 {

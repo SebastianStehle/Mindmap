@@ -1,10 +1,17 @@
-﻿using Windows.Foundation;
+﻿// ==========================================================================
+// MindmapsView.xaml.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+using Windows.Foundation;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Navigation;
-using Hercules.App.Modules.Mindmaps.ViewModels;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using GP.Windows.UI;
+using Hercules.App.Modules.Mindmaps.ViewModels;
 
 namespace Hercules.App.Modules.Mindmaps.Views
 {

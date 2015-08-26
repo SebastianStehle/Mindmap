@@ -1,5 +1,11 @@
-﻿using System;
-using System.Linq;
+﻿// ==========================================================================
+// EnterNameView.xaml.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using GP.Windows.UI;

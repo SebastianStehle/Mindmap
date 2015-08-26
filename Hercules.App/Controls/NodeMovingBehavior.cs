@@ -5,10 +5,11 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using System.Numerics;
+using Windows.UI.Xaml.Input;
 using GP.Windows.UI.Interactivity;
 using Hercules.Model.Rendering.Win2D;
-using Windows.UI.Xaml.Input;
 
 namespace Hercules.App.Controls
 {

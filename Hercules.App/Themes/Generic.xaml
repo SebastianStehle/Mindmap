@@ -30,8 +30,7 @@
                             VerticalContentAlignment="Center"
                             VerticalAlignment="Top"
                             HorizontalContentAlignment="Center"
-                            HorizontalAlignment="Left">
-                        </local:TextEditor>
+                            HorizontalAlignment="Left" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

@@ -6,9 +6,9 @@
 // All rights reserved.
 // ==========================================================================
 
-using GP.Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
+using GP.Windows.UI;
 using Hercules.App.Modules.Mindmaps.ViewModels;
 
 namespace Hercules.App

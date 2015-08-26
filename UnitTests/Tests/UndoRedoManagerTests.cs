@@ -5,9 +5,10 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using System;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using Hercules.Model;
+using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using UnitTests.Mockups;
 
 namespace UnitTests.Tests

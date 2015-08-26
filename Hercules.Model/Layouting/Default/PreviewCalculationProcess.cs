@@ -5,11 +5,12 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using GP.Windows;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using GP.Windows;
 using Hercules.Model.Utils;
 
 namespace Hercules.Model.Layouting.Default

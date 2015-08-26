@@ -5,6 +5,7 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using GP.Windows.UI;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 

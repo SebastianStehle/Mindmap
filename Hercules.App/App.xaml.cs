@@ -5,7 +5,7 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using Microsoft.ApplicationInsights;
+
 using System;
 using System.Diagnostics;
 using Windows.ApplicationModel;
@@ -13,6 +13,7 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using Microsoft.ApplicationInsights;
 
 namespace Hercules.App
 {

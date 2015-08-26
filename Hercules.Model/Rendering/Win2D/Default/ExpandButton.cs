@@ -5,11 +5,12 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using System.Numerics;
+using Windows.UI;
 using GP.Windows;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
-using Windows.UI;
 
 namespace Hercules.Model.Rendering.Win2D.Default
 {

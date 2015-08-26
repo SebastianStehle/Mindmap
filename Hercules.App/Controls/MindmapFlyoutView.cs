@@ -5,9 +5,10 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using Hercules.Model;
+
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Hercules.Model;
 using Hercules.Model.Rendering.Win2D;
 
 namespace Hercules.App.Controls

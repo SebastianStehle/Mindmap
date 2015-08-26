@@ -5,6 +5,7 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using System;
 using System.Numerics;
 using Windows.UI;

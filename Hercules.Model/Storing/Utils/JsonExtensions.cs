@@ -5,12 +5,13 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 using Windows.Storage;
+using Newtonsoft.Json;
 
 namespace Hercules.Model.Storing.Utils
 {

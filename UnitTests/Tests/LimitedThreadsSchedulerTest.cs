@@ -5,10 +5,11 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using Hercules.Model.Utils;
-using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
+
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Hercules.Model.Utils;
+using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
 namespace UnitTests.Tests
 {

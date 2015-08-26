@@ -1,8 +1,16 @@
-﻿using Microsoft.VisualStudio.TestPlatform.TestExecutor;
+﻿// ==========================================================================
+// UnitTestApp.xaml.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
 using System.Diagnostics;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Microsoft.VisualStudio.TestPlatform.TestExecutor;
 
 namespace UnitTests
 {

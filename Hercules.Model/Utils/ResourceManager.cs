@@ -5,6 +5,7 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using System.Globalization;
 using Windows.ApplicationModel.Resources;
 

@@ -5,8 +5,9 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using GP.Windows;
+
 using System;
+using GP.Windows;
 
 namespace Hercules.Model
 {

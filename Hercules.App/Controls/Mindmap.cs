@@ -5,15 +5,16 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using System;
 using System.Numerics;
-using Hercules.Model;
-using Hercules.Model.Layouting;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Hercules.Model.Rendering.Win2D;
 using GP.Windows.UI.Controls;
+using Hercules.Model;
+using Hercules.Model.Layouting;
+using Hercules.Model.Rendering.Win2D;
 
 // ReSharper disable UnusedParameter.Local
 

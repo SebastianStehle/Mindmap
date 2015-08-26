@@ -5,6 +5,7 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 

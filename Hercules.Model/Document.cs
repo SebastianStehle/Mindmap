@@ -5,10 +5,11 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using GP.Windows;
+
 using System;
 using System.Collections.Generic;
 using System.Numerics;
+using GP.Windows;
 
 namespace Hercules.Model
 {

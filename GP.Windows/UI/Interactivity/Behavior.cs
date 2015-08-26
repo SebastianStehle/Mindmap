@@ -5,10 +5,11 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using Microsoft.Xaml.Interactivity;
+
 using System;
 using System.Globalization;
 using Windows.UI.Xaml;
+using Microsoft.Xaml.Interactivity;
 
 namespace GP.Windows.UI.Interactivity
 {

@@ -5,6 +5,7 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using Hercules.Model.Utils;
 
 namespace Hercules.Model.Layouting

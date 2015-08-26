@@ -5,9 +5,10 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using GP.Windows;
+
 using System.Collections.Generic;
 using System.Linq;
+using GP.Windows;
 
 namespace Hercules.Model
 {

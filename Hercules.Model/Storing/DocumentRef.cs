@@ -5,11 +5,12 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using GP.Windows;
+
 using System;
 using System.Threading.Tasks;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Imaging;
+using GP.Windows;
 
 namespace Hercules.Model.Storing
 {

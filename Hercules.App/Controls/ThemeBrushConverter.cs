@@ -5,6 +5,7 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using System;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;

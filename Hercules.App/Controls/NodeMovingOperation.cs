@@ -5,11 +5,12 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
+using System.Numerics;
+using Hercules.App.Components.Implementations;
 using Hercules.Model;
 using Hercules.Model.Layouting;
 using Hercules.Model.Rendering.Win2D;
-using System.Numerics;
-using Hercules.App.Components.Implementations;
 
 namespace Hercules.App.Controls
 {

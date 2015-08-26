@@ -5,13 +5,14 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using GP.Windows;
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Windows.System.Threading;
+using GP.Windows;
 
 namespace Hercules.Model.Utils
 {

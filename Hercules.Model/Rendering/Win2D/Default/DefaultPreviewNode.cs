@@ -5,6 +5,7 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
 using System.Numerics;
 using Microsoft.Graphics.Canvas;
 

@@ -5,8 +5,9 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-using GP.Windows.UI.Controls;
+
 using System;
+using GP.Windows.UI.Controls;
 
 namespace Hercules.Model.Rendering.Win2D.Default
 {

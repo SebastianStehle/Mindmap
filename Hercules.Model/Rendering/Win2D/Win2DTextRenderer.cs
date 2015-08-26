@@ -31,34 +31,22 @@ namespace Hercules.Model.Rendering.Win2D
 
         public float FontSize
         {
-            get
-            {
-                return fontSize;
-            }
+            get { return fontSize; }
         }
 
         public Rect2 Bounds
         {
-            get
-            {
-                return new Rect2(renderPosition, renderSize);
-            }
+            get { return new Rect2(renderPosition, renderSize); }
         }
 
         public Vector2 RenderPosition
         {
-            get
-            {
-                return renderPosition;
-            }
+            get { return renderPosition; }
         }
 
         public Vector2 RenderSize
         {
-            get
-            {
-                return renderSize;
-            }
+            get { return renderSize; }
         }
 
         public string OverrideText { get; set; }

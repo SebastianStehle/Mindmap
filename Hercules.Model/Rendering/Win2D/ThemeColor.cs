@@ -19,26 +19,17 @@ namespace Hercules.Model.Rendering.Win2D
 
         public Color Normal
         {
-            get
-            {
-                return normal;
-            }
+            get { return normal; }
         }
 
         public Color Dark
         {
-            get
-            {
-                return dark;
-            }
+            get { return dark; }
         }
 
         public Color Light
         {
-            get
-            {
-                return light;
-            }
+            get { return light; }
         }
 
         public ThemeColor(Color normal, Color dark, Color light)

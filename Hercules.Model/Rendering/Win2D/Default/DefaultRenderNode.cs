@@ -29,18 +29,12 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
         public virtual float VerticalPathOffset
         {
-            get
-            {
-                return 0; 
-            }
+            get { return 0; }
         }
 
         protected ExpandButton Button
         {
-            get
-            {
-                return button;
-            }
+            get { return button; }
         }
 
         protected DefaultRenderNode(NodeBase node, DefaultRenderer renderer)

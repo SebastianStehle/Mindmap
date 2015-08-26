@@ -23,7 +23,7 @@ namespace Hercules.App
             InitializeComponent();
         }
 
-        public override void OnOpened()
+        public override void OnOpening()
         {
             NameTextBox.Name = oldName = Document.Title;
         }

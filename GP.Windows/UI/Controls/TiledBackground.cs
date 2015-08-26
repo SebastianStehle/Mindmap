@@ -32,20 +32,15 @@ namespace GP.Windows.UI.Controls
         /// </summary>
         public static readonly DependencyProperty TileSizeProperty =
             DependencyProperty.Register("TileSize", typeof(double), typeof(TiledBackground), new PropertyMetadata(60d, OnTileSizeChanged));
+
         /// <summary>
         /// Gets or sets the size of the tiles.
         /// </summary>
         /// <value>The size of the tiles.</value>
         public double TileSize
         {
-            get
-            {
-                return (double)GetValue(TileSizeProperty);
-            }
-            set
-            {
-                SetValue(TileSizeProperty, value);
-            }
+            get { return (double)GetValue(TileSizeProperty); }
+            set { SetValue(TileSizeProperty, value); }
         }
 
         private static void OnTileSizeChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)

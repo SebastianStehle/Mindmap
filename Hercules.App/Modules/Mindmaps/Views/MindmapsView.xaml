@@ -6,7 +6,7 @@
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
     xmlns:im="using:Microsoft.Xaml.Interactions.Media"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d"
+    mc:Ignorable="d" Loaded="MindmapsPage_Loaded"
     DataContext="{Binding Mindmaps, Source={StaticResource ViewModelLocator}}" d:DataContext="{d:DesignData Source=/SampleData/MindmapsViewModelSampleData.xaml}">
 
     <UserControl.Resources>
@@ -17,18 +17,15 @@
 
             <Storyboard x:Key="StoryboardShow">
                 <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="Mindmaps">
-                    <SplineDoubleKeyFrame KeyTime="0:0:0.0" Value="-250"/>
                     <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="40"/>
                 </DoubleAnimationUsingKeyFrames>
                 <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Inner" d:IsOptimized="True">
-                    <SplineDoubleKeyFrame KeyTime="0:0:0.0" Value="0"/>
                     <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
                     <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
                 </DoubleAnimationUsingKeyFrames>
             </Storyboard>
             <Storyboard x:Key="StoryboardHide">
                 <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateY)" Storyboard.TargetName="Mindmaps">
-                    <SplineDoubleKeyFrame KeyTime="0:0:0.2" Value="40"/>
                     <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="-250"/>
                 </DoubleAnimationUsingKeyFrames>
                 <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="Inner" d:IsOptimized="True">
@@ -59,9 +56,9 @@
                     </GridView.ItemsPanel>
                     <GridView.ItemTemplate>
                         <DataTemplate>
-                            <Grid Height="200" Width="300" Background="White" RightTapped="Grid_RightTapped" PointerPressed="Grid_PointerPressed"  Holding="Grid_Holding">
+                            <Grid Height="200" Width="300" Background="White" RightTapped="MindmapItem_RightTapped" Holding="MindmapItem_Holding">
                                 <FlyoutBase.AttachedFlyout>
-                                    <MenuFlyout>
+                                    <MenuFlyout Placement="Bottom">
                                         <MenuFlyoutItem Text="Rename" />
                                         <MenuFlyoutItem />
                                         <MenuFlyoutItem Text="Delete" />
@@ -105,12 +102,19 @@
                                 <im:ControlStoryboardAction Storyboard="{StaticResource StoryboardHide}"/>
                             </ic:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
+                        
                         <SymbolIcon Symbol="List" />
                     </ToggleButton>
 
                     <Rectangle Fill="DarkGray" Width="1" Margin="5" />
 
-                    <Button Padding="6" Background="Transparent" Width="40" Height="40" Style="{StaticResource AppBarButtonStyle}">
+                    <Button Padding="6" Background="Transparent" Width="40" Height="40" Style="{StaticResource AppBarButtonStyle}" x:Name="AddButton" Click="AddButton_Click">
+                        <i:Interaction.Behaviors>
+                            <ic:EventTriggerBehavior EventName="Click">
+                                <im:ControlStoryboardAction Storyboard="{StaticResource StoryboardHide}"/>
+                            </ic:EventTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                        
                         <SymbolIcon Symbol="Add" />
                     </Button>
                 </StackPanel>

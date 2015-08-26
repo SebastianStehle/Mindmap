@@ -7,14 +7,14 @@
 // ==========================================================================
 
 using System;
+using Windows.Foundation;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Navigation;
 using GP.Windows.UI;
 using GP.Windows.UI.Interactivity;
-using Hercules.App.Controls;
 using Hercules.App.Modules.Editor.ViewModels;
 using Hercules.Model;
 
@@ -35,7 +35,7 @@ namespace Hercules.App
             InitializeComponent();
         }
 
-        protected override void OnNavigatedTo(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+        protected override void OnNavigatedTo(NavigationEventArgs e)
         {
             InputPane inputPane = InputPane.GetForCurrentView();
 
@@ -48,7 +48,7 @@ namespace Hercules.App
             base.OnNavigatedTo(e);
         }
 
-        protected override void OnNavigatedFrom(Windows.UI.Xaml.Navigation.NavigationEventArgs e)
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
         {
             InputPane inputPane = InputPane.GetForCurrentView();
 
@@ -129,25 +129,37 @@ namespace Hercules.App
 
         private void BottomBar_Closed(object sender, object e)
         {
-            BottomAppBar.IsOpen = true;
+            if (BottomAppBar != null)
+            {
+                BottomAppBar.IsOpen = true;
+            }
         }
 
         private void IconButton_Click(object sender, RoutedEventArgs e)
         {
-            if (Mindmap.Document != null)
+            if (Mindmap.Document != null && Mindmap.Renderer != null)
             {
-                MindmapFlyout flyout = new MindmapFlyout
-                {
-                    Placement = FlyoutPlacementMode.Top
-                };
-
-                flyout.Content = new EditIconView
+                EditIconView view = new EditIconView
                 {
                     Document = Mindmap.Document,
                     Renderer = Mindmap.Renderer
                 };
 
-                flyout.ShowAt(BottomAppBar);
+                PopupHandler.ShowPopupLeftBottom(view, new Point(10, 80));
+            }
+        }
+
+        private void ColorButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (Mindmap.Document != null && Mindmap.Renderer != null)
+            {
+                EditColorView view = new EditColorView
+                {
+                    Document = Mindmap.Document,
+                    Renderer = Mindmap.Renderer
+                };
+
+                PopupHandler.ShowPopupLeftBottom(view, new Point(70, 80));
             }
         }
     }

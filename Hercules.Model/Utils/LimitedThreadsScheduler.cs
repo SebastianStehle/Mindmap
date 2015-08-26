@@ -26,10 +26,7 @@ namespace Hercules.Model.Utils
 
         public override int MaximumConcurrencyLevel
         {
-            get
-            {
-                return maxDegreeOfParallelism;
-            }
+            get { return maxDegreeOfParallelism; }
         }
 
         public LimitedThreadsScheduler()

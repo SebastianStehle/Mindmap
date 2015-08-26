@@ -48,58 +48,37 @@ namespace Hercules.Model.Rendering.Win2D
 
         public float ZoomFactor
         {
-            get
-            {
-                return zoomFactor;
-            }
+            get { return zoomFactor; }
         }
 
         public ICanvasControl Canvas
         {
-            get
-            {
-                return canvas;
-            }
+            get { return canvas; }
         }
 
         public Document Document
         {
-            get
-            {
-                return document;
-            }
+            get { return document; }
         }
 
         public Win2DResourceManager Resources
         {
-            get
-            {
-                return resources;
-            }
+            get { return resources; }
         }
 
         public ICollection<Win2DRenderNode> RenderNodes
         {
-            get
-            {
-                return renderNodes.Values;
-            }
+            get { return renderNodes.Values; }
         }
 
         public ICollection<Win2DRenderNode> CustomNodes
         {
-            get
-            {
-                return customNodes;
-            }
+            get { return customNodes; }
         }
 
-        protected ICollection<Win2DRenderNode> AllNodes
+        public ICollection<Win2DRenderNode> AllNodes
         {
-            get
-            {
-                return renderNodes.Values.Union(customNodes).Union(new Win2DRenderNode[] { previewNode }).ToList();
-            }
+            get { return renderNodes.Values.Union(customNodes).Union(new Win2DRenderNode[] { previewNode }).ToList(); }
         }
 
         public ILayout Layout

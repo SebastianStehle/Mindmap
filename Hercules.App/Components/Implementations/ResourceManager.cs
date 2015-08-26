@@ -17,7 +17,7 @@ namespace Hercules.App.Components.Implementations
         {
             ResourceLoader resourceLoader = new ResourceLoader();
             
-            return resourceLoader.GetString(key) ?? key;
+            return resourceLoader.GetString(key);
         }
 
         public static string FormatString(string key, params object[] args)

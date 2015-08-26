@@ -19,10 +19,7 @@ namespace Hercules.Model
 
         public Guid Id
         {
-            get
-            {
-                return id;
-            }
+            get { return id; }
         }
 
         protected DocumentObject(Guid id)

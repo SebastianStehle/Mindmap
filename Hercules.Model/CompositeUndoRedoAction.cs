@@ -21,26 +21,17 @@ namespace Hercules.Model
 
         public DateTimeOffset Date
         {
-            get
-            {
-                return date;
-            }
+            get { return date; }
         }
 
         public string Name
         {
-            get
-            {
-                return name;
-            }
+            get { return name; }
         }
 
         public IReadOnlyList<CommandBase> Commands
         {
-            get
-            {
-                return commands;
-            }
+            get { return commands; }
         }
 
         public CompositeUndoRedoAction(string name, DateTimeOffset date)

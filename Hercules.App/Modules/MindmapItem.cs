@@ -76,6 +76,7 @@ namespace Hercules.App.Modules
             {
                 await documentRef.LoadImageAsync();
 
+                // ReSharper disable once ExplicitCallerInfoArgument
                 RaisePropertyChanged(nameof(Screenshot));
             }
         }

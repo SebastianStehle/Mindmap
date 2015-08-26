@@ -3,7 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:Hercules.App.Controls"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:controls="using:GP.Windows.UI.Controls">
+    xmlns:gpi="using:GP.Windows.UI.Interactivity"
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml">
 
     <Style TargetType="local:Mindmap">
         <Setter Property="i:Interaction.Behaviors">
@@ -17,8 +18,23 @@
             <Setter.Value>
                 <ControlTemplate TargetType="local:Mindmap">
                     <Grid>
-                        <controls:ZoomableCanvasControl x:Name="PART_Canvas" Width="{Binding Document.Width}" Height="{Binding Document.Height}"  />
+                        <canvas:CanvasControl x:Name="PART_Canvas" />
+                        
+                        <ScrollViewer x:Name="PART_ScrollViewer" ZoomMode="Enabled" MaxZoomFactor="4" Background="Transparent" Padding="0"
+                            VerticalScrollBarVisibility="Auto" 
+                            HorizontalScrollBarVisibility="Auto" 
+                            IsVerticalRailEnabled="False"
+                            IsVerticalScrollChainingEnabled="False" 
+                            IsHorizontalScrollChainingEnabled="False" 
+                            IsHorizontalRailEnabled="False">
+                            <i:Interaction.Behaviors>
+                                <gpi:CenterScrollViewerWhenExtendSizeChanged />
+                                <gpi:ScrollViewerBringIntoViewInputPaneBehavior />
+                            </i:Interaction.Behaviors>
 
+                            <Grid Width="{Binding Document.Width}" Height="{Binding Document.Height}"></Grid>
+                        </ScrollViewer>
+                        
                         <local:TextEditor x:Name="PART_TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="0"
                             MinHeight="0"
                             MinWidth="0"

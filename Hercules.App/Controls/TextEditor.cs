@@ -24,10 +24,7 @@ namespace Hercules.App.Controls
 
         public Win2DRenderNode EditingNode
         {
-            get
-            {
-                return editingNode;
-            }
+            get { return editingNode; }
         }
 
         public TextEditor()
@@ -43,6 +40,12 @@ namespace Hercules.App.Controls
             {
                 Select(0, Text.Length);
             }
+        }
+
+        public void Transform()
+        {
+            InvalidateMeasure();
+            InvalidateArrange();
         }
 
         public void BeginEdit(Win2DRenderNode renderNode)
@@ -108,10 +111,15 @@ namespace Hercules.App.Controls
         {
             if (editingNode != null)
             {
-                Vector2 position = editingNode.TextRenderer.RenderPosition;
+                Vector2 position = editingNode.Renderer.GetOverlayPosition(editingNode.TextRenderer.RenderPosition);
 
                 renderTransform.TranslateX = position.X;
                 renderTransform.TranslateY = position.Y;
+
+                float zoom = editingNode.Renderer.ZoomFactor;
+
+                renderTransform.ScaleX = zoom;
+                renderTransform.ScaleY = zoom;
             }
 
             return base.ArrangeOverride(finalSize);

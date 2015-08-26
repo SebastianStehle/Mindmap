@@ -29,10 +29,7 @@ namespace GP.Windows.UI.Interactivity
         /// </value>
         public T AssociatedElement
         {
-            get
-            {
-                return element;
-            }
+            get { return element; }
         }
 
         /// <summary>

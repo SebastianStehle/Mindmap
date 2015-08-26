@@ -85,20 +85,15 @@ namespace GP.Windows.UI.Interactivity
         /// </summary>
         public static readonly DependencyProperty RequiresControlModifierProperty =
             DependencyProperty.Register("RequiresControlModifier", typeof(bool), typeof(CommandShortcutBehavior), new PropertyMetadata(false));
+
         /// <summary>
         /// Gets or sets a value indicating if the control key must be pressed.
         /// </summary>
         /// <value>A value indicating if the control key must be pressed..</value>
         public bool RequiresControlModifier
         {
-            get
-            {
-                return (bool)GetValue(RequiresControlModifierProperty);
-            }
-            set
-            {
-                SetValue(RequiresControlModifierProperty, value);
-            }
+            get { return (bool)GetValue(RequiresControlModifierProperty); }
+            set { SetValue(RequiresControlModifierProperty, value); }
         }
 
         /// <summary>
@@ -106,20 +101,15 @@ namespace GP.Windows.UI.Interactivity
         /// </summary>
         public static readonly DependencyProperty RequiresShiftModifierProperty =
             DependencyProperty.Register("RequiresShiftModifier", typeof(bool), typeof(CommandShortcutBehavior), new PropertyMetadata(false));
+
         /// <summary>
         /// Gets or sets a value indicating if the shift key must be pressed.
         /// </summary>
         /// <value>A value indicating if the shift key must be pressed..</value>
         public bool RequiresShiftModifier
         {
-            get
-            {
-                return (bool)GetValue(RequiresShiftModifierProperty);
-            }
-            set
-            {
-                SetValue(RequiresShiftModifierProperty, value);
-            }
+            get { return (bool)GetValue(RequiresShiftModifierProperty); }
+            set { SetValue(RequiresShiftModifierProperty, value); }
         }
 
         /// <summary>

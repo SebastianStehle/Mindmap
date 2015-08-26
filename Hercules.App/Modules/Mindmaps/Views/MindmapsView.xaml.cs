@@ -10,6 +10,7 @@ using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
+using Windows.UI.Xaml.Input;
 using GP.Windows.UI;
 using Hercules.App.Modules.Mindmaps.ViewModels;
 
@@ -20,11 +21,9 @@ namespace Hercules.App.Modules.Mindmaps.Views
         public MindmapsView()
         {
             InitializeComponent();
-
-            Loaded += MindmapsPage_Loaded;
         }
 
-        private async void MindmapsPage_Loaded(object sender, Windows.UI.Xaml.RoutedEventArgs e)
+        private async void MindmapsPage_Loaded(object sender, RoutedEventArgs e)
         {
             MindmapsViewModel viewModel = DataContext as MindmapsViewModel;
 
@@ -38,27 +37,21 @@ namespace Hercules.App.Modules.Mindmaps.Views
         {
             Control senderElement = (Control)sender;
 
-            PopupHandler.ShowPopupRightTop(new EnterNameView { DataContext = senderElement.DataContext }, new Point(-80, 110));
+            PopupHandler.ShowPopupLeftTop(new EnterNameView { DataContext = senderElement.DataContext }, new Point(50, 0));
         }
 
-        private void Grid_Holding(object sender, Windows.UI.Xaml.Input.HoldingRoutedEventArgs e)
+        private void MindmapItem_Holding(object sender, HoldingRoutedEventArgs e)
         {
             FrameworkElement senderElement = sender as FrameworkElement;
             
             FlyoutBase.GetAttachedFlyout(senderElement).ShowAt(senderElement);
         }
 
-        private void Grid_PointerPressed(object sender, Windows.UI.Xaml.Input.PointerRoutedEventArgs e)
-        {
-
-        }
-
-        private void Grid_RightTapped(object sender, Windows.UI.Xaml.Input.RightTappedRoutedEventArgs e)
+        private void MindmapItem_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
             FrameworkElement senderElement = sender as FrameworkElement;
 
             FlyoutBase.GetAttachedFlyout(senderElement).ShowAt(senderElement);
-
         }
     }
 }

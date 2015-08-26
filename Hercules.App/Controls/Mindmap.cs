@@ -11,40 +11,39 @@ using System.Numerics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using GP.Windows.UI.Controls;
 using Hercules.Model;
 using Hercules.Model.Layouting;
 using Hercules.Model.Rendering.Win2D;
+using Hercules.Model.Utils;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 
 // ReSharper disable UnusedParameter.Local
 
 namespace Hercules.App.Controls
 {
-    [TemplatePart(Name = CanvasPart, Type = typeof(ZoomableCanvasControl))]
+    [TemplatePart(Name = CanvasPart, Type = typeof(CanvasControl))]
     [TemplatePart(Name = TextBoxPart, Type = typeof(TextEditor))]
+    [TemplatePart(Name = ScrollViewerPart, Type = typeof(ScrollViewer))]
     public sealed class Mindmap : Control
     {
-        private const string TextBoxPart = "PART_TextBox";
         private const string CanvasPart = "PART_Canvas";
+        private const string TextBoxPart = "PART_TextBox";
+        private const string ScrollViewerPart = "PART_ScrollViewer";
         private IRendererFactory lastRendererFactory;
+        private ScrollViewer scrollViewer;
         private Win2DRenderer renderer;
-        private ZoomableCanvasControl canvasControl;
+        private CanvasControlWrapper canvasControl;
         private TextEditor textEditor;
+        private ScrollViewerView lastView;
 
         public Win2DRenderNode TextEditingNode
         {
-            get
-            {
-                return textEditor.EditingNode;
-            }
+            get { return textEditor.EditingNode; }
         }
 
         public Win2DRenderer Renderer
         {
-            get
-            {
-                return renderer;
-            }
+            get { return renderer; }
         }
 
         public static readonly DependencyProperty LayoutProperty =
@@ -92,11 +91,107 @@ namespace Hercules.App.Controls
 
         protected override void OnApplyTemplate()
         {
-            canvasControl = GetTemplateChild(CanvasPart) as ZoomableCanvasControl;
-
-            textEditor = GetTemplateChild(TextBoxPart) as TextEditor;
+            BindCanvasControl();
+            BindTextEditor();
+            BindScrollViewer();
 
             InitializeRenderer();
+        }
+
+        private void BindTextEditor()
+        {
+            textEditor = GetTemplateChild(TextBoxPart) as TextEditor;
+        }
+
+        private void BindScrollViewer()
+        {
+            scrollViewer = GetTemplateChild(ScrollViewerPart) as ScrollViewer;
+
+            if (scrollViewer != null)
+            {
+                scrollViewer.ViewChanging += ScrollViewer_ViewChanging;
+            }
+        }
+
+        private void BindCanvasControl()
+        {
+            CanvasControl control = GetTemplateChild(CanvasPart) as CanvasControl;
+
+            if (control != null)
+            {
+                canvasControl = new CanvasControlWrapper(control);
+
+                canvasControl.Draw += CanvasControl_Draw;
+            }
+        }
+
+        private void ScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
+        {
+            WithRenderer(r =>
+            {
+                if (Document == null)
+                {
+                    return;
+                }
+
+                ScrollViewerView view = e.FinalView;
+
+                if (lastView == null || (view.ZoomFactor != lastView.ZoomFactor || view.HorizontalOffset != lastView.HorizontalOffset || view.VerticalOffset != lastView.VerticalOffset))
+                {
+                    lastView = view;
+
+                    double zoomFactor = view.ZoomFactor;
+
+                    double xOffset = view.HorizontalOffset;
+                    double yOffset = view.VerticalOffset;
+
+                    double inverseZoom = 1.0 / zoomFactor;
+
+                    double scaledContentW = Document.Size.X * zoomFactor;
+                    double scaledContentH = Document.Size.Y * zoomFactor;
+
+                    double translateX;
+                    double translateY;
+
+                    if (scaledContentW < scrollViewer.ViewportWidth)
+                    {
+                        translateX = (scrollViewer.ViewportWidth * inverseZoom - Document.Size.X) * 0.5;
+                    }
+                    else
+                    {
+                        translateX = -inverseZoom * xOffset;
+                    }
+
+                    if (scaledContentH < scrollViewer.ViewportHeight)
+                    {
+                        translateY = (scrollViewer.ViewportHeight * inverseZoom - Document.Size.Y) * 0.5;
+                    }
+                    else
+                    {
+                        translateY = -inverseZoom * yOffset;
+                    }
+
+                    double visibleX = inverseZoom * xOffset;
+                    double visibleY = inverseZoom * yOffset;
+
+                    double visibleW = Math.Min(Document.Size.X, inverseZoom * scrollViewer.ViewportWidth);
+                    double visibleH = Math.Min(Document.Size.Y, inverseZoom * scrollViewer.ViewportHeight);
+
+                    Rect2 visibleRect = new Rect2((float)visibleX, (float)visibleY, (float)visibleW, (float)visibleH);
+
+                    r.Transform(new Vector2((float)translateX, (float)translateY), (float)zoomFactor, visibleRect);
+
+                    if (canvasControl != null)
+                    {
+                        canvasControl.Invalidate();
+                    }
+                }
+            });
+        }
+
+        private void CanvasControl_Draw(object sender, CanvasDrawEventArgs e)
+        {
+            WithRenderer(r => textEditor.Transform());
         }
 
         private void InitializeRenderer()
@@ -123,6 +218,11 @@ namespace Hercules.App.Controls
             }
 
             InitializeLayout();
+
+            if (canvasControl != null)
+            {
+                canvasControl.Invalidate();
+            }
         }
 
         private void InitializeLayout()
@@ -147,7 +247,7 @@ namespace Hercules.App.Controls
         {
             WithRenderer(r =>
             {
-                Vector2 position = e.GetPosition(this).ToVector2();
+                Vector2 position = r.GetMindmapPosition(e.GetPosition(this).ToVector2());
 
                 foreach (Win2DRenderNode renderNode in r.RenderNodes)
                 {
@@ -169,7 +269,7 @@ namespace Hercules.App.Controls
             {
                 if (textEditor != null)
                 {
-                    Vector2 position = e.GetPosition(this).ToVector2();
+                    Vector2 position = r.GetMindmapPosition(e.GetPosition(this).ToVector2());
 
                     Win2DRenderNode handledNode;
 

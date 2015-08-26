@@ -21,6 +21,7 @@ namespace UnitTests.Tests
         [TestMethod]
         public void TestConstructor()
         {
+            // ReSharper disable once ObjectCreationAsStatement
             new UndoRedoManager();
         }
 

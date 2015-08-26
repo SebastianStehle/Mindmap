@@ -24,34 +24,22 @@ namespace Hercules.Model.Storing
 
         public Guid DocumentId
         {
-            get
-            {
-                return documentId;
-            }
+            get { return documentId; }
         }
 
         public string DocumentTitle
         {
-            get
-            {
-                return documentTitle;
-            }
+            get { return documentTitle; }
         }
 
         public ImageSource Screenshot
         {
-            get
-            {
-                return screenshot;
-            }
+            get { return screenshot; }
         }
 
         public DateTimeOffset LastUpdate
         {
-            get
-            {
-                return lastUpdate;
-            }
+            get { return lastUpdate; }
         }
 
         public DocumentRef(Guid documentId, string documentTitle, DateTimeOffset lastUpdate, Func<Guid, BitmapImage, Task<bool>> imageLoader)

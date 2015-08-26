@@ -36,82 +36,52 @@ namespace Hercules.Model.Rendering.Win2D
 
         public Win2DRenderer Renderer
         {
-            get
-            {
-                return renderer;
-            }
+            get { return renderer; }
         }
 
         public Win2DResourceManager Resources
         {
-            get
-            {
-                return renderer.Resources;
-            }
+            get { return renderer.Resources; }
         }
 
         public NodeBase Node
         {
-            get
-            {
-                return node;
-            }
+            get { return node; }
         }
 
         public Rect2 Bounds
         {
-            get
-            {
-                return bounds;
-            }
+            get { return bounds; }
         }
 
         public Rect2 BoundsWithParent
         {
-            get
-            {
-                return boundsWithParent;
-            }
+            get { return boundsWithParent; }
         }
 
         public Vector2 Position
         {
-            get
-            {
-                return position;
-            }
+            get { return position; }
         }
 
         public Vector2 RenderPosition
         {
-            get
-            {
-                return renderPosition;
-            }
+            get { return renderPosition; }
         }
 
         public Vector2 RenderSize
         {
-            get
-            {
-                return renderSize;
-            }
+            get { return renderSize; }
         }
 
         public virtual Vector2 RenderPositionOffset
         {
-            get
-            {
-                return Vector2.Zero;
-            }
+            get { return Vector2.Zero; }
         }
 
         public bool IsVisible
         {
-            get
-            {
-                return isVisible;
-            }
+            get { return isVisible; }
         }
 
         public bool HideControls { get; set; }

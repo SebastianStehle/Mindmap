@@ -31,7 +31,7 @@ namespace Hercules.Model.Rendering.Win2D
 
         private sealed class ImageContainer
         {
-            public CanvasBitmap Bitmap { get; set; }
+            public CanvasBitmap Bitmap { get; private set; }
 
             public ImageContainer(string image, ICanvasControl canvasControl)
             {

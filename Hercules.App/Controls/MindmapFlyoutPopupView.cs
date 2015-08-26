@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// MindmapFlyoutView.cs
+// MindmapFlyoutPopupView.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -8,15 +8,19 @@
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
+using GP.Windows.UI;
 using Hercules.Model;
 using Hercules.Model.Rendering.Win2D;
 
 namespace Hercules.App.Controls
 {
-    public abstract class MindmapFlyoutView : UserControl
+    public abstract class MindmapFlyoutPopupView : UserControl, IPopupControl
     {
+        public Popup Popup { get; set; }
+
         public static readonly DependencyProperty DocumentProperty =
-            DependencyProperty.Register("Document", typeof(Document), typeof(MindmapFlyoutView), new PropertyMetadata(null));
+            DependencyProperty.Register("Document", typeof(Document), typeof(MindmapFlyoutPopupView), new PropertyMetadata(null));
         public Document Document
         {
             get { return (Document)GetValue(DocumentProperty); }
@@ -24,7 +28,7 @@ namespace Hercules.App.Controls
         }
 
         public static readonly DependencyProperty RendererProperty =
-            DependencyProperty.Register("Renderer", typeof(Win2DRenderer), typeof(MindmapFlyoutView), new PropertyMetadata(null));
+            DependencyProperty.Register("Renderer", typeof(Win2DRenderer), typeof(MindmapFlyoutPopupView), new PropertyMetadata(null));
         public Win2DRenderer Renderer
         {
             get { return (Win2DRenderer)GetValue(RendererProperty); }
@@ -32,10 +36,6 @@ namespace Hercules.App.Controls
         }
 
         public virtual void OnOpening()
-        {
-        }
-
-        public virtual void OnOpened()
         {
         }
 

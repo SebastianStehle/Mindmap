@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// NotNullRootThicknessConverter.cs
+// NotRootToBooleanConverter.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -7,16 +7,16 @@
 // ==========================================================================
 
 using System;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Data;
+using Hercules.Model;
 
 namespace Hercules.App.Controls
 {
-    public sealed class NotNullRootThicknessConverter : IValueConverter
+    public sealed class NotRootToBooleanConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            return value == null ? new Thickness(10, 25, 10, 0) : new Thickness(38, 25, 10, 0);
+            return value is Node;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, string language)

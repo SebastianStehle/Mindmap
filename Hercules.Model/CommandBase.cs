@@ -17,10 +17,7 @@ namespace Hercules.Model
 
         protected NodeBase Node
         {
-            get
-            {
-                return node;
-            }
+            get { return node; }
         }
 
         protected CommandBase(NodeBase node)

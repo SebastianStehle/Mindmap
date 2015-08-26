@@ -112,7 +112,8 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
                     SelectedMindmap = Mindmaps.FirstOrDefault();
                 }
-                else
+                
+                if (Mindmaps.Count == 0)
                 {
                     SettingsProvider.IsAlreadyStarted = true;
 

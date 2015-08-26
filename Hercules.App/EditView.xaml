@@ -1,4 +1,4 @@
-﻿<controls:MindmapFlyoutView x:Class="Hercules.App.EditView"
+﻿<controls:MindmapFlyoutPopupView x:Class="Hercules.App.EditView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:controls="using:Hercules.App.Controls"
@@ -26,4 +26,4 @@
             <Button x:Name="DeleteMindmapButton" x:Uid="DeleteMindmapButton" Content="Delete Mindmap" Click="DeleteMindmapButton_Click" />
         </StackPanel>
     </Grid>
-</controls:MindmapFlyoutView>
+</controls:MindmapFlyoutPopupView>

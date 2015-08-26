@@ -31,34 +31,22 @@ namespace Hercules.Model
 
         public IEnumerable<IUndoRedoAction> History
         {
-            get
-            {
-                return undoStack;
-            }
+            get { return undoStack; }
         }
 
         public int Index
         {
-            get
-            {
-                return undoStack.Count;
-            }
+            get { return undoStack.Count; }
         }
 
         public bool CanUndo
         {
-            get
-            {
-                return undoStack.Count > 0;
-            }
+            get { return undoStack.Count > 0; }
         }
 
         public bool CanRedo
         {
-            get
-            {
-                return redoStack.Count > 0;
-            }
+            get { return redoStack.Count > 0; }
         }
 
         public void Reset()

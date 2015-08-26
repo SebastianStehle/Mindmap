@@ -44,74 +44,47 @@ namespace Hercules.Model
 
         public IUndoRedoManager UndoRedoManager
         {
-            get
-            {
-                return undoRedoManager;
-            }
+            get { return undoRedoManager; }
         }
 
         public double Width
         {
-            get
-            {
-                return size.X;
-            }
+            get { return size.X; }
         }
 
         public double Height
         {
-            get
-            {
-                return size.Y;
-            }
-        }
-
-        public RootNode Root
-        {
-            get
-            {
-                return root;
-            }
-        }
-
-        public Vector2 Size
-        {
-            get
-            {
-                return size;
-            }
-        }
-
-        public bool IsChangeTracking
-        {
-            get
-            {
-                return transaction != null;
-            }
-        }
-
-        public string Title
-        {
-            get
-            {
-                return title;
-            }
+            get { return size.Y; }
         }
 
         public IEnumerable<NodeBase> Nodes
         {
-            get
-            {
-                return nodes;
-            }
+            get { return nodes; }
         }
 
         public NodeBase SelectedNode
         {
-            get
-            {
-                return selectedNode;
-            }
+            get { return selectedNode; }
+        }
+
+        public RootNode Root
+        {
+            get { return root; }
+        }
+
+        public Vector2 Size
+        {
+            get { return size; }
+        }
+
+        public bool IsChangeTracking
+        {
+            get { return transaction != null; }
+        }
+
+        public string Title
+        {
+            get { return title; }
         }
 
         public Document(Guid id, string title)

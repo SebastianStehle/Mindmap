@@ -29,8 +29,34 @@ namespace GP.Windows.UI
         private enum PopupMode
         {
             LeftBottom,
+            LeftTop,
             RightTop,
+            RightBottom,
             Center
+        }
+
+        /// <summary>
+        /// Shows the <see cref="IPopupControl"/> view at the top Left side of the screen using the specified offset.
+        /// </summary>
+        /// <typeparam name="TView">The type of the view to show.</typeparam>
+        /// <param name="view">The view to show. Cannot be null.</param>
+        /// <param name="offset">The offset of the popup, relative to the top Left side of the screen.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="view"/> is null.</exception>
+        public static void ShowPopupLeftTop<TView>(TView view, Point offset) where TView : FrameworkElement
+        {
+            ShowPopup(view, offset, PopupMode.LeftTop);
+        }
+
+        /// <summary>
+        /// Creates a new view and displays it as popup at the top Left side of the screen using the specified offset.
+        /// </summary>
+        /// <typeparam name="TView">The type of the view to show.</typeparam>
+        /// <param name="offset">The offset of the popup, relative to the top Left side of the screen.</param>
+        public static void ShowPopupLeftTop<TView>(Point offset) where TView : FrameworkElement, new()
+        {
+            TView view = new TView();
+
+            ShowPopupLeftTop(view, offset);
         }
 
         /// <summary>
@@ -55,6 +81,30 @@ namespace GP.Windows.UI
             TView view = new TView();
 
             ShowPopupRightTop(view, offset);
+        }
+
+        /// <summary>
+        /// Shows the <see cref="IPopupControl"/> view at the Bottom right side of the screen using the specified offset.
+        /// </summary>
+        /// <typeparam name="TView">The type of the view to show.</typeparam>
+        /// <param name="view">The view to show. Cannot be null.</param>
+        /// <param name="offset">The offset of the popup, relative to the Bottom right side of the screen.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="view"/> is null.</exception>
+        public static void ShowPopupRightBottom<TView>(TView view, Point offset) where TView : FrameworkElement
+        {
+            ShowPopup(view, offset, PopupMode.RightBottom);
+        }
+
+        /// <summary>
+        /// Creates a new view and displays it as popup at the Bottom right side of the screen using the specified offset.
+        /// </summary>
+        /// <typeparam name="TView">The type of the view to show.</typeparam>
+        /// <param name="offset">The offset of the popup, relative to the Bottom right side of the screen.</param>
+        public static void ShowPopupRightBottom<TView>(Point offset) where TView : FrameworkElement, new()
+        {
+            TView view = new TView();
+
+            ShowPopupRightBottom(view, offset);
         }
 
         /// <summary>
@@ -142,6 +192,8 @@ namespace GP.Windows.UI
                 if (popupControl != null)
                 {
                     popupControl.Popup = popupContainer;
+
+                    popupControl.OnOpening();
                 }
 
                 UpdatePopupOffset();
@@ -162,6 +214,13 @@ namespace GP.Windows.UI
             }
             else
             {
+                IPopupControl popupControl = popupView as IPopupControl;
+
+                if (popupControl != null)
+                {
+                    popupControl.OnClosed();
+                }
+
                 Unbind();
 
                 popupContainer = null;
@@ -173,28 +232,58 @@ namespace GP.Windows.UI
         {
             if (popupContainer != null && popupOffset.HasValue)
             {
+                Func<double> calculateTop =
+                    () => popupOffset.Value.X;
+
+                Func<double> calculateLeft = 
+                    () => popupOffset.Value.X;
+
+                Func<double> calculateRight = 
+                    () => Window.Current.Bounds.Width - popupView.ActualWidth - popupOffset.Value.X;
+
+                Func<double> calculateBottom = 
+                    () => Window.Current.Bounds.Height - popupView.ActualHeight - popupOffset.Value.Y;
+
                 double x = 0;
                 double y = 0;
 
                 switch (popupMode)
                 {
                     case PopupMode.LeftBottom:
-                        x = popupOffset.Value.X;
-                        y = Window.Current.Bounds.Height - popupView.Height + popupOffset.Value.Y;
+                        x = calculateLeft();
+                        y = calculateBottom();
+                        break;
+                    case PopupMode.LeftTop:
+                        x = calculateLeft();
+                        y = calculateTop();
                         break;
                     case PopupMode.RightTop:
-                        y = popupOffset.Value.Y;
-                        x = Window.Current.Bounds.Width - popupView.Width + popupOffset.Value.X;
+                        x = calculateRight();
+                        y = calculateTop();
+                        break;
+                    case PopupMode.RightBottom:
+                        x = calculateRight();
+                        y = calculateBottom();
                         break;
                     case PopupMode.Center:
-                        x = 0.5 * (Window.Current.Bounds.Width  - popupView.Width);
-                        y = 0.5 * (Window.Current.Bounds.Height - popupView.Height);
+                        x = 0.5 * (Window.Current.Bounds.Width  - popupView.ActualWidth);
+                        y = 0.5 * (Window.Current.Bounds.Height - popupView.ActualWidth);
                         break;
                 }
 
                 popupContainer.VerticalOffset = y;
                 popupContainer.HorizontalOffset = x;
             }
+        }
+       
+        private static void Current_SizeChanged(object sender, WindowSizeChangedEventArgs e)
+        {
+            UpdatePopupOffset();
+        }
+
+        private static void PopupView_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            UpdatePopupOffset();
         }
 
         private static void InputPane_Hiding(InputPane sender, InputPaneVisibilityEventArgs args)
@@ -213,13 +302,10 @@ namespace GP.Windows.UI
             }
         }
 
-        private static void Current_SizeChanged(object sender, WindowSizeChangedEventArgs e)
-        {
-            UpdatePopupOffset();
-        }
-
         private static void Bind()
         {
+            popupView.SizeChanged += PopupView_SizeChanged;
+
             InputPane inputPane = InputPane.GetForCurrentView();
 
             if (inputPane != null)
@@ -233,6 +319,8 @@ namespace GP.Windows.UI
 
         private static void Unbind()
         {
+            popupView.SizeChanged -= PopupView_SizeChanged;
+
             InputPane inputPane = InputPane.GetForCurrentView();
 
             if (inputPane != null)

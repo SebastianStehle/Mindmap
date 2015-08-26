@@ -17,10 +17,7 @@ namespace Hercules.Model
 
         public NodeBase Node
         {
-            get
-            {
-                return node;
-            }
+            get { return node; }
         }
 
         public NodeEventArgs(NodeBase node)

@@ -41,10 +41,7 @@ namespace Hercules.Model
 
         public object RawValue
         {
-            get
-            {
-                return rawValue;
-            }
+            get { return rawValue; }
         }
 
         public PropertyValue(object rawValue)

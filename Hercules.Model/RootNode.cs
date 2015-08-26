@@ -19,26 +19,17 @@ namespace Hercules.Model
 
         public override bool HasChildren
         {
-            get
-            {
-                return leftChildren.Count + rightChildren.Count > 0;
-            }
+            get { return leftChildren.Count + rightChildren.Count > 0; }
         }
 
         public IReadOnlyList<Node> RightChildren
         {
-            get
-            {
-                return rightChildren;
-            }
+            get { return rightChildren; }
         }
 
         public IReadOnlyList<Node> LeftChildren
         {
-            get
-            {
-                return leftChildren;
-            }
+            get { return leftChildren; }
         }
 
         public RootNode(Guid id, string text)

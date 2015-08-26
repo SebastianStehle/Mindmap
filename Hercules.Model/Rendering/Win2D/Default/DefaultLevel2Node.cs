@@ -25,26 +25,17 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
         public override Win2DTextRenderer TextRenderer
         {
-            get
-            {
-                return textRenderer;
-            }
+            get { return textRenderer; }
         }
 
         public override float VerticalPathOffset
         {
-            get
-            {
-                return VerticalOffset;
-            }
+            get { return VerticalOffset; }
         }
 
         public override Vector2 RenderPositionOffset
         {
-            get
-            {
-                return new Vector2(0, -VerticalOffset);
-            }
+            get { return new Vector2(0, -VerticalOffset); }
         }
 
         public DefaultLevel2Node(NodeBase node, DefaultRenderer renderer) 

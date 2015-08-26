@@ -31,18 +31,12 @@ namespace Hercules.Model
 
         public Document Document
         {
-            get
-            {
-                return document;
-            }
+            get { return document; }
         }
 
         public NodeBase Parent
         {
-            get
-            {
-                return parent;
-            }
+            get { return parent; }
         }
 
         public int Color

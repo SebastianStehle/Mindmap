@@ -23,114 +23,72 @@ namespace Hercules.Model.Utils
 
         public Vector2 Position
         {
-            get
-            {
-                return position;
-            }
+            get { return position; }
         }
 
         public Vector2 Size
         {
-            get
-            {
-                return size;
-            }
+            get { return size; }
         }
 
         public Vector2 Center
         {
-            get
-            {
-                return new Vector2(CenterX, CenterY);
-            }
+            get { return new Vector2(CenterX, CenterY); }
         }
 
         public float X
         {
-            get
-            {
-                return position.X;
-            }
+            get { return position.X; }
         }
 
         public float Y
         {
-            get
-            {
-                return position.Y;
-            }
+            get { return position.Y; }
         }
 
         public float Left
         {
-            get
-            {
-                return position.X;
-            }
+            get { return position.X; }
         }
 
         public float Top
         {
-            get
-            {
-                return position.Y;
-            }
+            get { return position.Y; }
         }
 
         public float Right
         {
-            get
-            {
-                return position.X + size.X;
-            }
+            get { return position.X + size.X; }
         }
 
         public float Bottom
         {
-            get
-            {
-                return position.Y + size.Y;
-            }
+            get { return position.Y + size.Y; }
         }
-        
+
         public float Width
         {
-            get
-            {
-                return size.X;
-            }
+            get { return size.X; }
         }
 
         public float Height
         {
-            get
-            {
-                return size.Y;
-            }
+            get { return size.Y; }
         }
 
         public float CenterX
         {
-            get
-            {
-                return position.X + 0.5f * size.X;
-            }
+            get { return position.X + 0.5f * size.X; }
         }
 
         public float CenterY
         {
-            get
-            {
-                return position.Y + 0.5f * size.Y;
-            }
+            get { return position.Y + 0.5f * size.Y; }
         }
 
         public bool IsEmpty
         {
-            get
-            {
-                return size.X < 0;
-            }
+            get { return size.X < 0; }
         }
 
         public Rect2(Vector2 position, Vector2 size)

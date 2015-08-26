@@ -20,42 +20,27 @@ namespace Hercules.Model.Layouting
 
         public Vector2 Position
         {
-            get
-            {
-                return position;
-            }
+            get { return position; }
         }
 
         public AnchorPoint Anchor
         {
-            get
-            {
-                return anchor;
-            }
-        }
-
-        public NodeBase Parent
-        {
-            get
-            {
-                return node;
-            }
+            get { return anchor; }
         }
 
         public NodeSide NodeSide
         {
-            get
-            {
-                return nodeSide;
-            }
+            get { return nodeSide; }
+        }
+
+        public NodeBase Parent
+        {
+            get { return node; }
         }
 
         public int? Index
         {
-            get
-            {
-                return index;
-            }
+            get { return index; }
         }
 
         public AttachTarget(NodeBase node, NodeSide nodeSide, int? index, Vector2 position, AnchorPoint anchor)

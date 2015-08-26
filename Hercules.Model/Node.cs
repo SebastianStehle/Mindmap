@@ -18,18 +18,12 @@ namespace Hercules.Model
 
         public IReadOnlyList<Node> Children
         {
-            get
-            {
-                return children;
-            }
+            get { return children; }
         }
 
         public override bool HasChildren
         {
-            get
-            {
-                return children.Count > 0;
-            }
+            get { return children.Count > 0; }
         }
 
         public Node(Guid id)

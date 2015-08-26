@@ -25,10 +25,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
         public override Win2DTextRenderer TextRenderer
         {
-            get
-            {
-                return textRenderer;
-            }
+            get { return textRenderer; }
         }
 
         public DefaultLevel1Node(NodeBase node, DefaultRenderer renderer) 

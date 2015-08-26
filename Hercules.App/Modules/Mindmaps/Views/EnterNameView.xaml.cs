@@ -22,6 +22,14 @@ namespace Hercules.App.Modules.Mindmaps.Views
             InitializeComponent();
         }
 
+        public void OnOpening()
+        {
+        }
+
+        public void OnClosed()
+        {
+        }
+
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(NameTextBox.Text))

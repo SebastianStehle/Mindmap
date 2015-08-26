@@ -14,19 +14,9 @@ namespace Hercules.App.Controls
     {
         public MindmapFlyout()
         {
-            Opened += (sender, e) =>
-            {
-                MindmapFlyoutView view = Content as MindmapFlyoutView;
-
-                if (view != null)
-                {
-                    view.OnOpened();
-                }
-            };
-
             Opening += (sender, e) =>
             {
-                MindmapFlyoutView view = Content as MindmapFlyoutView;
+                MindmapFlyoutPopupView view = Content as MindmapFlyoutPopupView;
 
                 if (view != null)
                 {
@@ -36,7 +26,7 @@ namespace Hercules.App.Controls
 
             Closed += (sender, e) =>
             {
-                MindmapFlyoutView view = Content as MindmapFlyoutView;
+                MindmapFlyoutPopupView view = Content as MindmapFlyoutPopupView;
 
                 if (view != null)
                 {

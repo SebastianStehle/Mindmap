@@ -34,20 +34,15 @@ namespace GP.Windows.UI.Controls
         /// </summary>
         public static readonly DependencyProperty ItemsProperty =
             DependencyProperty.Register("Items", typeof(ObservableCollection<TItem>), typeof(ItemsContainer<TItem, TControl>), new PropertyMetadata(null, OnItemsChanged));
+
         /// <summary>
         /// Gets or sets the items to bind.
         /// </summary>
         /// <value>The items to bind.</value>
         public ObservableCollection<TItem> Items
         {
-            get
-            {
-                return (ObservableCollection<TItem>)GetValue(ItemsProperty);
-            }
-            set
-            {
-                SetValue(ItemsProperty, value);
-            }
+            get { return (ObservableCollection<TItem>)GetValue(ItemsProperty); }
+            set { SetValue(ItemsProperty, value); }
         }
 
         private static void OnItemsChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)

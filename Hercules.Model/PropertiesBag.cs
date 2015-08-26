@@ -18,34 +18,22 @@ namespace Hercules.Model
 
         public int Count
         {
-            get
-            {
-                return internalDictionary.Count;
-            }
+            get { return internalDictionary.Count; }
         }
 
         public IReadOnlyDictionary<string, PropertyValue> Properties
         {
-            get
-            {
-                return internalDictionary;
-            }
-        }
-
-        public PropertyValue this[string key]
-        {
-            get
-            {
-                return internalDictionary[key];
-            }
+            get { return internalDictionary; }
         }
 
         public IEnumerable<string> PropertyNames
         {
-            get
-            {
-                return internalDictionary.Keys;
-            }
+            get { return internalDictionary.Keys; }
+        }
+
+        public PropertyValue this[string key]
+        {
+            get { return internalDictionary[key]; }
         }
 
         public bool HasProperty(string propertyName)

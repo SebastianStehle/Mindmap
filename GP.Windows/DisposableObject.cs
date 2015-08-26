@@ -26,10 +26,7 @@ namespace GP.Windows
         /// </value>
         public bool IsDisposed
         {
-            get
-            {
-                return isDisposed;
-            }
+            get { return isDisposed; }
         }
 
         /// <summary>

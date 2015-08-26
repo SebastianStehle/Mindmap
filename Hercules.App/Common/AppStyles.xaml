@@ -7,13 +7,10 @@
     xmlns:gp="using:GP.Windows.UI"
     mc:Ignorable="d">
 
-    <local:NotNullNodeThicknessConverter x:Key="NotNullNodeThicknessConverter" />
-    <local:NotNullRootThicknessConverter x:Key="NotNullRootThicknessConverter" />
-
+    <local:NotRootToBooleanConverter x:Key="NotRootToBooleanConverter" />
     <local:NotRootToVisibilityConverter x:Key="NotRootToVisibilityConverter" />
     
-    <local:NodeSideToHorizontalAlignmentConverter x:Key="NodeSideToHorizontalAlignmentConverter" />
-
+    <gp:NotNullBooleanConverter x:Key="NotNullBooleanConverter" />
     <gp:NotNullVisibilityConverter x:Key="NotNullVisibilityConverter" />
 
     <gp:VisibleWhenFalseConverter x:Key="VisibleWhenFalseConverter" />

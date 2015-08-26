@@ -21,5 +21,15 @@ namespace GP.Windows.UI
         /// <value>The current popup.</value>
         /// <remarks>This property is assigned immediatly before opening the popup and will be reset when the popup is closed.</remarks>
         Popup Popup { get; set; }
+
+        /// <summary>
+        /// Called when the popup is opened.
+        /// </summary>
+        void OnOpening();
+
+        /// <summary>
+        /// Called when the popup is closed.
+        /// </summary>
+        void OnClosed();
     }
 }

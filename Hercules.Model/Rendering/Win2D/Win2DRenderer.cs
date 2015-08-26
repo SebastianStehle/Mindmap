@@ -20,6 +20,7 @@ using Windows.Storage.Streams;
 using Windows.Graphics.Display;
 using System.Threading.Tasks;
 using Windows.UI;
+using GP.Windows.UI;
 
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
@@ -34,9 +35,23 @@ namespace Hercules.Model.Rendering.Win2D
         private readonly Win2DResourceManager resources;
         private readonly Document document;
         private readonly ICanvasControl canvas;
+        private Matrix3x2 transform = Matrix3x2.Identity;
+        private Matrix3x2 scale = Matrix3x2.Identity;
+        private Matrix3x2 inverseTransform = Matrix3x2.Identity;
+        private Matrix3x2 inverseScale = Matrix3x2.Identity;
+        private Rect2 visibleRect = new Rect2(0, 0, float.PositiveInfinity, float.PositiveInfinity);
         private Rect2 sceneBounds;
+        private float zoomFactor;
         private ILayout layout;
         private bool layoutInvalidated;
+
+        public float ZoomFactor
+        {
+            get
+            {
+                return zoomFactor;
+            }
+        }
 
         public ICanvasControl Canvas
         {
@@ -125,6 +140,29 @@ namespace Hercules.Model.Rendering.Win2D
         {
             ReleaseDocument();
             ReleaseCanvas();
+        }
+
+        public void Transform(Vector2 translate, float zoom, Rect2 rect)
+        {
+            visibleRect = rect;
+
+            scale = Matrix3x2.CreateScale(zoom);
+
+            transform =
+                Matrix3x2.CreateTranslation(
+                    translate.X,
+                    translate.Y) *
+                Matrix3x2.CreateScale(zoom);
+
+            inverseScale = Matrix3x2.CreateScale(1f / zoom);
+
+            inverseTransform =
+                Matrix3x2.CreateScale(1f / zoom) *
+                Matrix3x2.CreateTranslation(
+                    -translate.X,
+                    -translate.Y);
+
+            zoomFactor = zoom;
         }
 
         private void InitializeDocument()
@@ -219,6 +257,8 @@ namespace Hercules.Model.Rendering.Win2D
         {
             if (layout != null)
             {
+                session.Transform = transform;
+
                 bool needsRedraw;
 
                 UpdateLayout(session);
@@ -295,7 +335,7 @@ namespace Hercules.Model.Rendering.Win2D
             
             foreach (Win2DRenderNode node in AllNodes)
             {
-                if (node.IsVisible)
+                if (node.IsVisible && CanRenderPath(node))
                 {
                     node.RenderPath(session);
                 }
@@ -303,7 +343,7 @@ namespace Hercules.Model.Rendering.Win2D
 
             foreach (Win2DRenderNode node in AllNodes)
             {
-                if (node.IsVisible)
+                if (node.IsVisible && CanRenderNode(node))
                 {
                     bool isCustomNode = IsCustomNode(node);
 
@@ -313,6 +353,16 @@ namespace Hercules.Model.Rendering.Win2D
                     }
                 }
             }
+        }
+
+        private bool CanRenderPath(Win2DRenderNode node)
+        {
+            return visibleRect.IntersectsWith(node.BoundsWithParent);
+        }
+
+        private bool CanRenderNode(Win2DRenderNode node)
+        {
+            return visibleRect.IntersectsWith(node.Bounds);
         }
 
         private bool IsCustomNode(Win2DRenderNode node)
@@ -347,6 +397,26 @@ namespace Hercules.Model.Rendering.Win2D
             }
 
             return false;
+        }
+
+        public Vector2 GetMindmapSize(Vector2 position)
+        {
+            return MathHelper.Transform(position, inverseScale);
+        }
+
+        public Vector2 GetMindmapPosition(Vector2 position)
+        {
+            return MathHelper.Transform(position, inverseTransform);
+        }
+
+        public Vector2 GetOverlaySize(Vector2 position)
+        {
+            return MathHelper.Transform(position, scale);
+        }
+
+        public Vector2 GetOverlayPosition(Vector2 position)
+        {
+            return MathHelper.Transform(position, transform);
         }
 
         private void Document_StateChanged(object sender, EventArgs e)

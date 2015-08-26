@@ -43,15 +43,19 @@ namespace Hercules.App.Modules.Mindmaps.Views
         private void MindmapItem_Holding(object sender, HoldingRoutedEventArgs e)
         {
             FrameworkElement senderElement = sender as FrameworkElement;
-            
-            FlyoutBase.GetAttachedFlyout(senderElement).ShowAt(senderElement);
+
+            FlyoutBase.ShowAttachedFlyout(senderElement);
+
+            e.Handled = true;
         }
 
         private void MindmapItem_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
             FrameworkElement senderElement = sender as FrameworkElement;
 
-            FlyoutBase.GetAttachedFlyout(senderElement).ShowAt(senderElement);
+            FlyoutBase.ShowAttachedFlyout(senderElement);
+
+            e.Handled = true;
         }
     }
 }

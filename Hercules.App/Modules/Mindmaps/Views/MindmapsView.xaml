@@ -58,9 +58,9 @@
                         <DataTemplate>
                             <Grid Height="200" Width="300" Background="White" RightTapped="MindmapItem_RightTapped" Holding="MindmapItem_Holding">
                                 <FlyoutBase.AttachedFlyout>
-                                    <MenuFlyout Placement="Bottom">
+                                    <MenuFlyout Placement="Top">
                                         <MenuFlyoutItem Text="Rename" />
-                                        <MenuFlyoutItem />
+                                        <MenuFlyoutSeparator />
                                         <MenuFlyoutItem Text="Delete" />
                                     </MenuFlyout>
                                 </FlyoutBase.AttachedFlyout>

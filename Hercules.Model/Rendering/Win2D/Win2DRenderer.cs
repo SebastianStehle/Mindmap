@@ -200,6 +200,11 @@ namespace Hercules.Model.Rendering.Win2D
             canvas.Invalidate();
         }
 
+        public void InvalidateWithoutLayout()
+        {
+            canvas.Invalidate();
+        }
+
         private void Canvas_Draw(object sender, CanvasDrawEventArgs args)
         {
             Render(args.DrawingSession);

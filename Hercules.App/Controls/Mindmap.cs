@@ -140,53 +140,54 @@ namespace Hercules.App.Controls
                 {
                     lastView = view;
 
-                    double zoomFactor = view.ZoomFactor;
-
-                    double xOffset = view.HorizontalOffset;
-                    double yOffset = view.VerticalOffset;
-
-                    double inverseZoom = 1.0 / zoomFactor;
-
-                    double scaledContentW = Document.Size.X * zoomFactor;
-                    double scaledContentH = Document.Size.Y * zoomFactor;
-
-                    double translateX;
-                    double translateY;
-
-                    if (scaledContentW < scrollViewer.ViewportWidth)
-                    {
-                        translateX = (scrollViewer.ViewportWidth * inverseZoom - Document.Size.X) * 0.5;
-                    }
-                    else
-                    {
-                        translateX = -inverseZoom * xOffset;
-                    }
-
-                    if (scaledContentH < scrollViewer.ViewportHeight)
-                    {
-                        translateY = (scrollViewer.ViewportHeight * inverseZoom - Document.Size.Y) * 0.5;
-                    }
-                    else
-                    {
-                        translateY = -inverseZoom * yOffset;
-                    }
-
-                    double visibleX = inverseZoom * xOffset;
-                    double visibleY = inverseZoom * yOffset;
-
-                    double visibleW = Math.Min(Document.Size.X, inverseZoom * scrollViewer.ViewportWidth);
-                    double visibleH = Math.Min(Document.Size.Y, inverseZoom * scrollViewer.ViewportHeight);
-
-                    Rect2 visibleRect = new Rect2((float)visibleX, (float)visibleY, (float)visibleW, (float)visibleH);
-
-                    r.Transform(new Vector2((float)translateX, (float)translateY), (float)zoomFactor, visibleRect);
-
-                    if (canvasControl != null)
-                    {
-                        canvasControl.Invalidate();
-                    }
+                    Transform(r, view);
                 }
             });
+        }
+
+        private void Transform(Win2DRenderer rendererToTransform, ScrollViewerView view)
+        {
+            double zoomFactor = view.ZoomFactor;
+
+            double xOffset = view.HorizontalOffset;
+            double yOffset = view.VerticalOffset;
+
+            double inverseZoom = 1.0 / zoomFactor;
+
+            double scaledContentW = Document.Size.X * zoomFactor;
+            double scaledContentH = Document.Size.Y * zoomFactor;
+
+            double translateX;
+            double translateY;
+
+            if (scaledContentW < scrollViewer.ViewportWidth)
+            {
+                translateX = (scrollViewer.ViewportWidth * inverseZoom - Document.Size.X) * 0.5;
+            }
+            else
+            {
+                translateX = -inverseZoom * xOffset;
+            }
+
+            if (scaledContentH < scrollViewer.ViewportHeight)
+            {
+                translateY = (scrollViewer.ViewportHeight * inverseZoom - Document.Size.Y) * 0.5;
+            }
+            else
+            {
+                translateY = -inverseZoom * yOffset;
+            }
+
+            double visibleX = inverseZoom * xOffset;
+            double visibleY = inverseZoom * yOffset;
+
+            double visibleW = Math.Min(Document.Size.X, inverseZoom * scrollViewer.ViewportWidth);
+            double visibleH = Math.Min(Document.Size.Y, inverseZoom * scrollViewer.ViewportHeight);
+
+            Rect2 visibleRect = new Rect2((float)visibleX, (float)visibleY, (float)visibleW, (float)visibleH);
+
+            rendererToTransform.Transform(new Vector2((float)translateX, (float)translateY), (float)zoomFactor, visibleRect);
+            rendererToTransform.InvalidateWithoutLayout();
         }
 
         private void CanvasControl_Draw(object sender, CanvasDrawEventArgs e)
@@ -219,7 +220,11 @@ namespace Hercules.App.Controls
 
             InitializeLayout();
 
-            if (canvasControl != null)
+            if (renderer != null && lastView != null)
+            {
+                Transform(renderer, lastView);
+            }
+            else if (canvasControl != null)
             {
                 canvasControl.Invalidate();
             }

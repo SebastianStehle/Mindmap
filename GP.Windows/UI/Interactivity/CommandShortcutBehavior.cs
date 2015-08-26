@@ -85,7 +85,6 @@ namespace GP.Windows.UI.Interactivity
         /// </summary>
         public static readonly DependencyProperty RequiresControlModifierProperty =
             DependencyProperty.Register("RequiresControlModifier", typeof(bool), typeof(CommandShortcutBehavior), new PropertyMetadata(false));
-
         /// <summary>
         /// Gets or sets a value indicating if the control key must be pressed.
         /// </summary>
@@ -101,7 +100,6 @@ namespace GP.Windows.UI.Interactivity
         /// </summary>
         public static readonly DependencyProperty RequiresShiftModifierProperty =
             DependencyProperty.Register("RequiresShiftModifier", typeof(bool), typeof(CommandShortcutBehavior), new PropertyMetadata(false));
-
         /// <summary>
         /// Gets or sets a value indicating if the shift key must be pressed.
         /// </summary>

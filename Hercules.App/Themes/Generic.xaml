@@ -32,7 +32,7 @@
                                 <gpi:ScrollViewerBringIntoViewInputPaneBehavior />
                             </i:Interaction.Behaviors>
 
-                            <Grid Width="{Binding Document.Width}" Height="{Binding Document.Height}"></Grid>
+                            <Grid Width="{Binding Document.Width}" Height="{Binding Document.Height}" />
                         </ScrollViewer>
                         
                         <local:TextEditor x:Name="PART_TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="0"

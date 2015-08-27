@@ -67,7 +67,13 @@
         
         <SplitView Grid.Row="1" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="68" x:Name="SplitView">
             <SplitView.Pane>
-                <Grid />
+                <Grid Margin="9">
+                    <Button Width="40" Height="40" Margin="5" VerticalAlignment="Top" Background="Transparent" Foreground="{StaticResource HeaderColor}">
+                        <Viewbox>
+                            <SymbolIcon Symbol="Add" />
+                        </Viewbox>
+                    </Button>
+                </Grid>
             </SplitView.Pane>
             <SplitView.Content>
                 <Grid />

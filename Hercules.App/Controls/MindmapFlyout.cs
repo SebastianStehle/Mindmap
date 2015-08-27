@@ -16,21 +16,25 @@ namespace Hercules.App.Controls
         {
             Opened += (sender, e) =>
             {
-                MindmapFlyoutPopupView view = Content as MindmapFlyoutPopupView;
+                MindmapFlyoutView view = Content as MindmapFlyoutView;
 
                 if (view != null)
                 {
+                    view.Flyout = this;
+
                     view.OnOpened();
                 }
             };
 
             Closed += (sender, e) =>
             {
-                MindmapFlyoutPopupView view = Content as MindmapFlyoutPopupView;
+                MindmapFlyoutView view = Content as MindmapFlyoutView;
 
                 if (view != null)
                 {
                     view.OnClosed();
+
+                    view.Flyout = null;
                 }
             };
         }

@@ -76,10 +76,25 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
         public async Task CreateNewMindmapAsync(string name, string text)
         {
+            if (IsLoaded)
+            {
+                DocumentRef documentRef = await CreateMindmapAsync(name);
+
+                AddMindmap(documentRef);
+            }
+        }
+
+        private async Task<DocumentRef> CreateMindmapAsync(string name)
+        {
             Document document = new Document(Guid.NewGuid(), name);
 
             DocumentRef documentRef = await DocumentStore.StoreAsync(document, null);
 
+            return documentRef;
+        }
+
+        private void AddMindmap(DocumentRef documentRef)
+        {
             Mindmaps.Insert(0, new MindmapItem(documentRef));
 
             SelectedMindmap = Mindmaps.FirstOrDefault();
@@ -100,8 +115,6 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                         if (Mindmaps.All(x => x.DocumentId != documentRef.DocumentId))
                         {
                             MindmapItem mindmapItem = new MindmapItem(documentRef);
-
-                            await mindmapItem.RefreshImageAsync();
 
                             Mindmaps.Add(mindmapItem);
                         }

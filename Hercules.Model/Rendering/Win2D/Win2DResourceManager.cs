@@ -45,7 +45,7 @@ namespace Hercules.Model.Rendering.Win2D
 
             private async Task<CanvasBitmap> LoadFile(string image, CanvasDevice device)
             {
-                string uri = string.Format(CultureInfo.InvariantCulture, "ms-appx:///{0}", image);
+                string uri = string.Format(CultureInfo.InvariantCulture, "ms-appx://{0}", image);
 
                 StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
 

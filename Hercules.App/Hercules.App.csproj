@@ -109,7 +109,7 @@
     <Compile Include="Components\ISettingsProvider.cs" />
     <Compile Include="Controls\CanvasControlWrapper.cs" />
     <Compile Include="Controls\MindmapFlyout.cs" />
-    <Compile Include="Controls\MindmapFlyoutPopupView.cs" />
+    <Compile Include="Controls\MindmapFlyoutView.cs" />
     <Compile Include="Controls\Mindmap.cs" />
     <Compile Include="Controls\NodeMovingBehavior.cs" />
     <Compile Include="Controls\NodeMovingOperation.cs" />
@@ -117,17 +117,8 @@
     <Compile Include="Controls\NotRootToVisibilityConverter.cs" />
     <Compile Include="Controls\TextEditor.cs" />
     <Compile Include="Controls\ThemeBrushConverter.cs" />
-    <Compile Include="EditColorView.xaml.cs">
+    <Compile Include="Modules\Editor\Views\EditColorView.xaml.cs">
       <DependentUpon>EditColorView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EditIconView.xaml.cs">
-      <DependentUpon>EditIconView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EditView.xaml.cs">
-      <DependentUpon>EditView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="EnterNameView.xaml.cs">
-      <DependentUpon>EnterNameView.xaml</DependentUpon>
     </Compile>
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MainPage.xaml.cs">
@@ -135,12 +126,12 @@
     </Compile>
     <Compile Include="Messages\MindmapDeletedMessage.cs" />
     <Compile Include="Messages\OpenMindmapMessage.cs" />
+    <Compile Include="Modules\Editor\Views\EditIconView.xaml.cs">
+      <DependentUpon>EditIconView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Mindmaps\ViewModels\MindmapsViewModel.cs" />
     <Compile Include="Modules\Mindmaps\Views\EnterNameView.xaml.cs">
       <DependentUpon>EnterNameView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\Mindmaps\Views\MindmapsView.xaml.cs">
-      <DependentUpon>MindmapsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Modules\Editor\ViewModels\EditorViewModel.cs" />
@@ -213,23 +204,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Common\AppStyles.xaml">
+    <Page Include="Assets\AppStyles.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="EditColorView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="EditIconView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="EditView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Include="EnterNameView.xaml">
+    <Page Include="Modules\Editor\Views\EditColorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -237,15 +216,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Modules\Editor\Views\EditIconView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Mindmaps\Views\EnterNameView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Mindmaps\Views\MindmapsView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Modules\Mindmaps\Views\NewMindmapView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -253,11 +228,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </DesignData>
-    <Page Include="Modules\Mindmaps\Views\Styles.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

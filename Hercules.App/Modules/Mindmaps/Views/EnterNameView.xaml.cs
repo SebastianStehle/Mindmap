@@ -22,12 +22,11 @@ namespace Hercules.App.Modules.Mindmaps.Views
             InitializeComponent();
         }
 
-        public void OnOpened()
+        public override void OnOpened()
         {
-        }
+            ErrorTextBlock.Opacity = 0;
 
-        public void OnClosed()
-        {
+            NameTextBox.Text = string.Empty;
         }
 
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
@@ -41,6 +40,8 @@ namespace Hercules.App.Modules.Mindmaps.Views
                 MindmapsViewModel viewModel = (MindmapsViewModel)DataContext;
 
                 await viewModel.CreateNewMindmapAsync(NameTextBox.Text, NameTextBox.Text);
+
+                Flyout.Hide();
             }
         }
     }

@@ -10,7 +10,7 @@ using Windows.UI.Xaml.Controls;
 using Hercules.App.Components.Implementations;
 using Hercules.Model;
 
-namespace Hercules.App
+namespace Hercules.App.Modules.Editor.Views
 {
     public sealed partial class EditColorView
     {

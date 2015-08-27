@@ -1,22 +1,22 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:Hercules.App.Controls"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:gpi="using:GP.Windows.UI.Interactivity"
-    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml">
+    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
+    xmlns:controls="using:Hercules.App.Controls">
 
-    <Style TargetType="local:Mindmap">
+    <Style TargetType="controls:Mindmap">
         <Setter Property="i:Interaction.Behaviors">
             <Setter.Value>
                 <i:BehaviorCollection>
-                    <local:NodeMovingBehavior />
+                    <controls:NodeMovingBehavior />
                 </i:BehaviorCollection>
             </Setter.Value>
         </Setter>
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="local:Mindmap">
+                <ControlTemplate TargetType="controls:Mindmap">
                     <Grid>
                         <canvas:CanvasControl x:Name="PART_Canvas" />
                         
@@ -35,7 +35,7 @@
                             <Grid Width="{Binding Document.Width}" Height="{Binding Document.Height}" />
                         </ScrollViewer>
                         
-                        <local:TextEditor x:Name="PART_TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="0"
+                        <controls:TextEditor x:Name="PART_TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="0"
                             MinHeight="0"
                             MinWidth="0"
                             TextAlignment="Center" 

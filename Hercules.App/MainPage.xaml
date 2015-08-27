@@ -6,178 +6,227 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
     xmlns:im="using:Microsoft.Xaml.Interactions.Media"
+    xmlns:e="using:Hercules.App.Modules.Editor.Views"
     xmlns:m="using:Hercules.App.Modules.Mindmaps.Views"
-    xmlns:local="using:Hercules.App"
-    xmlns:controls="using:Hercules.App.Controls"
-    xmlns:modelLayout="using:Hercules.Model.Layouting.Default"
     xmlns:gpc="using:GP.Windows.UI.Controls"
     xmlns:gpi="using:GP.Windows.UI.Interactivity"
+    xmlns:controls="using:Hercules.App.Controls"
+    xmlns:modelLayout="using:Hercules.Model.Layouting.Default"
     mc:Ignorable="d"
     DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
-    
+
     <Page.Resources>
-        <Storyboard x:Key="StoryboardShow">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)" Storyboard.TargetName="Mindmaps">
-                <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+        <Storyboard x:Key="ShowListStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="MindmapsContainer">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
-        <Storyboard x:Key="StoryboardHide">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)" Storyboard.TargetName="Mindmaps">
-                <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="-300"/>
+        <Storyboard x:Key="HideListStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="MindmapsContainer">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
     </Page.Resources>
 
-    <SplitView>
-        <SplitView.Pane>
-            <m:MindmapsView />
-        </SplitView.Pane>
-        <SplitView.Content>
-            <Grid x:Name="MainGrid" Grid.Row="1">
-                <i:Interaction.Behaviors>
-                    <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Left" Invoked="MoveLeftCommand_Invoked" />
-                    <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Right" Invoked="MoveRightCommand_Invoked" />
-                    <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Up" Invoked="MoveTopCommand_Invoked" />
-                    <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Down" Invoked="MoveBottomCommand_Invoked" />
-                </i:Interaction.Behaviors>
-
-                <gpc:TiledBackground TileSize="60" />
-
-                <controls:Mindmap Document="{Binding Document}"  RendererFactory="{Binding RendererFactory}" x:Name="Mindmap">
-                    <controls:Mindmap.Layout>
-                        <modelLayout:DefaultLayout ElementMargin="10" HorizontalMargin="50" />
-                    </controls:Mindmap.Layout>
-                </controls:Mindmap>
-            </Grid>
-        </SplitView.Content>
-    </SplitView>
-    
-    
-    <!--<Grid>
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RequestedTheme="Light">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <AppBar IsOpen="True" IsSticky="True" Style="{StaticResource AppBarStyleNoClose}" Closed="BottomBar_Closed" Height="60">
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition/>
-                    <ColumnDefinition/>
-                </Grid.ColumnDefinitions>
+        <Grid Background="{StaticResource ThemeMainBrush}" RequestedTheme="Dark">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <AppBarButton RequestedTheme="Dark" Icon="List" Click="AppBarButton_Click" Label="Mindmaps" />
 
-                <StackPanel Orientation="Horizontal">
-                    <AppBarToggleButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}" Icon="List" x:Name="ListButton"
-                        AutomationProperties.AccessKey="CTRL + M"
-                        AutomationProperties.Name="Mindmaps" x:Uid="AppBarButtonListMindmaps">
+                <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
+                    <AppBarSeparator />
+
+                    <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}"
+                        AutomationProperties.AccessKey="CTRL + I"
+                        AutomationProperties.Name="Change Icon" x:Uid="AppBarButtonChangeIcon">
                         <i:Interaction.Behaviors>
-                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="M" />
-
-                            <ic:EventTriggerBehavior EventName="Checked">
-                                <im:ControlStoryboardAction Storyboard="{StaticResource StoryboardShow}"/>
-                            </ic:EventTriggerBehavior>
-                            <ic:EventTriggerBehavior EventName="Unchecked">
-                                <im:ControlStoryboardAction Storyboard="{StaticResource StoryboardHide}"/>
-                            </ic:EventTriggerBehavior>
+                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="I" />
                         </i:Interaction.Behaviors>
-                    </AppBarToggleButton>
-
-                    <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
-                        <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
-
-                        <AppBarButton Icon="Setting">
-                            <AppBarButton.Flyout>
-                                <MenuFlyout>
-                                    <MenuFlyoutItem Text="Rename" />
-                                    <MenuFlyoutSeparator />
-                                    <MenuFlyoutItem Text="Export" />
-                                </MenuFlyout>
-                            </AppBarButton.Flyout>
-                        </AppBarButton>
-                        
-                        <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
-
-                        <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}" Icon="Favorite" x:Name="IconButton"
-                            AutomationProperties.AccessKey="CTRL + I"
-                            AutomationProperties.Name="Change Icon" x:Uid="AppBarButtonChangeIcon">
-                            <i:Interaction.Behaviors>
-                                <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="I" />
-                            </i:Interaction.Behaviors>
-                            <AppBarButton.Flyout>
-                                <controls:MindmapFlyout>
-                                    <local:EditIconView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
-                                </controls:MindmapFlyout>
-                            </AppBarButton.Flyout>
-                        </AppBarButton>
-                        <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=true}" Icon="Bold" x:Name="ColorButton"
-                            AutomationProperties.AccessKey="CTRL + O"
-                            AutomationProperties.Name="Change Color" x:Uid="AppBarButtonChangeColor">
-                            <i:Interaction.Behaviors>
-                                <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="O" />
-                            </i:Interaction.Behaviors>
-                            <AppBarButton.Flyout>
-                                <controls:MindmapFlyout>
-                                    <local:EditColorView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
-                                </controls:MindmapFlyout>
-                            </AppBarButton.Flyout>
-                        </AppBarButton>
-
-                        <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
-
-                        <AppBarButton Icon="Undo"
-                            Command="{Binding UndoCommand}"
-                            AutomationProperties.AccessKey="CTRL + Z"
-                            AutomationProperties.Name="Undo" x:Uid="AppBarButtonUndo">
-                            <i:Interaction.Behaviors>
-                                <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
-                            </i:Interaction.Behaviors>
-                        </AppBarButton>
-
-                        <AppBarButton Icon="Redo"
-                            Command="{Binding RedoCommand}"
-                            AutomationProperties.AccessKey="CTRL + Y"
-                            AutomationProperties.HelpText="Redo" x:Uid="AppBarButtonRedo">
-                            <i:Interaction.Behaviors>
-                                <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Y" />
-                            </i:Interaction.Behaviors>
-                        </AppBarButton>
-                    </StackPanel>
-                </StackPanel>
-
-                <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
-                    <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}" Icon="Delete"
-                        Command="{Binding RemoveCommand}"
-                        AutomationProperties.AccessKey="Delete"
-                        AutomationProperties.Name="Remove Node" x:Uid="AppBarButtonRemoveNode">
+                        <AppBarButton.Flyout>
+                            <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
+                                <e:EditIconView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
+                            </controls:MindmapFlyout>
+                        </AppBarButton.Flyout>
+                        <TextBlock TextAlignment="Center" FontSize="20" Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" />
+                    </AppBarButton>
+                    <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=true}"
+                        AutomationProperties.AccessKey="CTRL + O"
+                        AutomationProperties.Name="Change Color" x:Uid="AppBarButtonChangeColor">
                         <i:Interaction.Behaviors>
-                            <gpi:CommandShortcutBehavior Invoking="RemoveButton_Invoking" RequiresControlModifier="False" Key="Delete" />
-                            <gpi:CommandShortcutBehavior Invoking="RemoveButton_Invoking" RequiresControlModifier="False" Key="Back" />
+                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="O" />
+                        </i:Interaction.Behaviors>
+                        <AppBarButton.Flyout>
+                            <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
+                                <e:EditColorView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
+                            </controls:MindmapFlyout>
+                        </AppBarButton.Flyout>
+                        <TextBlock TextAlignment="Center" FontSize="20" Text="&#xE2B1;" FontFamily="Segoe MDL2 Assets" />
+                    </AppBarButton>
+
+                    <AppBarSeparator />
+
+                    <AppBarButton Icon="Undo"
+                        Command="{Binding UndoCommand}"
+                        AutomationProperties.AccessKey="CTRL + Z"
+                        AutomationProperties.Name="Undo" x:Uid="AppBarButtonUndo">
+                        <i:Interaction.Behaviors>
+                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
                         </i:Interaction.Behaviors>
                     </AppBarButton>
 
-                    <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
-
-                    <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}" Icon="Add"
-                        Command="{Binding AddSiblingCommand}" 
-                        AutomationProperties.AccessKey="Control H"
-                        AutomationProperties.Name="Add Sibling" x:Uid="AppBarButtonAddSibling">
+                    <AppBarButton Icon="Redo"
+                        Command="{Binding RedoCommand}"
+                        AutomationProperties.AccessKey="CTRL + Y"
+                        AutomationProperties.HelpText="Redo" x:Uid="AppBarButtonRedo">
                         <i:Interaction.Behaviors>
-                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="N" />
-                        </i:Interaction.Behaviors>
-                    </AppBarButton>
-
-                    <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}" Icon="Add"
-                        Command="{Binding AddChildCommand}" 
-                        AutomationProperties.AccessKey="Control N"
-                        AutomationProperties.Name="Add Child" x:Uid="AppBarButtonAddChild">
-                        <i:Interaction.Behaviors>
-                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="M" />
+                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Y" />
                         </i:Interaction.Behaviors>
                     </AppBarButton>
                 </StackPanel>
-            </Grid>
-        </AppBar>
+            </StackPanel>
 
-        
-    </Grid>-->
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
+                <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}" Icon="Delete"
+                    Command="{Binding RemoveCommand}"
+                    AutomationProperties.AccessKey="Delete"
+                    AutomationProperties.Name="Remove Node" x:Uid="AppBarButtonRemoveNode">
+                    <i:Interaction.Behaviors>
+                        <gpi:CommandShortcutBehavior Invoking="RemoveButton_Invoking" RequiresControlModifier="False" Key="Delete" />
+                        <gpi:CommandShortcutBehavior Invoking="RemoveButton_Invoking" RequiresControlModifier="False" Key="Back" />
+                    </i:Interaction.Behaviors>
+                </AppBarButton>
+
+                <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
+
+                <AppBarButton Style="{StaticResource AppBarButtonStyleSibling}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}"
+                    Command="{Binding AddSiblingCommand}" 
+                    AutomationProperties.AccessKey="Control H"
+                    AutomationProperties.Name="Add Sibling" x:Uid="AppBarButtonAddSibling">
+                    <i:Interaction.Behaviors>
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="N" />
+                    </i:Interaction.Behaviors>
+                </AppBarButton>
+
+                <AppBarButton Style="{StaticResource AppBarButtonStyleChild}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}"
+                    Command="{Binding AddChildCommand}" 
+                    AutomationProperties.AccessKey="Control N"
+                    AutomationProperties.Name="Add Child" x:Uid="AppBarButtonAddChild">
+                    <i:Interaction.Behaviors>
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="M" />
+                    </i:Interaction.Behaviors>
+                </AppBarButton>
+            </StackPanel>
+        </Grid>
+
+        <SplitView Grid.Row="1" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="68" x:Name="SplitView">
+            <i:Interaction.Behaviors>
+                <ic:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=SplitView}">
+                    <ic:DataTriggerBehavior.Value>
+                        <x:Boolean>True</x:Boolean>
+                    </ic:DataTriggerBehavior.Value>
+                    <im:ControlStoryboardAction Storyboard="{StaticResource ShowListStoryboard}"/>
+                </ic:DataTriggerBehavior>
+                <ic:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=SplitView}">
+                    <ic:DataTriggerBehavior.Value>
+                        <x:Boolean>False</x:Boolean>
+                    </ic:DataTriggerBehavior.Value>
+                    <im:ControlStoryboardAction Storyboard="{StaticResource HideListStoryboard}"/>
+                </ic:DataTriggerBehavior>
+            </i:Interaction.Behaviors>
+
+            <SplitView.Pane>
+                <Grid DataContext="{Binding Mindmaps, Source={StaticResource ViewModelLocator}}" d:DataContext="{d:DesignData Source=/SampleData/MindmapsViewModelSampleData.xaml}">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+
+                    <Button Padding="0,10,0,10" Margin="0,20,0,20" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalAlignment="Top" Foreground="{StaticResource ThemeMainBrush}" Style="{StaticResource ThemeButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Grid>
+                                <Viewbox Width="64" Height="26">
+                                    <SymbolIcon Symbol="Add" />
+                                </Viewbox>
+                            </Grid>
+
+                            <TextBlock Margin="5,0,0,0" FontSize="16" Text="Add Mindmap" x:Uid="MindmapsAddButton" />
+                        </StackPanel>
+                        <Button.Flyout>
+                            <controls:MindmapFlyout>
+                                <m:EnterNameView />
+                            </controls:MindmapFlyout>
+                        </Button.Flyout>
+                    </Button>
+
+                    <Grid x:Name="MindmapsContainer" Grid.Row="1" Margin="5,0,0,0" Opacity="1" >
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition />
+                        </Grid.RowDefinitions>
+
+                        <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="0,0,0,1" Padding="10,0,0,6">
+                            <TextBlock Foreground="Black" Text="Mindmaps" x:Uid="MindmapsHeader"
+                                FontSize="20" 
+                                FontWeight="Bold" />
+                        </Border>
+
+                        <ListBox Grid.Row="1" ItemContainerStyle="{StaticResource ThemeListBoxItemStyle}" ItemsSource="{Binding Mindmaps}" Loaded="ListBox_Loaded">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid RightTapped="Grid_RightTapped">
+                                        <FlyoutBase.AttachedFlyout>
+                                            <MenuFlyout>
+                                                <MenuFlyoutItem Text="Rename" />
+                                                <MenuFlyoutSeparator />
+                                                <MenuFlyoutItem Text="Delete" />
+                                            </MenuFlyout>
+                                        </FlyoutBase.AttachedFlyout>
+
+                                        <StackPanel>
+                                            <TextBlock Text="{Binding Title}" FontSize="15" TextTrimming="WordEllipsis" />
+
+                                            <StackPanel Orientation="Horizontal" Opacity="0.7" Margin="0,2">
+                                                <TextBlock FontSize="13" x:Uid="LastUpdateLabel"
+                                                    Text="Modified:"
+                                                    TextAlignment="Left"
+                                                    TextWrapping="NoWrap" Margin="0,0,4,0" />
+                                                <TextBlock FontSize="13"
+                                                    Text="{Binding LastUpdateText}" 
+                                                    TextAlignment="Left"
+                                                    TextWrapping="NoWrap" />
+                                            </StackPanel>
+                                        </StackPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                    </Grid>
+                </Grid>
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid>
+                    <i:Interaction.Behaviors>
+                        <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Left" Invoked="MoveLeftCommand_Invoked" />
+                        <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Right" Invoked="MoveRightCommand_Invoked" />
+                        <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Up" Invoked="MoveTopCommand_Invoked" />
+                        <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Down" Invoked="MoveBottomCommand_Invoked" />
+                    </i:Interaction.Behaviors>
+
+                    <gpc:TiledBackground TileSize="60" />
+
+                    <controls:Mindmap Document="{Binding Document}"  RendererFactory="{Binding RendererFactory}" x:Name="Mindmap">
+                        <controls:Mindmap.Layout>
+                            <modelLayout:DefaultLayout ElementMargin="10" HorizontalMargin="50" />
+                        </controls:Mindmap.Layout>
+                    </controls:Mindmap>
+                </Grid>
+            </SplitView.Content>
+        </SplitView>
+    </Grid>
 </Page>

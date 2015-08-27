@@ -1,15 +1,15 @@
-﻿<controls:MindmapFlyoutPopupView x:Class="Hercules.App.EditColorView"
+﻿<controls:MindmapFlyoutView x:Class="Hercules.App.Modules.Editor.Views.EditColorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:controls="using:Hercules.App.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
     Width="310">
 
-    <controls:MindmapFlyoutPopupView.Resources>
+    <controls:MindmapFlyoutView.Resources>
         <controls:ThemeBrushConverter x:Key="ThemeBrushConverter" />
-    </controls:MindmapFlyoutPopupView.Resources>
+    </controls:MindmapFlyoutView.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -27,4 +27,4 @@
             </GridView.ItemTemplate>
         </GridView>
     </Grid>
-</controls:MindmapFlyoutPopupView>
+</controls:MindmapFlyoutView>

@@ -6,79 +6,48 @@
 // All rights reserved.
 // ==========================================================================
 
-using System;
-using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Navigation;
-using GP.Windows.UI;
+using Windows.UI.Xaml.Media;
 using GP.Windows.UI.Interactivity;
-using Hercules.App.Modules.Editor.ViewModels;
+using Hercules.App.Modules.Mindmaps.ViewModels;
 using Hercules.Model;
 
 namespace Hercules.App
 {
     public sealed partial class MainPage
     {
-        public EditorViewModel EditorViewModel
-        {
-            get 
-            { 
-                return MainGrid.DataContext as EditorViewModel; 
-            }
-        }
-        
         public MainPage()
         {
             InitializeComponent();
+
+            var themeDarkBrush = (SolidColorBrush)Application.Current.Resources.MergedDictionaries[1]["ThemeDarkBrush"];
+            var themeLightBrush = (SolidColorBrush)Application.Current.Resources.MergedDictionaries[1]["ThemeLightBrush"];
+
+            ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
+            titleBar.BackgroundColor = themeDarkBrush.Color;
+            titleBar.ForegroundColor = Colors.White;
+            titleBar.InactiveBackgroundColor = themeDarkBrush.Color;
+            titleBar.InactiveForegroundColor = Colors.White;
+            titleBar.ButtonBackgroundColor = themeDarkBrush.Color;
+            titleBar.ButtonForegroundColor = Colors.White;
+            titleBar.ButtonInactiveBackgroundColor = themeDarkBrush.Color;
+            titleBar.ButtonInactiveForegroundColor = Colors.White;
+            titleBar.ButtonHoverBackgroundColor = themeLightBrush.Color;
+            titleBar.ButtonHoverForegroundColor = Colors.Black;
+            titleBar.ButtonPressedBackgroundColor = themeLightBrush.Color;
+            titleBar.ButtonPressedForegroundColor = Colors.Black;
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        private async void ListBox_Loaded(object sender, RoutedEventArgs e)
         {
-            InputPane inputPane = InputPane.GetForCurrentView();
+            MindmapsViewModel viewModel = (MindmapsViewModel)((FrameworkElement)sender).DataContext;
 
-            if (inputPane != null)
-            {
-                inputPane.Showing += InputPane_Showing;
-                inputPane.Hiding += InputPane_Hiding;
-            }
-
-            base.OnNavigatedTo(e);
-        }
-
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
-        {
-            InputPane inputPane = InputPane.GetForCurrentView();
-
-            if (inputPane != null)
-            {
-                inputPane.Showing -= InputPane_Showing;
-                inputPane.Hiding -= InputPane_Hiding;
-            }
-
-            base.OnNavigatedFrom(e);
-        }
-        
-        private void InputPane_Hiding(InputPane sender, InputPaneVisibilityEventArgs args)
-        {
-            if (EditorViewModel.Document != null)
-            {
-                BottomAppBar.AnimateY(0, TimeSpan.FromSeconds(0.15));
-
-                args.EnsuredFocusedElementInView = true;
-            }
-        }
-
-        private void InputPane_Showing(InputPane sender, InputPaneVisibilityEventArgs args)
-        {
-            if (EditorViewModel.Document != null)
-            {
-                BottomAppBar.AnimateY(args.OccludedRect.Height * (-1), TimeSpan.FromSeconds(0.2));
-
-                args.EnsuredFocusedElementInView = true;
-            }
+            await viewModel.LoadAsync();
         }
 
         private void RemoveButton_Invoking(object sender, CommandInvokingEventHandler e)
@@ -127,40 +96,14 @@ namespace Hercules.App
             }
         }
 
-        private void BottomBar_Closed(object sender, object e)
+        private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            if (BottomAppBar != null)
-            {
-                BottomAppBar.IsOpen = true;
-            }
+            SplitView.IsPaneOpen = !SplitView.IsPaneOpen;
         }
 
-        private void IconButton_Click(object sender, RoutedEventArgs e)
+        private void Grid_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
-            if (Mindmap.Document != null && Mindmap.Renderer != null)
-            {
-                EditIconView view = new EditIconView
-                {
-                    Document = Mindmap.Document,
-                    Renderer = Mindmap.Renderer
-                };
-
-                PopupHandler.ShowPopupLeftBottom(view, new Point(10, 80));
-            }
-        }
-
-        private void ColorButton_Click(object sender, RoutedEventArgs e)
-        {
-            if (Mindmap.Document != null && Mindmap.Renderer != null)
-            {
-                EditColorView view = new EditColorView
-                {
-                    Document = Mindmap.Document,
-                    Renderer = Mindmap.Renderer
-                };
-
-                PopupHandler.ShowPopupLeftBottom(view, new Point(70, 80));
-            }
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
     }
 }

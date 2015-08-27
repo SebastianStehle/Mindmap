@@ -124,7 +124,7 @@
     <value>Über</value>
   </data>
   <data name="AppBarButtonAddChild.Label" xml:space="preserve">
-    <value>Add Child</value>
+    <value>Kind</value>
   </data>
   <data name="AppBarButtonAddChild.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Neues Kind</value>
@@ -133,7 +133,7 @@
     <value>Neues Kind hinzufügen (CTRL + M)</value>
   </data>
   <data name="AppBarButtonAddSibling.Label" xml:space="preserve">
-    <value>Add Sibling</value>
+    <value>Bruder</value>
   </data>
   <data name="AppBarButtonAddSibling.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Neuer Bruder</value>
@@ -142,7 +142,7 @@
     <value>Neuer Bruder hinzufügen (CTRL + N)</value>
   </data>
   <data name="AppBarButtonChangeColor.Label" xml:space="preserve">
-    <value>Colors</value>
+    <value>Farben</value>
   </data>
   <data name="AppBarButtonChangeColor.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Farbe Ändern</value>
@@ -190,7 +190,7 @@
     <value>Redo (CTRL + Y)</value>
   </data>
   <data name="AppBarButtonRemoveNode.Label" xml:space="preserve">
-    <value>Delete Node</value>
+    <value>Entfernen</value>
   </data>
   <data name="AppBarButtonRemoveNode.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Entfernen</value>
@@ -241,6 +241,12 @@ Deutschland</value>
   </data>
   <data name="MindmapNameLabel.Text" xml:space="preserve">
     <value>Mindmap Title:</value>
+  </data>
+  <data name="MindmapsAddButton.Text" xml:space="preserve">
+    <value>Neue Mindmap</value>
+  </data>
+  <data name="MindmapsHeader.Text" xml:space="preserve">
+    <value>Mindmaps</value>
   </data>
   <data name="MyMindmap" xml:space="preserve">
     <value>Meine Mindmap</value>

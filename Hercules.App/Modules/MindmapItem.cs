@@ -81,11 +81,9 @@ namespace Hercules.App.Modules
             }
         }
 
-        public Task RefreshAfterSaveAsync()
+        public void RefreshAfterSave()
         {
             LastUpdate = DateTimeOffset.Now;
-
-            return RefreshImageAsync();
         }
 
         public async Task RemoveAsync(IDocumentStore store)

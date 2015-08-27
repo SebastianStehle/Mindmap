@@ -25,7 +25,7 @@ namespace GP.Windows.UI
         /// <summary>
         /// Called when the popup is opened.
         /// </summary>
-        void OnOpening();
+        void OnOpened();
 
         /// <summary>
         /// Called when the popup is closed.

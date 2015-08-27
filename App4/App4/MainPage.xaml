@@ -1,0 +1,77 @@
+﻿<Page
+    x:Class="App4.MainPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App4"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <Page.Resources>
+        <SolidColorBrush x:Name="HeaderColor" Color="#FF2A4899"></SolidColorBrush>
+    </Page.Resources>
+    
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <Grid Background="#FF3660D1" RequestedTheme="Dark">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+                <AppBarButton RequestedTheme="Dark" Icon="List" Click="AppBarButton_Click" Label="Mindmaps" />
+                
+                <StackPanel Orientation="Horizontal">
+                    <Rectangle RequestedTheme="Dark" Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
+
+                    <AppBarButton Icon="Setting" Label="Settings" RequestedTheme="Dark">
+                        <AppBarButton.Flyout>
+                            <MenuFlyout>
+                                <MenuFlyoutItem Text="Rename" />
+                                <MenuFlyoutSeparator />
+                                <MenuFlyoutItem Text="Export" />
+                            </MenuFlyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
+
+                    <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
+
+                    <AppBarButton Label="Icons" Icon="Favorite">
+                    </AppBarButton>
+                    <AppBarButton Label="Colors" Icon="Bold">
+                    </AppBarButton>
+
+                    <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
+
+                    <AppBarButton Icon="Undo" Label="Undo">
+                    </AppBarButton>
+
+                    <AppBarButton Icon="Redo" Label="Redo">
+                    </AppBarButton>
+                </StackPanel>
+            </StackPanel>
+
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" >
+                <AppBarButton Icon="Delete" Label="Delete Node">
+                </AppBarButton>
+
+                <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
+
+                    <AppBarButton Icon="Add" Label="Add Child">
+                    </AppBarButton>
+
+                    <AppBarButton Icon="Add" Label="Add Sibling">
+                    </AppBarButton>
+            </StackPanel>
+        </Grid>
+        
+        <SplitView Grid.Row="1" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="68" x:Name="SplitView">
+            <SplitView.Pane>
+                <Grid />
+            </SplitView.Pane>
+            <SplitView.Content>
+                <Grid />
+            </SplitView.Content>
+        </SplitView>
+    </Grid>
+</Page>

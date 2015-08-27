@@ -193,7 +193,7 @@ namespace GP.Windows.UI
                 {
                     popupControl.Popup = popupContainer;
 
-                    popupControl.OnOpening();
+                    popupControl.OnOpened();
                 }
 
                 UpdatePopupOffset();

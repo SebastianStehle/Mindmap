@@ -168,6 +168,15 @@
   <data name="AppBarButtonEdit.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Mindmap bearbeiten (CTRL + E)</value>
   </data>
+  <data name="AppBarButtonListMindmaps.Label" xml:space="preserve">
+    <value>Mindmaps</value>
+  </data>
+  <data name="AppBarButtonListMindmaps.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Mindmaps</value>
+  </data>
+  <data name="AppBarButtonListMindmaps.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Alle Mindmaps anzeigen (CNTR + L)</value>
+  </data>
   <data name="AppBarButtonNewMindmap.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Neue Mindmap</value>
   </data>

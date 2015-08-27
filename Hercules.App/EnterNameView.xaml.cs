@@ -22,7 +22,7 @@ namespace Hercules.App
             InitializeComponent();
         }
 
-        public void OnOpening()
+        public void OnOpened()
         {
         }
 

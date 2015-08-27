@@ -14,13 +14,13 @@ namespace Hercules.App.Controls
     {
         public MindmapFlyout()
         {
-            Opening += (sender, e) =>
+            Opened += (sender, e) =>
             {
                 MindmapFlyoutPopupView view = Content as MindmapFlyoutPopupView;
 
                 if (view != null)
                 {
-                    view.OnOpening();
+                    view.OnOpened();
                 }
             };
 

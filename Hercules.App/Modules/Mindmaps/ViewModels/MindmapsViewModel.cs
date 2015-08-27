@@ -103,17 +103,13 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
                             await mindmapItem.RefreshImageAsync();
 
-                            for (int i = 0; i < 100; i++)
-                            {
-                                Mindmaps.Add(mindmapItem);
-                            }
+                            Mindmaps.Add(mindmapItem);
                         }
                     }
 
                     SelectedMindmap = Mindmaps.FirstOrDefault();
                 }
-                
-                if (Mindmaps.Count == 0)
+                else
                 {
                     SettingsProvider.IsAlreadyStarted = true;
 

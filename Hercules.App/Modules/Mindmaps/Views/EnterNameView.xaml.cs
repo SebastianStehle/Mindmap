@@ -22,7 +22,7 @@ namespace Hercules.App.Modules.Mindmaps.Views
             InitializeComponent();
         }
 
-        public void OnOpening()
+        public void OnOpened()
         {
         }
 

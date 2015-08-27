@@ -35,7 +35,7 @@ namespace Hercules.App.Controls
             set { SetValue(RendererProperty, value); }
         }
 
-        public virtual void OnOpening()
+        public virtual void OnOpened()
         {
         }
 

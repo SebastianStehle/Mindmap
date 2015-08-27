@@ -32,7 +32,7 @@ namespace Hercules.App
             Change(selected);
         }
 
-        public override void OnOpening()
+        public override void OnOpened()
         {
             NodeBase selectedNode = Document.SelectedNode;
 

@@ -4,206 +4,144 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
+    xmlns:im="using:Microsoft.Xaml.Interactions.Media"
     xmlns:m="using:Hercules.App.Modules.Mindmaps.Views"
+    xmlns:local="using:Hercules.App"
     xmlns:controls="using:Hercules.App.Controls"
     xmlns:modelLayout="using:Hercules.Model.Layouting.Default"
     xmlns:gpc="using:GP.Windows.UI.Controls"
     xmlns:gpi="using:GP.Windows.UI.Interactivity"
     mc:Ignorable="d"
     DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
-
+    
     <Page.Resources>
-        <Style x:Key="AppBarStyleNoClose" TargetType="AppBar">
-            <Setter Property="Background" Value="{ThemeResource SystemControlBackgroundChromeMediumBrush}"/>
-            <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
-            <Setter Property="IsTabStop" Value="False"/>
-            <Setter Property="VerticalAlignment" Value="Top"/>
-            <Setter Property="HorizontalAlignment" Value="Stretch"/>
-            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
-            <Setter Property="VerticalContentAlignment" Value="Stretch"/>
-            <Setter Property="ClosedDisplayMode" Value="Minimal"/>
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="AppBar">
-                        <Grid x:Name="LayoutRoot" Background="{TemplateBinding Background}">
-                            <Grid.Clip>
-                                <RectangleGeometry Rect="{Binding TemplateSettings.ClipRect, RelativeSource={RelativeSource Mode=TemplatedParent}}">
-                                    <RectangleGeometry.Transform>
-                                        <TranslateTransform x:Name="ClipGeometryTransform" Y="{Binding TemplateSettings.CompactVerticalDelta, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
-                                    </RectangleGeometry.Transform>
-                                </RectangleGeometry>
-                            </Grid.Clip>
-                            <VisualStateManager.VisualStateGroups>
-                                <VisualStateGroup x:Name="CommonStates">
-                                    <VisualState x:Name="Normal"/>
-                                    <VisualState x:Name="Disabled">
-                                        <Storyboard>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="EllipsisIcon">
-                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseLowBrush}"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                                <VisualStateGroup x:Name="DisplayModeStates">
-                                    <VisualState x:Name="CompactClosed"/>
-                                    <VisualState x:Name="CompactOpenUp">
-                                        <Storyboard>
-                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Y" Storyboard.TargetName="ContentTransform">
-                                                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="{Binding TemplateSettings.CompactVerticalDelta, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
-                                            </DoubleAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="VerticalAlignment" Storyboard.TargetName="ExpandButton">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Stretch"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="HighContrastBorder">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Visible"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="CompactOpenDown">
-                                        <Storyboard>
-                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Y" Storyboard.TargetName="ClipGeometryTransform">
-                                                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
-                                            </DoubleAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="VerticalAlignment" Storyboard.TargetName="ExpandButton">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Stretch"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="HighContrastBorder">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Visible"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="MinimalOpenUp">
-                                        <Storyboard>
-                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Y" Storyboard.TargetName="ClipGeometryTransform">
-                                                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="{Binding TemplateSettings.MinimalVerticalDelta, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
-                                            </DoubleAnimationUsingKeyFrames>
-                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Y" Storyboard.TargetName="ContentTransform">
-                                                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="{Binding TemplateSettings.MinimalVerticalDelta, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
-                                            </DoubleAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Padding" Storyboard.TargetName="ExpandButton">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="16,11,16,0"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="VerticalAlignment" Storyboard.TargetName="ExpandButton">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Stretch"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="HighContrastBorder">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Visible"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="MinimalOpenDown">
-                                        <Storyboard>
-                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Y" Storyboard.TargetName="ClipGeometryTransform">
-                                                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
-                                            </DoubleAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Padding" Storyboard.TargetName="ExpandButton">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="16,11,16,0"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="VerticalAlignment" Storyboard.TargetName="ExpandButton">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Stretch"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="HighContrastBorder">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Visible"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="HiddenOpenUp">
-                                        <Storyboard>
-                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Y" Storyboard.TargetName="ClipGeometryTransform">
-                                                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="{Binding TemplateSettings.HiddenVerticalDelta, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
-                                            </DoubleAnimationUsingKeyFrames>
-                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Y" Storyboard.TargetName="ContentTransform">
-                                                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="{Binding TemplateSettings.HiddenVerticalDelta, RelativeSource={RelativeSource Mode=TemplatedParent}}"/>
-                                            </DoubleAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="VerticalAlignment" Storyboard.TargetName="ExpandButton">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Stretch"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="HighContrastBorder">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Visible"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                    <VisualState x:Name="HiddenOpenDown">
-                                        <Storyboard>
-                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Y" Storyboard.TargetName="ClipGeometryTransform">
-                                                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
-                                            </DoubleAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="VerticalAlignment" Storyboard.TargetName="ExpandButton">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Stretch"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Visibility" Storyboard.TargetName="HighContrastBorder">
-                                                <DiscreteObjectKeyFrame KeyTime="0:0:0" Value="Visible"/>
-                                            </ObjectAnimationUsingKeyFrames>
-                                        </Storyboard>
-                                    </VisualState>
-                                </VisualStateGroup>
-                            </VisualStateManager.VisualStateGroups>
-                            <Grid x:Name="ContentRoot" Background="{TemplateBinding Background}" Height="{TemplateBinding Height}" Margin="{TemplateBinding Padding}" MinHeight="{ThemeResource AppBarThemeMinHeight}" Opacity="{TemplateBinding Opacity}" VerticalAlignment="Top">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*"/>
-                                    <ColumnDefinition Width="Auto"/>
-                                </Grid.ColumnDefinitions>
-                                <Grid.RenderTransform>
-                                    <TranslateTransform x:Name="ContentTransform"/>
-                                </Grid.RenderTransform>
-                                <ContentControl x:Name="ContentControl" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" Foreground="{TemplateBinding Foreground}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" IsTabStop="False" VerticalAlignment="{TemplateBinding VerticalContentAlignment}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
-                                
-                                <Button Opacity="0" IsHitTestVisible="false" x:Name="ExpandButton" Grid.Column="1" Foreground="{TemplateBinding Foreground}" MinHeight="{ThemeResource AppBarThemeCompactHeight}" Padding="16,23,16,0" Style="{StaticResource EllipsisButton}" VerticalAlignment="Top">
-                                    <FontIcon x:Name="EllipsisIcon" FontSize="16" FontFamily="{ThemeResource SymbolThemeFontFamily}" Glyph="&#xE10C;" Height="{ThemeResource AppBarExpandButtonCircleDiameter}" VerticalAlignment="Center"/>
-                                </Button>
-                                
-                                <Rectangle Opacity="0" IsHitTestVisible="false" x:Name="HighContrastBorder" Grid.ColumnSpan="2" Grid.Column="0" Stroke="{ThemeResource SystemControlForegroundTransparentBrush}" StrokeThickness="1" Visibility="Collapsed" VerticalAlignment="Stretch" />
-                            </Grid>
-                        </Grid>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
+        <Storyboard x:Key="StoryboardShow">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)" Storyboard.TargetName="Mindmaps">
+                <SplineDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="StoryboardHide">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(CompositeTransform.TranslateX)" Storyboard.TargetName="Mindmaps">
+                <SplineDoubleKeyFrame KeyTime="0:0:0.5" Value="-300"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Page.Resources>
 
-    <Page.BottomAppBar>
-        <AppBar IsOpen="True" IsSticky="True" Style="{StaticResource AppBarStyleNoClose}" Closed="BottomBar_Closed">
+    <SplitView>
+        <SplitView.Pane>
+            <m:MindmapsView />
+        </SplitView.Pane>
+        <SplitView.Content>
+            <Grid x:Name="MainGrid" Grid.Row="1">
+                <i:Interaction.Behaviors>
+                    <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Left" Invoked="MoveLeftCommand_Invoked" />
+                    <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Right" Invoked="MoveRightCommand_Invoked" />
+                    <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Up" Invoked="MoveTopCommand_Invoked" />
+                    <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Down" Invoked="MoveBottomCommand_Invoked" />
+                </i:Interaction.Behaviors>
+
+                <gpc:TiledBackground TileSize="60" />
+
+                <controls:Mindmap Document="{Binding Document}"  RendererFactory="{Binding RendererFactory}" x:Name="Mindmap">
+                    <controls:Mindmap.Layout>
+                        <modelLayout:DefaultLayout ElementMargin="10" HorizontalMargin="50" />
+                    </controls:Mindmap.Layout>
+                </controls:Mindmap>
+            </Grid>
+        </SplitView.Content>
+    </SplitView>
+    
+    
+    <!--<Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+
+        <AppBar IsOpen="True" IsSticky="True" Style="{StaticResource AppBarStyleNoClose}" Closed="BottomBar_Closed" Height="60">
             <Grid>
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition/>
                     <ColumnDefinition/>
                 </Grid.ColumnDefinitions>
 
-                <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
-                    <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}" Icon="Favorite" x:Name="IconButton" Click="IconButton_Click"
-                        AutomationProperties.AccessKey="CTRL + I"
-                        AutomationProperties.Name="Change Icon" x:Uid="AppBarButtonChangeIcon">
+                <StackPanel Orientation="Horizontal">
+                    <AppBarToggleButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}" Icon="List" x:Name="ListButton"
+                        AutomationProperties.AccessKey="CTRL + M"
+                        AutomationProperties.Name="Mindmaps" x:Uid="AppBarButtonListMindmaps">
                         <i:Interaction.Behaviors>
-                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="I" />
-                        </i:Interaction.Behaviors>
-                    </AppBarButton>
-                    <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=true}" Icon="Bold" x:Name="ColorButton" Click="ColorButton_Click"
-                        AutomationProperties.AccessKey="CTRL + O"
-                        AutomationProperties.Name="Change Color" x:Uid="AppBarButtonChangeColor">
-                        <i:Interaction.Behaviors>
-                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="O" />
-                        </i:Interaction.Behaviors>
-                    </AppBarButton>
+                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="M" />
 
-                    <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
-
-                    <AppBarButton Icon="Undo"
-                        Command="{Binding UndoCommand}"
-                        AutomationProperties.AccessKey="CTRL + Z"
-                        AutomationProperties.Name="Undo" x:Uid="AppBarButtonUndo">
-                        <i:Interaction.Behaviors>
-                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
+                            <ic:EventTriggerBehavior EventName="Checked">
+                                <im:ControlStoryboardAction Storyboard="{StaticResource StoryboardShow}"/>
+                            </ic:EventTriggerBehavior>
+                            <ic:EventTriggerBehavior EventName="Unchecked">
+                                <im:ControlStoryboardAction Storyboard="{StaticResource StoryboardHide}"/>
+                            </ic:EventTriggerBehavior>
                         </i:Interaction.Behaviors>
-                    </AppBarButton>
+                    </AppBarToggleButton>
 
-                    <AppBarButton Icon="Redo"
-                        Command="{Binding RedoCommand}"
-                        AutomationProperties.AccessKey="CTRL + Y"
-                        AutomationProperties.HelpText="Redo" x:Uid="AppBarButtonRedo">
-                        <i:Interaction.Behaviors>
-                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Y" />
-                        </i:Interaction.Behaviors>
-                    </AppBarButton>
+                    <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
+                        <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
+
+                        <AppBarButton Icon="Setting">
+                            <AppBarButton.Flyout>
+                                <MenuFlyout>
+                                    <MenuFlyoutItem Text="Rename" />
+                                    <MenuFlyoutSeparator />
+                                    <MenuFlyoutItem Text="Export" />
+                                </MenuFlyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+                        
+                        <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
+
+                        <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}" Icon="Favorite" x:Name="IconButton"
+                            AutomationProperties.AccessKey="CTRL + I"
+                            AutomationProperties.Name="Change Icon" x:Uid="AppBarButtonChangeIcon">
+                            <i:Interaction.Behaviors>
+                                <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="I" />
+                            </i:Interaction.Behaviors>
+                            <AppBarButton.Flyout>
+                                <controls:MindmapFlyout>
+                                    <local:EditIconView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
+                                </controls:MindmapFlyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+                        <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=true}" Icon="Bold" x:Name="ColorButton"
+                            AutomationProperties.AccessKey="CTRL + O"
+                            AutomationProperties.Name="Change Color" x:Uid="AppBarButtonChangeColor">
+                            <i:Interaction.Behaviors>
+                                <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="O" />
+                            </i:Interaction.Behaviors>
+                            <AppBarButton.Flyout>
+                                <controls:MindmapFlyout>
+                                    <local:EditColorView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
+                                </controls:MindmapFlyout>
+                            </AppBarButton.Flyout>
+                        </AppBarButton>
+
+                        <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
+
+                        <AppBarButton Icon="Undo"
+                            Command="{Binding UndoCommand}"
+                            AutomationProperties.AccessKey="CTRL + Z"
+                            AutomationProperties.Name="Undo" x:Uid="AppBarButtonUndo">
+                            <i:Interaction.Behaviors>
+                                <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
+                            </i:Interaction.Behaviors>
+                        </AppBarButton>
+
+                        <AppBarButton Icon="Redo"
+                            Command="{Binding RedoCommand}"
+                            AutomationProperties.AccessKey="CTRL + Y"
+                            AutomationProperties.HelpText="Redo" x:Uid="AppBarButtonRedo">
+                            <i:Interaction.Behaviors>
+                                <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Y" />
+                            </i:Interaction.Behaviors>
+                        </AppBarButton>
+                    </StackPanel>
                 </StackPanel>
 
                 <StackPanel Grid.Column="1" HorizontalAlignment="Right" Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
@@ -239,26 +177,7 @@
                 </StackPanel>
             </Grid>
         </AppBar>
-    </Page.BottomAppBar>
 
-    <Grid>
-        <Grid x:Name="MainGrid" Margin="0,40,0,36">
-            <i:Interaction.Behaviors>
-                <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Left" Invoked="MoveLeftCommand_Invoked" />
-                <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Right" Invoked="MoveRightCommand_Invoked" />
-                <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Up" Invoked="MoveTopCommand_Invoked" />
-                <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Down" Invoked="MoveBottomCommand_Invoked" />
-            </i:Interaction.Behaviors>
-
-            <gpc:TiledBackground TileSize="60" />
-
-            <controls:Mindmap Document="{Binding Document}"  RendererFactory="{Binding RendererFactory}" x:Name="Mindmap">
-                <controls:Mindmap.Layout>
-                    <modelLayout:DefaultLayout ElementMargin="10" HorizontalMargin="50" />
-                </controls:Mindmap.Layout>
-            </controls:Mindmap>
-        </Grid>
         
-        <m:MindmapsView />
-    </Grid>
+    </Grid>-->
 </Page>

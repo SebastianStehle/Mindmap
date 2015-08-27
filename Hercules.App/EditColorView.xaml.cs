@@ -31,7 +31,7 @@ namespace Hercules.App
             Change(selected);
         }
 
-        public override void OnOpening()
+        public override void OnOpened()
         {
             ColorsGrid.ItemsSource = Renderer.Resources.Colors;
 

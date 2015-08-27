@@ -110,6 +110,10 @@ namespace Hercules.App.Controls
             if (scrollViewer != null)
             {
                 scrollViewer.ViewChanging += ScrollViewer_ViewChanging;
+
+                scrollViewer.ZoomSnapPoints.Add(0.5f);
+                scrollViewer.ZoomSnapPoints.Add(1.0f);
+                scrollViewer.ZoomSnapPoints.Add(2.0f);
             }
         }
 

@@ -1,28 +1,235 @@
 ﻿<Page
-    x:Class="App4.MainPage"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:App4"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:Interactivity="using:Microsoft.Xaml.Interactivity" xmlns:Core="using:Microsoft.Xaml.Interactions.Core"
+    xmlns:Media="using:Microsoft.Xaml.Interactions.Media"
+    x:Class="App4.MainPage"
     mc:Ignorable="d">
 
     <Page.Resources>
-        <SolidColorBrush x:Name="HeaderColor" Color="#FF2A4899"></SolidColorBrush>
+        <SolidColorBrush x:Name="ThemeMainBrush" Color="#2B69CE" />
+        <SolidColorBrush x:Name="ThemeDarkBrush" Color="#1A4A99" />
+        <SolidColorBrush x:Name="ThemeLightBrush" Color="#609DFF" />
+
+        <SolidColorBrush x:Name="ThemeButtonHoverBrush" Color="#D8E8FF" />
+        <SolidColorBrush x:Name="ThemeButtonPressedBrush" Color="#CCE1FF" />
+        <SolidColorBrush x:Name="ThemeForegroundBrush" Color="White" />
+
+        <Style x:Key="ThemeButton" TargetType="Button">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="BorderBrush" Value="Transparent"/>
+            <Setter Property="BorderThickness" Value="{ThemeResource ButtonBorderThemeThickness}"/>
+            <Setter Property="Foreground" Value="{StaticResource ThemeForegroundBrush}"/>
+            <Setter Property="Padding" Value="8,4,8,4"/>
+            <Setter Property="HorizontalAlignment" Value="Left"/>
+            <Setter Property="VerticalAlignment" Value="Center"/>
+            <Setter Property="FontFamily" Value="{ThemeResource ContentControlThemeFontFamily}"/>
+            <Setter Property="FontWeight" Value="Normal"/>
+            <Setter Property="FontSize" Value="{ThemeResource ControlContentThemeFontSize}"/>
+            <Setter Property="UseSystemFocusVisuals" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Grid x:Name="RootGrid" Background="{TemplateBinding Background}">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <PointerUpThemeAnimation Storyboard.TargetName="RootGrid"/>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ThemeDarkBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ThemeButtonHoverBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ThemeDarkBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Background" Storyboard.TargetName="RootGrid">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ThemeButtonPressedBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledTransparentBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <ContentPresenter x:Name="ContentPresenter" AutomationProperties.AccessibilityView="Raw" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" Padding="{TemplateBinding Padding}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Style x:Key="ListBoxItemStyle1" TargetType="ListBoxItem">
+            <Setter Property="Background" Value="Transparent"/>
+            <Setter Property="TabNavigation" Value="Local"/>
+            <Setter Property="Padding" Value="12,8,12,8"/>
+            <Setter Property="HorizontalContentAlignment" Value="Stretch"/>
+            <Setter Property="UseSystemFocusVisuals" Value="True"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Grid x:Name="LayoutRoot" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}">
+                            <Grid.Resources>
+                                <Style x:Key="BaseContentPresenterStyle" TargetType="ContentPresenter">
+                                    <Setter Property="FontFamily" Value="Segoe UI"/>
+                                    <Setter Property="FontWeight" Value="SemiBold"/>
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="TextWrapping" Value="Wrap"/>
+                                    <Setter Property="LineStackingStrategy" Value="MaxHeight"/>
+                                    <Setter Property="TextLineBounds" Value="Full"/>
+                                    <Setter Property="OpticalMarginAlignment" Value="TrimSideBearings"/>
+                                </Style>
+                                <Style x:Key="BodyContentPresenterStyle" BasedOn="{StaticResource BaseContentPresenterStyle}" TargetType="ContentPresenter">
+                                    <Setter Property="FontWeight" Value="Normal"/>
+                                    <Setter Property="FontSize" Value="15"/>
+                                </Style>
+                            </Grid.Resources>
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="LightGray"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="LightGray"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseLowBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="LightGray"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="PointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="PressedBackground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ThemeButtonHoverBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Pressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="PressedBackground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightListMediumBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlHighlightAltBaseHighBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="Selected">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="PressedBackground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ThemeMainBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ThemeForegroundBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="SelectedUnfocused">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="PressedBackground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ThemeMainBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ThemeForegroundBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="SelectedPointerOver">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="PressedBackground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ThemeLightBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ThemeForegroundBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                    <VisualState x:Name="SelectedPressed">
+                                        <Storyboard>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Fill" Storyboard.TargetName="PressedBackground">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ThemeMainBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                            <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
+                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource ThemeForegroundBrush}"/>
+                                            </ObjectAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Rectangle x:Name="PressedBackground" Fill="Transparent" Control.IsTemplateFocusTarget="True"/>
+
+                            <Border x:Name="Border" BorderThickness="0,0.5,0,0" BorderBrush="Transparent">
+                                <ContentPresenter x:Name="ContentPresenter" ContentTemplate="{TemplateBinding ContentTemplate}" ContentTransitions="{TemplateBinding ContentTransitions}" Content="{TemplateBinding Content}" HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" Margin="{TemplateBinding Padding}" Style="{StaticResource BodyContentPresenterStyle}" TextWrapping="NoWrap" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                            </Border>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        <Storyboard x:Name="ShowListStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ListBox">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ListBoxHeader">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="HideListStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ListBox">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="ListBoxHeader">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Page.Resources>
-    
+
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Grid Background="#FF3660D1" RequestedTheme="Dark">
+        <Grid Background="{StaticResource ThemeMainBrush}" RequestedTheme="Dark">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                 <AppBarButton RequestedTheme="Dark" Icon="List" Click="AppBarButton_Click" Label="Mindmaps" />
-                
+
                 <StackPanel Orientation="Horizontal">
-                    <Rectangle RequestedTheme="Dark" Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
+                    <AppBarSeparator />
 
                     <AppBarButton Icon="Setting" Label="Settings" RequestedTheme="Dark">
                         <AppBarButton.Flyout>
@@ -34,50 +241,115 @@
                         </AppBarButton.Flyout>
                     </AppBarButton>
 
-                    <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
+                    <AppBarSeparator />
 
-                    <AppBarButton Label="Icons" Icon="Favorite">
+                    <AppBarButton Label="Icons">
+                        <TextBlock TextAlignment="Center" FontSize="20" Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" />
                     </AppBarButton>
-                    <AppBarButton Label="Colors" Icon="Bold">
-                    </AppBarButton>
-
-                    <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
-
-                    <AppBarButton Icon="Undo" Label="Undo">
+                    <AppBarButton Label="Colors">
+                        <TextBlock TextAlignment="Center" FontSize="20" Text="&#xE2B1;" FontFamily="Segoe MDL2 Assets" />
                     </AppBarButton>
 
-                    <AppBarButton Icon="Redo" Label="Redo">
-                    </AppBarButton>
+                    <AppBarSeparator />
+
+                    <AppBarButton Icon="Undo" Label="Undo"/>
+
+                    <AppBarButton Icon="Redo" Label="Redo"/>
                 </StackPanel>
             </StackPanel>
 
             <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" >
-                <AppBarButton Icon="Delete" Label="Delete Node">
+                <AppBarButton Icon="Delete" Label="Delete Node"/>
+
+                <AppBarSeparator />
+
+                <AppBarButton Label="Add Child">
+                    <Grid Width="28" Height="20">
+                        <Path Data="M 7,8 L7,16 L14,16" StrokeLineJoin="Round" Stroke="{ThemeResource AppBarItemForegroundThemeBrush}" StrokeThickness="1.5" />
+
+                        <Rectangle RadiusX="1" RadiusY="1" Stroke="{ThemeResource AppBarItemForegroundThemeBrush}" StrokeThickness="1.5" Width="14" Height="8" HorizontalAlignment="Left" VerticalAlignment="Top"  />
+                        <Rectangle RadiusX="1" RadiusY="1" Stroke="{ThemeResource AppBarItemForegroundThemeBrush}" StrokeThickness="1.5" Width="14" Height="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                    </Grid>
                 </AppBarButton>
 
-                <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
+                <AppBarButton Label="Add Sibling">
+                    <Grid Width="28" Height="20">
+                        <Path Data="M 14,4 L4,4 L4,16 L14,16" StrokeLineJoin="Round" Stroke="{ThemeResource AppBarItemForegroundThemeBrush}" StrokeThickness="1.5" />
 
-                    <AppBarButton Icon="Add" Label="Add Child">
-                    </AppBarButton>
-
-                    <AppBarButton Icon="Add" Label="Add Sibling">
-                    </AppBarButton>
+                        <Rectangle RadiusX="1" RadiusY="1" Stroke="{ThemeResource AppBarItemForegroundThemeBrush}" StrokeThickness="1.5" Width="14" Height="8" HorizontalAlignment="Right" VerticalAlignment="Top"  />
+                        <Rectangle RadiusX="1" RadiusY="1" Stroke="{ThemeResource AppBarItemForegroundThemeBrush}" StrokeThickness="1.5" Width="14" Height="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+                    </Grid>
+                </AppBarButton>
             </StackPanel>
         </Grid>
-        
-        <SplitView Grid.Row="1" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="68" x:Name="SplitView">
+
+        <SplitView Grid.Row="1" DisplayMode="CompactOverlay" IsPaneOpen="True" CompactPaneLength="68" x:Name="SplitView">
+            <Interactivity:Interaction.Behaviors>
+                <Core:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=SplitView}">
+                    <Core:DataTriggerBehavior.Value>
+                        <x:Boolean>True</x:Boolean>
+                    </Core:DataTriggerBehavior.Value>
+                    <Media:ControlStoryboardAction Storyboard="{StaticResource ShowListStoryboard}"/>
+                </Core:DataTriggerBehavior>
+                <Core:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=SplitView}">
+                    <Core:DataTriggerBehavior.Value>
+                        <x:Boolean>False</x:Boolean>
+                    </Core:DataTriggerBehavior.Value>
+                    <Media:ControlStoryboardAction Storyboard="{StaticResource HideListStoryboard}"/>
+                </Core:DataTriggerBehavior>
+            </Interactivity:Interaction.Behaviors>
             <SplitView.Pane>
-                <Grid Margin="9">
-                    <Button Width="40" Height="40" Margin="5" VerticalAlignment="Top" Background="Transparent" Foreground="{StaticResource HeaderColor}">
-                        <Viewbox>
-                            <SymbolIcon Symbol="Add" />
-                        </Viewbox>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="62*" />
+                        <RowDefinition Height="831*"/>
+                    </Grid.RowDefinitions>
+
+                    <Button Padding="0,10,0,10" Margin="0,20,0,20" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalAlignment="Top" Background="Transparent" Foreground="{StaticResource ThemeMainBrush}" Style="{StaticResource ThemeButton}">
+                        <StackPanel Orientation="Horizontal">
+                            <Grid>
+                                <Viewbox Width="64" Height="26">
+                                    <SymbolIcon Symbol="Add" />
+                                </Viewbox>
+                            </Grid>
+
+                            <TextBlock Margin="5,0,0,0" FontSize="16" Text="Add Mindmap" />
+                        </StackPanel>
                     </Button>
+
+                    <TextBlock x:Name="ListBoxHeader" Grid.Row="1" Foreground="Black" Text="Mindmaps" Opacity="0" FontSize="20" Margin="10,5,5,2" FontWeight="Bold" />
+
+                    <ListBox x:Name="ListBox" Opacity="0" Grid.Row="2" ItemContainerStyle="{StaticResource ListBoxItemStyle1}" Margin="0,0.398,0,-0.398" Grid.RowSpan="2" d:LayoutOverrides="TopPosition, BottomPosition">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Grid RightTapped="Grid_RightTapped">
+                                    <FlyoutBase.AttachedFlyout>
+                                        <MenuFlyout>
+                                            <MenuFlyoutItem Text="Rename" />
+                                            <MenuFlyoutSeparator />
+                                            <MenuFlyoutItem Text="Delete" />
+                                        </MenuFlyout>
+                                    </FlyoutBase.AttachedFlyout>
+
+                                    <StackPanel>
+                                        <TextBlock FontSize="15" Text="Meine Mindmap" />
+                                        <TextBlock FontSize="13" Text="Zuletzt bearbeitet: 25/10/2015" FontWeight="Light" Opacity="0.9" />
+                                    </StackPanel>
+                                </Grid>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                        <Button />
+                        <Button />
+                        <Button />
+                        <Button />
+                        <Button />
+                        <Button />
+                    </ListBox>
                 </Grid>
             </SplitView.Pane>
-            <SplitView.Content>
-                <Grid />
-            </SplitView.Content>
+            <Grid />
         </SplitView>
     </Grid>
 </Page>

@@ -30,15 +30,33 @@ namespace App4
             this.InitializeComponent();
             
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;
-            titleBar.BackgroundColor = HeaderColor.Color;
+            titleBar.BackgroundColor = ThemeDarkBrush.Color;
             titleBar.ForegroundColor = Colors.White;
-            titleBar.ButtonBackgroundColor = HeaderColor.Color;
+            titleBar.InactiveBackgroundColor = ThemeDarkBrush.Color;
+            titleBar.InactiveForegroundColor = Colors.White;
+            titleBar.ButtonBackgroundColor = ThemeDarkBrush.Color;
             titleBar.ButtonForegroundColor = Colors.White;
+            titleBar.ButtonInactiveBackgroundColor = ThemeDarkBrush.Color;
+            titleBar.ButtonInactiveForegroundColor = Colors.White;
+            titleBar.ButtonHoverBackgroundColor = ThemeLightBrush.Color;
+            titleBar.ButtonHoverForegroundColor = Colors.Black;
+            titleBar.ButtonPressedBackgroundColor = ThemeLightBrush.Color;
+            titleBar.ButtonPressedForegroundColor = Colors.Black;
         }
 
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             SplitView.IsPaneOpen = !SplitView.IsPaneOpen;
+        }
+
+        private void SplitView_PaneClosed(SplitView sender, object args)
+        {
+
+        }
+
+        private void Grid_RightTapped(object sender, RightTappedRoutedEventArgs e)
+        {
+            FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);
         }
     }
 }

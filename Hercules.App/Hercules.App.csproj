@@ -102,8 +102,10 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Assets\AssetProvider.cs" />
+    <Compile Include="Components\IMessageDialogService.cs" />
     <Compile Include="Components\ILocalizationManager.cs" />
     <Compile Include="Components\Implementations\DefaultSettingsProvider.cs" />
+    <Compile Include="Components\Implementations\MessageDialogService.cs" />
     <Compile Include="Components\Implementations\ResourceManager.cs" />
     <Compile Include="Components\Implementations\ResourcesLocalizationManager.cs" />
     <Compile Include="Components\ISettingsProvider.cs" />
@@ -130,6 +132,9 @@
       <DependentUpon>EditIconView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Mindmaps\ViewModels\MindmapsViewModel.cs" />
+    <Compile Include="Modules\Mindmaps\Views\RenameView.xaml.cs">
+      <DependentUpon>RenameView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Mindmaps\Views\EnterNameView.xaml.cs">
       <DependentUpon>EnterNameView.xaml</DependentUpon>
     </Compile>
@@ -219,6 +224,10 @@
     <Page Include="Modules\Editor\Views\EditIconView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Mindmaps\Views\RenameView.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="Modules\Mindmaps\Views\EnterNameView.xaml">
       <SubType>Designer</SubType>

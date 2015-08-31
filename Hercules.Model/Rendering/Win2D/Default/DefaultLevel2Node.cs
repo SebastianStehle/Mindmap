@@ -8,6 +8,8 @@
 
 using System;
 using System.Numerics;
+using Hercules.Model.Layouting;
+using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
@@ -132,6 +134,13 @@ namespace Hercules.Model.Rendering.Win2D.Default
                     Button.Render(session);
                 }
             }
+        }
+
+        protected override void RenderPathInternal(CanvasDrawingSession session)
+        {
+            ICanvasBrush brush = Resources.Brush(PathColor, 1);
+
+            PathRenderer.RenderLinePath(this, Parent, session, brush);
         }
 
         protected override Win2DRenderNode CloneInternal()

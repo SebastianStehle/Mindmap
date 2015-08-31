@@ -8,6 +8,7 @@
 
 using System;
 using System.Numerics;
+using Hercules.Model.Layouting;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 

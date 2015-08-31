@@ -9,7 +9,6 @@
 using System;
 using System.Globalization;
 using System.Threading.Tasks;
-using Windows.UI.Xaml.Media;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Messaging;
 using GP.Windows;
@@ -22,6 +21,7 @@ namespace Hercules.App.Modules
     [ImplementPropertyChanged]
     public sealed class MindmapItem : ViewModelBase
     {
+        private readonly IDocumentStore documentStore;
         private readonly DocumentRef documentRef;
 
         public Guid DocumentId
@@ -29,15 +29,6 @@ namespace Hercules.App.Modules
             get
             {
                 return documentRef.DocumentId;
-            }
-        }
-
-
-        public ImageSource Screenshot
-        {
-            get
-            {
-                return documentRef.Screenshot;
             }
         }
 
@@ -59,26 +50,17 @@ namespace Hercules.App.Modules
         {
         }
 
-        public MindmapItem(DocumentRef documentRef)
+        public MindmapItem(DocumentRef documentRef, IDocumentStore documentStore)
         {
             Guard.NotNull(documentRef, nameof(documentRef));
+            Guard.NotNull(documentStore, nameof(documentStore));
 
             this.documentRef = documentRef;
+            this.documentStore = documentStore;
 
             Title = documentRef.DocumentTitle;
 
             LastUpdate = documentRef.LastUpdate;
-        }
-
-        public async Task RefreshImageAsync()
-        {
-            if (documentRef != null)
-            {
-                await documentRef.LoadImageAsync();
-
-                // ReSharper disable once ExplicitCallerInfoArgument
-                RaisePropertyChanged(nameof(Screenshot));
-            }
         }
 
         public void RefreshAfterSave()
@@ -86,13 +68,26 @@ namespace Hercules.App.Modules
             LastUpdate = DateTimeOffset.Now;
         }
 
-        public async Task RemoveAsync(IDocumentStore store)
+        public async Task RenameAsync(string title)
         {
-            Guard.NotNull(store, nameof(store));
+            Guard.NotNullOrEmpty(title, nameof(title));
 
-            await store.DeleteAsync(documentRef.DocumentId);
+            if (documentRef != null)
+            {
+                Title = title.Trim();
 
-            Messenger.Default.Send(new MindmapDeletedMessage(this));
+                await documentStore.RenameAsync(documentRef.DocumentId, title);
+            }
+        }
+
+        public async Task RemoveAsync()
+        {
+            if (documentRef != null)
+            {
+                await documentStore.DeleteAsync(documentRef.DocumentId);
+
+                Messenger.Default.Send(new MindmapDeletedMessage(this));
+            }
         }
     }
 }

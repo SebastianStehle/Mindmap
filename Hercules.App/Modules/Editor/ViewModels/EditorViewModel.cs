@@ -13,9 +13,11 @@ using Windows.UI.Xaml;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using Hercules.App.Components;
 using Hercules.App.Components.Implementations;
 using Hercules.App.Messages;
 using Hercules.Model;
+using Hercules.Model.Export;
 using Hercules.Model.Rendering.Win2D;
 using Hercules.Model.Rendering.Win2D.Default;
 using Hercules.Model.Storing;
@@ -36,9 +38,20 @@ namespace Hercules.App.Modules.Editor.ViewModels
         private RelayCommand removeCommand;
         private RelayCommand addChildCommand;
         private RelayCommand addSiblingCommand;
+        private RelayCommand exportHtmlCommand;
+        private RelayCommand exportImageCommand;
 
         [Dependency]
         public IDocumentStore DocumentStore { get; set; }
+
+        [Dependency]
+        public IOutlineGenerator OutlineGenerator { get; set; }
+
+        [Dependency]
+        public ILocalizationManager LocalizationManager { get; set; }
+
+        [Dependency]
+        public IMessageDialogService MessageDialogService { get; set; }
 
         public IRendererFactory RendererFactory
         {
@@ -103,23 +116,47 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
+        public RelayCommand ExportImageCommand
+        {
+            get
+            {
+                return exportImageCommand ?? (exportImageCommand = new RelayCommand(async () =>
+                {
+                    await MessageDialogService.SaveFileDialogAsync(new string[] { ".png" }, s => RendererFactory.Current.RenderScreenshotAsync(s, Colors.Transparent, 300));
+                }, () => Document != null));
+            }
+        }
+
+        public RelayCommand ExportHtmlCommand
+        {
+            get
+            {
+                return exportHtmlCommand ?? (exportHtmlCommand = new RelayCommand(async () =>
+                {
+                    string noText = LocalizationManager.GetString("NoText");
+
+                    await MessageDialogService.SaveFileDialogAsync(new string[] { ".html" }, s => OutlineGenerator.GenerateOutline(Document, RendererFactory.Current, s, true, noText));
+                }, () => Document != null));
+            }
+        }
+
         public RelayCommand RemoveCommand
         {
             get
             {
                 return removeCommand ?? (removeCommand = new RelayCommand(() =>
                 {
-                        Node selectedNormalNode = Document.SelectedNode as Node;
+                    Node selectedNormalNode = Document.SelectedNode as Node;
 
-                        if (selectedNormalNode != null)
+                    if (selectedNormalNode != null)
+                    {
+                        string tansactionName = ResourceManager.GetString("RemoveNodeTransactionName");
+
+                        Document.MakeTransaction(tansactionName, commands =>
                         {
-                            string tansactionName = ResourceManager.GetString("RemoveNodeTransactionName");
-
-                            Document.MakeTransaction(tansactionName, commands =>
-                            {
-                                commands.Apply(new RemoveChildCommand(selectedNormalNode.Parent, selectedNormalNode));
-                            });
-                        }
+                            commands.Apply(new RemoveChildCommand(selectedNormalNode.Parent, selectedNormalNode));
+                        });
+                    }
                 }));
             }
         }
@@ -215,7 +252,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
         {
             if (Document != null)
             {
-                await DocumentStore.StoreAsync(Document, async x => await RendererFactory.Current.RenderScreenshotAsync(x, Colors.White));
+                await DocumentStore.StoreAsync(Document, async x => await RendererFactory.Current.RenderScreenshotAsync(x, Colors.White, 0));
 
                 mindmapItem.RefreshAfterSave();
             }

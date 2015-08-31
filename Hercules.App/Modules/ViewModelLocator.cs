@@ -13,6 +13,8 @@ using Hercules.App.Components;
 using Hercules.App.Components.Implementations;
 using Hercules.App.Modules.Editor.ViewModels;
 using Hercules.App.Modules.Mindmaps.ViewModels;
+using Hercules.Model.Export;
+using Hercules.Model.Export.Html;
 using Hercules.Model.Storing;
 using Hercules.Model.Storing.Json;
 using Microsoft.Practices.Unity;
@@ -42,6 +44,10 @@ namespace Hercules.App.Modules
                 unityContainer.RegisterType<ILocalizationManager, ResourcesLocalizationManager>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<INavigationService, NavigationService>(
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IOutlineGenerator, HtmlOutlineGenerator>(
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IMessageDialogService, MessageDialogService>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<MindmapsViewModel>(
                     new PerResolveLifetimeManager());

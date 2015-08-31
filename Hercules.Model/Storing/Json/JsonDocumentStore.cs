@@ -49,6 +49,13 @@ namespace Hercules.Model.Storing.Json
             return taskFactory.StartNew(() => LoadAllInternalAsync()).Unwrap();
         }
 
+        public Task RenameAsync(Guid documentId, string title)
+        {
+            Guard.NotNullOrEmpty(title, nameof(title));
+
+            return taskFactory.StartNew(() => RenameInternalAsync(documentId, title)).Unwrap();
+        }
+
         public async Task<DocumentRef> StoreAsync(Document document, Func<IRandomAccessStream, Task> saveScreenshot)
         {
             Guard.NotNull(document, nameof(document));
@@ -120,6 +127,11 @@ namespace Hercules.Model.Storing.Json
                 return document;
             }
         }
+        
+        private Task RenameInternalAsync(Guid documentId, string title)
+        {
+            return WriteTitleAsync(documentId, title);
+        }
 
         private async Task<DocumentRef> StoreInternalAsync(Document document, InMemoryRandomAccessStream screenshot)
         {
@@ -131,7 +143,7 @@ namespace Hercules.Model.Storing.Json
 
             await Task.WhenAll(
                 WriteScreenshotAsync(jsonHistory, screenshot),
-                WriteNameAsync(jsonHistory),
+                WriteTitleAsync(jsonHistory),
                 WriteContentAsync(jsonHistory));
             
             return new DocumentRef(document.Id, document.Title, DateTime.Now, LoadScreenshotAsync);
@@ -160,7 +172,14 @@ namespace Hercules.Model.Storing.Json
             return localFolder.TryWriteDataAsync(fileName, screenshotStream);
         }
 
-        private Task WriteNameAsync(JsonHistory history)
+        private Task WriteTitleAsync(Guid documentId, string title)
+        {
+            string fileName = $"{documentId}.mmn";
+
+            return localFolder.WriteTextAsync(fileName, title);
+        }
+
+        private Task WriteTitleAsync(JsonHistory history)
         {
             string fileName = $"{history.Id}.mmn";
 

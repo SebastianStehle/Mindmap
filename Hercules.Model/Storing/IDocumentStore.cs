@@ -21,6 +21,8 @@ namespace Hercules.Model.Storing
 
         Task DeleteAsync(Guid documentId);
 
+        Task RenameAsync(Guid documentId, string title);
+
         Task<DocumentRef> StoreAsync(Document document, Func<IRandomAccessStream, Task> saveScreenshot);
     }
 }

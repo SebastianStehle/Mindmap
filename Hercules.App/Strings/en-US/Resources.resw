@@ -225,7 +225,7 @@
   <data name="DeleteMindmapButton.Content" xml:space="preserve">
     <value>Delete Mindmap</value>
   </data>
-  <data name="DeleteMindmapText" xml:space="preserve">
+  <data name="DeleteMindmapContent" xml:space="preserve">
     <value>Do you really want to delete the mindmap? It is not possible to restore a deleted mindmap.</value>
   </data>
   <data name="DeleteMindmapTitle" xml:space="preserve">

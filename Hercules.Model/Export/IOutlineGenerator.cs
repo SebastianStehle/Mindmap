@@ -5,10 +5,16 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
+using System.IO;
+using Hercules.Model.Layouting;
+
 namespace Hercules.Model.Export
 {
     public interface IOutlineGenerator
     {
-        string GenerateOutline(Document document, bool useColors, string noTextPlaceholder);
+        void GenerateOutline(Document document, IRenderer renderer, Stream stream, bool useColors, string noTextPlaceholder);
+
+        string GenerateOutlineToString(Document document, IRenderer renderer, bool useColors, string noTextPlaceholder);
     }
 }

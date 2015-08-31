@@ -9,7 +9,7 @@
 using System;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media;
-using Hercules.Model.Rendering.Win2D;
+using Hercules.Model.Layouting;
 
 namespace Hercules.App.Controls
 {

@@ -1,4 +1,14 @@
-﻿using System;
+﻿// ==========================================================================
+// CanvasControlWrapper.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+// ReSharper disable UnusedParameter.Local
+
+using System;
 using Windows.UI.Core;
 using GP.Windows;
 using GP.Windows.UI.Controls;
@@ -42,10 +52,14 @@ namespace Hercules.App.Controls
             inner.Draw += Inner_Draw;
         }
 
-        // ReSharper disable once UnusedParameter.Local
         private void Inner_Draw(CanvasControl sender, CanvasDrawEventArgs args)
         {
             OnDraw(args);
+        }
+
+        public int ConvertDipsToPixels(float dips, CanvasDpiRounding dpiRounding)
+        {
+            return inner.ConvertDipsToPixels(dips, dpiRounding);
         }
 
         public void Invalidate()

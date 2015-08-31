@@ -8,6 +8,7 @@
 
 using System;
 using System.Numerics;
+using Hercules.Model.Layouting;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
@@ -121,31 +122,11 @@ namespace Hercules.Model.Rendering.Win2D.Default
             }
         }
 
-        protected override void RenderPath(CanvasDrawingSession session, ICanvasBrush brush, Vector2 point1, Vector2 point2)
+        protected override void RenderPathInternal(CanvasDrawingSession session)
         {
-            float halfX = (point1.X + point2.X) * 0.5f;
+            ICanvasBrush brush = Resources.Brush(PathColor, 1);
 
-            using (CanvasPathBuilder builder = new CanvasPathBuilder(session.Device))
-            {
-                builder.BeginFigure(new Vector2(point1.X, point1.Y - 4));
-
-                builder.AddCubicBezier(
-                    new Vector2(halfX, point1.Y - 1),
-                    new Vector2(halfX, point2.Y - 1),
-                    new Vector2(point2.X, point2.Y));
-                builder.AddCubicBezier(
-                    new Vector2(halfX, point2.Y + 1),
-                    new Vector2(halfX, point1.Y + 1),
-                    new Vector2(point1.X, point1.Y + 4));
-
-                builder.EndFigure(CanvasFigureLoop.Closed);
-
-                using (CanvasGeometry pathGeometry = CanvasGeometry.CreatePath(builder))
-                {
-                    session.DrawGeometry(pathGeometry, brush, 2);
-                    session.FillGeometry(pathGeometry, brush);
-                }
-            }
+            PathRenderer.RenderFilledPath(this, Parent, session, brush);
         }
 
         protected override Win2DRenderNode CloneInternal()

@@ -14,6 +14,7 @@ using System.Text;
 using System.Xml;
 using GP.Windows;
 using GP.Windows.UI;
+using Hercules.Model.Layouting;
 
 namespace Hercules.Model.Export.Html
 {
@@ -22,42 +23,12 @@ namespace Hercules.Model.Export.Html
         private const string ULStyle = "padding-left:18px;";
         private const string LIStyle = "padding-top:4px;padding-bottom:4px;";
 
-        public string GenerateOutline(Document document, bool useColors, string noTextPlaceholder)
+        public string GenerateOutlineToString(Document document, IRenderer renderer, bool useColors, string noTextPlaceholder)
         {
-            Guard.NotNull(document, nameof(document));
-            Guard.NotNullOrEmpty(noTextPlaceholder, nameof(noTextPlaceholder));
-
             using (MemoryStream memoryStream = new MemoryStream())
             {
-                XmlWriter xmlWriter = XmlWriter.Create(memoryStream, new XmlWriterSettings { OmitXmlDeclaration = true });
-
-                xmlWriter.WriteStartElement("div");
-
-                WriteNode(xmlWriter, document.Root, "1.4em", useColors, noTextPlaceholder);
-
-                List<Node> children = document.Root.LeftChildren.Union(document.Root.RightChildren).ToList();
-
-                if (children.Count > 0)
-                {
-                    xmlWriter.WriteStartElement("ul");
-                    xmlWriter.WriteAttributeString("style", ULStyle);
-
-                    foreach (Node node in children)
-                    {
-                        xmlWriter.WriteStartElement("li");
-                        xmlWriter.WriteAttributeString("style", LIStyle);
-
-                        WriteNodeWithChildren(xmlWriter, node, "1.2em", useColors, noTextPlaceholder);
-
-                        xmlWriter.WriteEndElement();
-                    }
-
-                    xmlWriter.WriteEndElement();
-                }
-
-                xmlWriter.WriteEndElement();
-                xmlWriter.Flush();
-
+                GenerateOutline(document, renderer, memoryStream, true, noTextPlaceholder);
+                
                 memoryStream.Position = 0;
 
                 byte[] buffer = memoryStream.ToArray();
@@ -66,9 +37,45 @@ namespace Hercules.Model.Export.Html
             }
         }
 
-        private static void WriteNodeWithChildren(XmlWriter xmlWriter, Node node, string fontSize, bool useColors, string noTextPlaceholder)
+        public void GenerateOutline(Document document, IRenderer renderer, Stream stream, bool useColors, string noTextPlaceholder)
         {
-            WriteNode(xmlWriter, node, fontSize, useColors, noTextPlaceholder);
+            Guard.NotNull(document, nameof(document));
+            Guard.NotNull(renderer, nameof(renderer));
+            Guard.NotNullOrEmpty(noTextPlaceholder, nameof(noTextPlaceholder));
+
+            XmlWriter xmlWriter = XmlWriter.Create(stream, new XmlWriterSettings { OmitXmlDeclaration = true });
+
+            xmlWriter.WriteStartElement("div");
+
+            WriteNode(xmlWriter, document.Root, renderer, "1.4em", useColors, noTextPlaceholder);
+
+            List<Node> children = document.Root.LeftChildren.Union(document.Root.RightChildren).ToList();
+
+            if (children.Count > 0)
+            {
+                xmlWriter.WriteStartElement("ul");
+                xmlWriter.WriteAttributeString("style", ULStyle);
+
+                foreach (Node node in children)
+                {
+                    xmlWriter.WriteStartElement("li");
+                    xmlWriter.WriteAttributeString("style", LIStyle);
+
+                    WriteNodeWithChildren(xmlWriter, node, renderer, "1.2em", useColors, noTextPlaceholder);
+
+                    xmlWriter.WriteEndElement();
+                }
+
+                xmlWriter.WriteEndElement();
+            }
+
+            xmlWriter.WriteEndElement();
+            xmlWriter.Flush();
+        }
+
+        private static void WriteNodeWithChildren(XmlWriter xmlWriter, Node node, IRenderer renderer, string fontSize, bool useColors, string noTextPlaceholder)
+        {
+            WriteNode(xmlWriter, node, renderer, fontSize, useColors, noTextPlaceholder);
 
             if (node.Children.Count > 0)
             {
@@ -80,7 +87,7 @@ namespace Hercules.Model.Export.Html
                     xmlWriter.WriteStartElement("li");
                     xmlWriter.WriteAttributeString("style", LIStyle);
 
-                    WriteNodeWithChildren(xmlWriter, child, "1.em", useColors, noTextPlaceholder);
+                    WriteNodeWithChildren(xmlWriter, child, renderer, "1.em", useColors, noTextPlaceholder);
 
                     xmlWriter.WriteEndElement();
                 }
@@ -89,13 +96,15 @@ namespace Hercules.Model.Export.Html
             }
         }
 
-        private static void WriteNode(XmlWriter xmlWriter, NodeBase nodeBase, string fontSize, bool useColors, string noTextPlaceholder)
+        private static void WriteNode(XmlWriter xmlWriter, NodeBase nodeBase, IRenderer renderer, string fontSize, bool useColors, string noTextPlaceholder)
         {
             string color = "#000";
 
             if (useColors)
             {
-                color = ColorsHelper.ConvertToRGBString(nodeBase.Color, 0, 0.2, -0.3);
+                ThemeColor themeColor = renderer.FindColor(nodeBase);
+
+                color = ColorsHelper.ConvertToRGBString(themeColor.Dark);
             }
 
             xmlWriter.WriteStartElement("span");

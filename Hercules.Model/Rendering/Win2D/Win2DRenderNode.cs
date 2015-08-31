@@ -8,6 +8,7 @@
 
 using System;
 using System.Numerics;
+using Windows.UI;
 using GP.Windows;
 using GP.Windows.UI;
 using Hercules.Model.Layouting;
@@ -77,6 +78,11 @@ namespace Hercules.Model.Rendering.Win2D
         public virtual Vector2 RenderPositionOffset
         {
             get { return Vector2.Zero; }
+        }
+
+        public virtual float VerticalPathOffset
+        {
+            get { return 0; }
         }
 
         public bool IsVisible

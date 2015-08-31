@@ -53,15 +53,24 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         [Dependency]
         public ILocalizationManager LocalizationManager { get; set; }
 
+        [Dependency]
+        public IMessageDialogService MessageDialogService { get; set; }
+
         public RelayCommand<MindmapItem> DeleteCommand
         {
             get
             {
                 return deleteCommand ?? (deleteCommand = new RelayCommand<MindmapItem>(async item =>
                 {
-                    await item.RemoveAsync(DocumentStore);
+                    string content = LocalizationManager.GetString("DeleteMindmapContent"),
+                             title = LocalizationManager.GetString("DeleteMindmapTitle");
 
-                    Mindmaps.Remove(item);
+                    if (await MessageDialogService.ConfirmAsync(content, title))
+                    {
+                        await item.RemoveAsync();
+
+                        Mindmaps.Remove(item);
+                    }
                 }));
             }
         }
@@ -95,7 +104,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
         private void AddMindmap(DocumentRef documentRef)
         {
-            Mindmaps.Insert(0, new MindmapItem(documentRef));
+            Mindmaps.Insert(0, new MindmapItem(documentRef, DocumentStore));
 
             SelectedMindmap = Mindmaps.FirstOrDefault();
         }
@@ -114,7 +123,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                     {
                         if (Mindmaps.All(x => x.DocumentId != documentRef.DocumentId))
                         {
-                            MindmapItem mindmapItem = new MindmapItem(documentRef);
+                            MindmapItem mindmapItem = new MindmapItem(documentRef, DocumentStore);
 
                             Mindmaps.Add(mindmapItem);
                         }

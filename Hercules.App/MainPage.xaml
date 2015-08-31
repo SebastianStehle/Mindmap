@@ -42,6 +42,24 @@
                 <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
                     <AppBarSeparator />
 
+                    <AppBarButton Icon="Save"
+                        AutomationProperties.AccessKey="CTRL + S"
+                        AutomationProperties.Name="Save" x:Uid="AppBarButtonSave">
+                        <i:Interaction.Behaviors>
+                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="I" />
+                        </i:Interaction.Behaviors>
+                        <AppBarButton.Flyout>
+                            <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
+                                <MenuFlyoutItem x:Uid="ExportHtml" Text="Html"
+                                    Command="{Binding ExportHtmlCommand}" />
+                                <MenuFlyoutItem x:Uid="ExportImage" Text="Image"
+                                    Command="{Binding ExportImageCommand}" />
+                            </MenuFlyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
+
+                    <AppBarSeparator />
+                    
                     <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}"
                         AutomationProperties.AccessKey="CTRL + I"
                         AutomationProperties.Name="Change Icon" x:Uid="AppBarButtonChangeIcon">
@@ -164,7 +182,7 @@
                         </Button.Flyout>
                     </Button>
 
-                    <Grid x:Name="MindmapsContainer" Grid.Row="1" Margin="5,0,0,0" Opacity="1" >
+                    <Grid x:Name="MindmapsContainer" Grid.Row="1" Margin="5,0,0,0" Opacity="0" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
@@ -176,32 +194,42 @@
                                 FontWeight="Bold" />
                         </Border>
 
-                        <ListBox Grid.Row="1" ItemContainerStyle="{StaticResource ThemeListBoxItemStyle}" ItemsSource="{Binding Mindmaps}" Loaded="ListBox_Loaded">
+                        <ListBox Grid.Row="1" ItemContainerStyle="{StaticResource ThemeListBoxItemStyle}" x:Name="List" SelectedItem="{Binding SelectedMindmap, Mode=TwoWay}"  ItemsSource="{Binding Mindmaps}" Loaded="ListBox_Loaded">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <Grid RightTapped="Grid_RightTapped">
+                                    <Grid x:Name="Root">
                                         <FlyoutBase.AttachedFlyout>
-                                            <MenuFlyout>
-                                                <MenuFlyoutItem Text="Rename" />
-                                                <MenuFlyoutSeparator />
-                                                <MenuFlyoutItem Text="Delete" />
-                                            </MenuFlyout>
+                                            <controls:MindmapFlyout Placement="Bottom">
+                                                <m:RenameView MindmapItem="{Binding}" />
+                                            </controls:MindmapFlyout>
                                         </FlyoutBase.AttachedFlyout>
+                                        
+                                        <Grid RightTapped="Grid_RightTapped" Background="Transparent">
+                                            <FlyoutBase.AttachedFlyout>
+                                                <MenuFlyout>
+                                                    <MenuFlyoutItem x:Uid="MindmapItemDelete" Text="Rename" DataContext="{Binding ElementName=Root}" x:Name="RenameButton" Click="RenameButton_Click" />
+                                                    <MenuFlyoutSeparator />
+                                                    <MenuFlyoutItem x:Uid="MindmapItemRename" Text="Delete"
+                                                        Command="{Binding Path=Mindmaps.DeleteCommand, Source={StaticResource ViewModelLocator}, ElementName=List}" 
+                                                        CommandParameter="{Binding}" />
+                                                </MenuFlyout>
+                                            </FlyoutBase.AttachedFlyout>
 
-                                        <StackPanel>
-                                            <TextBlock Text="{Binding Title}" FontSize="15" TextTrimming="WordEllipsis" />
+                                            <StackPanel>
+                                                <TextBlock Text="{Binding Title}" FontSize="15" TextTrimming="WordEllipsis" />
 
-                                            <StackPanel Orientation="Horizontal" Opacity="0.7" Margin="0,2">
-                                                <TextBlock FontSize="13" x:Uid="LastUpdateLabel"
-                                                    Text="Modified:"
-                                                    TextAlignment="Left"
-                                                    TextWrapping="NoWrap" Margin="0,0,4,0" />
-                                                <TextBlock FontSize="13"
-                                                    Text="{Binding LastUpdateText}" 
-                                                    TextAlignment="Left"
-                                                    TextWrapping="NoWrap" />
+                                                <StackPanel Orientation="Horizontal" Opacity="0.7" Margin="0,2">
+                                                    <TextBlock FontSize="13" x:Uid="LastUpdateLabel"
+                                                        Text="Modified:"
+                                                        TextAlignment="Left"
+                                                        TextWrapping="NoWrap" Margin="0,0,4,0" />
+                                                    <TextBlock FontSize="13"
+                                                        Text="{Binding LastUpdateText}" 
+                                                        TextAlignment="Left"
+                                                        TextWrapping="NoWrap" />
+                                                </StackPanel>
                                             </StackPanel>
-                                        </StackPanel>
+                                        </Grid>
                                     </Grid>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>

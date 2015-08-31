@@ -13,11 +13,19 @@ using Hercules.App.Modules.Mindmaps.ViewModels;
 
 namespace Hercules.App.Modules.Mindmaps.Views
 {
-    public sealed partial class EnterNameView : IPopupControl
+    public sealed partial class RenameView : IPopupControl
     {
+        public static readonly DependencyProperty MindmapItemProperty =
+            DependencyProperty.Register("MindmapItem", typeof(MindmapItem), typeof(RenameView), new PropertyMetadata(null));
+        public MindmapItem MindmapItem
+        {
+            get { return (MindmapItem)GetValue(MindmapItemProperty); }
+            set { SetValue(MindmapItemProperty, value); }
+        }
+
         public Popup Popup { get; set; }
 
-        public EnterNameView()
+        public RenameView()
         {
             InitializeComponent();
         }
@@ -26,10 +34,10 @@ namespace Hercules.App.Modules.Mindmaps.Views
         {
             ErrorTextBlock.Opacity = 0;
 
-            TitleTextBox.Text = string.Empty;
+            TitleTextBox.Text = MindmapItem.Title;
         }
 
-        private async void CreateButton_Click(object sender, RoutedEventArgs e)
+        private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
             {
@@ -37,9 +45,7 @@ namespace Hercules.App.Modules.Mindmaps.Views
             }
             else
             {
-                MindmapsViewModel viewModel = (MindmapsViewModel)DataContext;
-
-                await viewModel.CreateNewMindmapAsync(TitleTextBox.Text, TitleTextBox.Text);
+                await MindmapItem.RenameAsync(TitleTextBox.Text);
 
                 Flyout.Hide();
             }

@@ -77,7 +77,20 @@ namespace GP.Windows.UI.Controls
         /// </summary>
         public ZoomableCanvasControl()
         {
-            DefaultStyleKey = typeof(ZoomableCanvasControl);   
+            DefaultStyleKey = typeof(ZoomableCanvasControl);
+        }
+
+        /// <summary>
+        /// Converts the dips to pixels.
+        /// </summary>
+        /// <param name="dips">The dips to convert.</param>
+        /// <param name="dpiRounding">The rounding mode.</param>
+        /// <returns>
+        /// The resulting pixels.
+        /// </returns>
+        public int ConvertDipsToPixels(float dips, CanvasDpiRounding dpiRounding)
+        {
+            return swapChain.ConvertDipsToPixels(dips, dpiRounding);
         }
 
         /// <summary>

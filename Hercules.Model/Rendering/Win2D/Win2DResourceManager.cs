@@ -17,6 +17,7 @@ using Windows.UI.Core;
 using GP.Windows;
 using GP.Windows.UI;
 using GP.Windows.UI.Controls;
+using Hercules.Model.Layouting;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 

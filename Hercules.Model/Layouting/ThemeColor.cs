@@ -8,7 +8,7 @@
 
 using Windows.UI;
 
-namespace Hercules.Model.Rendering.Win2D
+namespace Hercules.Model.Layouting
 {
     public sealed class ThemeColor
     {

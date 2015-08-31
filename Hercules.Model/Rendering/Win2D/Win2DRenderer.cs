@@ -210,7 +210,7 @@ namespace Hercules.Model.Rendering.Win2D
             Render(args.DrawingSession);
         }
 
-        public async Task RenderScreenshotAsync(IRandomAccessStream stream, Color background, float padding = 20)
+        public async Task RenderScreenshotAsync(IRandomAccessStream stream, Color background, float dpi, float padding = 20)
         {
             Guard.NotNull(stream, nameof(stream));
             Guard.GreaterThan(padding, 0, nameof(padding));
@@ -218,7 +218,7 @@ namespace Hercules.Model.Rendering.Win2D
             float w = sceneBounds.Size.X + 2 * padding;
             float h = sceneBounds.Size.Y + 2 * padding;
 
-            float dpi = DisplayInformation.GetForCurrentView().LogicalDpi;
+            dpi = dpi == 0 ? DisplayInformation.GetForCurrentView().LogicalDpi : dpi;
 
             using (CanvasRenderTarget target = new CanvasRenderTarget(canvas.Device, w, h, dpi))
             {
@@ -447,6 +447,11 @@ namespace Hercules.Model.Rendering.Win2D
         public IRenderNode FindRenderNode(NodeBase node)
         {
             return TryAdd(node);
+        }
+
+        public ThemeColor FindColor(NodeBase node)
+        {
+            return resources.FindColor(node);
         }
 
         protected abstract Win2DRenderNode CreatePreviewNode();

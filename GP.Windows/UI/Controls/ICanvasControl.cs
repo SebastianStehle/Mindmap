@@ -29,6 +29,16 @@ namespace GP.Windows.UI.Controls
         CanvasDevice Device { get; }
 
         /// <summary>
+        /// Converts the dips to pixels.
+        /// </summary>
+        /// <param name="dips">The dips to convert.</param>
+        /// <param name="dpiRounding">The rounding mode.</param>
+        /// <returns>
+        /// The resulting pixels.
+        /// </returns>
+        int ConvertDipsToPixels(float dips, CanvasDpiRounding dpiRounding);
+
+        /// <summary>
         /// This is where the magic happens! Hook this event to issue your immediate mode 2D drawing calls.
         /// </summary>
         event EventHandler<CanvasDrawEventArgs> Draw;

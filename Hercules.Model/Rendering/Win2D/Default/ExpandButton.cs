@@ -38,7 +38,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
         public bool HitTest(Vector2 mousePosition)
         {
-            if (renderBounds.Contains(mousePosition))
+            if (renderBounds.Contains(mousePosition) && node.HasChildren)
             {
                 string transactionName = ResourceManager.GetString("ExpandCollapseTransactionName");
 

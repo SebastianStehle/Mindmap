@@ -154,7 +154,7 @@
     <value>Change Color</value>
   </data>
   <data name="AppBarButtonChangeColor.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Change color of selected node (CTRL + O)</value>
+    <value>Change color of selected node</value>
   </data>
   <data name="AppBarButtonChangeIcon.Label" xml:space="preserve">
     <value>Icons</value>
@@ -163,7 +163,7 @@
     <value>Change Icon</value>
   </data>
   <data name="AppBarButtonChangeIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Change icon of selected node (CTRL + I)</value>
+    <value>Change icon of selected node</value>
   </data>
   <data name="AppBarButtonEdit.Label" xml:space="preserve">
     <value>Mindmap</value>
@@ -204,6 +204,15 @@
   <data name="AppBarButtonRemoveNode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Remove selected node (DELETE)</value>
   </data>
+  <data name="AppBarButtonSave.Label" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="AppBarButtonSave.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="AppBarButtonSave.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Export current mindmaps</value>
+  </data>
   <data name="AppBarButtonUndo.Label" xml:space="preserve">
     <value>Undo</value>
   </data>
@@ -240,6 +249,12 @@
   <data name="ExpandCollapseTransactionName" xml:space="preserve">
     <value>Toggle</value>
   </data>
+  <data name="ExportHtml" xml:space="preserve">
+    <value>Html (Outline)</value>
+  </data>
+  <data name="ExportImage" xml:space="preserve">
+    <value>Image (.png)</value>
+  </data>
   <data name="IconsHeader.Text" xml:space="preserve">
     <value>Icons</value>
   </data>
@@ -250,6 +265,12 @@ Deutschland</value>
   </data>
   <data name="LastUpdateLabel.Text" xml:space="preserve">
     <value>Last Saved:</value>
+  </data>
+  <data name="MindmapItemDelete" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="MindmapItemRename" xml:space="preserve">
+    <value>Rename</value>
   </data>
   <data name="MindmapNameError.Text" xml:space="preserve">
     <value>Title cannot be empty!</value>

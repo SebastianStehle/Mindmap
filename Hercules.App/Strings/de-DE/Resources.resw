@@ -148,7 +148,7 @@
     <value>Farbe Ändern</value>
   </data>
   <data name="AppBarButtonChangeColor.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Farbe des gewählten Knotens ändern (CTRL + O)</value>
+    <value>Farbe des gewählten Knotens ändern</value>
   </data>
   <data name="AppBarButtonChangeIcon.Label" xml:space="preserve">
     <value>Icons</value>
@@ -157,7 +157,7 @@
     <value>Icon Ändern</value>
   </data>
   <data name="AppBarButtonChangeIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Icon des gewählten Knotens ändern (CTRL + I)</value>
+    <value>Icon des gewählten Knotens ändern</value>
   </data>
   <data name="AppBarButtonEdit.Label" xml:space="preserve">
     <value>Mindmap</value>
@@ -197,6 +197,15 @@
   </data>
   <data name="AppBarButtonRemoveNode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Ausgewählter Knoten entfernen (DELETE)</value>
+  </data>
+  <data name="AppBarButtonSave.Label" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="AppBarButtonSave.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Exportieren</value>
+  </data>
+  <data name="AppBarButtonSave.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Aktuelle Mindmap exportieren (CTRL + S)</value>
   </data>
   <data name="AppBarButtonUndo.Label" xml:space="preserve">
     <value>Undo</value>

@@ -62,25 +62,32 @@ namespace Hercules.App.Controls
         }
 
         public static readonly DependencyProperty RendererFactoryProperty =
-            DependencyProperty.Register("RendererFactory", typeof(IRendererFactory), typeof(Mindmap), new PropertyMetadata(null, OnDocumentRendererChanged));
+            DependencyProperty.Register("RendererFactory", typeof(IRendererFactory), typeof(Mindmap), new PropertyMetadata(null, OnRendererChanged));
         public IRendererFactory RendererFactory
         {
             get { return (IRendererFactory)GetValue(RendererFactoryProperty); }
             set { SetValue(RendererFactoryProperty, value); }
         }
 
+        private static void OnRendererChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            var owner = o as Mindmap;
+
+            owner?.InitializeRenderer();
+        }
+
         public static readonly DependencyProperty DocumentProperty =
-            DependencyProperty.Register("Document", typeof(Document), typeof(Mindmap), new PropertyMetadata(null, OnDocumentRendererChanged));
+            DependencyProperty.Register("Document", typeof(Document), typeof(Mindmap), new PropertyMetadata(null, OnDocumentChanged));
         public Document Document
         {
             get { return (Document)GetValue(DocumentProperty); }
             set { SetValue(DocumentProperty, value); }
         }
 
-        private static void OnDocumentRendererChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        public static void OnDocumentChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
             var owner = o as Mindmap;
-
+            
             owner?.InitializeRenderer();
         }
 
@@ -196,7 +203,7 @@ namespace Hercules.App.Controls
 
         private void CanvasControl_Draw(object sender, CanvasDrawEventArgs e)
         {
-            WithRenderer(r => textEditor.Transform());
+            WithRenderer(r => textEditor.UpdateTransform());
         }
 
         private void InitializeRenderer()
@@ -250,6 +257,21 @@ namespace Hercules.App.Controls
         protected override void OnPointerReleased(PointerRoutedEventArgs e)
         {
             e.Handled = true;
+        }
+
+        public void EditText()
+        {
+            WithRenderer(r =>
+            {
+                if (Document != null && Document.SelectedNode != null)
+                {
+                    Win2DRenderNode renderNode = (Win2DRenderNode)r.FindRenderNode(Document.SelectedNode);
+
+                    textEditor.BeginEdit(renderNode);
+
+                    r.Invalidate();
+                }
+            });
         }
 
         protected override void OnDoubleTapped(DoubleTappedRoutedEventArgs e)

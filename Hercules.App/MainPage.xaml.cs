@@ -96,6 +96,11 @@ namespace Hercules.App
             }
         }
 
+        private void EditTextCommand_Invoked(object sender, RoutedEventArgs e)
+        {
+            Mindmap.EditText();
+        }
+
         private void AppBarButton_Click(object sender, RoutedEventArgs e)
         {
             SplitView.IsPaneOpen = !SplitView.IsPaneOpen;

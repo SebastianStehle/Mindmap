@@ -8,12 +8,14 @@
 
 using System.Numerics;
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Hercules.App.Components.Implementations;
 using Hercules.Model;
 using Hercules.Model.Rendering.Win2D;
+using Windows.UI.Xaml.Input;
 
 namespace Hercules.App.Controls
 {
@@ -27,22 +29,60 @@ namespace Hercules.App.Controls
             get { return editingNode; }
         }
 
+        private bool IsEditing
+        {
+            get { return editingNode != null; }
+        }
+
         public TextEditor()
         {
             RenderTransform = renderTransform;
-
-            GotFocus += TextEditor_GotFocus;
         }
 
-        private void TextEditor_GotFocus(object sender, RoutedEventArgs e)
+        protected override void OnLostFocus(RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(Text))
+            CancelEdit();
+
+            base.OnLostFocus(e);
+        }
+
+        protected override void OnGotFocus(RoutedEventArgs e)
+        {
+            if (IsEditing && !string.IsNullOrWhiteSpace(Text))
             {
                 Select(0, Text.Length);
             }
+
+            base.OnGotFocus(e);
         }
 
-        public void Transform()
+        protected override void OnKeyDown(KeyRoutedEventArgs e)
+        {
+            if (IsEditing)
+            {
+                if (e.Key == VirtualKey.Enter || e.Key == VirtualKey.Escape)
+                {
+                    Win2DRenderNode node = editingNode;
+
+                    if (e.Key == VirtualKey.Enter)
+                    {
+                        EndEdit();
+                    }
+                    else
+                    {
+                        CancelEdit();
+                    }
+
+                    node.Renderer.Invalidate();
+
+                    e.Handled = true;
+                }
+            }
+
+            base.OnKeyDown(e);
+        }
+
+        public void UpdateTransform()
         {
             InvalidateMeasure();
             InvalidateArrange();
@@ -56,15 +96,11 @@ namespace Hercules.App.Controls
                 {
                     EndEdit();
 
-                    editingNode = renderNode;
-                    editingNode.TextRenderer.HideText = true;
+                    BindToNode(renderNode);
 
-                    InvalidateMeasure();
-                    InvalidateArrange();
-
-                    Text = renderNode.Node.Text ?? string.Empty;
-
-                    AdjustStyle();
+                    UpdateTransform();
+                    UpdateStyle();
+                    UpdateText();
 
                     Show();
                 }
@@ -75,7 +111,7 @@ namespace Hercules.App.Controls
 
         public void EndEdit()
         {
-            if (editingNode != null)
+            if (IsEditing)
             {
                 try
                 {
@@ -95,16 +131,12 @@ namespace Hercules.App.Controls
 
         public void CancelEdit()
         {
-            Text = string.Empty;
-
-            Hide();
-
-            if (editingNode != null)
+            if (IsEditing)
             {
-                editingNode.TextRenderer.HideText = false;
-            }
+                Hide();
 
-            editingNode = null;
+                UnbindFromNode();
+            }
         }
 
         protected override Size ArrangeOverride(Size finalSize)
@@ -127,7 +159,7 @@ namespace Hercules.App.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (editingNode != null)
+            if (IsEditing)
             {
                 Size size = editingNode.TextRenderer.RenderSize.ToSize();
 
@@ -141,7 +173,24 @@ namespace Hercules.App.Controls
             }
         }
 
-        private void AdjustStyle()
+        private void BindToNode(Win2DRenderNode renderNode)
+        {
+            editingNode = renderNode;
+            editingNode.TextRenderer.HideText = true;
+        }
+
+        private void UnbindFromNode()
+        {
+            editingNode.TextRenderer.HideText = false;
+            editingNode = null;
+        }
+
+        private void UpdateText()
+        {
+            Text = editingNode.Node.Text ?? string.Empty;
+        }
+
+        private void UpdateStyle()
         {
             FontSize = editingNode.TextRenderer.FontSize;
         }

@@ -43,7 +43,7 @@ namespace Hercules.App.Controls
 
             if (AssociatedElement.Renderer != null)
             {
-                Vector2 position = e.Position.ToVector2();
+                Vector2 position = AssociatedElement.Renderer.GetMindmapPosition(e.Position.ToVector2());
 
                 foreach (Win2DRenderNode renderNode in AssociatedElement.Renderer.RenderNodes)
                 {
@@ -60,7 +60,7 @@ namespace Hercules.App.Controls
         {
             if (movingOperation != null)
             {
-                Vector2 translation = e.Delta.Translation.ToVector2();
+                Vector2 translation = AssociatedElement.Renderer.GetMindmapSize(e.Delta.Translation.ToVector2());
 
                 movingOperation.Move(translation);
             }

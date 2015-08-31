@@ -43,11 +43,7 @@
                     <AppBarSeparator />
 
                     <AppBarButton Icon="Save"
-                        AutomationProperties.AccessKey="CTRL + S"
                         AutomationProperties.Name="Save" x:Uid="AppBarButtonSave">
-                        <i:Interaction.Behaviors>
-                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="I" />
-                        </i:Interaction.Behaviors>
                         <AppBarButton.Flyout>
                             <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
                                 <MenuFlyoutItem x:Uid="ExportHtml" Text="Html"
@@ -59,13 +55,9 @@
                     </AppBarButton>
 
                     <AppBarSeparator />
-                    
+
                     <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}"
-                        AutomationProperties.AccessKey="CTRL + I"
                         AutomationProperties.Name="Change Icon" x:Uid="AppBarButtonChangeIcon">
-                        <i:Interaction.Behaviors>
-                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="I" />
-                        </i:Interaction.Behaviors>
                         <AppBarButton.Flyout>
                             <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
                                 <e:EditIconView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
@@ -74,11 +66,7 @@
                         <TextBlock TextAlignment="Center" FontSize="20" Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" />
                     </AppBarButton>
                     <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=true}"
-                        AutomationProperties.AccessKey="CTRL + O"
                         AutomationProperties.Name="Change Color" x:Uid="AppBarButtonChangeColor">
-                        <i:Interaction.Behaviors>
-                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="O" />
-                        </i:Interaction.Behaviors>
                         <AppBarButton.Flyout>
                             <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
                                 <e:EditColorView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
@@ -165,7 +153,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Button Padding="0,10,0,10" Margin="0,20,0,20" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalAlignment="Top" Foreground="{StaticResource ThemeMainBrush}" Style="{StaticResource ThemeButton}">
+                    <Button TabIndex="-1" Padding="0,10,0,10" Margin="0,20,0,20" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalAlignment="Top" Foreground="{StaticResource ThemeMainBrush}" Style="{StaticResource ThemeButton}">
                         <StackPanel Orientation="Horizontal">
                             <Grid>
                                 <Viewbox Width="64" Height="26">
@@ -182,7 +170,7 @@
                         </Button.Flyout>
                     </Button>
 
-                    <Grid x:Name="MindmapsContainer" Grid.Row="1" Margin="5,0,0,0" Opacity="0" >
+                    <Grid x:Name="MindmapsContainer" Grid.Row="1" Margin="0,5,0,0" Opacity="0" >
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
                             <RowDefinition />
@@ -244,14 +232,18 @@
                         <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Right" Invoked="MoveRightCommand_Invoked" />
                         <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Up" Invoked="MoveTopCommand_Invoked" />
                         <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Down" Invoked="MoveBottomCommand_Invoked" />
+                        <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="T" Invoked="EditTextCommand_Invoked" />
                     </i:Interaction.Behaviors>
 
                     <gpc:TiledBackground TileSize="60" />
 
-                    <controls:Mindmap Document="{Binding Document}"  RendererFactory="{Binding RendererFactory}" x:Name="Mindmap">
+                    <controls:Mindmap Document="{Binding Document}" RendererFactory="{Binding RendererFactory}" x:Name="Mindmap">
                         <controls:Mindmap.Layout>
                             <modelLayout:DefaultLayout ElementMargin="10" HorizontalMargin="50" />
                         </controls:Mindmap.Layout>
+                        <i:Interaction.Behaviors>
+                            <controls:NodeMovingBehavior />
+                        </i:Interaction.Behaviors>
                     </controls:Mindmap>
                 </Grid>
             </SplitView.Content>

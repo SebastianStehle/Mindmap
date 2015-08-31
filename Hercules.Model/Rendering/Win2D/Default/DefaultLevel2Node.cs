@@ -43,7 +43,6 @@ namespace Hercules.Model.Rendering.Win2D.Default
         public DefaultLevel2Node(NodeBase node, DefaultRenderer renderer) 
             : base(node, renderer)
         {
-
             textRenderer = new Win2DTextRenderer(14, node, 60);
         }
 

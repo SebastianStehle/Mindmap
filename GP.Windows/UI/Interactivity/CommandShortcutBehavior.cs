@@ -187,6 +187,10 @@ namespace GP.Windows.UI.Interactivity
             {
                 isControlKeyPressed = true;
             }
+            else if (args.VirtualKey == Key && (isShiftKeyPressed || !RequiresShiftModifier) && (isControlKeyPressed || !RequiresControlModifier))
+            {
+                args.Handled = true;
+            }
         }
     }
 }

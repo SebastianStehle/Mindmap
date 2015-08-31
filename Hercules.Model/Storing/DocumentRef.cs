@@ -7,9 +7,6 @@
 // ==========================================================================
 
 using System;
-using System.Threading.Tasks;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Media.Imaging;
 using GP.Windows;
 
 namespace Hercules.Model.Storing
@@ -19,8 +16,6 @@ namespace Hercules.Model.Storing
         private readonly Guid documentId;
         private readonly string documentTitle;
         private readonly DateTimeOffset lastUpdate;
-        private readonly Func<Guid, BitmapImage, Task<bool>> imageLoader;
-        private BitmapImage screenshot;
 
         public Guid DocumentId
         {
@@ -31,35 +26,20 @@ namespace Hercules.Model.Storing
         {
             get { return documentTitle; }
         }
-
-        public ImageSource Screenshot
-        {
-            get { return screenshot; }
-        }
+       
 
         public DateTimeOffset LastUpdate
         {
             get { return lastUpdate; }
         }
 
-        public DocumentRef(Guid documentId, string documentTitle, DateTimeOffset lastUpdate, Func<Guid, BitmapImage, Task<bool>> imageLoader)
+        public DocumentRef(Guid documentId, string documentTitle, DateTimeOffset lastUpdate)
         {
             Guard.NotNull(documentTitle, nameof(documentTitle));
 
             this.documentTitle = documentTitle;
             this.documentId = documentId;
             this.lastUpdate = lastUpdate;
-            this.imageLoader = imageLoader;
-        }
-
-        public async Task<bool> LoadImageAsync()
-        {
-            if (screenshot == null)
-            {
-                screenshot = new BitmapImage();
-            }
-
-            return await imageLoader(documentId, screenshot);
         }
     }
 }

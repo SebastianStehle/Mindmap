@@ -27,8 +27,6 @@ namespace Hercules.Model.Rendering.Win2D
         private Vector2 renderPosition;
         private float minSize;
 
-        public bool HideText { get; set; }
-
         public float FontSize
         {
             get { return fontSize; }
@@ -102,7 +100,7 @@ namespace Hercules.Model.Rendering.Win2D
 #if DRAW_OUTLINE
             session.DrawRectangle(Bounds, Colors.Red);
 #endif
-            if (!HideText && !string.IsNullOrWhiteSpace(text))
+            if (!string.IsNullOrWhiteSpace(text))
             {
                 session.DrawText(text, Bounds, Colors.Black, textFormat);
             }

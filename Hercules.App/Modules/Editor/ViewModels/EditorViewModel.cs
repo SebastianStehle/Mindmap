@@ -252,7 +252,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
         {
             if (Document != null)
             {
-                await DocumentStore.StoreAsync(Document, async x => await RendererFactory.Current.RenderScreenshotAsync(x, Colors.White, 0));
+                await DocumentStore.StoreAsync(Document);
 
                 mindmapItem.RefreshAfterSave();
             }

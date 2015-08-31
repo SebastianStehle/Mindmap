@@ -6,9 +6,11 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
 using System.Numerics;
 using Windows.Foundation;
 using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -60,20 +62,20 @@ namespace Hercules.App.Controls
         {
             if (IsEditing)
             {
-                if (e.Key == VirtualKey.Enter || e.Key == VirtualKey.Escape)
+                if (e.Key == VirtualKey.Enter)
                 {
-                    Win2DRenderNode node = editingNode;
+                    CoreVirtualKeyStates shiftKeyState = Window.Current.CoreWindow.GetKeyState(VirtualKey.Shift);
 
-                    if (e.Key == VirtualKey.Enter)
+                    if ((shiftKeyState & CoreVirtualKeyStates.Down) != CoreVirtualKeyStates.Down)
                     {
                         EndEdit();
-                    }
-                    else
-                    {
-                        CancelEdit();
-                    }
 
-                    node.Renderer.Invalidate();
+                        e.Handled = true;
+                    }
+                }
+                else if (e.Key == VirtualKey.Escape)
+                {
+                    CancelEdit();
 
                     e.Handled = true;
                 }
@@ -145,8 +147,8 @@ namespace Hercules.App.Controls
             {
                 Vector2 position = editingNode.Renderer.GetOverlayPosition(editingNode.TextRenderer.RenderPosition);
 
-                renderTransform.TranslateX = position.X;
-                renderTransform.TranslateY = position.Y;
+                renderTransform.TranslateX = position.X - Padding.Left - BorderThickness.Left;
+                renderTransform.TranslateY = position.Y - Padding.Top - BorderThickness.Top;
 
                 float zoom = editingNode.Renderer.ZoomFactor;
 
@@ -161,11 +163,25 @@ namespace Hercules.App.Controls
         {
             if (IsEditing)
             {
-                Size size = editingNode.TextRenderer.RenderSize.ToSize();
+                Vector2 renderSize = editingNode.TextRenderer.RenderSize;
+                
+                Size actualSize = base.MeasureOverride(availableSize);
 
-                base.MeasureOverride(size);
+                double minSizeX = renderSize.X + Padding.Left + Padding.Right + BorderThickness.Left + BorderThickness.Right;
 
-                return size;
+                if (actualSize.Width < minSizeX)
+                {
+                    actualSize.Width = minSizeX;
+                }
+
+                double minSizeY = renderSize.Y + Padding.Top + Padding.Bottom + BorderThickness.Top + BorderThickness.Bottom;
+
+                if (actualSize.Height < minSizeY)
+                {
+                    actualSize.Height = minSizeY;
+                }
+
+                return actualSize;
             }
             else
             {
@@ -176,12 +192,10 @@ namespace Hercules.App.Controls
         private void BindToNode(Win2DRenderNode renderNode)
         {
             editingNode = renderNode;
-            editingNode.TextRenderer.HideText = true;
         }
 
         private void UnbindFromNode()
         {
-            editingNode.TextRenderer.HideText = false;
             editingNode = null;
         }
 

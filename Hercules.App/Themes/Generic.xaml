@@ -35,13 +35,10 @@
                             <Grid Width="{Binding Document.Width}" Height="{Binding Document.Height}" />
                         </ScrollViewer>
                         
-                        <controls:TextEditor x:Name="PART_TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="0"
+                        <controls:TextEditor x:Name="PART_TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="5,0"
                             MinHeight="0"
                             MinWidth="0"
-                            TextAlignment="Center" 
-                            Background="Transparent" 
-                            BorderBrush="Transparent"
-                            BorderThickness="0"
+                            TextAlignment="Left" 
                             Visibility="Visible" 
                             VerticalContentAlignment="Center"
                             VerticalAlignment="Top"

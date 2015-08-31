@@ -97,7 +97,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         {
             Document document = new Document(Guid.NewGuid(), name);
 
-            DocumentRef documentRef = await DocumentStore.StoreAsync(document, null);
+            DocumentRef documentRef = await DocumentStore.StoreAsync(document);
 
             return documentRef;
         }

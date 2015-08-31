@@ -14,7 +14,6 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Streams;
-using Windows.UI.Xaml.Media.Imaging;
 using GP.Windows;
 using Hercules.Model.Storing.Utils;
 using Hercules.Model.Utils;
@@ -56,13 +55,11 @@ namespace Hercules.Model.Storing.Json
             return taskFactory.StartNew(() => RenameInternalAsync(documentId, title)).Unwrap();
         }
 
-        public async Task<DocumentRef> StoreAsync(Document document, Func<IRandomAccessStream, Task> saveScreenshot)
+        public async Task<DocumentRef> StoreAsync(Document document)
         {
             Guard.NotNull(document, nameof(document));
-
-            InMemoryRandomAccessStream screenshot = await WriteScreenshotToMemoryAsync(saveScreenshot);
-
-            return await taskFactory.StartNew(() => StoreInternalAsync(document, screenshot)).Unwrap();
+            
+            return await taskFactory.StartNew(() => StoreInternalAsync(document)).Unwrap();
         }
 
         public Task<Document> LoadAsync(Guid documentId)
@@ -102,7 +99,7 @@ namespace Hercules.Model.Storing.Json
 
                     if (!string.IsNullOrWhiteSpace(name))
                     {
-                        documentReferences.Add(new DocumentRef(Guid.Parse(file.DisplayName), name, properties.DateModified, LoadScreenshotAsync));
+                        documentReferences.Add(new DocumentRef(Guid.Parse(file.DisplayName), name, properties.DateModified));
                     }
                 }
             }
@@ -133,7 +130,7 @@ namespace Hercules.Model.Storing.Json
             return WriteTitleAsync(documentId, title);
         }
 
-        private async Task<DocumentRef> StoreInternalAsync(Document document, InMemoryRandomAccessStream screenshot)
+        private async Task<DocumentRef> StoreInternalAsync(Document document)
         {
             Guard.NotNull(document, nameof(document));
 
@@ -142,11 +139,10 @@ namespace Hercules.Model.Storing.Json
             JsonHistory jsonHistory = new JsonHistory(document);
 
             await Task.WhenAll(
-                WriteScreenshotAsync(jsonHistory, screenshot),
                 WriteTitleAsync(jsonHistory),
                 WriteContentAsync(jsonHistory));
             
-            return new DocumentRef(document.Id, document.Title, DateTime.Now, LoadScreenshotAsync);
+            return new DocumentRef(document.Id, document.Title, DateTime.Now);
         }
 
         private async Task<InMemoryRandomAccessStream> WriteScreenshotToMemoryAsync(Func<IRandomAccessStream, Task> saveScreenshot)
@@ -163,13 +159,6 @@ namespace Hercules.Model.Storing.Json
             }
 
             return stream;
-        }
-
-        private Task WriteScreenshotAsync(JsonHistory history, InMemoryRandomAccessStream screenshotStream)
-        {
-            string fileName = $"{history.Id}.png";
-
-            return localFolder.TryWriteDataAsync(fileName, screenshotStream);
         }
 
         private Task WriteTitleAsync(Guid documentId, string title)
@@ -193,33 +182,11 @@ namespace Hercules.Model.Storing.Json
             return history.SerializeAsJsonAsync(localFolder, fileName, historySerializerSettings);
         }
 
-        private async Task<bool> LoadScreenshotAsync(Guid documentId, BitmapImage image)
-        {
-            try
-            {
-                string fileName = $"{documentId}.png";
-
-                StorageFile file = await localFolder.GetFileAsync(fileName);
-
-                using (IRandomAccessStream stream = await file.OpenAsync(FileAccessMode.ReadWrite))
-                {
-                    await image.SetSourceAsync(stream);
-                }
-
-                return true;
-            }
-            catch (FileNotFoundException)
-            {
-                return false;
-            }
-        }
-
         private async Task DeleteInternalAsync(Guid documentId)
         {
             await EnsureFolderAsync();
 
             await Task.WhenAll(
-                localFolder.TryDeleteIfExistsAsync(documentId + ".png"),
                 localFolder.TryDeleteIfExistsAsync(documentId + ".mmn"),
                 localFolder.TryDeleteIfExistsAsync(documentId + ".mmd"));
         }

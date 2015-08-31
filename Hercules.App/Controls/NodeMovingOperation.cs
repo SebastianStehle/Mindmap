@@ -58,15 +58,18 @@ namespace Hercules.App.Controls
 
             renderer.Invalidate();
 
-            AttachTarget target = layout.CalculateAttachTarget(document, renderer, nodeMoving, clone.Bounds);
+            if (clone.Bounds.Width > 0 && clone.Bounds.Height > 0)
+            {
+                AttachTarget target = layout.CalculateAttachTarget(document, renderer, nodeMoving, clone.Bounds);
 
-            if (target != null)
-            {
-                renderer.ShowPreviewElement(target.Position, target.Parent, target.Anchor);
-            }
-            else
-            {
-                renderer.HidePreviewElement();
+                if (target != null)
+                {
+                    renderer.ShowPreviewElement(target.Position, target.Parent, target.Anchor);
+                }
+                else
+                {
+                    renderer.HidePreviewElement();
+                }
             }
         }
 

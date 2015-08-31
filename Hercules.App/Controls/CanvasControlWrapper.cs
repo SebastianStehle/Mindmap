@@ -9,6 +9,7 @@
 // ReSharper disable UnusedParameter.Local
 
 using System;
+using System.Diagnostics;
 using Windows.UI.Core;
 using GP.Windows;
 using GP.Windows.UI.Controls;
@@ -64,6 +65,10 @@ namespace Hercules.App.Controls
 
         public void Invalidate()
         {
+            if (inner.ReadyToDraw == false)
+            {
+                Debugger.Break();
+            }
             inner.Invalidate();
         }
     }

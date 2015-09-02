@@ -197,6 +197,7 @@
                                                 <MenuFlyout>
                                                     <MenuFlyoutItem x:Uid="MindmapItemDelete" Text="Rename" DataContext="{Binding ElementName=Root}" x:Name="RenameButton" Click="RenameButton_Click" />
                                                     <MenuFlyoutSeparator />
+                                                    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                                                     <MenuFlyoutItem x:Uid="MindmapItemRename" Text="Delete"
                                                         Command="{Binding Path=Mindmaps.DeleteCommand, Source={StaticResource ViewModelLocator}, ElementName=List}" 
                                                         CommandParameter="{Binding}" />

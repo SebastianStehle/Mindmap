@@ -87,7 +87,7 @@ namespace Hercules.App.Controls
         public static void OnDocumentChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
             var owner = o as Mindmap;
-            
+
             owner?.InitializeRenderer();
         }
 
@@ -263,7 +263,7 @@ namespace Hercules.App.Controls
         {
             WithRenderer(r =>
             {
-                if (Document != null && Document.SelectedNode != null)
+                if (Document?.SelectedNode != null)
                 {
                     Win2DRenderNode renderNode = (Win2DRenderNode)r.FindRenderNode(Document.SelectedNode);
 

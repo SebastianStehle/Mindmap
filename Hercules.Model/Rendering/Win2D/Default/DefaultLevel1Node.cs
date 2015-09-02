@@ -12,7 +12,6 @@ using Hercules.Model.Layouting;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
-using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Model.Rendering.Win2D.Default
 {

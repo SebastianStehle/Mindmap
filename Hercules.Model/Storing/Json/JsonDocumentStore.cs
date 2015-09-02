@@ -145,22 +145,6 @@ namespace Hercules.Model.Storing.Json
             return new DocumentRef(document.Id, document.Title, DateTime.Now);
         }
 
-        private async Task<InMemoryRandomAccessStream> WriteScreenshotToMemoryAsync(Func<IRandomAccessStream, Task> saveScreenshot)
-        {
-            InMemoryRandomAccessStream stream = null;
-
-            if (saveScreenshot != null)
-            {
-                stream = new InMemoryRandomAccessStream();
-
-                await saveScreenshot(stream);
-
-                stream.Seek(0);
-            }
-
-            return stream;
-        }
-
         private Task WriteTitleAsync(Guid documentId, string title)
         {
             string fileName = $"{documentId}.mmn";

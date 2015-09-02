@@ -148,6 +148,7 @@ namespace Hercules.Model.Rendering.Win2D
         private void InitializeDocument()
         {
             document.StateChanged += Document_StateChanged;
+            document.NodeSelected += Document_NodeSelected;
             document.NodeRemoved += Document_NodeRemoved;
             document.NodeAdded += Document_NodeAdded;
 
@@ -160,6 +161,7 @@ namespace Hercules.Model.Rendering.Win2D
         private void ReleaseDocument()
         {
             document.StateChanged -= Document_StateChanged;
+            document.NodeSelected -= Document_NodeSelected;
             document.NodeRemoved -= Document_NodeRemoved;
             document.NodeAdded -= Document_NodeAdded;
 
@@ -402,6 +404,11 @@ namespace Hercules.Model.Rendering.Win2D
         public Vector2 GetOverlayPosition(Vector2 position)
         {
             return MathHelper.Transform(position, transform);
+        }
+
+        private void Document_NodeSelected(object sender, NodeEventArgs e)
+        {
+            Invalidate();
         }
 
         private void Document_StateChanged(object sender, EventArgs e)

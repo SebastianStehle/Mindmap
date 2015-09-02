@@ -9,7 +9,6 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Windows.Storage.Streams;
 
 namespace Hercules.Model.Storing
 {

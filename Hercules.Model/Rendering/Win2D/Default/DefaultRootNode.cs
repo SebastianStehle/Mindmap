@@ -70,7 +70,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             }
 
             size.X += textOffset;
-            size.Y = Math.Max(size.Y, MinHeight);
+            size.Y = Math.Max(Math.Max(size.Y, size.X / 3f), MinHeight);
 
             return size;
         }

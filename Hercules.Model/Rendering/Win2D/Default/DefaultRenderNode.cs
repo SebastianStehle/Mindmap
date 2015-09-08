@@ -10,6 +10,7 @@ using System.Numerics;
 using Windows.UI;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
+using Hercules.Model.Layouting;
 
 namespace Hercules.Model.Rendering.Win2D.Default
 {
@@ -20,8 +21,8 @@ namespace Hercules.Model.Rendering.Win2D.Default
         protected static readonly Vector2 ImageSizeSmall = new Vector2(32, 32);
         protected static readonly float ImageMargin = 10;
         protected static readonly CanvasStrokeStyle SelectionStrokeStyle = new CanvasStrokeStyle { DashStyle = CanvasDashStyle.Dash };
-
         private readonly ExpandButton button;
+        private CanvasGeometry hullGeometry;
 
         protected ExpandButton Button
         {
@@ -59,6 +60,38 @@ namespace Hercules.Model.Rendering.Win2D.Default
             button.Arrange(buttonPosition);
 
             base.ArrangeInternal(session);
+        }
+
+        public override void ClearResources()
+        {
+            base.ClearResources();
+
+            ClearHull();
+        }
+
+        private void ClearHull()
+        {
+            if (hullGeometry != null)
+            {
+                hullGeometry.Dispose();
+                hullGeometry = null;
+            }
+        }
+
+        public override void ComputeHull(CanvasDrawingSession session)
+        {
+            ClearHull();
+
+            hullGeometry = GeometryBuilder.ComputeHullGeometry(session, Renderer, this);
+        }
+
+        protected override void RenderHullInternal(CanvasDrawingSession session, ThemeColor color)
+        {
+            if (hullGeometry != null)
+            {
+                session.DrawGeometry(hullGeometry, Resources.Brush(color.Normal, 1.0f), 1f);
+                session.FillGeometry(hullGeometry, Resources.Brush(color.Light, 0.5f));
+            }
         }
     }
 }

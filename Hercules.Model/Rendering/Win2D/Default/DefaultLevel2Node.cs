@@ -19,10 +19,11 @@ namespace Hercules.Model.Rendering.Win2D.Default
     {
         private const float MinHeight = 40;
         private const float VerticalOffset = 15;
-        private static readonly Vector2 ContentPadding = new Vector2(15, 5);
+        private static readonly Vector2 ContentPadding = new Vector2(15, 10);
         private static readonly CanvasStrokeStyle StrokeStyle = new CanvasStrokeStyle { StartCap = CanvasCapStyle.Round, EndCap = CanvasCapStyle.Round };
         private readonly Win2DTextRenderer textRenderer;
         private float textOffset;
+        private CanvasGeometry pathGeometry;
 
         public override Win2DTextRenderer TextRenderer
         {
@@ -87,6 +88,29 @@ namespace Hercules.Model.Rendering.Win2D.Default
             return size;
         }
 
+        public override void ClearResources()
+        {
+            base.ClearResources();
+
+            ClearPath();
+        }
+
+        private void ClearPath()
+        {
+            if (pathGeometry != null)
+            {
+                pathGeometry.Dispose();
+                pathGeometry = null;
+            }
+        }
+
+        public override void ComputePath(CanvasDrawingSession session)
+        {
+            ClearPath();
+
+            pathGeometry = GeometryBuilder.ComputeLinePath(this, Parent, session);
+        }
+
         protected override void RenderInternal(CanvasDrawingSession session, ThemeColor color, bool renderControls)
         {
             ICanvasBrush borderBrush = Resources.ThemeDarkBrush(color);
@@ -124,7 +148,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             {
                 if (Node.IsSelected)
                 {
-                    session.DrawRoundedRectangle(Bounds, 14, 14, borderBrush, 2f, SelectionStrokeStyle);
+                    session.DrawRoundedRectangle(Bounds, 5, 5, borderBrush, 2f, SelectionStrokeStyle);
                 }
 
                 if (Node.HasChildren)
@@ -136,9 +160,12 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
         protected override void RenderPathInternal(CanvasDrawingSession session)
         {
-            ICanvasBrush brush = Resources.Brush(PathColor, 1);
+            if (pathGeometry != null)
+            {
+                ICanvasBrush brush = Resources.Brush(PathColor, 1);
 
-            PathRenderer.RenderLinePath(this, Parent, session, brush);
+                session.DrawGeometry(pathGeometry, brush, 2);
+            }
         }
 
         protected override Win2DRenderNode CloneInternal()

@@ -68,6 +68,11 @@ namespace GP.Windows.UI.Controls
         }
 
         /// <summary>
+        /// Occurs when the resources must be created.
+        /// </summary>
+        public event EventHandler CreateResources;
+
+        /// <summary>
         /// This is where the magic happens! Hook this event to issue your immediate mode 2D drawing calls.
         /// </summary>
         public event EventHandler<CanvasDrawEventArgs> Draw;

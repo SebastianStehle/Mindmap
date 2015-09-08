@@ -44,6 +44,11 @@ namespace GP.Windows.UI.Controls
         event EventHandler<CanvasDrawEventArgs> Draw;
 
         /// <summary>
+        /// Occurs when the resources must be created.
+        /// </summary>
+        event EventHandler CreateResources;
+
+        /// <summary>
         /// Indicates that the contents of the CanvasControl need to be redrawn.
         ///  Calling <see cref="Invalidate"/> results in 
         /// the <see cref="Draw"/> event being raised shortly afterward.

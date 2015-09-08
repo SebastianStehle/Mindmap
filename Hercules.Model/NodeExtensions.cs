@@ -14,6 +14,27 @@ namespace Hercules.Model
 {
     public static class NodeExtensions
     {
+        public static IList<Node> AllChildren(this NodeBase nodeBase)
+        {
+            Guard.NotNull(nodeBase, nameof(nodeBase));
+
+            RootNode root = nodeBase as RootNode;
+
+            if (root != null)
+            {
+                return AllChildren(root);
+            }
+
+            Node node = nodeBase as Node;
+
+            if (node != null)
+            {
+                return AllChildren(node);
+            }
+
+            return null;
+        }
+
         public static IList<Node> AllChildren(this Node node)
         {
             Guard.NotNull(node, nameof(node));
@@ -21,6 +42,29 @@ namespace Hercules.Model
             List<Node> allChildren = new List<Node>();
 
             AddChildren(allChildren, node);
+
+            return allChildren;
+        }
+
+        public static IList<Node> AllChildren(this RootNode root)
+        {
+            Guard.NotNull(root, nameof(root));
+
+            List<Node> allChildren = new List<Node>();
+
+            foreach (Node child in root.RightChildren)
+            {
+                allChildren.Add(child);
+
+                AddChildren(allChildren, child);
+            }
+
+            foreach (Node child in root.LeftChildren)
+            {
+                allChildren.Add(child);
+
+                AddChildren(allChildren, child);
+            }
 
             return allChildren;
         }

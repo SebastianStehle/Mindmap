@@ -173,12 +173,28 @@ namespace Hercules.Model.Rendering.Win2D
 
         private void InitializeCanvas()
         {
+            canvas.CreateResources += Canvas_CreateResources;
+
             canvas.Draw += Canvas_Draw;
         }
 
         private void ReleaseCanvas()
         {
+            canvas.CreateResources -= Canvas_CreateResources;
+
             canvas.Draw -= Canvas_Draw;
+        }
+
+        private void Canvas_CreateResources(object sender, EventArgs e)
+        {
+            resources.ClearResources();
+
+            foreach (Win2DRenderNode renderNode in AllNodes)
+            {
+                renderNode.ClearResources();
+            }
+
+            Invalidate();
         }
 
         public void HidePreviewElement()
@@ -244,12 +260,9 @@ namespace Hercules.Model.Rendering.Win2D
         {
             if (layout != null)
             {
-                session.Transform = transform;
-
-                bool needsRedraw;
-
                 UpdateLayout(session);
-                UpdateArrangement(session, true, out needsRedraw);
+
+                bool needsRedraw = UpdateArrangement(session, true);
 
                 RenderIt(session, true, true);
 
@@ -267,30 +280,36 @@ namespace Hercules.Model.Rendering.Win2D
                 layout.UpdateVisibility(document, this);
             }
 
-            foreach (Win2DRenderNode node in AllNodes)
+            foreach (Win2DRenderNode renderNode in AllNodes)
             {
-                node.Measure(session);
+                renderNode.Measure(session);
             }
 
             if (layoutInvalidated)
             {
                 layout.UpdateLayout(document, this);
 
+                foreach (Win2DRenderNode renderNode in renderNodes.Values)
+                {
+                    if (renderNode.IsVisible)
+                    {
+                        renderNode.ComputeHull(session);
+                    }
+                }
+
                 layoutInvalidated = false;
             }
         }
 
-        private void UpdateArrangement(CanvasDrawingSession session, bool animate, out bool needsRedraw)
+        private bool UpdateArrangement(CanvasDrawingSession session, bool animate)
         {
-            needsRedraw = false;
+            bool needsRedraw = false;
 
             DateTime utcNow = DateTime.UtcNow;
 
-            foreach (Win2DRenderNode node in AllNodes)
+            foreach (Win2DRenderNode renderNode in AllNodes)
             {
-                bool isCustomNode = IsCustomNode(node);
-
-                needsRedraw |= node.AnimateRenderPosition(animate && !isCustomNode, utcNow, 600);
+                needsRedraw |= renderNode.AnimateRenderPosition(animate && !IsCustomNode(renderNode), utcNow, 600);
             }
 
             double minX = double.MaxValue;
@@ -298,13 +317,13 @@ namespace Hercules.Model.Rendering.Win2D
             double maxX = double.MinValue;
             double maxY = double.MinValue;
 
-            foreach (Win2DRenderNode node in AllNodes)
+            foreach (Win2DRenderNode renderNode in AllNodes)
             {
-                node.Arrange(session);
+                renderNode.Arrange(session);
 
-                if (node.IsVisible && !IsCustomNode(node))
+                if (renderNode.IsVisible && !IsCustomNode(renderNode))
                 {
-                    Rect2 bounds = node.Bounds;
+                    Rect2 bounds = renderNode.Bounds;
 
                     minX = Math.Min(minX, bounds.Left);
                     minY = Math.Min(minY, bounds.Top);
@@ -313,58 +332,78 @@ namespace Hercules.Model.Rendering.Win2D
                 }
             }
 
+            foreach (Win2DRenderNode renderNode in AllNodes)
+            {
+                if (renderNode.IsVisible && !IsCustomNode(renderNode))
+                {
+                    renderNode.ComputePath(session);
+                }
+            }
+
             sceneBounds = new Rect2((float)minX, (float)minY, (float)(maxX - minX), (float)(maxY - minY));
+
+            return needsRedraw;
         }
 
         private void RenderIt(CanvasDrawingSession session, bool renderControls, bool renderCustoms)
         {
+            session.Transform = transform;
+
             session.TextAntialiasing = CanvasTextAntialiasing.Grayscale;
-            
-            foreach (Win2DRenderNode node in AllNodes)
+
+            foreach (Win2DRenderNode renderNode in renderNodes.Values)
             {
-                if (node.IsVisible && CanRenderPath(node))
+                if (renderNode.Node.HasChildren && renderNode.IsVisible && !renderNode.Node.IsCollapsed)
                 {
-                    node.RenderPath(session);
+                    renderNode.RenderHull(session);
                 }
             }
 
-            foreach (Win2DRenderNode node in AllNodes)
+            foreach (Win2DRenderNode renderNode in AllNodes)
             {
-                if (node.IsVisible && CanRenderNode(node))
+                if (renderNode.IsVisible && CanRenderPath(renderNode))
                 {
-                    bool isCustomNode = IsCustomNode(node);
+                    renderNode.RenderPath(session);
+                }
+            }
+
+            foreach (Win2DRenderNode renderNode in AllNodes)
+            {
+                if (renderNode.IsVisible && CanRenderNode(renderNode))
+                {
+                    bool isCustomNode = IsCustomNode(renderNode);
 
                     if (renderCustoms || !isCustomNode)
                     {
-                        node.Render(session, renderControls && !isCustomNode);
+                        renderNode.Render(session, renderControls && !isCustomNode);
                     }
                 }
             }
         }
 
-        private bool CanRenderPath(Win2DRenderNode node)
+        private bool CanRenderPath(Win2DRenderNode renderNode)
         {
-            return visibleRect.IntersectsWith(node.BoundsWithParent);
+            return visibleRect.IntersectsWith(renderNode.BoundsWithParent);
         }
 
-        private bool CanRenderNode(Win2DRenderNode node)
+        private bool CanRenderNode(Win2DRenderNode renderNode)
         {
-            return visibleRect.IntersectsWith(node.Bounds);
+            return visibleRect.IntersectsWith(renderNode.Bounds);
         }
 
-        private bool IsCustomNode(Win2DRenderNode node)
+        private bool IsCustomNode(Win2DRenderNode renderNode)
         {
-            return customNodes.Contains(node) || node == previewNode;
+            return customNodes.Contains(renderNode) || renderNode == previewNode;
         }
 
-        public void AddCustomNode(Win2DRenderNode node)
+        public void AddCustomNode(Win2DRenderNode renderNode)
         {
-            customNodes.Add(node);
+            customNodes.Add(renderNode);
         }
 
-        public void RemoveCustomNode(Win2DRenderNode node)
+        public void RemoveCustomNode(Win2DRenderNode renderNode)
         {
-            customNodes.Remove(node);
+            customNodes.Remove(renderNode);
         }
 
         public bool HandleClick(Vector2 hitPosition, out Win2DRenderNode handledNode)
@@ -408,7 +447,7 @@ namespace Hercules.Model.Rendering.Win2D
 
         private void Document_NodeSelected(object sender, NodeEventArgs e)
         {
-            Invalidate();
+            InvalidateWithoutLayout();
         }
 
         private void Document_StateChanged(object sender, EventArgs e)
@@ -430,7 +469,14 @@ namespace Hercules.Model.Rendering.Win2D
         {
             if (node != null)
             {
-                renderNodes.Remove(node);
+                Win2DRenderNode oldRenderNode;
+                
+                if (renderNodes.TryGetValue(node, out oldRenderNode))
+                {
+                    oldRenderNode.ClearResources();
+
+                    renderNodes.Remove(node);
+                }
             }
         }
 

@@ -125,6 +125,11 @@ namespace Hercules.Model
 
                 oldNode.LinkTo((Document)null);
 
+                if (oldNode.IsSelected)
+                {
+                    Select(null);
+                }
+
                 OnNodeRemoved(oldNode);
             }
 

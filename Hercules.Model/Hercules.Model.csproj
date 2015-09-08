@@ -152,9 +152,10 @@
     <Compile Include="RemoveChildCommand.cs" />
     <Compile Include="Rendering\Win2D\Default\DefaultPreviewNode.cs" />
     <Compile Include="Rendering\Win2D\Default\DefaultRendererFactory.cs" />
+    <Compile Include="Rendering\Win2D\GeometryBuilder.cs" />
     <Compile Include="Rendering\Win2D\IRendererFactory.cs" />
-    <Compile Include="Rendering\Win2D\PathRenderer.cs" />
     <Compile Include="Rendering\Win2D\Win2DResourceManager.cs" />
+    <Compile Include="Utils\ConvexHull.cs" />
     <Compile Include="Utils\ResourceManager.cs" />
     <Compile Include="Rendering\Win2D\Default\DefaultLevel1Node.cs" />
     <Compile Include="Rendering\Win2D\Default\DefaultLevel2Node.cs" />

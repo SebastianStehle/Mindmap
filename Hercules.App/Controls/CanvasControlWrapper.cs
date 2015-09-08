@@ -13,6 +13,7 @@ using Windows.UI.Core;
 using GP.Windows;
 using GP.Windows.UI.Controls;
 using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.UI;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
 namespace Hercules.App.Controls
@@ -35,12 +36,14 @@ namespace Hercules.App.Controls
 
         protected void OnDraw(CanvasDrawEventArgs e)
         {
-            EventHandler<CanvasDrawEventArgs> eventHandler = Draw;
+            Draw?.Invoke(this, e);
+        }
 
-            if (eventHandler != null)
-            {
-                eventHandler(this, e);
-            }
+        public event EventHandler CreateResources;
+
+        protected virtual void OnCreateResources()
+        {
+            CreateResources?.Invoke(this, EventArgs.Empty);
         }
 
         public CanvasControlWrapper(CanvasControl canvasControl)
@@ -49,7 +52,14 @@ namespace Hercules.App.Controls
 
             inner = canvasControl;
 
+            inner.CreateResources += Inner_CreateResources;
+
             inner.Draw += Inner_Draw;
+        }
+
+        private void Inner_CreateResources(CanvasControl sender, CanvasCreateResourcesEventArgs args)
+        {
+            OnCreateResources();
         }
 
         private void Inner_Draw(CanvasControl sender, CanvasDrawEventArgs args)

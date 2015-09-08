@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// PathRenderer.cs
+// HullRenderer.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -7,20 +7,102 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using GP.Windows;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Model.Rendering.Win2D
 {
-    public static class PathRenderer
+    public sealed class GeometryBuilder
     {
-        public static void RenderFilledPath(Win2DRenderNode target, Win2DRenderNode parent, CanvasDrawingSession session, ICanvasBrush brush)
+        private const float Radius = 20;
+
+        public static CanvasGeometry ComputeHullGeometry(CanvasDrawingSession session, Win2DRenderer renderer, Win2DRenderNode renderNode)
         {
-            Guard.NotNull(brush, nameof(brush));
+            Guard.NotNull(session, nameof(session));
+            Guard.NotNull(renderer, nameof(renderer));
+            Guard.NotNull(renderNode, nameof(renderNode));
+
+            NodeBase node = renderNode.Node;
+
+            if (node.HasChildren && !node.IsCollapsed)
+            {
+                IEnumerable<Rect2> childBounds =
+                   node.AllChildren()
+                       .Select(x => (Win2DRenderNode)renderer.FindRenderNode(x)).Union(new Win2DRenderNode[] { renderNode }).Where(x => x.IsVisible)
+                       .Select(x => Rect2.Inflate(new Rect2(x.TargetPosition, x.RenderSize), new Vector2(20, 20)));
+
+                if (childBounds.Any())
+                {
+                    ConvexHull hull = ConvexHull.Compute(childBounds);
+
+                    List<Vector2> points = RoundCorners(hull);
+
+                    return BuildGeometry(session, points);
+                }
+            }
+
+            return null;
+        }
+
+        private static List<Vector2> RoundCorners(ConvexHull hull)
+        {
+            int size = hull.Points.Count;
+
+            List<Vector2> points = new List<Vector2>(size * 3);
+
+            int e = size - 1;
+
+            for (int i = 0; i < size; i++)
+            {
+                Vector2 c = hull.Points[i], next, prev, back, forw;
+
+                prev = i > 0 ? hull.Points[i - 1] : hull.Points[e];
+                next = i < e ? hull.Points[i + 1] : hull.Points[0];
+
+                back = prev - c;
+                forw = next - c;
+
+                float lengthNext = Math.Min(Radius, back.Length() * 0.5f);
+                float lengthForw = Math.Min(Radius, forw.Length() * 0.5f);
+
+                points.Add(c + Vector2.Normalize(back) * lengthNext);
+                points.Add(c);
+                points.Add(c + Vector2.Normalize(forw) * lengthForw);
+            }
+
+            return points;
+        }
+
+        private static CanvasGeometry BuildGeometry(CanvasDrawingSession session, List<Vector2> points)
+        {
+            using (CanvasPathBuilder builder = new CanvasPathBuilder(session.Device))
+            {
+                builder.BeginFigure(points[0]);
+
+                for (int i = 0; i < points.Count / 3; i++)
+                {
+                    builder.AddQuadraticBezier(points[i * 3 + 1], points[i * 3 + 2]);
+
+                    int lastIndex = i * 3 + 3;
+
+                    if (lastIndex < points.Count - 1)
+                    {
+                        builder.AddLine(points[lastIndex]);
+                    }
+                }
+
+                builder.EndFigure(CanvasFigureLoop.Closed);
+
+                return CanvasGeometry.CreatePath(builder);
+            }
+        }
+        public static CanvasGeometry ComputeFilledPath(Win2DRenderNode target, Win2DRenderNode parent, CanvasDrawingSession session)
+        {
             Guard.NotNull(target, nameof(target));
             Guard.NotNull(session, nameof(session));
 
@@ -50,11 +132,13 @@ namespace Hercules.Model.Rendering.Win2D
                 point1.X = (float)Math.Round(point1.X);
                 point1.Y = (float)Math.Round(point1.Y);
 
-                RenderFilledPath(session, brush, point1, point2);
+                return CreateFilledPath(session, point1, point2);
             }
+
+            return null;
         }
 
-        private static void RenderFilledPath(CanvasDrawingSession session, ICanvasBrush brush, Vector2 point1, Vector2 point2)
+        private static CanvasGeometry CreateFilledPath(CanvasDrawingSession session, Vector2 point1, Vector2 point2)
         {
             float halfX = (point1.X + point2.X) * 0.5f;
 
@@ -73,17 +157,12 @@ namespace Hercules.Model.Rendering.Win2D
 
                 builder.EndFigure(CanvasFigureLoop.Closed);
 
-                using (CanvasGeometry pathGeometry = CanvasGeometry.CreatePath(builder))
-                {
-                    session.DrawGeometry(pathGeometry, brush, 2);
-                    session.FillGeometry(pathGeometry, brush);
-                }
+                return CanvasGeometry.CreatePath(builder);
             }
         }
 
-        public static void RenderLinePath(Win2DRenderNode target, Win2DRenderNode parent, CanvasDrawingSession session, ICanvasBrush brush)
+        public static CanvasGeometry ComputeLinePath(Win2DRenderNode target, Win2DRenderNode parent, CanvasDrawingSession session)
         {
-            Guard.NotNull(brush, nameof(brush));
             Guard.NotNull(target, nameof(target));
             Guard.NotNull(session, nameof(session));
 
@@ -114,11 +193,13 @@ namespace Hercules.Model.Rendering.Win2D
                 point1.X = (float)Math.Round(point1.X);
                 point1.Y = (float)Math.Round(point1.Y);
 
-                RenderLinePath(session, brush, point1, point2);
+                return CreateLinePath(session, point1, point2);
             }
+
+            return null;
         }
 
-        private static void RenderLinePath(CanvasDrawingSession session, ICanvasBrush brush, Vector2 point1, Vector2 point2)
+        private static CanvasGeometry CreateLinePath(CanvasDrawingSession session, Vector2 point1, Vector2 point2)
         {
             float halfX = (point1.X + point2.X) * 0.5f;
 
@@ -133,10 +214,7 @@ namespace Hercules.Model.Rendering.Win2D
 
                 builder.EndFigure(CanvasFigureLoop.Open);
 
-                using (CanvasGeometry pathGeometry = CanvasGeometry.CreatePath(builder))
-                {
-                    session.DrawGeometry(pathGeometry, brush, 2);
-                }
+                return CanvasGeometry.CreatePath(builder);
             }
         }
 

@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Numerics;
 using Windows.Foundation;
 
@@ -105,11 +106,6 @@ namespace Hercules.Model.Utils
             size = new Vector2(w, h);
         }
 
-        public void Contains(Size v)
-        {
-            Inflate((float)v.Width, (float)v.Height);
-        }
-
         public void Inflate(Vector2 v)
         {
             Inflate(v.X, v.Y);
@@ -153,6 +149,11 @@ namespace Hercules.Model.Utils
             return rect;
         }
 
+        public void Contains(Size v)
+        {
+            Inflate((float)v.Width, (float)v.Height);
+        }
+
         public bool Contains(Point v)
         {
             return Contains((float)v.X, (float)v.Y);
@@ -166,6 +167,14 @@ namespace Hercules.Model.Utils
         public bool Contains(double x, double y)
         {
             return x >= position.X && x - size.X <= position.X && y >= position.Y && y - size.Y <= position.Y;
+        }
+
+        public IEnumerable<Vector2> ToCorners()
+        {
+            yield return new Vector2(Left, Top);
+            yield return new Vector2(Left, Bottom);
+            yield return new Vector2(Right, Top);
+            yield return new Vector2(Right, Bottom);
         }
 
         public void Intersect(Rect2 rect)

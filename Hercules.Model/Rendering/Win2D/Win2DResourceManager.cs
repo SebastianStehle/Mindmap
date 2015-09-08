@@ -83,6 +83,23 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
+        public void ClearResources()
+        {
+            foreach (ICanvasBrush brush in cachedColors.Values)
+            {
+                brush.Dispose();
+            }
+
+            cachedColors.Clear();
+
+            foreach (ImageContainer image in cachedImages.Values)
+            {
+                image.Bitmap?.Dispose();
+            }
+
+            cachedImages.Clear();
+        }
+
         public ThemeColor FindColor(NodeBase node)
         {
             Guard.NotNull(node, nameof(node));

@@ -64,6 +64,11 @@ namespace Hercules.Model.Rendering.Win2D
             get { return position; }
         }
 
+        public Vector2 TargetPosition
+        {
+            get {  return targetPosition; }
+        }
+
         public Vector2 RenderPosition
         {
             get { return renderPosition; }
@@ -141,6 +146,11 @@ namespace Hercules.Model.Rendering.Win2D
         public void RenderPath(CanvasDrawingSession session)
         {
             RenderPathInternal(session);
+        }
+
+        public void RenderHull(CanvasDrawingSession session)
+        {
+            RenderHullInternal(session, Resources.FindColor(node));
         }
 
         public void Render(CanvasDrawingSession session, bool renderControls)
@@ -277,11 +287,27 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
+        public virtual void ClearResources()
+        {
+        }
+
+        public virtual void ComputeHull(CanvasDrawingSession session)
+        {
+        }
+
+        public virtual void ComputePath(CanvasDrawingSession session)
+        {
+        }
+
         protected virtual void ArrangeInternal(CanvasDrawingSession session)
         {
         }
 
         protected virtual void RenderPathInternal(CanvasDrawingSession session)
+        {
+        }
+
+        protected virtual void RenderHullInternal(CanvasDrawingSession session, ThemeColor color)
         {
         }
 

@@ -11,12 +11,14 @@ using System.Numerics;
 using Hercules.Model.Layouting;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
+using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Model.Rendering.Win2D.Default
 {
     public sealed class DefaultPreviewNode : DefaultRenderNode
     {
         private static readonly Vector2 Size = new Vector2(100, 16);
+        private CanvasGeometry pathGeometry;
 
         public override Win2DTextRenderer TextRenderer
         {
@@ -33,19 +35,53 @@ namespace Hercules.Model.Rendering.Win2D.Default
             return Size;
         }
 
+        public override void ClearResources()
+        {
+            base.ClearResources();
+
+            ClearPath();
+        }
+
+        private void ClearPath()
+        {
+            if (pathGeometry != null)
+            {
+                pathGeometry.Dispose();
+                pathGeometry = null;
+            }
+        }
+
+        public override void ComputePath(CanvasDrawingSession session)
+        {
+            if (Parent != null)
+            {
+                ClearPath();
+
+                if (Parent.Node is RootNode)
+                {
+                    pathGeometry = GeometryBuilder.ComputeFilledPath(this, Parent, session);
+                }
+                else
+                {
+                    pathGeometry = GeometryBuilder.ComputeLinePath(this, Parent, session);
+                }
+            }
+        }
+
         protected override void RenderPathInternal(CanvasDrawingSession session)
         {
             ICanvasBrush brush = Resources.Brush(PathColor, 0.5f);
 
-            if (Parent != null)
+            if (pathGeometry != null)
             {
                 if (Parent.Node is RootNode)
                 {
-                    PathRenderer.RenderFilledPath(this, Parent, session, brush);
+                    session.DrawGeometry(pathGeometry, brush, 2);
+                    session.FillGeometry(pathGeometry, brush);
                 }
                 else
                 {
-                    PathRenderer.RenderLinePath(this, Parent, session, brush);
+                    session.DrawGeometry(pathGeometry, brush, 2);
                 }
             }
         }

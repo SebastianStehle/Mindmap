@@ -136,7 +136,7 @@
     <value>Add Child</value>
   </data>
   <data name="AppBarButtonAddChild.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Add child node (CTRL + M)</value>
+    <value>Add child root (CTRL + M)</value>
   </data>
   <data name="AppBarButtonAddSibling.Label" xml:space="preserve">
     <value>Add Sibling</value>
@@ -145,7 +145,7 @@
     <value>Add Sibling</value>
   </data>
   <data name="AppBarButtonAddSibling.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Add sibiling node (CTRL + N)</value>
+    <value>Add sibiling root (CTRL + N)</value>
   </data>
   <data name="AppBarButtonChangeColor.Label" xml:space="preserve">
     <value>Colors</value>
@@ -154,7 +154,7 @@
     <value>Change Color</value>
   </data>
   <data name="AppBarButtonChangeColor.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Change color of selected node</value>
+    <value>Change color of selected root</value>
   </data>
   <data name="AppBarButtonChangeIcon.Label" xml:space="preserve">
     <value>Icons</value>
@@ -163,7 +163,7 @@
     <value>Change Icon</value>
   </data>
   <data name="AppBarButtonChangeIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Change icon of selected node</value>
+    <value>Change icon of selected root</value>
   </data>
   <data name="AppBarButtonEdit.Label" xml:space="preserve">
     <value>Mindmap</value>
@@ -202,7 +202,7 @@
     <value>Remove</value>
   </data>
   <data name="AppBarButtonRemoveNode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Remove selected node (DELETE)</value>
+    <value>Remove selected root (DELETE)</value>
   </data>
   <data name="AppBarButtonSave.Label" xml:space="preserve">
     <value>Export</value>
@@ -342,13 +342,13 @@ Deutschland</value>
     <value>Swipe down from the top corner and use the + button to create a new mindmap.</value>
   </data>
   <data name="Tutorial2Text.Text" xml:space="preserve">
-    <value>Tap a node to select it and double tap to edit the text.</value>
+    <value>Tap a root to select it and double tap to edit the text.</value>
   </data>
   <data name="Tutorial3Text.Text" xml:space="preserve">
-    <value>Use the buttons at the right side to add or remove nodes.</value>
+    <value>Use the buttons at the right side to add or remove roots.</value>
   </data>
   <data name="Tutorial4Text.Text" xml:space="preserve">
-    <value>You can also change the color of an node or add an icon.</value>
+    <value>You can also change the color of an root or add an icon.</value>
   </data>
   <data name="Tutorial5Text.Text" xml:space="preserve">
     <value>Use the Undo Command to revert your changes.</value>

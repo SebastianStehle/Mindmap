@@ -49,7 +49,7 @@ namespace Hercules.Model.Utils
 
                 Vector2 v = Vector2.Normalize((p - c) + (n - c));
 
-                hull.Add(p - v * padding);
+                hull.Add(p - (v * padding));
             }
 
             return new ConvexHull(hull);
@@ -129,7 +129,7 @@ namespace Hercules.Model.Utils
 
         private static double Cross(Vector2 a, Vector2 b)
         {
-            return a.X * b.Y - a.Y * b.X;
+            return (a.X * b.Y) - (a.Y * b.X);
         }
     }
 }

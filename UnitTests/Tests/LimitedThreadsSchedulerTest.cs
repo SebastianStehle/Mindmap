@@ -21,8 +21,8 @@ namespace UnitTests.Tests
         [TestMethod]
         public void SingleTask()
         {
-
             Task task = taskFactory.StartNew(() => { });
+
             task.Wait();
 
             Assert.IsTrue(task.IsCompleted);

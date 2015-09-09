@@ -1,4 +1,12 @@
-﻿using System.Reflection;
+﻿// ==========================================================================
+// AssemblyInfo.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+using System.Reflection;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following 
@@ -12,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
-[assembly: AssemblyMetadata("TargetPlatform","UAP")]
+[assembly: AssemblyMetadata("TargetPlatform", "UAP")]
 
 // Version information for an assembly consists of the following four values:
 //

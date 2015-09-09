@@ -50,18 +50,17 @@ namespace Hercules.Model.Rendering.Win2D.Default
         {
             textRenderer.Measure(session);
 
-            Vector2 size = textRenderer.RenderSize + 2 * ContentPadding;
+            Vector2 size = textRenderer.RenderSize + (2 * ContentPadding);
 
             if (!string.IsNullOrWhiteSpace(Node.IconKey))
             {
                 if (Node.IconSize == IconSize.Small)
                 {
-                    textOffset = ImageSizeSmall.X + ImageMargin * 2;
+                    textOffset = ImageSizeSmall.X + (ImageMargin * 2);
                 }
                 else
                 {
-                    textOffset = ImageSizeLarge.X + ImageMargin * 2;
-
+                    textOffset = ImageSizeLarge.X + (ImageMargin * 2);
                 }
             }
             else
@@ -108,7 +107,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
                     Vector2 size = Node.IconSize == IconSize.Large ? ImageSizeLarge : ImageSizeSmall;
 
                     float x = textRenderer.RenderPosition.X - textOffset + ImageMargin;
-                    float y = textRenderer.RenderPosition.Y + (textRenderer.RenderSize.Y - size.Y) * 0.5f;
+                    float y = textRenderer.RenderPosition.Y + ((textRenderer.RenderSize.Y - size.Y) * 0.5f);
 
                     session.DrawImage(image, x, y);
                 }

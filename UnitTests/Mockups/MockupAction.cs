@@ -24,6 +24,5 @@ namespace UnitTests.Mockups
         {
             IsRedoInvoked = true;
         }
-
     }
 }

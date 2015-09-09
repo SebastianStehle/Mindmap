@@ -14,7 +14,7 @@ using Microsoft.VisualStudio.TestPlatform.TestExecutor;
 
 namespace UnitTests
 {
-    sealed partial class App
+    public sealed partial class App
     {
         public App()
         {

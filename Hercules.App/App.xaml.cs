@@ -17,14 +17,12 @@ using Microsoft.ApplicationInsights;
 
 namespace Hercules.App
 {
-    sealed partial class App
+    public sealed partial class App
     {
-        public static TelemetryClient telemetryClient = new TelemetryClient();
+        public static readonly TelemetryClient TelemetryClient = new TelemetryClient();
 
         public App()
         {
-            telemetryClient = new TelemetryClient();
-
             InitializeComponent();
 
             Suspending += OnSuspending;

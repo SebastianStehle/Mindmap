@@ -108,7 +108,7 @@ namespace GP.Windows.UI.Interactivity
 
                 this.changed = changed;
 
-                Binding binding = new Binding {  Source = source, Path = property, Mode = BindingMode.OneWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged };
+                Binding binding = new Binding { Source = source, Path = property, Mode = BindingMode.OneWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged };
 
                 BindingOperations.SetBinding(this, ListenerProperty, binding);
             }

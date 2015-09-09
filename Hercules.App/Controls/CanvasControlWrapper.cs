@@ -18,7 +18,7 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 
 namespace Hercules.App.Controls
 {
-    class CanvasControlWrapper : ICanvasControl
+    public sealed class CanvasControlWrapper : ICanvasControl
     {
         private readonly CanvasControl inner;
 
@@ -34,14 +34,14 @@ namespace Hercules.App.Controls
 
         public event EventHandler<CanvasDrawEventArgs> Draw;
 
-        protected void OnDraw(CanvasDrawEventArgs e)
+        public event EventHandler CreateResources;
+
+        private void OnDraw(CanvasDrawEventArgs e)
         {
             Draw?.Invoke(this, e);
         }
 
-        public event EventHandler CreateResources;
-
-        protected virtual void OnCreateResources()
+        private void OnCreateResources()
         {
             CreateResources?.Invoke(this, EventArgs.Empty);
         }

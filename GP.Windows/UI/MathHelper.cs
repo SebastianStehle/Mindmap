@@ -259,8 +259,8 @@ namespace GP.Windows.UI
         public static Vector2 Transform(Vector2 position, Matrix3x2 matrix)
         {
             return new Vector2(
-                position.X * matrix.M11 + position.Y * matrix.M21 + matrix.M31,
-                position.X * matrix.M12 + position.Y * matrix.M22 + matrix.M32);
+                (position.X * matrix.M11) + (position.Y * matrix.M21) + matrix.M31,
+                (position.X * matrix.M12) + (position.Y * matrix.M22) + matrix.M32);
         }
     }
 }

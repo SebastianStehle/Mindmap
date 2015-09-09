@@ -16,7 +16,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
         public Win2DRenderer CreateRenderer(Document document, ICanvasControl canvas)
         {
-            Current =  new DefaultRenderer(document, canvas);
+            Current = new DefaultRenderer(document, canvas);
 
             return Current;
         }

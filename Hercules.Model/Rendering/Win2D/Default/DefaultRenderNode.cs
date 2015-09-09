@@ -48,13 +48,13 @@ namespace Hercules.Model.Rendering.Win2D.Default
             {
                 buttonPosition = new Vector2(
                     RenderPosition.X - 2,
-                    RenderPosition.Y + RenderSize.Y * 0.5f);
+                    RenderPosition.Y + (RenderSize.Y * 0.5f));
             }
             else
             {
                 buttonPosition = new Vector2(
                     RenderPosition.X + RenderSize.X + 2,
-                    RenderPosition.Y + RenderSize.Y * 0.5f);
+                    RenderPosition.Y + (RenderSize.Y * 0.5f));
             }
 
             button.Arrange(buttonPosition);

@@ -17,7 +17,7 @@ namespace Hercules.App.Components
     {
         Task SaveFileDialogAsync(string[] extensions, Action<Stream> save);
 
-        Task SaveFileDialogAsync(string[] extensions, Func<Stream , Task> save);
+        Task SaveFileDialogAsync(string[] extensions, Func<Stream, Task> save);
 
         Task SaveFileDialogAsync(string[] extensions, Action<IRandomAccessStream> save);
 

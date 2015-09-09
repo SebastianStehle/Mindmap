@@ -26,7 +26,6 @@ namespace Hercules.Model.Storing
         {
             get { return documentTitle; }
         }
-       
 
         public DateTimeOffset LastUpdate
         {

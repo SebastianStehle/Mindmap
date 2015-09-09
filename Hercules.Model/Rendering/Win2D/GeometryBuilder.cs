@@ -71,9 +71,9 @@ namespace Hercules.Model.Rendering.Win2D
                 float lengthNext = Math.Min(Radius, back.Length() * 0.5f);
                 float lengthForw = Math.Min(Radius, forw.Length() * 0.5f);
 
-                points.Add(c + Vector2.Normalize(back) * lengthNext);
+                points.Add(c + (Vector2.Normalize(back) * lengthNext));
                 points.Add(c);
-                points.Add(c + Vector2.Normalize(forw) * lengthForw);
+                points.Add(c + (Vector2.Normalize(forw) * lengthForw));
             }
 
             return points;
@@ -87,9 +87,9 @@ namespace Hercules.Model.Rendering.Win2D
 
                 for (int i = 0; i < points.Count / 3; i++)
                 {
-                    builder.AddQuadraticBezier(points[i * 3 + 1], points[i * 3 + 2]);
+                    builder.AddQuadraticBezier(points[(i * 3) + 1], points[(i * 3) + 2]);
 
-                    int lastIndex = i * 3 + 3;
+                    int lastIndex = (i * 3) + 3;
 
                     if (lastIndex < points.Count - 1)
                     {
@@ -228,7 +228,7 @@ namespace Hercules.Model.Rendering.Win2D
 
         private static void CalculateCenterR(Rect2 rect, ref Vector2 point, float offset)
         {
-            point.X = rect.X + (rect.Width);
+            point.X = rect.X + rect.Width;
             point.Y = rect.Y + (rect.Height * 0.5f) + offset;
         }
 

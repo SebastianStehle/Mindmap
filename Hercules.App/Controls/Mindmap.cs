@@ -173,7 +173,7 @@ namespace Hercules.App.Controls
 
             if (scaledContentW < scrollViewer.ViewportWidth)
             {
-                translateX = (scrollViewer.ViewportWidth * inverseZoom - Document.Size.X) * 0.5;
+                translateX = ((scrollViewer.ViewportWidth * inverseZoom) - Document.Size.X) * 0.5;
             }
             else
             {
@@ -182,7 +182,7 @@ namespace Hercules.App.Controls
 
             if (scaledContentH < scrollViewer.ViewportHeight)
             {
-                translateY = (scrollViewer.ViewportHeight * inverseZoom - Document.Size.Y) * 0.5;
+                translateY = ((scrollViewer.ViewportHeight * inverseZoom) - Document.Size.Y) * 0.5;
             }
             else
             {

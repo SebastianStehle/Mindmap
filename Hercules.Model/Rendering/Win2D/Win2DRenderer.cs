@@ -233,8 +233,8 @@ namespace Hercules.Model.Rendering.Win2D
             Guard.NotNull(stream, nameof(stream));
             Guard.GreaterThan(padding, 0, nameof(padding));
 
-            float w = sceneBounds.Size.X + 2 * padding;
-            float h = sceneBounds.Size.Y + 2 * padding;
+            float w = sceneBounds.Size.X + (2 * padding);
+            float h = sceneBounds.Size.Y + (2 * padding);
 
             dpi = dpi == 0 ? DisplayInformation.GetForCurrentView().LogicalDpi : dpi;
 

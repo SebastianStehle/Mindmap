@@ -80,9 +80,9 @@ namespace Hercules.Model.Storing.Utils
 
         private static JsonReader CreateJsonReader(TextReader textReader)
         {
-            JsonTextReader Reader = new JsonTextReader(textReader);
+            JsonTextReader reader = new JsonTextReader(textReader);
 
-            return Reader;
+            return reader;
         }
 
         private static JsonSerializer CreateJsonSerializer(JsonSerializerSettings settings)

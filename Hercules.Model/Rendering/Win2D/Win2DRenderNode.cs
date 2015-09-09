@@ -66,7 +66,7 @@ namespace Hercules.Model.Rendering.Win2D
 
         public Vector2 TargetPosition
         {
-            get {  return targetPosition; }
+            get { return targetPosition; }
         }
 
         public Vector2 RenderPosition
@@ -188,7 +188,7 @@ namespace Hercules.Model.Rendering.Win2D
 
             targetPosition = new Vector2(
                 position.X + offset.X,
-                position.Y + offset.Y - 0.5f * renderSize.Y);
+                position.Y + offset.Y - (0.5f * renderSize.Y));
 
             if (anchor == AnchorPoint.Right)
             {

@@ -79,12 +79,12 @@ namespace Hercules.Model.Utils
 
         public float CenterX
         {
-            get { return position.X + 0.5f * size.X; }
+            get { return position.X + (0.5f * size.X); }
         }
 
         public float CenterY
         {
-            get { return position.Y + 0.5f * size.Y; }
+            get { return position.Y + (0.5f * size.Y); }
         }
 
         public bool IsEmpty
@@ -217,7 +217,7 @@ namespace Hercules.Model.Utils
             return size.GetHashCode() ^ position.GetHashCode();
         }
 
-        public static bool operator == (Rect2 lhs, Rect2 rhs)
+        public static bool operator ==(Rect2 lhs, Rect2 rhs)
         {
             return lhs.position.Equals(rhs.position) && lhs.size.Equals(rhs.size);
         }

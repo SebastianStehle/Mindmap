@@ -63,7 +63,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
         {
             textRenderer.Measure(session);
 
-            Vector2 size = textRenderer.RenderSize + 2 * ContentPadding;
+            Vector2 size = textRenderer.RenderSize + (2 * ContentPadding);
 
             if (!string.IsNullOrWhiteSpace(Node.IconKey))
             {
@@ -74,7 +74,6 @@ namespace Hercules.Model.Rendering.Win2D.Default
                 else
                 {
                     textOffset = ImageSizeLarge.X + ImageMargin;
-
                 }
             }
             else
@@ -118,7 +117,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             ICanvasBrush lineBrush = Resources.Brush(PathColor, 1);
             
             Vector2 left = new Vector2(
-                (float)Math.Round(Bounds.Left -1) ,
+                (float)Math.Round(Bounds.Left - 1),
                 (float)Math.Round(Bounds.CenterY) + VerticalOffset);
 
             Vector2 right = new Vector2(
@@ -136,7 +135,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
                     Vector2 size = Node.IconSize == IconSize.Large ? ImageSizeLarge : ImageSizeSmall;
 
                     float x = textRenderer.RenderPosition.X - textOffset;
-                    float y = textRenderer.RenderPosition.Y + (textRenderer.RenderSize.Y - size.Y) * 0.5f;
+                    float y = textRenderer.RenderPosition.Y + ((textRenderer.RenderSize.Y - size.Y) * 0.5f);
 
                     session.DrawImage(image, x, y);
                 }

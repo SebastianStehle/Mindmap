@@ -249,7 +249,11 @@ namespace Hercules.Model
                 }
 
                 OnPropertyChanged("SelectedNode");
-                OnNodeSelected(node);
+
+                if (node != null)
+                {
+                    OnNodeSelected(node);
+                }
             }
         }
     }

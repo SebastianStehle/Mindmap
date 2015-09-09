@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Hercules.App.Components.Implementations;
 using Hercules.Model;
@@ -33,14 +34,15 @@ namespace Hercules.App.Modules.Editor.Views
 
         public override void OnOpened()
         {
-            ColorsGrid.ItemsSource = Renderer.Resources.Colors;
-
             NodeBase selectedNode = Document.SelectedNode;
 
             oldColor = selectedNode.Color;
             oldIndex = Document.UndoRedoManager.Index;
 
+            ColorsGrid.ItemsSource = Renderer.Resources.Colors;
             ColorsGrid.SelectedIndex = oldColor;
+
+            ShowHullButton.IsChecked = selectedNode.IsShowingHull;
         }
 
         private void Change(int index)
@@ -58,8 +60,28 @@ namespace Hercules.App.Modules.Editor.Views
                     Document.MakeTransaction(tansactionName, commands =>
                     {
                         commands.Apply(new ChangeColorCommand(selectedNode, index));
+
+                        if (ShowHullButton.IsChecked == true && !selectedNode.IsShowingHull)
+                        {
+                            commands.Apply(new ToggleHullCommand(selectedNode));
+                        }
                     });
                 }
+            }
+        }
+
+        private void ShowHullButton_Click(object sender, RoutedEventArgs e)
+        {
+            NodeBase selectedNode = Document.SelectedNode;
+
+            if (selectedNode != null)
+            {
+                string tansactionName = ResourceManager.GetString("ToggleHullTransactionName");
+
+                Document.MakeTransaction(tansactionName, commands =>
+                {
+                    commands.Apply(new ToggleHullCommand(selectedNode));
+                });
             }
         }
     }

@@ -76,7 +76,6 @@ namespace Hercules.Model.Rendering.Win2D.Default
             {
                 if (Parent.Node is RootNode)
                 {
-                    session.DrawGeometry(pathGeometry, brush, 2);
                     session.FillGeometry(pathGeometry, brush);
                 }
                 else

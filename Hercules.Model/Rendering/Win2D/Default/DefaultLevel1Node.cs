@@ -148,11 +148,10 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
         protected override void RenderPathInternal(CanvasDrawingSession session)
         {
-            ICanvasBrush brush = Resources.Brush(PathColor, 1);
-
             if (pathGeometry != null)
             {
-                session.DrawGeometry(pathGeometry, brush, 2);
+                ICanvasBrush brush = Resources.Brush(PathColor, 1);
+
                 session.FillGeometry(pathGeometry, brush);
             }
         }

@@ -317,6 +317,9 @@ Deutschland</value>
   <data name="SupportTitle.Text" xml:space="preserve">
     <value>Support</value>
   </data>
+  <data name="ToggleHullTransactionName" xml:space="preserve">
+    <value>Rahmen Anzeigen</value>
+  </data>
   <data name="Tutorial1Text.Text" xml:space="preserve">
     <value>Swipe am oberen Rand nach unten und nutze den + Button um eine Mindmap zu erstellen.</value>
   </data>

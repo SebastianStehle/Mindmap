@@ -20,6 +20,7 @@ namespace Hercules.Model
         private int color;
         private string text;
         private string iconKey;
+        private bool isShowingHull;
         private bool isCollapsed;
         private bool isSelected;
 
@@ -151,6 +152,22 @@ namespace Hercules.Model
             }
         }
 
+        public bool IsShowingHull
+        {
+            get
+            {
+                return isShowingHull;
+            }
+            protected set
+            {
+                if (isShowingHull != value)
+                {
+                    isShowingHull = value;
+                    OnPropertyChanged("IsShowingHull");
+                }
+            }
+        }
+
         protected NodeBase(Guid id)
             : base(id)
         {
@@ -164,6 +181,11 @@ namespace Hercules.Model
         internal void ChangeIsCollapsed(bool newIsCollapsed)
         {
             IsCollapsed = newIsCollapsed;
+        }
+
+        internal void ChangeIsShowingHull(bool newIsShowingHull)
+        {
+            IsShowingHull = newIsShowingHull;
         }
 
         internal void ChangeColor(int newColor)

@@ -78,7 +78,7 @@ namespace Hercules.Model.Rendering.Win2D
 
         public ICollection<Win2DRenderNode> AllNodes
         {
-            get { return renderNodes.Values.Union(customNodes).Union(new Win2DRenderNode[] { previewNode }).ToList(); }
+            get { return new Win2DRenderNode[] { previewNode }.Union(renderNodes.Values).Union(customNodes).ToList(); }
         }
 
         public ILayout Layout
@@ -260,6 +260,8 @@ namespace Hercules.Model.Rendering.Win2D
         {
             if (layout != null)
             {
+                session.Transform = transform;
+
                 UpdateLayout(session);
 
                 bool needsRedraw = UpdateArrangement(session, true);
@@ -347,13 +349,19 @@ namespace Hercules.Model.Rendering.Win2D
 
         private void RenderIt(CanvasDrawingSession session, bool renderControls, bool renderCustoms)
         {
-            session.Transform = transform;
-
             session.TextAntialiasing = CanvasTextAntialiasing.Grayscale;
+
+            foreach (Win2DRenderNode renderNode in customNodes.Union(new Win2DRenderNode[] { previewNode }))
+            {
+                if (renderNode.IsVisible)
+                {
+                    renderNode.ComputePath(session);
+                }
+            }
 
             foreach (Win2DRenderNode renderNode in renderNodes.Values)
             {
-                if (renderNode.Node.HasChildren && renderNode.IsVisible && !renderNode.Node.IsCollapsed)
+                if (renderNode.Node.HasChildren && renderNode.IsVisible && !renderNode.Node.IsCollapsed && renderNode.Node.IsShowingHull)
                 {
                     renderNode.RenderHull(session);
                 }

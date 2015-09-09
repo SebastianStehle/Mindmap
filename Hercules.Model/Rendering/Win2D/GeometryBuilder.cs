@@ -19,7 +19,8 @@ namespace Hercules.Model.Rendering.Win2D
 {
     public sealed class GeometryBuilder
     {
-        private const float Radius = 20;
+        private const float Radius = 10;
+        private const float Padding = 10;
 
         public static CanvasGeometry ComputeHullGeometry(CanvasDrawingSession session, Win2DRenderer renderer, Win2DRenderNode renderNode)
         {
@@ -34,7 +35,7 @@ namespace Hercules.Model.Rendering.Win2D
                 IEnumerable<Rect2> childBounds =
                    node.AllChildren()
                        .Select(x => (Win2DRenderNode)renderer.FindRenderNode(x)).Union(new Win2DRenderNode[] { renderNode }).Where(x => x.IsVisible)
-                       .Select(x => Rect2.Inflate(new Rect2(x.TargetPosition, x.RenderSize), new Vector2(20, 20)));
+                       .Select(x => Rect2.Inflate(new Rect2(x.TargetPosition, x.RenderSize), new Vector2(Padding, Padding)));
 
                 if (childBounds.Any())
                 {
@@ -147,12 +148,13 @@ namespace Hercules.Model.Rendering.Win2D
                 builder.BeginFigure(new Vector2(point1.X, point1.Y - 20));
 
                 builder.AddCubicBezier(
-                    new Vector2(halfX, point1.Y - 1),
-                    new Vector2(halfX, point2.Y - 1),
-                    new Vector2(point2.X, point2.Y));
+                    new Vector2(halfX, point1.Y - 2),
+                    new Vector2(halfX, point2.Y - 2),
+                    new Vector2(point2.X, point2.Y - 1));
+                builder.AddLine(point2.X, point2.Y + 1);
                 builder.AddCubicBezier(
-                    new Vector2(halfX, point2.Y + 1),
-                    new Vector2(halfX, point1.Y + 1),
+                    new Vector2(halfX, point2.Y + 2),
+                    new Vector2(halfX, point1.Y + 2),
                     new Vector2(point1.X, point1.Y + 20));
 
                 builder.EndFigure(CanvasFigureLoop.Closed);

@@ -57,7 +57,7 @@ namespace Hercules.Model
 
             Node.Remove(Child, out tempIndex);
 
-            Child.Select();
+            Node.Select();
         }
     }
 }

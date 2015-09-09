@@ -15,6 +15,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <TextBlock x:Uid="ColorsHeader" FontSize="24" FontWeight="Light" Margin="0,0,0,10">Colors</TextBlock>
@@ -26,5 +27,7 @@
                 </DataTemplate>
             </GridView.ItemTemplate>
         </GridView>
+        
+        <ToggleButton Grid.Row="2" Margin="0,20,0,0" Content="Show Hull" x:Name="ShowHullButton" Click="ShowHullButton_Click" />
     </Grid>
 </controls:MindmapFlyoutView>

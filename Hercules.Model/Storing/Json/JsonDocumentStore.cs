@@ -28,7 +28,7 @@ namespace Hercules.Model.Storing.Json
         private readonly TaskFactory taskFactory = new TaskFactory(new LimitedThreadsScheduler());
         private readonly string subfolderName;
         private StorageFolder localFolder;
-        
+          
         public JsonDocumentStore()
             : this(DefaultSubfolder)
         {
@@ -137,10 +137,9 @@ namespace Hercules.Model.Storing.Json
             await EnsureFolderAsync();
 
             JsonHistory jsonHistory = new JsonHistory(document);
-
-            await Task.WhenAll(
-                WriteTitleAsync(jsonHistory),
-                WriteContentAsync(jsonHistory));
+            
+            await WriteTitleAsync(jsonHistory);
+            await WriteContentAsync(jsonHistory);
             
             return new DocumentRef(document.Id, document.Title, DateTime.Now);
         }
@@ -152,18 +151,18 @@ namespace Hercules.Model.Storing.Json
             return localFolder.WriteTextAsync(fileName, title);
         }
 
-        private Task WriteTitleAsync(JsonHistory history)
+        private async Task WriteTitleAsync(JsonHistory history)
         {
             string fileName = $"{history.Id}.mmn";
 
-            return localFolder.WriteTextAsync(fileName, history.Name);
+            await localFolder.WriteTextAsync(fileName, history.Name);
         }
 
-        private Task WriteContentAsync(JsonHistory history)
+        private async Task WriteContentAsync(JsonHistory history)
         {
             string fileName = $"{history.Id}.mmd";
 
-            return history.SerializeAsJsonAsync(localFolder, fileName, historySerializerSettings);
+            await history.SerializeAsJsonAsync(localFolder, fileName, historySerializerSettings);
         }
 
         private async Task DeleteInternalAsync(Guid documentId)

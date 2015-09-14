@@ -45,6 +45,9 @@ namespace Hercules.App.Modules.Editor.ViewModels
         public IDocumentStore DocumentStore { get; set; }
 
         [Dependency]
+        public ILoadingManager LoadingManager { get; set; }
+
+        [Dependency]
         public IOutlineGenerator OutlineGenerator { get; set; }
 
         [Dependency]
@@ -245,16 +248,28 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
         private async void autosaveTimer_Tick(object sender, object e)
         {
-            await SaveAsync();
+            if (!LoadingManager.IsLoading)
+            {
+                await SaveAsync();
+            }
         }
 
         private async Task SaveAsync()
         {
             if (Document != null)
             {
-                await DocumentStore.StoreAsync(Document);
+                try
+                {
+                    LoadingManager.BeginLoading();
 
-                mindmapItem.RefreshAfterSave();
+                    await DocumentStore.StoreAsync(Document);
+
+                    mindmapItem.RefreshAfterSave();
+                }
+                finally
+                {
+                    LoadingManager.FinishLoading();
+                }
             }
         }
 
@@ -262,9 +277,18 @@ namespace Hercules.App.Modules.Editor.ViewModels
         {
             if (mindmapToLoad != null && (mindmapItem == null || mindmapItem.DocumentId != mindmapToLoad.DocumentId))
             {
-                Document = await DocumentStore.LoadAsync(mindmapToLoad.DocumentId);
+                try
+                {
+                    LoadingManager.BeginLoading();
 
-                mindmapItem = mindmapToLoad;
+                    Document = await DocumentStore.LoadAsync(mindmapToLoad.DocumentId);
+
+                    mindmapItem = mindmapToLoad;
+                }
+                finally
+                {
+                    LoadingManager.FinishLoading();
+                }
             }
         }
     }

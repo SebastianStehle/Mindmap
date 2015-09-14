@@ -257,6 +257,9 @@ Deutschland</value>
   <data name="MindmapItemRename" xml:space="preserve">
     <value>Umbennen</value>
   </data>
+  <data name="MindmapLoading" xml:space="preserve">
+    <value>Lade Mindmap...</value>
+  </data>
   <data name="MindmapNameError.Text" xml:space="preserve">
     <value>Title darf nicht leer sein!</value>
   </data>

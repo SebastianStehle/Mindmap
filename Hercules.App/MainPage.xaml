@@ -13,6 +13,7 @@
     xmlns:controls="using:Hercules.App.Controls"
     xmlns:modelLayout="using:Hercules.Model.Layouting.Default"
     mc:Ignorable="d"
+    IsEnabled="{Binding LoadingManager.IsLoading, Source={StaticResource ViewModelLocator}, Converter={StaticResource BooleanInverseConverter}}"
     DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
 
     <Page.Resources>
@@ -195,9 +196,9 @@
                                         <Grid RightTapped="Grid_RightTapped" Background="Transparent">
                                             <FlyoutBase.AttachedFlyout>
                                                 <MenuFlyout>
-                                                    <MenuFlyoutItem x:Uid="MindmapItemDelete" Text="Rename" DataContext="{Binding ElementName=Root}" x:Name="RenameButton" Click="RenameButton_Click" />
+                                                    <MenuFlyoutItem x:Uid="MindmapItemDelete" Text="Rename" 
+                                                        DataContext="{Binding ElementName=Root}" x:Name="RenameButton" Click="RenameButton_Click" />
                                                     <MenuFlyoutSeparator />
-                                                    <!-- ReSharper disable once Xaml.BindingWithContextNotResolved -->
                                                     <MenuFlyoutItem x:Uid="MindmapItemRename" Text="Delete"
                                                         Command="{Binding Path=Mindmaps.DeleteCommand, Source={StaticResource ViewModelLocator}, ElementName=List}" 
                                                         CommandParameter="{Binding}" />
@@ -246,6 +247,18 @@
                             <controls:NodeMovingBehavior />
                         </i:Interaction.Behaviors>
                     </controls:Mindmap>
+
+                    <Grid DataContext="{Binding LoadingManager, Source={StaticResource ViewModelLocator}}"
+                        Visibility="{Binding IsLoading, Converter={StaticResource VisibleWhenTrueConverter}}">
+
+                        <Border Background="White" Opacity="0.9" IsHitTestVisible="True" />
+
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <ProgressRing Margin="10" VerticalAlignment="Center" IsActive="True" />
+
+                            <TextBlock FontSize="24" x:Uid="MindmapLoading" Text="Loading..." />
+                        </StackPanel>
+                    </Grid>
                 </Grid>
             </SplitView.Content>
         </SplitView>

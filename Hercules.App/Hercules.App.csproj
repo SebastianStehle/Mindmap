@@ -102,9 +102,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Assets\AssetProvider.cs" />
+    <Compile Include="Components\ILoadingManager.cs" />
     <Compile Include="Components\IMessageDialogService.cs" />
     <Compile Include="Components\ILocalizationManager.cs" />
     <Compile Include="Components\Implementations\DefaultSettingsProvider.cs" />
+    <Compile Include="Components\Implementations\LoadingManager.cs" />
     <Compile Include="Components\Implementations\MessageDialogService.cs" />
     <Compile Include="Components\Implementations\ResourceManager.cs" />
     <Compile Include="Components\Implementations\ResourcesLocalizationManager.cs" />

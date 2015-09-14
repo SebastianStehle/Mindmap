@@ -13,6 +13,8 @@
     <gp:NotNullBooleanConverter x:Key="NotNullBooleanConverter" />
     <gp:NotNullVisibilityConverter x:Key="NotNullVisibilityConverter" />
 
+    <gp:BooleanInverseConverter x:Key="BooleanInverseConverter" />
+    
     <gp:VisibleWhenFalseConverter x:Key="VisibleWhenFalseConverter" />
     <gp:VisibleWhenTrueConverter x:Key="VisibleWhenTrueConverter" />
     
@@ -414,9 +416,6 @@
                                         </ObjectAnimationUsingKeyFrames>
                                         <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="Foreground" Storyboard.TargetName="ContentPresenter">
                                             <DiscreteObjectKeyFrame KeyTime="0" Value="{ThemeResource SystemControlDisabledBaseLowBrush}"/>
-                                        </ObjectAnimationUsingKeyFrames>
-                                        <ObjectAnimationUsingKeyFrames Storyboard.TargetProperty="BorderBrush" Storyboard.TargetName="Border">
-                                            <DiscreteObjectKeyFrame KeyTime="0" Value="LightGray"/>
                                         </ObjectAnimationUsingKeyFrames>
                                     </Storyboard>
                                 </VisualState>

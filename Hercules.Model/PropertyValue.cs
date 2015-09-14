@@ -151,35 +151,20 @@ namespace Hercules.Model
 
         private T? ToNullableOrParseValue<T>(CultureInfo culture, Func<string, T> parser) where T : struct
         {
-            T? result = null;
+            T result;
 
-            object value = rawValue;
-
-            if (value != null)
-            {
-                Type valueType = value.GetType();
-
-                if (valueType == typeof(T))
-                {
-                    result = (T)value;
-                }
-                else if (valueType == typeof(string))
-                {
-                    result = Parse(parser, valueType, value);
-                }
-                else
-                {
-                    result = Convert<T>(culture, value, valueType);
-                }
-            }
-
-            return result;
+            return TryParse<T>(culture, parser, out result) ? result : (T?)null;
         }
 
         private T ToOrParseValue<T>(CultureInfo culture, Func<string, T> parser)
         {
-            T result = default(T);
+            T result;
 
+            return TryParse<T>(culture, parser, out result) ? result : default(T);
+        }
+
+        private bool TryParse<T>(CultureInfo culture, Func<string, T> parser, out T result)
+        {
             object value = rawValue;
 
             if (value != null)
@@ -198,9 +183,13 @@ namespace Hercules.Model
                 {
                     result = Convert<T>(culture, value, valueType);
                 }
+
+                return true;
             }
 
-            return result;
+            result = default(T);
+
+            return false;
         }
 
         private static T Convert<T>(CultureInfo culture, object value, Type valueType)

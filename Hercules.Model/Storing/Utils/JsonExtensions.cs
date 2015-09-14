@@ -17,7 +17,7 @@ namespace Hercules.Model.Storing.Utils
 {
     internal static class JsonExtensions
     {
-        private static readonly JsonSerializerSettings defaultSettings = new JsonSerializerSettings();
+        private static readonly JsonSerializerSettings DefaultSettings = new JsonSerializerSettings();
 
         public static async Task SerializeAsJsonAsync<T>(this T value, StorageFolder folder, string fileName, JsonSerializerSettings settings = null)
         {
@@ -25,7 +25,7 @@ namespace Hercules.Model.Storing.Utils
 
             using (Stream fileStream = await file.OpenStreamForWriteAsync())
             {
-                value.SerializeAsJsonToStream(fileStream, settings ?? defaultSettings);
+                value.SerializeAsJsonToStream(fileStream, settings ?? DefaultSettings);
             }
         }
 
@@ -33,15 +33,15 @@ namespace Hercules.Model.Storing.Utils
         {
             using (Stream fileStream = await file.OpenStreamForWriteAsync())
             {
-                value.SerializeAsJsonToStream(fileStream, settings ?? defaultSettings);
+                value.SerializeAsJsonToStream(fileStream, settings ?? DefaultSettings);
             }
         }
 
         public static void SerializeAsJsonToStream<T>(this T value, Stream stream, JsonSerializerSettings settings = null)
         {
-            using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8, 4096, true) { AutoFlush = true })
+            using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8, 4096, true))
             {
-                WriteObject(settings ?? defaultSettings, writer, value);
+                WriteObject(settings ?? DefaultSettings, writer, value);
 
                 writer.Flush();
             }
@@ -51,7 +51,7 @@ namespace Hercules.Model.Storing.Utils
         {
             using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
             {
-                return ReadObject<T>(settings ?? defaultSettings, reader);
+                return ReadObject<T>(settings ?? DefaultSettings, reader);
             }
         }
 

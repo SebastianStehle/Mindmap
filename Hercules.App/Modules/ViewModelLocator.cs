@@ -29,6 +29,9 @@ namespace Hercules.App.Modules
         [Dependency]
         public MindmapsViewModel Mindmaps { get; set; }
 
+        [Dependency]
+        public ILoadingManager LoadingManager { get; set; }
+
         public ViewModelLocator()
         {
             if (!DesignMode.DesignModeEnabled)
@@ -40,6 +43,8 @@ namespace Hercules.App.Modules
                 unityContainer.RegisterType<IDocumentStore, JsonDocumentStore>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<ISettingsProvider, DefaultSettingsProvider>(
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<ILoadingManager, LoadingManager>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<ILocalizationManager, ResourcesLocalizationManager>(
                     new ContainerControlledLifetimeManager());

@@ -142,6 +142,7 @@
     <Compile Include="UI\NotNullBooleanConverter.cs" />
     <Compile Include="UI\NotNullVisibilityConverter.cs" />
     <Compile Include="UI\PopupHandler.cs" />
+    <Compile Include="UI\BooleanInverseConverter.cs" />
     <Compile Include="UI\VisibleWhenFalseConverter.cs" />
     <Compile Include="UI\VisibleWhenTrueConverter.cs" />
     <Compile Include="UI\VisualTreeTreeExtensions.cs" />

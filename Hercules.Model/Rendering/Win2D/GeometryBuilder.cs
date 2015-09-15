@@ -32,12 +32,13 @@ namespace Hercules.Model.Rendering.Win2D
 
             if (node.HasChildren && !node.IsCollapsed)
             {
-                IEnumerable<Rect2> childBounds =
-                   node.AllChildren()
-                       .Select(x => (Win2DRenderNode)renderer.FindRenderNode(x)).Union(new Win2DRenderNode[] { renderNode }).Where(x => x.IsVisible)
-                       .Select(x => Rect2.Inflate(new Rect2(x.TargetPosition, x.RenderSize), new Vector2(Padding, Padding)));
+                IList<Rect2> childBounds =
+                    node.AllChildren()
+                        .Select(x => (Win2DRenderNode)renderer.FindRenderNode(x)).Union(new Win2DRenderNode[] { renderNode }).Where(x => x.IsVisible)
+                        .Select(x => Rect2.Inflate(new Rect2(x.TargetPosition, x.RenderSize), new Vector2(Padding, Padding)))
+                        .ToList();
 
-                if (childBounds.Any())
+                if (childBounds.Count > 0)
                 {
                     ConvexHull hull = ConvexHull.Compute(childBounds);
 

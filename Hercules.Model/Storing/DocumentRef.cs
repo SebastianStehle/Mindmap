@@ -13,18 +13,12 @@ namespace Hercules.Model.Storing
 {
     public sealed class DocumentRef
     {
-        private readonly Guid documentId;
-        private readonly string documentTitle;
-        private readonly DateTimeOffset lastUpdate;
+        private DateTimeOffset lastUpdate;
+        private string documentName;
 
-        public Guid DocumentId
+        public string DocumentName
         {
-            get { return documentId; }
-        }
-
-        public string DocumentTitle
-        {
-            get { return documentTitle; }
+            get { return documentName; }
         }
 
         public DateTimeOffset LastUpdate
@@ -32,13 +26,26 @@ namespace Hercules.Model.Storing
             get { return lastUpdate; }
         }
 
-        public DocumentRef(Guid documentId, string documentTitle, DateTimeOffset lastUpdate)
+        public DocumentRef(string documentName, DateTimeOffset lastUpdate)
         {
-            Guard.NotNull(documentTitle, nameof(documentTitle));
+            Guard.NotNull(documentName, nameof(documentName));
 
-            this.documentTitle = documentTitle;
-            this.documentId = documentId;
+            this.documentName = documentName;
             this.lastUpdate = lastUpdate;
+        }
+
+        public DocumentRef Rename(string name)
+        {
+            documentName = name;
+
+            return this;
+        }
+
+        public DocumentRef Updated()
+        {
+            lastUpdate = DateTimeOffset.Now;
+
+            return this;
         }
     }
 }

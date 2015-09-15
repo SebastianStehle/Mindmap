@@ -15,6 +15,7 @@ using GP.Windows;
 using Hercules.App.Messages;
 using Hercules.Model.Storing;
 using PropertyChanged;
+// ReSharper disable ExplicitCallerInfoArgument
 
 namespace Hercules.App.Modules
 {
@@ -23,20 +24,21 @@ namespace Hercules.App.Modules
     {
         private readonly IDocumentStore documentStore;
         private readonly DocumentRef documentRef;
-
-        public Guid DocumentId
+        
+        public string Title
         {
-            get
-            {
-                return documentRef.DocumentId;
-            }
+            get { return documentRef.DocumentName; }
+        }
+        
+        public DateTimeOffset LastUpdate
+        {
+            get { return documentRef.LastUpdate; }
         }
 
-        [NotifyUI]
-        public string Title { get; set; }
-
-        [NotifyUI]
-        public DateTimeOffset LastUpdate { get; set; }
+        public DocumentRef DocumentRef
+        {
+            get { return documentRef; }
+        }
 
         public string LastUpdateText
         {
@@ -57,15 +59,12 @@ namespace Hercules.App.Modules
 
             this.documentRef = documentRef;
             this.documentStore = documentStore;
-
-            Title = documentRef.DocumentTitle;
-
-            LastUpdate = documentRef.LastUpdate;
         }
 
         public void RefreshAfterSave()
         {
-            LastUpdate = DateTimeOffset.Now;
+            RaisePropertyChanged(nameof(LastUpdate));
+            RaisePropertyChanged(nameof(LastUpdateText));
         }
 
         public async Task RenameAsync(string title)
@@ -74,9 +73,10 @@ namespace Hercules.App.Modules
 
             if (documentRef != null)
             {
-                Title = title.Trim();
+                await documentStore.RenameAsync(documentRef, title);
 
-                await documentStore.RenameAsync(documentRef.DocumentId, title);
+                RaisePropertyChanged(nameof(Title));
+                RefreshAfterSave();
             }
         }
 
@@ -84,7 +84,7 @@ namespace Hercules.App.Modules
         {
             if (documentRef != null)
             {
-                await documentStore.DeleteAsync(documentRef.DocumentId);
+                await documentStore.DeleteAsync(documentRef);
 
                 Messenger.Default.Send(new MindmapDeletedMessage(this));
             }

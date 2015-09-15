@@ -88,7 +88,7 @@ namespace GP.Windows.UI.Interactivity
             }
         }
 
-        public sealed class DependencyPropertyListener : DependencyObject
+        private sealed class DependencyPropertyListener : DependencyObject
         {
             private readonly Action changed;
 
@@ -100,7 +100,7 @@ namespace GP.Windows.UI.Interactivity
             {
             }
 
-            public DependencyPropertyListener(DependencyObject source, PropertyPath property, Action changed)
+            private DependencyPropertyListener(DependencyObject source, PropertyPath property, Action changed)
             {
                 Guard.NotNull(changed, nameof(changed));
                 Guard.NotNull(source, nameof(source));

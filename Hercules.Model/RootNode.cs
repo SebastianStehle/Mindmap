@@ -32,10 +32,9 @@ namespace Hercules.Model
             get { return leftChildren; }
         }
 
-        public RootNode(Guid id, string text)
+        public RootNode(Guid id)
             : base(id)
         {
-            Text = text;
         }
 
         public override bool Remove(Node child, out int oldIndex)

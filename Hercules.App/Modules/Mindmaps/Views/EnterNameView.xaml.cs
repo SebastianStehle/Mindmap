@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using System.IO;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using GP.Windows.UI;
@@ -39,9 +40,19 @@ namespace Hercules.App.Modules.Mindmaps.Views
             {
                 MindmapsViewModel viewModel = (MindmapsViewModel)DataContext;
 
-                await viewModel.CreateNewMindmapAsync(TitleTextBox.Text, TitleTextBox.Text);
+                try
+                {
+                    await viewModel.CreateNewMindmapAsync(TitleTextBox.Text);
+                }
+                catch (FileNotFoundException)
+                {
+                    ErrorTextBlock.Opacity = 1;
+                }
 
-                Flyout.Hide();
+                if (Flyout != null)
+                {
+                    Flyout.Hide();
+                }
             }
         }
     }

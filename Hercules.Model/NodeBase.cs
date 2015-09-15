@@ -11,7 +11,7 @@ using System.Collections.Generic;
 
 namespace Hercules.Model
 {
-    public abstract class NodeBase : DocumentObject
+    public abstract class NodeBase : DocumentObjectWithId
     {
         private Document document;
         private NodeBase parent;

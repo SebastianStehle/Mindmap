@@ -6,7 +6,6 @@
 // All rights reserved.
 // ==========================================================================
 
-using System;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,17 +18,7 @@ namespace Hercules.Model.Storing.Utils
     {
         private static readonly JsonSerializerSettings DefaultSettings = new JsonSerializerSettings();
 
-        public static async Task SerializeAsJsonAsync<T>(this T value, StorageFolder folder, string fileName, JsonSerializerSettings settings = null)
-        {
-            StorageFile file = await folder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
-
-            using (Stream fileStream = await file.OpenStreamForWriteAsync())
-            {
-                value.SerializeAsJsonToStream(fileStream, settings ?? DefaultSettings);
-            }
-        }
-
-        public static async Task SerializeAsJsonAsync<T>(this T value, StorageFile file, JsonSerializerSettings settings = null)
+        public static async Task SerializeAsJsonAsync<T>(this StorageFile file, T value, JsonSerializerSettings settings = null)
         {
             using (Stream fileStream = await file.OpenStreamForWriteAsync())
             {

@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
+using System.Text.RegularExpressions;
 
 namespace GP.Windows
 {
@@ -20,6 +22,8 @@ namespace GP.Windows
     /// </summary>
     public static class Guard
     {
+        private static readonly Regex FileNamePattern = new Regex("[\\w\\- ]+");
+
         /// <summary>
         /// Verifies that the specified value is greater than a lower value
         /// and throws an exception, if not.
@@ -305,7 +309,7 @@ namespace GP.Windows
 
         /// <summary>
         /// Verifies, that the string method parameter with specified object value and message
-        /// is not null, not empty and does not contain only blanls and throws an exception 
+        /// is not null, not empty and does not contain only blanks and throws an exception 
         /// if the object is null.
         /// </summary>
         /// <param name="target">The target string, which should be checked against being null or empty.</param>
@@ -330,7 +334,7 @@ namespace GP.Windows
 
         /// <summary>
         /// Verifies, that the string method parameter with specified object value and message
-        /// is not null, not empty and does not contain only blanls and throws an exception with 
+        /// is not null, not empty and does not contain only blanks and throws an exception with 
         /// the passed message if the object is null.
         /// </summary>
         /// <param name="target">The target string, which should be checked against being null or empty.</param>
@@ -350,6 +354,50 @@ namespace GP.Windows
             if (string.IsNullOrWhiteSpace(target))
             {
                 throw new ArgumentException(message, parameterName);
+            }
+        }
+
+        /// <summary>
+        /// Verifies, that the string method parameter with specified object value and message
+        /// is not null, not empty and does not contain only blanks and is a valid file name and throws an exception 
+        /// if the object is null.
+        /// </summary>
+        /// <param name="target">The target string, which should be checked against being null or empty.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="target"/> is
+        /// null (Nothing in Visual Basic).</exception>
+        /// <exception cref="ArgumentException"><paramref name="target"/> is
+        /// empty or contains only blanks.</exception>
+        [DebuggerStepThrough]
+        public static void ValidFileName(string target, string parameterName)
+        {
+            NotNullOrEmpty(target, parameterName);
+
+            if (!FileNamePattern.IsMatch(target))
+            {
+                throw new FileNotFoundException("The file name is not valid.");
+            }
+        }
+
+        /// <summary>
+        /// Verifies, that the string method parameter with specified object value and message
+        /// is not null, not empty and does not contain only blanks and is a valid file name and throws an exception with 
+        /// the passed message if the object is null.
+        /// </summary>
+        /// <param name="target">The target string, which should be checked against being null or empty.</param>
+        /// <param name="parameterName">Name of the parameter.</param>
+        /// <param name="message">The message for the exception to throw.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="target"/> is
+        /// null (Nothing in Visual Basic).</exception>
+        /// <exception cref="ArgumentException"><paramref name="target"/> is
+        /// empty or contains only blanks.</exception>
+        public static void ValidFileName(string target, string parameterName, string message)
+        {
+            NotNullOrEmpty(target, parameterName);
+
+            if (!FileNamePattern.IsMatch(target))
+            {
+                throw new FileNotFoundException(message);
             }
         }
 

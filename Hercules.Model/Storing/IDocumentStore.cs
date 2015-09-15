@@ -6,7 +6,6 @@
 // All rights reserved.
 // ==========================================================================
 
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -16,12 +15,14 @@ namespace Hercules.Model.Storing
     {
         Task<IList<DocumentRef>> LoadAllAsync();
 
-        Task<Document> LoadAsync(Guid documentId);
+        Task<Document> LoadAsync(DocumentRef documentRef);
 
-        Task DeleteAsync(Guid documentId);
+        Task DeleteAsync(DocumentRef documentRef);
 
-        Task RenameAsync(Guid documentId, string title);
+        Task RenameAsync(DocumentRef documentRef, string newName);
 
-        Task<DocumentRef> StoreAsync(Document document);
+        Task StoreAsync(DocumentRef documentRef, Document document);
+
+        Task<DocumentRef> CreateAsync(string name, Document document);
     }
 }

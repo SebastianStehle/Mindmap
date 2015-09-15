@@ -16,6 +16,7 @@ using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GP.Windows;
 using Hercules.App.Components;
+using Hercules.App.Components.Implementations;
 using Hercules.App.Messages;
 using Hercules.Model;
 using Hercules.Model.Storing;
@@ -41,11 +42,11 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         [NotifyUI]
         public MindmapItem SelectedMindmap { get; set; }
 
-        [NotifyUI]
-        public bool IsLoaded { get; set; }
-
         [Dependency]
         public IDocumentStore DocumentStore { get; set; }
+
+        [Dependency]
+        public ILoadingManager LoadingManager { get; set; }
 
         [Dependency]
         public ISettingsProvider SettingsProvider { get; set; }
@@ -55,6 +56,9 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
         [Dependency]
         public IMessageDialogService MessageDialogService { get; set; }
+
+        [NotifyUI]
+        public bool IsLoaded { get; set; }
 
         public RelayCommand<MindmapItem> DeleteCommand
         {
@@ -83,23 +87,37 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             }
         }
 
-        public async Task CreateNewMindmapAsync(string name, string text)
+        public async Task CreateNewMindmapAsync(string name)
         {
             if (IsLoaded)
             {
-                DocumentRef documentRef = await CreateMindmapAsync(name);
+                Document document = new Document(Guid.NewGuid());
 
-                AddMindmap(documentRef);
+                RenameRoot(name, document);
+
+                try
+                {
+                    LoadingManager.BeginLoading();
+
+                    DocumentRef documentRef = await DocumentStore.CreateAsync(name, document);
+
+                    AddMindmap(documentRef);
+                }
+                finally
+                {
+                    LoadingManager.FinishLoading();
+                }
             }
         }
 
-        private async Task<DocumentRef> CreateMindmapAsync(string name)
+        private static void RenameRoot(string name, Document document)
         {
-            Document document = new Document(Guid.NewGuid(), name);
+            string transactionName = ResourceManager.GetString("ChangeTextTransactionName");
 
-            DocumentRef documentRef = await DocumentStore.StoreAsync(document);
-
-            return documentRef;
+            document.MakeTransaction(transactionName, commands =>
+            {
+                commands.Apply(new ChangeTextCommand(document.Root, name, true));
+            });
         }
 
         private void AddMindmap(DocumentRef documentRef)
@@ -121,7 +139,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
                     foreach (DocumentRef documentRef in documents)
                     {
-                        if (Mindmaps.All(x => x.DocumentId != documentRef.DocumentId))
+                        if (Mindmaps.All(x => x.DocumentRef != documentRef))
                         {
                             MindmapItem mindmapItem = new MindmapItem(documentRef, DocumentStore);
 
@@ -135,7 +153,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                 {
                     SettingsProvider.IsAlreadyStarted = true;
 
-                    await CreateNewMindmapAsync(LocalizationManager.GetString("MyMindmap"), LocalizationManager.GetString("Start"));
+                    await CreateNewMindmapAsync(LocalizationManager.GetString("MyMindmap"));
                 }
             }
         }

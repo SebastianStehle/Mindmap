@@ -23,7 +23,7 @@ namespace Hercules.Model.Storing.Json
 {
     public sealed class JsonDocumentStore : IDocumentStore
     {
-        private const string DefaultSubfolder = "Hercules778";
+        private const string DefaultSubfolder = "Hercules778A";
         private readonly JsonSerializerSettings historySerializerSettings = new JsonSerializerSettings();
         private readonly TaskFactory taskFactory = new TaskFactory(new LimitedThreadsScheduler());
         private readonly string subfolderName;
@@ -48,32 +48,42 @@ namespace Hercules.Model.Storing.Json
             return taskFactory.StartNew(() => LoadAllInternalAsync()).Unwrap();
         }
 
-        public Task RenameAsync(Guid documentId, string title)
+        public Task RenameAsync(DocumentRef documentRef, string newName)
         {
-            Guard.NotNullOrEmpty(title, nameof(title));
+            Guard.NotNull(documentRef, nameof(documentRef));
+            Guard.ValidFileName(newName, nameof(newName));
 
-            return taskFactory.StartNew(() => RenameInternalAsync(documentId, title)).Unwrap();
+            return taskFactory.StartNew(() => RenameInternalAsync(documentRef, newName)).Unwrap();
         }
 
-        public async Task<DocumentRef> StoreAsync(Document document)
+        public Task StoreAsync(DocumentRef documentRef, Document document)
         {
             Guard.NotNull(document, nameof(document));
-            
-            return await taskFactory.StartNew(() => StoreInternalAsync(document)).Unwrap();
+            Guard.NotNull(documentRef, nameof(documentRef));
+
+            return taskFactory.StartNew(() => StoreInternalAsync(documentRef, document)).Unwrap();
         }
 
-        public Task<Document> LoadAsync(Guid documentId)
+        public Task<DocumentRef> CreateAsync(string name, Document document)
         {
-            Guard.NotEmpty(documentId, nameof(documentId));
+            Guard.NotNull(document, nameof(document));
+            Guard.ValidFileName(name, nameof(name));
 
-            return taskFactory.StartNew(() => LoadInternalAsync(documentId)).Unwrap();
+            return taskFactory.StartNew(() => CreateInternalAsync(name, document)).Unwrap();
         }
 
-        public Task DeleteAsync(Guid documentId)
+        public Task<Document> LoadAsync(DocumentRef documentRef)
         {
-            Guard.NotEmpty(documentId, nameof(documentId));
+            Guard.NotNull(documentRef, nameof(documentRef));
 
-            return taskFactory.StartNew(() => DeleteInternalAsync(documentId)).Unwrap();
+            return taskFactory.StartNew(() => LoadInternalAsync(documentRef)).Unwrap();
+        }
+
+        public Task DeleteAsync(DocumentRef documentRef)
+        {
+            Guard.NotNull(documentRef, nameof(documentRef));
+
+            return taskFactory.StartNew(() => DeleteInternalAsync(documentRef)).Unwrap();
         }
 
         public Task ClearAsync()
@@ -91,27 +101,20 @@ namespace Hercules.Model.Storing.Json
 
             foreach (StorageFile file in files)
             {
-                if (file.FileType.Equals(".mmn", StringComparison.OrdinalIgnoreCase))
+                if (file.FileType.Equals(".mmd", StringComparison.OrdinalIgnoreCase))
                 {
                     BasicProperties properties = await file.GetBasicPropertiesAsync();
 
-                    string name = await FileIO.ReadTextAsync(file);
-
-                    if (!string.IsNullOrWhiteSpace(name))
-                    {
-                        documentReferences.Add(new DocumentRef(Guid.Parse(file.DisplayName), name, properties.DateModified));
-                    }
+                    documentReferences.Add(new DocumentRef(file.DisplayName, properties.DateModified));
                 }
             }
 
             return documentReferences.OrderByDescending(x => x.LastUpdate).ToList();
         }
 
-        private async Task<Document> LoadInternalAsync(Guid documentId)
+        private async Task<Document> LoadInternalAsync(DocumentRef documentRef)
         {
-            await EnsureFolderAsync();
-
-            StorageFile file = await localFolder.GetFileAsync(documentId + ".mmd");
+            StorageFile file = await GetFileAsync(documentRef);
 
             using (IRandomAccessStream stream = await file.OpenReadAsync())
             {
@@ -124,61 +127,67 @@ namespace Hercules.Model.Storing.Json
                 return document;
             }
         }
+
+        private async Task<DocumentRef> CreateInternalAsync(string name, Document document)
+        {
+            DocumentRef documentRef = new DocumentRef(name, DateTimeOffset.Now);
+
+            StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.GenerateUniqueName);
+
+            await file.SerializeAsJsonAsync(new JsonHistory(document), historySerializerSettings);
+
+            return documentRef.Rename(file.DisplayName);
+        }
         
-        private Task RenameInternalAsync(Guid documentId, string title)
+        private async Task RenameInternalAsync(DocumentRef documentRef, string newName)
         {
-            return WriteTitleAsync(documentId, title);
+            StorageFile file = await GetFileAsync(documentRef);
+
+            await file.RenameAsync($"{newName}.mmd", NameCollisionOption.GenerateUniqueName);
+            await file.GetBasicPropertiesAsync();
+
+            documentRef.Updated().Rename(file.DisplayName);
         }
 
-        private async Task<DocumentRef> StoreInternalAsync(Document document)
+        private async Task StoreInternalAsync(DocumentRef documentRef, Document document)
         {
-            Guard.NotNull(document, nameof(document));
+            StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.ReplaceExisting);
 
-            await EnsureFolderAsync();
+            await file.SerializeAsJsonAsync(new JsonHistory(document), historySerializerSettings);
 
-            JsonHistory jsonHistory = new JsonHistory(document);
-            
-            await WriteTitleAsync(jsonHistory);
-            await WriteContentAsync(jsonHistory);
-            
-            return new DocumentRef(document.Id, document.Title, DateTime.Now);
+            documentRef.Updated();
         }
 
-        private Task WriteTitleAsync(Guid documentId, string title)
+        private async Task DeleteInternalAsync(DocumentRef documentRef)
         {
-            string fileName = $"{documentId}.mmn";
+            StorageFile file = await GetFileAsync(documentRef);
 
-            return localFolder.WriteTextAsync(fileName, title);
+            await file.DeleteAsync();
         }
 
-        private async Task WriteTitleAsync(JsonHistory history)
-        {
-            string fileName = $"{history.Id}.mmn";
-
-            await localFolder.WriteTextAsync(fileName, history.Name);
-        }
-
-        private async Task WriteContentAsync(JsonHistory history)
-        {
-            string fileName = $"{history.Id}.mmd";
-
-            await history.SerializeAsJsonAsync(localFolder, fileName, historySerializerSettings);
-        }
-
-        private async Task DeleteInternalAsync(Guid documentId)
+        private async Task<StorageFile> CreateFileAsync(DocumentRef documentRef, CreationCollisionOption options)
         {
             await EnsureFolderAsync();
 
-            await Task.WhenAll(
-                localFolder.TryDeleteIfExistsAsync(documentId + ".mmn"),
-                localFolder.TryDeleteIfExistsAsync(documentId + ".mmd"));
+            string fileName = $"{documentRef.DocumentName}.mmd";
+
+            return await localFolder.CreateFileAsync(fileName, options);
+        }
+
+        private async Task<StorageFile> GetFileAsync(DocumentRef documentRef)
+        {
+            await EnsureFolderAsync();
+
+            string fileName = $"{documentRef.DocumentName}.mmd";
+
+            return await localFolder.GetFileAsync(fileName);
         }
 
         private async Task ClearInternalAsync()
         {
             await EnsureFolderAsync();
 
-            await localFolder.DeleteAsync().AsTask();
+            await localFolder.DeleteAsync();
         }
 
         private async Task EnsureFolderAsync()

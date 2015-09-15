@@ -9,7 +9,6 @@
 using System;
 using System.Collections.Generic;
 using System.Numerics;
-using GP.Windows;
 
 namespace Hercules.Model
 {
@@ -20,7 +19,6 @@ namespace Hercules.Model
         private readonly RootNode root;
         private readonly IUndoRedoManager undoRedoManager = new UndoRedoManager();
         private readonly Vector2 size = new Vector2(5000, 5000);
-        private readonly string title;
         private CompositeUndoRedoAction transaction;
         private NodeBase selectedNode;
         
@@ -47,16 +45,6 @@ namespace Hercules.Model
             get { return undoRedoManager; }
         }
 
-        public double Width
-        {
-            get { return size.X; }
-        }
-
-        public double Height
-        {
-            get { return size.Y; }
-        }
-
         public IEnumerable<NodeBase> Nodes
         {
             get { return nodes; }
@@ -77,24 +65,24 @@ namespace Hercules.Model
             get { return size; }
         }
 
+        public double Width
+        {
+            get { return size.X; }
+        }
+
+        public double Height
+        {
+            get { return size.Y; }
+        }
+
         public bool IsChangeTracking
         {
             get { return transaction != null; }
         }
 
-        public string Title
+        public Document(Guid id)
         {
-            get { return title; }
-        }
-
-        public Document(Guid id, string title)
-            : base(id)
-        {
-            Guard.NotNullOrEmpty(title, nameof(title));
-
-            this.title = title;
-
-            root = new RootNode(id, title);
+            root = new RootNode(id);
 
             nodes.Add(root);
             nodesHashSet[root.Id] = root;

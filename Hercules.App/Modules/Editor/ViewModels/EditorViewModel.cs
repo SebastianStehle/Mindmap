@@ -262,7 +262,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 {
                     LoadingManager.BeginLoading();
 
-                    await DocumentStore.StoreAsync(Document);
+                    await DocumentStore.StoreAsync(mindmapItem.DocumentRef, Document);
 
                     mindmapItem.RefreshAfterSave();
                 }
@@ -275,13 +275,13 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
         public async Task LoadAsync(MindmapItem mindmapToLoad)
         {
-            if (mindmapToLoad != null && (mindmapItem == null || mindmapItem.DocumentId != mindmapToLoad.DocumentId))
+            if (mindmapToLoad != null && (mindmapItem == null || mindmapItem.DocumentRef != mindmapToLoad.DocumentRef))
             {
                 try
                 {
                     LoadingManager.BeginLoading();
 
-                    Document = await DocumentStore.LoadAsync(mindmapToLoad.DocumentId);
+                    Document = await DocumentStore.LoadAsync(mindmapToLoad.DocumentRef);
 
                     mindmapItem = mindmapToLoad;
                 }

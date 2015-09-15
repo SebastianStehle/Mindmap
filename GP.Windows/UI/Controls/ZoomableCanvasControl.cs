@@ -112,6 +112,8 @@ namespace GP.Windows.UI.Controls
                 swapChainPanel.SizeChanged += SwapChainPanel_SizeChanged;
 
                 swapChainPanel.CompositionScaleChanged += SwapChainPanel_CompositionScaleChanged;
+
+                CreateResources?.Invoke(this, EventArgs.Empty);
             }
         }
 

@@ -20,9 +20,6 @@ namespace Hercules.Model.Storing.Json
         public Guid Id { get; set; }
 
         [DataMember]
-        public string Name { get; set; }
-
-        [DataMember]
         public List<JsonHistoryStep> Steps { get; set; }
 
         public JsonHistory()
@@ -33,7 +30,7 @@ namespace Hercules.Model.Storing.Json
         public JsonHistory(Document document)
             : this()
         {
-            Id = document.Id;
+            Id = document.Root.Id;
 
             foreach (var transaction in document.UndoRedoManager.History.OfType<CompositeUndoRedoAction>())
             {
@@ -41,8 +38,6 @@ namespace Hercules.Model.Storing.Json
 
                 Steps.Add(jsonStep);
             }
-
-            Name = document.Title;
         }
 
         private static JsonHistoryStep CreateJsonStep(CompositeUndoRedoAction transaction)
@@ -63,7 +58,7 @@ namespace Hercules.Model.Storing.Json
 
         public Document ToDocument()
         {
-            Document document = new Document(Id, Name);
+            Document document = new Document(Id);
 
             foreach (JsonHistoryStep step in Steps.Reverse<JsonHistoryStep>())
             {

@@ -153,14 +153,14 @@ namespace Hercules.Model
         {
             T result;
 
-            return TryParse<T>(culture, parser, out result) ? result : (T?)null;
+            return TryParse(culture, parser, out result) ? result : (T?)null;
         }
 
         private T ToOrParseValue<T>(CultureInfo culture, Func<string, T> parser)
         {
             T result;
 
-            return TryParse<T>(culture, parser, out result) ? result : default(T);
+            return TryParse(culture, parser, out result) ? result : default(T);
         }
 
         private bool TryParse<T>(CultureInfo culture, Func<string, T> parser, out T result)

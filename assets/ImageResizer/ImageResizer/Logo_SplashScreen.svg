@@ -14,10 +14,10 @@
    id="svg2"
    version="1.1"
    inkscape:version="0.48.4 r9939"
-   inkscape:export-filename="C:\Users\Sebastian\Desktop\Logo_Wide.png"
-   inkscape:export-xdpi="180"
-   inkscape:export-ydpi="180"
-   sodipodi:docname="Logo_Wide.svg">
+   inkscape:export-filename="C:\Users\Sebastian\Desktop\Logo_SplashScreen.png"
+   inkscape:export-xdpi="450"
+   inkscape:export-ydpi="450"
+   sodipodi:docname="SplashScreen.svg">
   <defs
      id="defs4" />
   <sodipodi:namedview
@@ -28,7 +28,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.7"
-     inkscape:cx="725.24893"
+     inkscape:cx="948.10607"
      inkscape:cy="163.1102"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
@@ -59,8 +59,8 @@
      transform="translate(0,-452.36218)">
     <path
        id="rect2985-1-7"
-       style="fill:none;stroke:#ffffff;stroke-width:15.74692248999999900;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
-       d="m 513.26667,660.23565 76.18626,0 c 8.52786,0 15.39322,6.70513 15.39322,15.03392 l 0,47.06275 c 0,8.32878 -6.86536,15.03393 -15.39322,15.03393 l -76.18626,0 c -8.52785,0 -15.39321,-6.70515 -15.39321,-15.03393 l 0,-47.06275 c 0,-8.32879 6.86536,-15.03392 15.39321,-15.03392 z m 121.49352,146.01596 -55.99765,0 c 0,0 -27.39888,1.95323 -27.99884,-27.34533 l 0,-38.28361 m 99.78333,26.73546 76.18627,0 c 8.52786,0 15.39322,6.70515 15.39322,15.03393 l 0,47.06274 c 0,8.3288 -6.86536,15.03392 -15.39322,15.03392 l -76.18627,0 c -8.52784,0 -15.3932,-6.70512 -15.3932,-15.03392 l 0,-47.06274 c 0,-8.32878 6.86536,-15.03393 15.3932,-15.03393 z"
+       style="fill:none;stroke:#ffffff;stroke-width:31.49384689;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 421.53334,568.1091 152.37253,0 c 17.05572,0 30.78644,13.41026 30.78644,30.06785 l 0,94.1255 c 0,16.65756 -13.73072,30.06786 -30.78644,30.06786 l -152.37253,0 c -17.0557,0 -30.78642,-13.4103 -30.78642,-30.06786 l 0,-94.1255 c 0,-16.65759 13.73072,-30.06785 30.78642,-30.06785 z m 242.98705,292.03194 -111.9953,0 c 0,0 -54.79776,3.90646 -55.99768,-54.69067 l 0,-76.56722 m 199.56666,53.47092 152.37255,0 c 17.05572,0 30.78644,13.4103 30.78644,30.06786 l 0,94.12549 c 0,16.6576 -13.73072,30.06784 -30.78644,30.06784 l -152.37255,0 c -17.05568,0 -30.7864,-13.41024 -30.7864,-30.06784 l 0,-94.12549 c 0,-16.65756 13.73072,-30.06786 30.7864,-30.06786 z"
        inkscape:export-filename="C:\Users\Sebastian\Desktop\Logo.png"
        inkscape:export-xdpi="392.85001"
        inkscape:export-ydpi="392.85001"

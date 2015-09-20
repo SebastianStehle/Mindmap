@@ -29,7 +29,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             get { return button; }
         }
 
-        protected DefaultRenderNode(NodeBase node, DefaultRenderer renderer)
+        protected DefaultRenderNode(NodeBase node, Win2DRenderer renderer)
             : base(node, renderer)
         {
             button = new ExpandButton(node);

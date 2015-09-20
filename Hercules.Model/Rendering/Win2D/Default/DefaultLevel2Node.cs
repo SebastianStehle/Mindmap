@@ -40,7 +40,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             get { return new Vector2(0, -VerticalOffset); }
         }
 
-        public DefaultLevel2Node(NodeBase node, DefaultRenderer renderer) 
+        public DefaultLevel2Node(NodeBase node, Win2DRenderer renderer) 
             : base(node, renderer)
         {
             textRenderer = new Win2DTextRenderer(14, node, 60);

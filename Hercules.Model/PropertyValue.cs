@@ -149,21 +149,21 @@ namespace Hercules.Model
             return ToNullableOrParseValue(culture, x => DateTimeOffset.Parse(x, culture));
         }
 
-        private T? ToNullableOrParseValue<T>(CultureInfo culture, Func<string, T> parser) where T : struct
+        private T? ToNullableOrParseValue<T>(IFormatProvider culture, Func<string, T> parser) where T : struct
         {
             T result;
 
             return TryParse(culture, parser, out result) ? result : (T?)null;
         }
 
-        private T ToOrParseValue<T>(CultureInfo culture, Func<string, T> parser)
+        private T ToOrParseValue<T>(IFormatProvider culture, Func<string, T> parser)
         {
             T result;
 
             return TryParse(culture, parser, out result) ? result : default(T);
         }
 
-        private bool TryParse<T>(CultureInfo culture, Func<string, T> parser, out T result)
+        private bool TryParse<T>(IFormatProvider culture, Func<string, T> parser, out T result)
         {
             object value = rawValue;
 
@@ -192,7 +192,7 @@ namespace Hercules.Model
             return false;
         }
 
-        private static T Convert<T>(CultureInfo culture, object value, Type valueType)
+        private static T Convert<T>(IFormatProvider culture, object value, Type valueType)
         {
             Type requestedType = typeof(T);
 

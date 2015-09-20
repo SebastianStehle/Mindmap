@@ -25,7 +25,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             get { throw new NotSupportedException(); }
         }
 
-        public DefaultPreviewNode(NodeBase node, DefaultRenderer renderer) 
+        public DefaultPreviewNode(NodeBase node, Win2DRenderer renderer) 
             : base(node, renderer)
         {
         }

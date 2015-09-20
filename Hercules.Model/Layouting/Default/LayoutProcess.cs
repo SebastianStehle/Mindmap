@@ -53,7 +53,7 @@ namespace Hercules.Model.Layouting.Default
             Arrange(rootLayoutNode, document.Root.RightChildren, 1.0f, AnchorPoint.Left);
         }
 
-        private void Arrange(DefaultLayoutNode root, IReadOnlyList<Node> children, float factor, AnchorPoint anchor)
+        private void Arrange(DefaultLayoutNode root, IReadOnlyCollection<Node> children, float factor, AnchorPoint anchor)
         {
             UpdateSizeWithChildren(root, children, document.Root.IsCollapsed);
 
@@ -65,7 +65,7 @@ namespace Hercules.Model.Layouting.Default
             ArrangeNodes(root, children, factor, anchor, document.Root.IsCollapsed);
         }
 
-        private void ArrangeNodes(DefaultLayoutNode parent, IReadOnlyList<Node> children, float factor, AnchorPoint anchor, bool isCollapsed)
+        private void ArrangeNodes(DefaultLayoutNode parent, IReadOnlyCollection<Node> children, float factor, AnchorPoint anchor, bool isCollapsed)
         {
             if (children.Count > 0)
             {
@@ -98,7 +98,7 @@ namespace Hercules.Model.Layouting.Default
             }
         }
 
-        private void UpdateSizeWithChildren(DefaultLayoutNode parent, IReadOnlyList<Node> children, bool isCollapsed)
+        private void UpdateSizeWithChildren(DefaultLayoutNode parent, IReadOnlyCollection<Node> children, bool isCollapsed)
         {
             float treeW = parent.NodeSize.X;
             float treeH = parent.NodeSize.Y;

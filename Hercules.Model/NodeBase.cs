@@ -224,7 +224,7 @@ namespace Hercules.Model
 
         public abstract void Insert(Node child, int? index, NodeSide side);
 
-        private void ChangeSide(Node node, NodeSide side)
+        private static void ChangeSide(Node node, NodeSide side)
         {
             node.NodeSide = side;
 

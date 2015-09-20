@@ -80,7 +80,7 @@ namespace Hercules.Model.Rendering.Win2D
             return points;
         }
 
-        private static CanvasGeometry BuildGeometry(CanvasDrawingSession session, List<Vector2> points)
+        private static CanvasGeometry BuildGeometry(ICanvasResourceCreator session, IReadOnlyList<Vector2> points)
         {
             using (CanvasPathBuilder builder = new CanvasPathBuilder(session.Device))
             {
@@ -140,7 +140,7 @@ namespace Hercules.Model.Rendering.Win2D
             return null;
         }
 
-        private static CanvasGeometry CreateFilledPath(CanvasDrawingSession session, Vector2 point1, Vector2 point2)
+        private static CanvasGeometry CreateFilledPath(ICanvasResourceCreator session, Vector2 point1, Vector2 point2)
         {
             float halfX = (point1.X + point2.X) * 0.5f;
 
@@ -202,7 +202,7 @@ namespace Hercules.Model.Rendering.Win2D
             return null;
         }
 
-        private static CanvasGeometry CreateLinePath(CanvasDrawingSession session, Vector2 point1, Vector2 point2)
+        private static CanvasGeometry CreateLinePath(ICanvasResourceCreator session, Vector2 point1, Vector2 point2)
         {
             float halfX = (point1.X + point2.X) * 0.5f;
 

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
+using System.Linq;
 using Windows.Foundation;
 
 namespace GP.Windows
@@ -147,12 +148,9 @@ namespace GP.Windows
             Guard.NotNull(items, "items");
             Guard.NotNull(action, "action");
 
-            foreach (T item in items)
+            foreach (T item in items.Where(item => item != null))
             {
-                if (item != null)
-                {
-                    action(item);
-                }
+                action(item);
             }
         }
 

@@ -44,7 +44,7 @@ namespace Hercules.Model.Rendering.Win2D
                 });
             }
 
-            private async Task<CanvasBitmap> LoadFile(string image, CanvasDevice device)
+            private static async Task<CanvasBitmap> LoadFile(string image, ICanvasResourceCreator device)
             {
                 string uri = string.Format(CultureInfo.InvariantCulture, "ms-appx://{0}", image);
 

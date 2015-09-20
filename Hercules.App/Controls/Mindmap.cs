@@ -145,7 +145,7 @@ namespace Hercules.App.Controls
 
                 ScrollViewerView view = e.FinalView;
 
-                if (lastView == null || (view.ZoomFactor != lastView.ZoomFactor || view.HorizontalOffset != lastView.HorizontalOffset || view.VerticalOffset != lastView.VerticalOffset))
+                if (lastView == null || (Math.Abs(view.ZoomFactor - lastView.ZoomFactor) > float.Epsilon || Math.Abs(view.HorizontalOffset - lastView.HorizontalOffset) > float.Epsilon || Math.Abs(view.VerticalOffset - lastView.VerticalOffset) > float.Epsilon))
                 {
                     lastView = view;
 
@@ -154,7 +154,7 @@ namespace Hercules.App.Controls
             });
         }
 
-        private void Transform(Win2DRenderer rendererToTransform, ScrollViewerView view)
+        private void Transform(Win2DRenderer rendererToTransform, IScrollViewerView view)
         {
             double zoomFactor = view.ZoomFactor;
 

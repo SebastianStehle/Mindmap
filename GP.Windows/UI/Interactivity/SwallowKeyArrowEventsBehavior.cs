@@ -37,7 +37,7 @@ namespace GP.Windows.UI.Interactivity
             AssociatedElement.KeyUp -= AssociatedObject_KeyUp;
         }
 
-        private void AssociatedObject_KeyDown(object sender, KeyRoutedEventArgs e)
+        private static void AssociatedObject_KeyDown(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key >= VirtualKey.Left && e.Key <= VirtualKey.Down)
             {
@@ -45,7 +45,7 @@ namespace GP.Windows.UI.Interactivity
             }
         }
 
-        private void AssociatedObject_KeyUp(object sender, KeyRoutedEventArgs e)
+        private static void AssociatedObject_KeyUp(object sender, KeyRoutedEventArgs e)
         {
             if (e.Key >= VirtualKey.Left && e.Key <= VirtualKey.Down)
             {

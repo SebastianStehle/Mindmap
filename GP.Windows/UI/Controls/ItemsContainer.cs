@@ -116,7 +116,7 @@ namespace GP.Windows.UI.Controls
             OnControlRemoved(node, control);
         }
 
-        private void UpdateCollectionBinding(ObservableCollection<TItem> oldCollection, ObservableCollection<TItem> newCollection)
+        private void UpdateCollectionBinding(INotifyCollectionChanged oldCollection, ObservableCollection<TItem> newCollection)
         {
             if (oldCollection != null)
             {

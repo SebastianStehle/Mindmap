@@ -27,12 +27,7 @@ namespace Hercules.Model
 
             Node node = nodeBase as Node;
 
-            if (node != null)
-            {
-                return AllChildren(node);
-            }
-
-            return null;
+            return node != null ? AllChildren(node) : null;
         }
 
         public static IList<Node> AllChildren(this Node node)
@@ -69,7 +64,7 @@ namespace Hercules.Model
             return allChildren;
         }
 
-        private static void AddChildren(List<Node> allChildren, Node node)
+        private static void AddChildren(ICollection<Node> allChildren, Node node)
         {
             foreach (Node child in node.Children)
             {

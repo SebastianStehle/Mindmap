@@ -110,14 +110,7 @@ namespace Hercules.Model.Export.Html
             xmlWriter.WriteStartElement("span");
             xmlWriter.WriteAttributeString("style", string.Format(CultureInfo.CurrentCulture, "color:{0};font-size:{1};", color, fontSize));
 
-            if (!string.IsNullOrWhiteSpace(nodeBase.Text))
-            {
-                xmlWriter.WriteValue(nodeBase.Text);
-            }
-            else
-            {
-                xmlWriter.WriteValue(noTextPlaceholder);
-            }
+            xmlWriter.WriteValue(!string.IsNullOrWhiteSpace(nodeBase.Text) ? nodeBase.Text : noTextPlaceholder);
 
             xmlWriter.WriteEndElement();
         }

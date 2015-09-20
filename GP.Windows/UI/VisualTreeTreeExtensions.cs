@@ -135,21 +135,24 @@ namespace GP.Windows.UI
         /// </exception>
         public static bool IsChild(this DependencyObject target, DependencyObject child)
         {
-            Guard.NotNull(target, "target");
-            Guard.NotNull(child, "child");
-
-            DependencyObject parent = VisualTreeHelper.GetParent(child);
-
-            if (parent == target)
+            while (true)
             {
-                return true;
-            }
-            else if (parent == null)
-            {
-                return false;
-            }
+                Guard.NotNull(target, "target");
+                Guard.NotNull(child, "child");
 
-            return IsChild(target, parent);
+                DependencyObject parent = VisualTreeHelper.GetParent(child);
+
+                if (parent == target)
+                {
+                    return true;
+                }
+                else if (parent == null)
+                {
+                    return false;
+                }
+
+                child = parent;
+            }
         }
 
         /// <summary>
@@ -294,14 +297,7 @@ namespace GP.Windows.UI
         /// </returns>
         public static bool TryRemove(this Panel panel, UIElement element)
         {
-            if (panel?.Children != null)
-            {
-                return panel.Children.Remove(element);
-            }
-            else
-            {
-                return true;
-            }
+            return panel?.Children == null || panel.Children.Remove(element);
         }
     }
 }

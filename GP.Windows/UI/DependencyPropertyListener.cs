@@ -20,21 +20,15 @@ namespace GP.Windows.UI
             DependencyProperty.Register("Listener", typeof(object), typeof(DependencyPropertyListener), new PropertyMetadata(null, OnSourceChanged));
 
         public DependencyPropertyListener(DependencyObject source, string property, Action changed)
-            : this(source, new PropertyPath(property), changed)
         {
-        }
-
-        private DependencyPropertyListener(DependencyObject source, PropertyPath property, Action changed)
-        {
-            Guard.NotNull(changed, nameof(changed));
             Guard.NotNull(source, nameof(source));
-            Guard.NotNull(property, nameof(property));
+            Guard.NotNull(changed, nameof(changed));
+            Guard.NotNullOrEmpty(property, nameof(property));
 
             this.changed = changed;
-
-            Binding binding = new Binding { Source = source, Path = property, Mode = BindingMode.OneWay, UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged };
-
-            BindingOperations.SetBinding(this, ListenerProperty, binding);
+            
+            BindingOperations.SetBinding(this, ListenerProperty,
+                new Binding { Source = source, Path = new PropertyPath(property), UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged });
         }
 
         private static void OnSourceChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)

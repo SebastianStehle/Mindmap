@@ -10,7 +10,5 @@ namespace Hercules.App.Components
     public interface ISettingsProvider
     {
         bool IsAlreadyStarted { get; set; }
-
-        bool IsTutorialShown { get; set; }
     }
 }

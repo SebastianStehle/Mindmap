@@ -52,6 +52,8 @@ namespace Hercules.App.Modules
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IOutlineGenerator, HtmlOutlineGenerator>(
                     new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IMindmapStore, MindmapStore>(
+                    new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IMessageDialogService, MessageDialogService>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<MindmapsViewModel>(

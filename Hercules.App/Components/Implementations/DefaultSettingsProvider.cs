@@ -28,22 +28,6 @@ namespace Hercules.App.Components.Implementations
             }
         }
 
-        public bool IsTutorialShown
-        {
-            get
-            {
-                ApplicationDataContainer settings = ApplicationData.Current.LocalSettings;
-
-                return ToBoolean(settings.Values["TutorialShown"]);
-            }
-            set
-            {
-                ApplicationDataContainer settings = ApplicationData.Current.LocalSettings;
-
-                settings.Values["TutorialShown"] = value;
-            }
-        }
-
         private static bool ToBoolean(object value)
         {
             return value != null && (bool)value;

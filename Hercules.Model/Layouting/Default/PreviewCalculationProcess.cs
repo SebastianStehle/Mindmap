@@ -264,9 +264,9 @@ namespace Hercules.Model.Layouting.Default
 
                     double minArea = Math.Min(rectArea, nodeBounds.Width * nodeBounds.Height);
 
-                    nodeBounds.Intersect(movementBounds);
+                    Rect2 intersection = nodeBounds.Intersect(movementBounds);
 
-                    double newArea = nodeBounds.Width * nodeBounds.Height;
+                    double newArea = intersection.Width * intersection.Height;
 
                     if (!double.IsInfinity(newArea) && newArea > 0.5f * minArea)
                     {

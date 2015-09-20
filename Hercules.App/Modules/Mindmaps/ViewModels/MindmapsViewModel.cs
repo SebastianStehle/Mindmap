@@ -6,20 +6,13 @@
 // All rights reserved.
 // ==========================================================================
 
-using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GalaSoft.MvvmLight.Messaging;
 using GP.Windows;
 using Hercules.App.Components;
-using Hercules.App.Components.Implementations;
-using Hercules.App.Messages;
-using Hercules.Model;
-using Hercules.Model.Storing;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
 
@@ -28,28 +21,24 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
     [ImplementPropertyChanged]
     public sealed class MindmapsViewModel : ViewModelBase
     {
-        private readonly ObservableCollection<MindmapItem> mindmaps = new ObservableCollection<MindmapItem>();
-        private RelayCommand<MindmapItem> deleteCommand;
+        private RelayCommand<IMindmapRef> deleteCommand;
 
-        public ObservableCollection<MindmapItem> Mindmaps
+        public ObservableCollection<IMindmapRef> Mindmaps
         {
             get
             {
-                return mindmaps;
+                return MindmapStore.AllMindmaps;
             }
         }
 
         [NotifyUI]
-        public MindmapItem SelectedMindmap { get; set; }
+        public bool IsLoaded { get; set; }
+
+        [NotifyUI]
+        public IMindmapRef SelectedMindmap { get; set; }
 
         [Dependency]
-        public IDocumentStore DocumentStore { get; set; }
-
-        [Dependency]
-        public ILoadingManager LoadingManager { get; set; }
-
-        [Dependency]
-        public ISettingsProvider SettingsProvider { get; set; }
+        public IMindmapStore MindmapStore { get; set; }
 
         [Dependency]
         public ILocalizationManager LocalizationManager { get; set; }
@@ -57,105 +46,43 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         [Dependency]
         public IMessageDialogService MessageDialogService { get; set; }
 
-        [NotifyUI]
-        public bool IsLoaded { get; set; }
-
-        public RelayCommand<MindmapItem> DeleteCommand
+        public RelayCommand<IMindmapRef> DeleteCommand
         {
             get
             {
-                return deleteCommand ?? (deleteCommand = new RelayCommand<MindmapItem>(async item =>
+                return deleteCommand ?? (deleteCommand = new RelayCommand<IMindmapRef>(async item =>
                 {
                     string content = LocalizationManager.GetString("DeleteMindmapContent"),
                              title = LocalizationManager.GetString("DeleteMindmapTitle");
 
                     if (await MessageDialogService.ConfirmAsync(content, title))
                     {
-                        await item.RemoveAsync();
-
-                        Mindmaps.Remove(item);
+                        await MindmapStore.DeleteAsync(item);
                     }
                 }));
             }
         }
 
-        public void OnSelectedMindmapChanged()
+        public async void OnSelectedMindmapChanged()
         {
-            if (IsLoaded && SelectedMindmap != null)
+            if (SelectedMindmap != null)
             {
-                Messenger.Default.Send(new OpenMindmapMessage(SelectedMindmap));
+                await MindmapStore.LoadAsync(SelectedMindmap);
             }
         }
 
         public async Task CreateNewMindmapAsync(string name)
         {
-            if (IsLoaded)
-            {
-                Document document = new Document(Guid.NewGuid());
+            await MindmapStore.CreateAsync(name);
 
-                RenameRoot(name, document);
-
-                try
-                {
-                    LoadingManager.BeginLoading();
-
-                    DocumentRef documentRef = await DocumentStore.CreateAsync(name, document);
-
-                    AddMindmap(documentRef);
-                }
-                finally
-                {
-                    LoadingManager.FinishLoading();
-                }
-            }
-        }
-
-        private static void RenameRoot(string name, Document document)
-        {
-            string transactionName = ResourceManager.GetString("ChangeTextTransactionName");
-
-            document.MakeTransaction(transactionName, commands =>
-            {
-                commands.Apply(new ChangeTextCommand(document.Root, name, true));
-            });
-        }
-
-        private void AddMindmap(DocumentRef documentRef)
-        {
-            Mindmaps.Insert(0, new MindmapItem(documentRef, DocumentStore));
-
-            SelectedMindmap = Mindmaps.FirstOrDefault();
+            SelectedMindmap = MindmapStore.AllMindmaps.FirstOrDefault();
         }
 
         public async Task LoadAsync()
         {
-            if (!IsLoaded)
-            {
-                IsLoaded = true;
+            await MindmapStore.LoadAllAsync();
 
-                if (SettingsProvider.IsAlreadyStarted)
-                {
-                    IEnumerable<DocumentRef> documents = await DocumentStore.LoadAllAsync();
-
-                    foreach (DocumentRef documentRef in documents)
-                    {
-                        if (Mindmaps.All(x => x.DocumentRef != documentRef))
-                        {
-                            MindmapItem mindmapItem = new MindmapItem(documentRef, DocumentStore);
-
-                            Mindmaps.Add(mindmapItem);
-                        }
-                    }
-
-                    SelectedMindmap = Mindmaps.FirstOrDefault();
-                }
-                else
-                {
-                    SettingsProvider.IsAlreadyStarted = true;
-
-                    await CreateNewMindmapAsync(LocalizationManager.GetString("MyMindmap"));
-                }
-            }
+            SelectedMindmap = MindmapStore.AllMindmaps.FirstOrDefault();
         }
     }
 }

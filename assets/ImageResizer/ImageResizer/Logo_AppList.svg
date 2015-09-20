@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="600"
+   height="600"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.48.4 r9939"
+   inkscape:export-filename="C:\Users\Sebastian\Desktop\Logo_Small.png"
+   inkscape:export-xdpi="180"
+   inkscape:export-ydpi="180"
+   sodipodi:docname="Logo_Small.svg">
+  <defs
+     id="defs4" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.98994949"
+     inkscape:cx="227.21622"
+     inkscape:cy="320.38276"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     showguides="true"
+     inkscape:guide-bbox="true"
+     inkscape:window-width="1920"
+     inkscape:window-height="1017"
+     inkscape:window-x="1912"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(0,-452.36218)">
+    <path
+       id="rect2985-1-7"
+       style="fill:none;stroke:#ffffff;stroke-width:31.49384499;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;stroke-dashoffset:0"
+       d="m 86.533322,568.1091 152.372548,0 c 17.0557,0 30.78643,13.41025 30.78643,30.06784 l 0,94.12551 c 0,16.65755 -13.73073,30.06785 -30.78643,30.06785 l -152.372548,0 c -17.055689,0 -30.7864,-13.4103 -30.7864,-30.06785 l 0,-94.12551 c 0,-16.65759 13.730711,-30.06784 30.7864,-30.06784 z m 242.987058,292.03194 -111.9953,0 c 0,0 -54.79775,3.90646 -55.99767,-54.69066 l 0,-76.56723 m 199.56666,53.47093 152.37256,0 c 17.05571,0 30.78645,13.4103 30.78645,30.06787 l 0,94.12548 c 0,16.65759 -13.73074,30.06783 -30.78645,30.06783 l -152.37256,0 c -17.0557,0 -30.78641,-13.41024 -30.78641,-30.06783 l 0,-94.12548 c 0,-16.65757 13.73071,-30.06787 30.78641,-30.06787 z"
+       inkscape:export-filename="C:\Users\Sebastian\Desktop\Logo.png"
+       inkscape:export-xdpi="392.85001"
+       inkscape:export-ydpi="392.85001"
+       inkscape:connector-curvature="0" />
+  </g>
+</svg>

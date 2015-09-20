@@ -17,8 +17,6 @@ using Hercules.Model.Rendering.Win2D;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
-// ReSharper disable UnusedParameter.Local
-
 namespace Hercules.App.Controls
 {
     [TemplatePart(Name = CanvasPart, Type = typeof(CanvasControl))]

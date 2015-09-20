@@ -11,16 +11,14 @@ using System.Collections.Generic;
 using System.Numerics;
 using Windows.Foundation;
 
-// ReSharper disable NonReadonlyMemberInGetHashCode
-
 namespace Hercules.Model.Utils
 {
     public struct Rect2 : IEquatable<Rect2>
     {
         public static readonly Rect2 Empty = new Rect2(float.PositiveInfinity, float.PositiveInfinity, float.NegativeInfinity, float.NegativeInfinity);
 
-        private Vector2 position;
-        private Vector2 size;
+        private readonly Vector2 position;
+        private readonly Vector2 size;
 
         public Vector2 Position
         {
@@ -111,14 +109,9 @@ namespace Hercules.Model.Utils
             Inflate(v.X, v.Y);
         }
 
-        public void Inflate(float width, float height)
+        public Rect Inflate(float width, float height)
         {
-            position.X -= width;
-            position.Y -= height;
-            size.X += width;
-            size.X += width;
-            size.Y += height;
-            size.Y += height;
+            return new Rect2(position.X - width, position.Y - height, size.X + (2 * width), size.Y + (2 * height));
         }
 
         public static Rect2 Inflate(Rect2 rect, Vector2 size)
@@ -169,21 +162,11 @@ namespace Hercules.Model.Utils
             return x >= position.X && x - size.X <= position.X && y >= position.Y && y - size.Y <= position.Y;
         }
 
-        public IEnumerable<Vector2> ToCorners()
-        {
-            yield return new Vector2(Left, Top);
-            yield return new Vector2(Left, Bottom);
-            yield return new Vector2(Right, Top);
-            yield return new Vector2(Right, Bottom);
-        }
-
-        public void Intersect(Rect2 rect)
+        public Rect2 Intersect(Rect2 rect)
         {
             if (!IntersectsWith(rect))
             {
-                this = Empty;
-
-                return;
+                return Empty;
             }
 
             float minX = Math.Max(X, rect.X);
@@ -192,9 +175,7 @@ namespace Hercules.Model.Utils
             float w = Math.Min(position.X + size.X, rect.Position.X + rect.Size.X) - minX;
             float h = Math.Min(position.Y + size.Y, rect.Position.Y + rect.Size.Y) - minY;
 
-            size = new Vector2(Math.Max(w, 0.0f), Math.Max(h, 0.0f));
-
-            position = new Vector2(minX, minY);
+            return new Rect2(Math.Max(w, 0.0f), Math.Max(h, 0.0f), minX, minY);
         }
 
         public bool IntersectsWith(Rect2 rect)
@@ -230,6 +211,14 @@ namespace Hercules.Model.Utils
         public static implicit operator Rect(Rect2 rect)
         {
             return new Rect(rect.X, rect.Y, rect.Width, rect.Height);
+        }
+
+        public IEnumerable<Vector2> ToCorners()
+        {
+            yield return new Vector2(Left, Top);
+            yield return new Vector2(Left, Bottom);
+            yield return new Vector2(Right, Top);
+            yield return new Vector2(Right, Bottom);
         }
 
         public override string ToString()

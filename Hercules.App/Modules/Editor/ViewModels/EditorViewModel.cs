@@ -7,9 +7,7 @@
 // ==========================================================================
 
 using System;
-using System.Threading.Tasks;
 using Windows.UI;
-using Windows.UI.Xaml;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -29,10 +27,9 @@ namespace Hercules.App.Modules.Editor.ViewModels
     [ImplementPropertyChanged]
     public sealed class EditorViewModel : ViewModelBase
     {
-        private readonly DispatcherTimer autosaveTimer = new DispatcherTimer();
         private readonly IRendererFactory rendererFactory = new DefaultRendererFactory();
+        private readonly IMindmapStore mindmapStore;
         private Document document;
-        private MindmapItem mindmapItem;
         private RelayCommand redoCommand;
         private RelayCommand undoCommand;
         private RelayCommand removeCommand;
@@ -43,9 +40,6 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
         [Dependency]
         public IDocumentStore DocumentStore { get; set; }
-
-        [Dependency]
-        public ILoadingManager LoadingManager { get; set; }
 
         [Dependency]
         public IOutlineGenerator OutlineGenerator { get; set; }
@@ -205,91 +199,43 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 }));
             }
         }
+
         public EditorViewModel()
         {
-            Messenger.Default.Register<MindmapDeletedMessage>(this, OnMindmapDeleted);
-            Messenger.Default.Register<OpenMindmapMessage>(this, OnOpenMindmap);
-
-            StartTimer();
+            Messenger.Default.Register<SaveMindmapMessage>(this, OnSaveMindmap);
         }
 
-        private void StartTimer()
+        public EditorViewModel(IMindmapStore mindmapStore)
+            : this()
         {
-            autosaveTimer.Interval = TimeSpan.FromMinutes(5);
-            autosaveTimer.Tick += autosaveTimer_Tick;
-            autosaveTimer.Start();
+            this.mindmapStore = mindmapStore;
+
+            mindmapStore.DocumentLoaded += MindmapStore_DocumentLoaded;
+        }
+
+        private void MindmapStore_DocumentLoaded(object sender, DocumentLoadedEventArgs e)
+        {
+            Document = e.Document;
+
+            UpdateUndoRedo();
+        }
+
+        private async void OnSaveMindmap(SaveMindmapMessage message)
+        {
+            await mindmapStore.SaveAsync();
+
+            message.Callback();
         }
 
         private void UndoRedoManager_StateChanged(object sender, EventArgs e)
         {
+            UpdateUndoRedo();
+        }
+
+        private void UpdateUndoRedo()
+        {
             UndoCommand.RaiseCanExecuteChanged();
             RedoCommand.RaiseCanExecuteChanged();
-        }
-
-        private void OnMindmapDeleted(MindmapDeletedMessage message)
-        {
-            if (message.Content == mindmapItem)
-            {
-                Document = null;
-
-                mindmapItem = null;
-            }
-        }
-
-        public async void OnOpenMindmap(OpenMindmapMessage message)
-        {
-            await SaveAsync();
-
-            await LoadAsync(message.Content);
-
-            UndoCommand.RaiseCanExecuteChanged();
-            RedoCommand.RaiseCanExecuteChanged();
-        }
-
-        private async void autosaveTimer_Tick(object sender, object e)
-        {
-            if (!LoadingManager.IsLoading)
-            {
-                await SaveAsync();
-            }
-        }
-
-        private async Task SaveAsync()
-        {
-            if (Document != null)
-            {
-                try
-                {
-                    LoadingManager.BeginLoading();
-
-                    await DocumentStore.StoreAsync(mindmapItem.DocumentRef, Document);
-
-                    mindmapItem.RefreshAfterSave();
-                }
-                finally
-                {
-                    LoadingManager.FinishLoading();
-                }
-            }
-        }
-
-        public async Task LoadAsync(MindmapItem mindmapToLoad)
-        {
-            if (mindmapToLoad != null && (mindmapItem == null || mindmapItem.DocumentRef != mindmapToLoad.DocumentRef))
-            {
-                try
-                {
-                    LoadingManager.BeginLoading();
-
-                    Document = await DocumentStore.LoadAsync(mindmapToLoad.DocumentRef);
-
-                    mindmapItem = mindmapToLoad;
-                }
-                finally
-                {
-                    LoadingManager.FinishLoading();
-                }
-            }
         }
     }
 }

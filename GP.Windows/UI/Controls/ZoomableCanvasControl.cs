@@ -17,8 +17,6 @@ using Windows.UI.Xaml.Media;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
-// ReSharper disable UnusedParameter.Local
-
 namespace GP.Windows.UI.Controls
 {
     /// <summary>
@@ -109,9 +107,15 @@ namespace GP.Windows.UI.Controls
 
             if (swapChainPanel != null)
             {
-                swapChainPanel.SizeChanged += SwapChainPanel_SizeChanged;
+                swapChainPanel.SizeChanged += (sender, e) =>
+                {
+                    ResizeOrCreateSwapChain();
+                };
 
-                swapChainPanel.CompositionScaleChanged += SwapChainPanel_CompositionScaleChanged;
+                swapChainPanel.CompositionScaleChanged += (sender, e) =>
+                {
+                    ResizeOrCreateSwapChain();
+                };
 
                 CreateResources?.Invoke(this, EventArgs.Empty);
             }
@@ -216,16 +220,6 @@ namespace GP.Windows.UI.Controls
 
                 mustRegisterEvent = false;
             }
-        }
-
-        private void SwapChainPanel_CompositionScaleChanged(SwapChainPanel sender, object args)
-        {
-            ResizeOrCreateSwapChain();
-        }
-
-        private void SwapChainPanel_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            ResizeOrCreateSwapChain();
         }
     }
 }

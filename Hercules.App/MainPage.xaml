@@ -148,7 +148,7 @@
             </i:Interaction.Behaviors>
 
             <SplitView.Pane>
-                <Grid DataContext="{Binding Mindmaps, Source={StaticResource ViewModelLocator}}" d:DataContext="{d:DesignData Source=/SampleData/MindmapsViewModelSampleData.xaml}">
+                <Grid DataContext="{Binding Mindmaps, Source={StaticResource ViewModelLocator}}">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />

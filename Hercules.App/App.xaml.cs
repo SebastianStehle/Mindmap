@@ -13,6 +13,8 @@ using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
+using GalaSoft.MvvmLight.Messaging;
+using Hercules.App.Messages;
 using Microsoft.ApplicationInsights;
 
 namespace Hercules.App
@@ -61,7 +63,7 @@ namespace Hercules.App
         {
             SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
 
-            deferral.Complete();
+            Messenger.Default.Send(new SaveMindmapMessage(deferral.Complete));
         }
     }
 }

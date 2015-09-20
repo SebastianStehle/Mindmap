@@ -16,7 +16,6 @@ namespace GP.Windows.UI.Interactivity
     /// </summary>
     public sealed class CenterScrollViewerWhenExtendSizeChanged : Behavior<ScrollViewer>
     {
-        // ReSharper disable once NotAccessedField.Local
         private DependencyPropertyListener contentListener;
         private FrameworkElement content;
 
@@ -41,6 +40,8 @@ namespace GP.Windows.UI.Interactivity
         /// <remarks>Override this to unhook functionality from the AssociatedObject.</remarks>
         protected override void OnDetaching()
         {
+            contentListener.Release();
+
             Release();
 
             base.OnDetaching();

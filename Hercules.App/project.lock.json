@@ -1628,7 +1628,7 @@
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
         }
       },
-      "Win2D.uwp/1.3.0": {
+      "Win2D.uwp/1.4.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
           "lib/uap10.0/Workaround1200257.dll": {}
@@ -3355,7 +3355,7 @@
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
         }
       },
-      "Win2D.uwp/1.3.0": {
+      "Win2D.uwp/1.4.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
           "lib/uap10.0/Workaround1200257.dll": {}
@@ -5057,7 +5057,7 @@
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
         }
       },
-      "Win2D.uwp/1.3.0": {
+      "Win2D.uwp/1.4.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
           "lib/uap10.0/Workaround1200257.dll": {}
@@ -6792,7 +6792,7 @@
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
         }
       },
-      "Win2D.uwp/1.3.0": {
+      "Win2D.uwp/1.4.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
           "lib/uap10.0/Workaround1200257.dll": {}
@@ -8494,7 +8494,7 @@
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
         }
       },
-      "Win2D.uwp/1.3.0": {
+      "Win2D.uwp/1.4.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
           "lib/uap10.0/Workaround1200257.dll": {}
@@ -10229,7 +10229,7 @@
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
         }
       },
-      "Win2D.uwp/1.3.0": {
+      "Win2D.uwp/1.4.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
           "lib/uap10.0/Workaround1200257.dll": {}
@@ -11931,7 +11931,7 @@
           "lib/win8/Microsoft.Practices.Unity.RegistrationByConvention.dll": {}
         }
       },
-      "Win2D.uwp/1.3.0": {
+      "Win2D.uwp/1.4.0": {
         "compile": {
           "lib/uap10.0/Microsoft.Graphics.Canvas.winmd": {},
           "lib/uap10.0/Workaround1200257.dll": {}
@@ -15608,8 +15608,8 @@
         "[Content_Types].xml"
       ]
     },
-    "Win2D.uwp/1.3.0": {
-      "sha512": "wwMHiigyftTU7W98PTWwg7/i4DT4zIMW58SKkmdfhx9+ThCBnHvOD7HeEoAMf+eZz5CB5zQ9vX2FXAgvX2bJsQ==",
+    "Win2D.uwp/1.4.0": {
+      "sha512": "A0ouXhgCPBNGKu43xi8kKF/JXm/F3iRJCnMA8coT4HderbxEM94sgc9XObd0cHiAOCtw+aazkYIioj8w4m7d8w==",
       "type": "Package",
       "files": [
         "_rels/.rels",
@@ -15625,7 +15625,7 @@
         "runtimes/win10-arm/native/Microsoft.Graphics.Canvas.dll",
         "runtimes/win10-x64/native/Microsoft.Graphics.Canvas.dll",
         "runtimes/win10-x86/native/Microsoft.Graphics.Canvas.dll",
-        "package/services/metadata/core-properties/cb78204049ba441194367e0e14986956.psmdcp",
+        "package/services/metadata/core-properties/de356f3e44c54ea9bfa5f7bfe0b64bee.psmdcp",
         "[Content_Types].xml"
       ]
     }
@@ -15639,7 +15639,7 @@
       "MvvmLight >= 5.2.0",
       "PropertyChanged.Fody >= 1.50.0",
       "Unity >= 3.5.1405-prerelease",
-      "Win2D.uwp >= 1.3.0"
+      "Win2D.uwp >= 1.4.0"
     ],
     "UAP,Version=v10.0": []
   }

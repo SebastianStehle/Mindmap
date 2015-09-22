@@ -154,7 +154,7 @@ namespace Hercules.App.Controls
             });
         }
 
-        private void Transform(Win2DRenderer rendererToTransform, IScrollViewerView view)
+        private void Transform(Win2DRenderer rendererToTransform, ScrollViewerView view)
         {
             double zoomFactor = view.ZoomFactor;
 

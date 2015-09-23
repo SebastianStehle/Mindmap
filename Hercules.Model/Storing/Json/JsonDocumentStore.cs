@@ -98,7 +98,7 @@ namespace Hercules.Model.Storing.Json
 
             List<DocumentRef> documentReferences = new List<DocumentRef>();
 
-            IEnumerable<StorageFile> files = await localFolder.GetFilesAsync(CommonFileQuery.OrderByDate);
+            IEnumerable<StorageFile> files = await localFolder.GetFilesAsync();
 
             foreach (StorageFile file in files)
             {

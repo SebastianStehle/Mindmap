@@ -13,7 +13,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
-using Windows.Storage.Search;
 using Windows.Storage.Streams;
 using GP.Windows;
 using Hercules.Model.Storing.Utils;
@@ -24,7 +23,8 @@ namespace Hercules.Model.Storing.Json
 {
     public sealed class JsonDocumentStore : IDocumentStore
     {
-        private const string DefaultSubfolder = "Hercules778A";
+        private const string FileExtension = ".mmd";
+        private const string DefaultSubfolder = "Mindapp";
         private readonly JsonSerializerSettings historySerializerSettings = new JsonSerializerSettings();
         private readonly TaskFactory taskFactory = new TaskFactory(new LimitedThreadsScheduler());
         private readonly string subfolderName;
@@ -102,7 +102,7 @@ namespace Hercules.Model.Storing.Json
 
             foreach (StorageFile file in files)
             {
-                if (file.FileType.Equals(".mmd", StringComparison.OrdinalIgnoreCase))
+                if (file.FileType.Equals(FileExtension, StringComparison.OrdinalIgnoreCase))
                 {
                     BasicProperties properties = await file.GetBasicPropertiesAsync();
 
@@ -144,7 +144,7 @@ namespace Hercules.Model.Storing.Json
         {
             StorageFile file = await GetFileAsync(documentRef);
 
-            await file.RenameAsync($"{newName}.mmd", NameCollisionOption.GenerateUniqueName);
+            await file.RenameAsync($"{newName}{FileExtension}", NameCollisionOption.GenerateUniqueName);
             await file.GetBasicPropertiesAsync();
 
             documentRef.Updated().Rename(file.DisplayName);
@@ -170,7 +170,7 @@ namespace Hercules.Model.Storing.Json
         {
             await EnsureFolderAsync();
 
-            string fileName = $"{documentRef.DocumentName}.mmd";
+            string fileName = $"{documentRef.DocumentName}{FileExtension}";
 
             return await localFolder.CreateFileAsync(fileName, options);
         }
@@ -179,7 +179,7 @@ namespace Hercules.Model.Storing.Json
         {
             await EnsureFolderAsync();
 
-            string fileName = $"{documentRef.DocumentName}.mmd";
+            string fileName = $"{documentRef.DocumentName}{FileExtension}";
 
             return await localFolder.GetFileAsync(fileName);
         }

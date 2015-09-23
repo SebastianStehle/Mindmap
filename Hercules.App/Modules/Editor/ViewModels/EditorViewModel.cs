@@ -119,7 +119,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return exportImageCommand ?? (exportImageCommand = new RelayCommand(async () =>
                 {
-                    await MessageDialogService.SaveFileDialogAsync(new string[] { ".png" }, s => RendererFactory.Current.RenderScreenshotAsync(s, Colors.Transparent, 300));
+                    await MessageDialogService.SaveFileDialogAsync(new string[] { ".png" }, s => RendererFactory.Current.RenderScreenshotAsync(s, Colors.White, 300));
                 }, () => Document != null));
             }
         }

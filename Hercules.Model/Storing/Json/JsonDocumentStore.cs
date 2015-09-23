@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
+using Windows.Storage.Search;
 using Windows.Storage.Streams;
 using GP.Windows;
 using Hercules.Model.Storing.Utils;
@@ -97,7 +98,7 @@ namespace Hercules.Model.Storing.Json
 
             List<DocumentRef> documentReferences = new List<DocumentRef>();
 
-            IEnumerable<StorageFile> files = await localFolder.GetFilesAsync();
+            IEnumerable<StorageFile> files = await localFolder.GetFilesAsync(CommonFileQuery.OrderByDate);
 
             foreach (StorageFile file in files)
             {

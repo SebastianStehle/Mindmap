@@ -51,23 +51,17 @@ namespace Hercules.Model
 
         public void Undo()
         {
-            foreach (IUndoRedoAction action in commands.OfType<IUndoRedoAction>().Reverse())
+            foreach (IUndoRedoAction action in commands.OfType<IUndoRedoAction>().Reverse().Where(action => action != null))
             {
-                if (action != null)
-                {
-                    action.Undo();
-                }
+                action.Undo();
             }
         }
 
         public void Redo()
         {
-            foreach (IUndoRedoAction action in commands)
+            foreach (IUndoRedoAction action in commands.Cast<IUndoRedoAction>().Where(action => action != null))
             {
-                if (action != null)
-                {
-                    action.Redo();
-                }
+                action.Redo();
             }
         }
     }

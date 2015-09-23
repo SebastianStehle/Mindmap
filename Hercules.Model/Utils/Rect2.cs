@@ -104,47 +104,39 @@ namespace Hercules.Model.Utils
             size = new Vector2(w, h);
         }
 
-        public void Inflate(Vector2 v)
+        public Rect2 Inflate(Vector2 v)
         {
-            Inflate(v.X, v.Y);
+            return Inflate(v.X, v.Y);
         }
 
-        public Rect Inflate(float width, float height)
+        public Rect2 Inflate(float width, float height)
         {
             return new Rect2(position.X - width, position.Y - height, size.X + (2 * width), size.Y + (2 * height));
         }
 
         public static Rect2 Inflate(Rect2 rect, Vector2 size)
         {
-            rect.Inflate(size.X, size.Y);
-
-            return rect;
+            return rect.Inflate(size.X, size.Y);
         }
 
         public static Rect2 Inflate(Rect2 rect, float width, float height)
         {
-            rect.Inflate(width, height);
-
-            return rect;
+            return rect.Inflate(width, height);
         }
 
         public static Rect2 Deflate(Rect2 rect, Vector2 size)
         {
-            rect.Inflate(-size.X, -size.Y);
-
-            return rect;
+            return rect.Inflate(-size.X, -size.Y);
         }
 
         public static Rect2 Deflate(Rect2 rect, float width, float height)
         {
-            rect.Inflate(-width, -height);
-
-            return rect;
+            return rect.Inflate(-width, -height);
         }
 
-        public void Contains(Size v)
+        public bool Contains(Size v)
         {
-            Inflate((float)v.Width, (float)v.Height);
+            return Contains((float)v.Width, (float)v.Height);
         }
 
         public bool Contains(Point v)

@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using System.Diagnostics;
 using Windows.ApplicationModel.Activation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;

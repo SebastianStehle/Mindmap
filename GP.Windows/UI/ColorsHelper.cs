@@ -82,10 +82,8 @@ namespace GP.Windows.UI
             byte b = (byte)(integer & 0xFF);
             byte g = (byte)((integer >> 8) & 0xFF);
             byte r = (byte)((integer >> 16) & 0xFF);
-
-            const byte a = 0xFF;
-
-            Color color = Color.FromArgb(a, r, g, b);
+            
+            Color color = Color.FromArgb(0xFF, r, g, b);
 
             double h;
             double s;
@@ -151,23 +149,21 @@ namespace GP.Windows.UI
             byte p = (byte)(value * (1 - saturation));
             byte q = (byte)(value * (1 - (f * saturation)));
             byte t = (byte)(value * (1 - ((1 - f) * saturation)));
-
-            const byte a = 0xFF;
-
+            
             switch (hi)
             {
                 case 0:
-                    return Color.FromArgb(a, v, t, p);
+                    return Color.FromArgb(0xFF, v, t, p);
                 case 1:
-                    return Color.FromArgb(a, q, v, p);
+                    return Color.FromArgb(0xFF, q, v, p);
                 case 2:
-                    return Color.FromArgb(a, p, v, t);
+                    return Color.FromArgb(0xFF, p, v, t);
                 case 3:
-                    return Color.FromArgb(a, p, q, v);
+                    return Color.FromArgb(0xFF, p, q, v);
                 case 4:
-                    return Color.FromArgb(a, t, p, v);
+                    return Color.FromArgb(0xFF, t, p, v);
                 default:
-                    return Color.FromArgb(a, v, p, q);
+                    return Color.FromArgb(0xFF, v, p, q);
             }
         }
     }

@@ -124,7 +124,7 @@
     <value>Add Child</value>
   </data>
   <data name="AppBarButton_AddChild.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Add child root (CTRL + M)</value>
+    <value>Add children to selected subtopic (CTRL + M)</value>
   </data>
   <data name="AppBarButton_AddSibling.Label" xml:space="preserve">
     <value>Add Sibling</value>
@@ -133,7 +133,7 @@
     <value>Add Sibling</value>
   </data>
   <data name="AppBarButton_AddSibling.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Add sibiling root (CTRL + N)</value>
+    <value>Add sibiling to selected subtopic (CTRL + N)</value>
   </data>
   <data name="AppBarButton_ChangeColor.Label" xml:space="preserve">
     <value>Colors</value>
@@ -142,7 +142,7 @@
     <value>Change Color</value>
   </data>
   <data name="AppBarButton_ChangeColor.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Change color of selected root</value>
+    <value>Change color of selected subtopic</value>
   </data>
   <data name="AppBarButton_ChangeIcon.Label" xml:space="preserve">
     <value>Icons</value>
@@ -151,7 +151,7 @@
     <value>Change Icon</value>
   </data>
   <data name="AppBarButton_ChangeIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Change icon of selected root</value>
+    <value>Change icon of selected subtopic</value>
   </data>
   <data name="AppBarButton_Export.Label" xml:space="preserve">
     <value>Export</value>
@@ -188,6 +188,15 @@
   </data>
   <data name="AppBarButton_ListMindmaps.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Show all Mindmaps (CNTR + L)</value>
+  </data>
+  <data name="AppBarButton_Print.Text" xml:space="preserve">
+    <value>Print</value>
+  </data>
+  <data name="AppBarButton_Print.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Print Mindmap</value>
+  </data>
+  <data name="AppBarButton_Print.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Print to paper or export as PDF</value>
   </data>
   <data name="AppBarButton_Redo.Label" xml:space="preserve">
     <value>Redo</value>

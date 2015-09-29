@@ -25,8 +25,6 @@ namespace Hercules.Model
 
         void RevertTo(int index);
 
-        void Reset();
-
         void Undo();
 
         void UndoAll();

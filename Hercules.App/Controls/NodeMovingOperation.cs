@@ -83,7 +83,7 @@ namespace Hercules.App.Controls
 
                     if (target != null)
                     {
-                        string tansactionName = ResourceManager.GetString("MoveNodeTransactionName");
+                        string tansactionName = ResourceManager.GetString("TransactionName_MoveNode");
 
                         document.MakeTransaction(tansactionName, commands =>
                         {

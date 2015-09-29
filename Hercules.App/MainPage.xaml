@@ -38,18 +38,17 @@
 
         <Grid Background="{StaticResource ThemeMainBrush}" RequestedTheme="Dark">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <AppBarButton RequestedTheme="Dark" Icon="List" Click="AppBarButton_Click" Label="Mindmaps" />
+                <AppBarButton x:Uid="AppBarButton_ListMindmaps" RequestedTheme="Dark" Icon="List" Click="AppBarButton_Click" Label="Mindmaps" />
 
                 <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
                     <AppBarSeparator />
 
-                    <AppBarButton Icon="Save"
-                        AutomationProperties.Name="Save" x:Uid="AppBarButtonSave">
+                    <AppBarButton x:Uid="AppBarButton_Export" Icon="Save">
                         <AppBarButton.Flyout>
                             <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
-                                <MenuFlyoutItem x:Uid="ExportHtml" Text="Html"
+                                <MenuFlyoutItem x:Uid="AppBarButton_ExportHtml" Text="Html"
                                     Command="{Binding ExportHtmlCommand}" />
-                                <MenuFlyoutItem x:Uid="ExportImage" Text="Image"
+                                <MenuFlyoutItem x:Uid="AppBarButton_ExportImage" Text="Image"
                                     Command="{Binding ExportImageCommand}" />
                             </MenuFlyout>
                         </AppBarButton.Flyout>
@@ -57,8 +56,7 @@
 
                     <AppBarSeparator />
 
-                    <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}"
-                        AutomationProperties.Name="Change Icon" x:Uid="AppBarButtonChangeIcon">
+                    <AppBarButton x:Uid="AppBarButton_ChangeIcon" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}">
                         <AppBarButton.Flyout>
                             <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
                                 <e:EditIconView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
@@ -66,8 +64,7 @@
                         </AppBarButton.Flyout>
                         <TextBlock TextAlignment="Center" FontSize="20" Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" />
                     </AppBarButton>
-                    <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=true}"
-                        AutomationProperties.Name="Change Color" x:Uid="AppBarButtonChangeColor">
+                    <AppBarButton x:Uid="AppBarButton_ChangeColor" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=true}">
                         <AppBarButton.Flyout>
                             <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
                                 <e:EditColorView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
@@ -78,19 +75,15 @@
 
                     <AppBarSeparator />
 
-                    <AppBarButton Icon="Undo"
-                        Command="{Binding UndoCommand}"
-                        AutomationProperties.AccessKey="CTRL + Z"
-                        AutomationProperties.Name="Undo" x:Uid="AppBarButtonUndo">
+                    <AppBarButton x:Uid="AppBarButton_Undo" Icon="Undo"
+                        Command="{Binding UndoCommand}">
                         <i:Interaction.Behaviors>
                             <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
                         </i:Interaction.Behaviors>
                     </AppBarButton>
 
-                    <AppBarButton Icon="Redo"
-                        Command="{Binding RedoCommand}"
-                        AutomationProperties.AccessKey="CTRL + Y"
-                        AutomationProperties.HelpText="Redo" x:Uid="AppBarButtonRedo">
+                    <AppBarButton x:Uid="AppBarButton_Redo" Icon="Redo"
+                        Command="{Binding RedoCommand}">
                         <i:Interaction.Behaviors>
                             <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Y" />
                         </i:Interaction.Behaviors>
@@ -98,11 +91,9 @@
                 </StackPanel>
             </StackPanel>
 
-            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
+            <StackPanel x:Uid="AppBarButton_RemoveNode" HorizontalAlignment="Right" Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
                 <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}" Icon="Delete"
-                    Command="{Binding RemoveCommand}"
-                    AutomationProperties.AccessKey="Delete"
-                    AutomationProperties.Name="Remove Node" x:Uid="AppBarButtonRemoveNode">
+                    Command="{Binding RemoveCommand}">
                     <i:Interaction.Behaviors>
                         <gpi:CommandShortcutBehavior Invoking="RemoveButton_Invoking" RequiresControlModifier="False" Key="Delete" />
                         <gpi:CommandShortcutBehavior Invoking="RemoveButton_Invoking" RequiresControlModifier="False" Key="Back" />
@@ -111,19 +102,15 @@
 
                 <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
 
-                <AppBarButton Style="{StaticResource AppBarButtonStyleSibling}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}"
-                    Command="{Binding AddSiblingCommand}" 
-                    AutomationProperties.AccessKey="Control H"
-                    AutomationProperties.Name="Add Sibling" x:Uid="AppBarButtonAddSibling">
+                <AppBarButton x:Uid="AppBarButton_AddSibling" Style="{StaticResource AppBarButtonStyleSibling}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}"
+                    Command="{Binding AddSiblingCommand}">
                     <i:Interaction.Behaviors>
                         <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="N" />
                     </i:Interaction.Behaviors>
                 </AppBarButton>
 
-                <AppBarButton Style="{StaticResource AppBarButtonStyleChild}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}"
-                    Command="{Binding AddChildCommand}" 
-                    AutomationProperties.AccessKey="Control N"
-                    AutomationProperties.Name="Add Child" x:Uid="AppBarButtonAddChild">
+                <AppBarButton x:Uid="AppBarButton_AddChild" Style="{StaticResource AppBarButtonStyleChild}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}"
+                    Command="{Binding AddChildCommand}" >
                     <i:Interaction.Behaviors>
                         <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="M" />
                     </i:Interaction.Behaviors>
@@ -154,7 +141,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Button TabIndex="-1" Padding="0,10,0,10" Margin="0,20,0,20" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalAlignment="Top" Foreground="{StaticResource ThemeMainBrush}" Style="{StaticResource ThemeButton}">
+                    <Button x:Uid="Mindmaps_AddButton" TabIndex="-1" Padding="0,10,0,10" Margin="0,20,0,20" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalAlignment="Top" Foreground="{StaticResource ThemeMainBrush}" Style="{StaticResource ThemeButton}">
                         <StackPanel Orientation="Horizontal">
                             <Grid>
                                 <Viewbox Width="64" Height="26">
@@ -162,7 +149,7 @@
                                 </Viewbox>
                             </Grid>
 
-                            <TextBlock Margin="5,0,0,0" FontSize="16" Text="Add Mindmap" x:Uid="MindmapsAddButton" />
+                            <TextBlock x:Uid="Mindmaps_AddText" Margin="5,0,0,0" FontSize="16" Text="Add Mindmap" />
                         </StackPanel>
                         <Button.Flyout>
                             <controls:MindmapFlyout>
@@ -178,7 +165,7 @@
                         </Grid.RowDefinitions>
 
                         <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="0,0,0,1" Padding="10,0,0,6">
-                            <TextBlock Foreground="Black" Text="Mindmaps" x:Uid="MindmapsHeader"
+                            <TextBlock x:Uid="Mindmaps_Header" Foreground="Black" Text="Mindmaps"
                                 FontSize="20" 
                                 FontWeight="Bold" />
                         </Border>
@@ -196,10 +183,10 @@
                                         <Grid RightTapped="Grid_RightTapped" Background="Transparent">
                                             <FlyoutBase.AttachedFlyout>
                                                 <MenuFlyout>
-                                                    <MenuFlyoutItem x:Uid="MindmapItemDelete" Text="Rename" 
+                                                    <MenuFlyoutItem x:Uid="Mindmaps_Delete" Text="Rename" 
                                                         DataContext="{Binding ElementName=Root}" x:Name="RenameButton" Click="RenameButton_Click" />
                                                     <MenuFlyoutSeparator />
-                                                    <MenuFlyoutItem x:Uid="MindmapItemRename" Text="Delete"
+                                                    <MenuFlyoutItem x:Uid="Mindmaps_Rename" Text="Delete"
                                                         Command="{Binding Path=Mindmaps.DeleteCommand, Source={StaticResource ViewModelLocator}, ElementName=List}" 
                                                         CommandParameter="{Binding}" />
                                                 </MenuFlyout>
@@ -209,7 +196,7 @@
                                                 <TextBlock Text="{Binding Title}" FontSize="15" TextTrimming="WordEllipsis" />
 
                                                 <StackPanel Orientation="Horizontal" Opacity="0.7" Margin="0,2">
-                                                    <TextBlock FontSize="13" x:Uid="LastUpdateLabel"
+                                                    <TextBlock x:Uid="Mindmaps_LastUpdate" FontSize="13"
                                                         Text="Modified:"
                                                         TextAlignment="Left"
                                                         TextWrapping="NoWrap" Margin="0,0,4,0" />
@@ -256,7 +243,7 @@
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                             <ProgressRing Margin="10" VerticalAlignment="Center" IsActive="True" />
 
-                            <TextBlock FontSize="24" x:Uid="MindmapLoading" Text="Loading..." />
+                            <TextBlock x:Uid="Editor_Busy" FontSize="24" Text="Busy..." />
                         </StackPanel>
                     </Grid>
                 </Grid>

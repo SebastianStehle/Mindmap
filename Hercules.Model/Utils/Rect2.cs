@@ -167,7 +167,7 @@ namespace Hercules.Model.Utils
             float w = Math.Min(position.X + size.X, rect.Position.X + rect.Size.X) - minX;
             float h = Math.Min(position.Y + size.Y, rect.Position.Y + rect.Size.Y) - minY;
 
-            return new Rect2(Math.Max(w, 0.0f), Math.Max(h, 0.0f), minX, minY);
+            return new Rect2(minX, minY, Math.Max(w, 0.0f), Math.Max(h, 0.0f));
         }
 
         public bool IntersectsWith(Rect2 rect)

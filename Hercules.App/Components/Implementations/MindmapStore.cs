@@ -113,7 +113,7 @@ namespace Hercules.App.Components.Implementations
 
         private static void RenameRoot(string name, Document document)
         {
-            string transactionName = ResourceManager.GetString("ChangeTextTransactionName");
+            string transactionName = ResourceManager.GetString("TransactionName_ChangeText");
 
             document.MakeTransaction(transactionName, commands =>
             {

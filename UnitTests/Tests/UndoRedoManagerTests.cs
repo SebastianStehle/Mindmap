@@ -11,6 +11,8 @@ using Hercules.Model;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using UnitTests.Mockups;
 
+// ReSharper disable once ObjectCreationAsStatement
+
 namespace UnitTests.Tests
 {
     [TestClass]
@@ -21,7 +23,6 @@ namespace UnitTests.Tests
         [TestMethod]
         public void TestConstructor()
         {
-            // ReSharper disable once ObjectCreationAsStatement
             new UndoRedoManager();
         }
 

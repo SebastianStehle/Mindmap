@@ -117,252 +117,226 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="AboutText.Text" xml:space="preserve">
-    <value>Copyright 2012 Sebastian Stehle, All Rights Reserved</value>
-  </data>
-  <data name="AboutTitle.Text" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="AddChildTransactionName" xml:space="preserve">
+  <data name="AppBarButton_AddChild.Label" xml:space="preserve">
     <value>Add Child</value>
   </data>
-  <data name="AddSiblingTransactionName" xml:space="preserve">
-    <value>Add Sibling</value>
-  </data>
-  <data name="AppBarButtonAddChild.Label" xml:space="preserve">
+  <data name="AppBarButton_AddChild.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Add Child</value>
   </data>
-  <data name="AppBarButtonAddChild.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Add Child</value>
-  </data>
-  <data name="AppBarButtonAddChild.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="AppBarButton_AddChild.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Add child root (CTRL + M)</value>
   </data>
-  <data name="AppBarButtonAddSibling.Label" xml:space="preserve">
+  <data name="AppBarButton_AddSibling.Label" xml:space="preserve">
     <value>Add Sibling</value>
   </data>
-  <data name="AppBarButtonAddSibling.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+  <data name="AppBarButton_AddSibling.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Add Sibling</value>
   </data>
-  <data name="AppBarButtonAddSibling.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="AppBarButton_AddSibling.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Add sibiling root (CTRL + N)</value>
   </data>
-  <data name="AppBarButtonChangeColor.Label" xml:space="preserve">
+  <data name="AppBarButton_ChangeColor.Label" xml:space="preserve">
     <value>Colors</value>
   </data>
-  <data name="AppBarButtonChangeColor.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+  <data name="AppBarButton_ChangeColor.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Change Color</value>
   </data>
-  <data name="AppBarButtonChangeColor.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="AppBarButton_ChangeColor.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Change color of selected root</value>
   </data>
-  <data name="AppBarButtonChangeIcon.Label" xml:space="preserve">
+  <data name="AppBarButton_ChangeIcon.Label" xml:space="preserve">
     <value>Icons</value>
   </data>
-  <data name="AppBarButtonChangeIcon.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+  <data name="AppBarButton_ChangeIcon.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Change Icon</value>
   </data>
-  <data name="AppBarButtonChangeIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="AppBarButton_ChangeIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Change icon of selected root</value>
   </data>
-  <data name="AppBarButtonEdit.Label" xml:space="preserve">
-    <value>Mindmap</value>
-  </data>
-  <data name="AppBarButtonEdit.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Edit</value>
-  </data>
-  <data name="AppBarButtonEdit.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Edit mindmap (CTRL + E)</value>
-  </data>
-  <data name="AppBarButtonListMindmaps.Label" xml:space="preserve">
-    <value>Mindmaps</value>
-  </data>
-  <data name="AppBarButtonListMindmaps.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Mindmaps</value>
-  </data>
-  <data name="AppBarButtonListMindmaps.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Show all Mindmaps (CNTR + L)</value>
-  </data>
-  <data name="AppBarButtonNewMindmap.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>New mindmap</value>
-  </data>
-  <data name="AppBarButtonNewMindmap.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>New mindmap (CTRL + SHIFT + N)</value>
-  </data>
-  <data name="AppBarButtonRedo.Label" xml:space="preserve">
-    <value>Redo</value>
-  </data>
-  <data name="AppBarButtonRedo.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Redo (CTRL + Y)</value>
-  </data>
-  <data name="AppBarButtonRemoveNode.Label" xml:space="preserve">
-    <value>Delete Node</value>
-  </data>
-  <data name="AppBarButtonRemoveNode.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Remove</value>
-  </data>
-  <data name="AppBarButtonRemoveNode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Remove selected root (DELETE)</value>
-  </data>
-  <data name="AppBarButtonSave.Label" xml:space="preserve">
+  <data name="AppBarButton_Export.Label" xml:space="preserve">
     <value>Export</value>
   </data>
-  <data name="AppBarButtonSave.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+  <data name="AppBarButton_Export.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Export</value>
   </data>
-  <data name="AppBarButtonSave.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Export current mindmaps</value>
+  <data name="AppBarButton_Export.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Export current mindmap</value>
   </data>
-  <data name="AppBarButtonUndo.Label" xml:space="preserve">
-    <value>Undo</value>
-  </data>
-  <data name="AppBarButtonUndo.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Undo (CTRL + Z)</value>
-  </data>
-  <data name="ChangeTextTransactionName" xml:space="preserve">
-    <value>Change Text</value>
-  </data>
-  <data name="ClearIconButton.Content" xml:space="preserve">
-    <value>Remove Icon</value>
-  </data>
-  <data name="ColorsHeader.Text" xml:space="preserve">
-    <value>Colors</value>
-  </data>
-  <data name="CreateButton.Content" xml:space="preserve">
-    <value>Create</value>
-  </data>
-  <data name="DeleteMindmapButton.Content" xml:space="preserve">
-    <value>Delete Mindmap</value>
-  </data>
-  <data name="DeleteMindmapContent" xml:space="preserve">
-    <value>Do you really want to delete the mindmap? It is not possible to restore a deleted mindmap.</value>
-  </data>
-  <data name="DeleteMindmapTitle" xml:space="preserve">
-    <value>Delete Mindmap?</value>
-  </data>
-  <data name="EditColorTransactionName" xml:space="preserve">
-    <value>Edit Color</value>
-  </data>
-  <data name="EditIconTransactionName" xml:space="preserve">
-    <value>Edit Icon</value>
-  </data>
-  <data name="ExpandCollapseTransactionName" xml:space="preserve">
-    <value>Toggle</value>
-  </data>
-  <data name="ExportHtml" xml:space="preserve">
+  <data name="AppBarButton_ExportHtml.Text" xml:space="preserve">
     <value>Html (Outline)</value>
   </data>
-  <data name="ExportImage" xml:space="preserve">
+  <data name="AppBarButton_ExportHtml.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Export Html</value>
+  </data>
+  <data name="AppBarButton_ExportHtml.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Export mindmap to HTML</value>
+  </data>
+  <data name="AppBarButton_ExportImage.Text" xml:space="preserve">
     <value>Image (.png)</value>
   </data>
-  <data name="IconsHeader.Text" xml:space="preserve">
-    <value>Icons</value>
+  <data name="AppBarButton_ExportImage.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Export Image</value>
   </data>
-  <data name="InfoText.Text" xml:space="preserve">
-    <value>Sebastian Stehle
-Karlsruhe
-Deutschland</value>
+  <data name="AppBarButton_ExportImage.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Export mindmap as PNG</value>
   </data>
-  <data name="LastUpdateLabel.Text" xml:space="preserve">
-    <value>Last Saved:</value>
-  </data>
-  <data name="MindmapItemDelete" xml:space="preserve">
-    <value>Delete</value>
-  </data>
-  <data name="MindmapItemRename" xml:space="preserve">
-    <value>Rename</value>
-  </data>
-  <data name="MindmapLoading" xml:space="preserve">
-    <value>Loading...</value>
-  </data>
-  <data name="MindmapNameError.Text" xml:space="preserve">
-    <value>Title cannot be empty!</value>
-  </data>
-  <data name="MindmapNameLabel.Text" xml:space="preserve">
-    <value>Mindmap Title:</value>
-  </data>
-  <data name="MindmapsAddButton.Text" xml:space="preserve">
-    <value>New Mindmap</value>
-  </data>
-  <data name="MindmapsHeader.Text" xml:space="preserve">
+  <data name="AppBarButton_ListMindmaps.Label" xml:space="preserve">
     <value>Mindmaps</value>
   </data>
-  <data name="MoveNodeTransactionName" xml:space="preserve">
-    <value>Move Node</value>
+  <data name="AppBarButton_ListMindmaps.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Mindmaps</value>
+  </data>
+  <data name="AppBarButton_ListMindmaps.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Show all Mindmaps (CNTR + L)</value>
+  </data>
+  <data name="AppBarButton_Redo.Label" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="AppBarButton_Redo.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Redo</value>
+  </data>
+  <data name="AppBarButton_Redo.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Redo (CTRL + Y)</value>
+  </data>
+  <data name="AppBarButton_RemoveNode.Label" xml:space="preserve">
+    <value>Delete Node</value>
+  </data>
+  <data name="AppBarButton_RemoveNode.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Remove</value>
+  </data>
+  <data name="AppBarButton_RemoveNode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Remove selected root (DELETE)</value>
+  </data>
+  <data name="AppBarButton_Undo.Label" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="AppBarButton_Undo.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Undo</value>
+  </data>
+  <data name="AppBarButton_Undo.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Undo (CTRL + Z)</value>
+  </data>
+  <data name="Common_No" xml:space="preserve">
+    <value>No</value>
+  </data>
+  <data name="Common_Yes" xml:space="preserve">
+    <value>Yes</value>
+  </data>
+  <data name="DeleteMindmap_Content" xml:space="preserve">
+    <value>Do you really want to delete the mindmap? It is not possible to restore a deleted mindmap.</value>
+  </data>
+  <data name="DeleteMindmap_Title" xml:space="preserve">
+    <value>Delete Mindmap?</value>
+  </data>
+  <data name="Editor_Busy" xml:space="preserve">
+    <value>Working hard...</value>
+  </data>
+  <data name="Editor_ColorsHeader.Text" xml:space="preserve">
+    <value>Colors</value>
+  </data>
+  <data name="Editor_IconsClear.Content" xml:space="preserve">
+    <value>Remove Icon</value>
+  </data>
+  <data name="Editor_IconsHeader.Text" xml:space="preserve">
+    <value>Icons</value>
+  </data>
+  <data name="Editor_ShowHull.Content" xml:space="preserve">
+    <value>Show Hull</value>
+  </data>
+  <data name="Editor_ShowHull.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Show Hull</value>
+  </data>
+  <data name="Editor_ShowHull.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Show hull around subtopic and children</value>
+  </data>
+  <data name="Mindmaps_AddButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>New mindmap</value>
+  </data>
+  <data name="Mindmaps_AddButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>New mindmap (CTRL + SHIFT + N)</value>
+  </data>
+  <data name="Mindmaps_AddText.Text" xml:space="preserve">
+    <value>New Mindmap</value>
+  </data>
+  <data name="Mindmaps_Delete.Text" xml:space="preserve">
+    <value>Delete</value>
+  </data>
+  <data name="Mindmaps_Delete.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Delete Mindmap</value>
+  </data>
+  <data name="Mindmaps_Delete[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Delete this mindmap</value>
+  </data>
+  <data name="Mindmaps_Header.Text" xml:space="preserve">
+    <value>Mindmaps</value>
+  </data>
+  <data name="Mindmaps_LastUpdate.Text" xml:space="preserve">
+    <value>Last Saved:</value>
+  </data>
+  <data name="Mindmaps_Rename.Text" xml:space="preserve">
+    <value>Rename</value>
+  </data>
+  <data name="Mindmaps_Rename.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Rename mindmap</value>
+  </data>
+  <data name="Mindmaps_Rename.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Rename this mindmap</value>
   </data>
   <data name="MyMindmap" xml:space="preserve">
     <value>My Mindmap</value>
   </data>
-  <data name="NewMindmapNameError.Text" xml:space="preserve">
+  <data name="Naming_Create.Content" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Naming_Create.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Create</value>
+  </data>
+  <data name="Naming_Create.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Create new mindmap</value>
+  </data>
+  <data name="Naming_Save.Content" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Naming_Save.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Save</value>
+  </data>
+  <data name="Naming_Save.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Rename the mindmap</value>
+  </data>
+  <data name="Naming_TitleError.Text" xml:space="preserve">
     <value>Title cannot be empty!</value>
   </data>
-  <data name="NewMindmapNameLabel.Text" xml:space="preserve">
-    <value>Enter Title:</value>
+  <data name="Naming_TitleLabel.Text" xml:space="preserve">
+    <value>Mindmap Title:</value>
   </data>
-  <data name="No" xml:space="preserve">
-    <value>No</value>
-  </data>
-  <data name="NoText" xml:space="preserve">
+  <data name="Outline_NoText" xml:space="preserve">
     <value>[No Text]</value>
   </data>
-  <data name="OutlineHeader.Text" xml:space="preserve">
-    <value>Outline (Readonly)</value>
+  <data name="TransactionName_AddChild" xml:space="preserve">
+    <value>Add Child</value>
   </data>
-  <data name="PinMindmapButton.Content" xml:space="preserve">
-    <value>Pin to Start</value>
+  <data name="TransactionName_AddSibling" xml:space="preserve">
+    <value>Add Sibling</value>
   </data>
-  <data name="RemoveNodeTransactionName" xml:space="preserve">
+  <data name="TransactionName_ChangeText" xml:space="preserve">
+    <value>Change Text</value>
+  </data>
+  <data name="TransactionName_EditColor" xml:space="preserve">
+    <value>Edit Color</value>
+  </data>
+  <data name="TransactionName_EditIcon" xml:space="preserve">
+    <value>Edit Icon</value>
+  </data>
+  <data name="TransactionName_ExpandCollapse" xml:space="preserve">
+    <value>Toggle</value>
+  </data>
+  <data name="TransactionName_MoveNode" xml:space="preserve">
+    <value>Move Node</value>
+  </data>
+  <data name="TransactionName_RemoveNode" xml:space="preserve">
     <value>Remove Node</value>
   </data>
-  <data name="SettingsHeader.Text" xml:space="preserve">
-    <value>Mindmap Settings</value>
-  </data>
-  <data name="ShareMindmapDescription" xml:space="preserve">
-    <value>Share your mindmap '{0}' with friends or collegues.</value>
-  </data>
-  <data name="ShareMindmapFooter" xml:space="preserve">
-    <value>This mindmap has been created with  &lt;a href="http://www.raven-mind.com"&gt;Mindmap&lt;/a&gt;.</value>
-  </data>
-  <data name="ShareMindmapTitle" xml:space="preserve">
-    <value>Mindmap: {0}</value>
-  </data>
-  <data name="ShowAboutUs" xml:space="preserve">
-    <value>About</value>
-  </data>
-  <data name="ShowTutorial" xml:space="preserve">
-    <value>Show Tutorial</value>
-  </data>
-  <data name="Start" xml:space="preserve">
-    <value>Double Tap to Start</value>
-  </data>
-  <data name="SupportText.Text" xml:space="preserve">
-    <value>Contact me by mail:</value>
-  </data>
-  <data name="SupportTitle.Text" xml:space="preserve">
-    <value>Support</value>
-  </data>
-  <data name="ToggleHullTransactionName" xml:space="preserve">
+  <data name="TransactionName_ToggleHull" xml:space="preserve">
     <value>Show Border</value>
-  </data>
-  <data name="Tutorial1Text.Text" xml:space="preserve">
-    <value>Swipe down from the top corner and use the + button to create a new mindmap.</value>
-  </data>
-  <data name="Tutorial2Text.Text" xml:space="preserve">
-    <value>Tap a root to select it and double tap to edit the text.</value>
-  </data>
-  <data name="Tutorial3Text.Text" xml:space="preserve">
-    <value>Use the buttons at the right side to add or remove roots.</value>
-  </data>
-  <data name="Tutorial4Text.Text" xml:space="preserve">
-    <value>You can also change the color of an root or add an icon.</value>
-  </data>
-  <data name="Tutorial5Text.Text" xml:space="preserve">
-    <value>Use the Undo Command to revert your changes.</value>
-  </data>
-  <data name="UnpinMindmapButton.Content" xml:space="preserve">
-    <value>Unpin from Start</value>
-  </data>
-  <data name="Yes" xml:space="preserve">
-    <value>Yes</value>
   </data>
 </root>

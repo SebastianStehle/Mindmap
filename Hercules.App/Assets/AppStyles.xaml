@@ -98,7 +98,7 @@
         <Setter Property="RequestedTheme" Value="Light" />
     </Style>
     
-    <Style x:Key="AppBarButtonStyleChild" TargetType="AppBarButton">
+    <Style x:Key="AppBarButton_StyleChild" TargetType="AppBarButton">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>
@@ -237,7 +237,7 @@
         </Setter>
     </Style>
 
-    <Style x:Key="AppBarButtonStyleSibling" TargetType="AppBarButton">
+    <Style x:Key="AppBarButton_StyleSibling" TargetType="AppBarButton">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="Foreground" Value="{ThemeResource SystemControlForegroundBaseHighBrush}"/>
         <Setter Property="HorizontalAlignment" Value="Left"/>

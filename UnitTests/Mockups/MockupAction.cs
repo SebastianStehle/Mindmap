@@ -14,6 +14,7 @@ namespace UnitTests.Mockups
     {
         public bool IsUndoInvoked { get; private set; }
         public bool IsRedoInvoked { get; private set; }
+        public bool IsCleanupInvoked { get; private set; }
 
         public void Undo()
         {
@@ -23,6 +24,11 @@ namespace UnitTests.Mockups
         public void Redo()
         {
             IsRedoInvoked = true;
+        }
+
+        public void Cleanup()
+        {
+            IsCleanupInvoked = true;
         }
     }
 }

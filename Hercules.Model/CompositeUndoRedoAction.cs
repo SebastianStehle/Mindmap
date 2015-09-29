@@ -49,6 +49,14 @@ namespace Hercules.Model
             commands.Add(command);
         }
 
+        public void Cleanup()
+        {
+            foreach (CommandBase action in commands)
+            {
+                action.Cleanup();
+            }
+        }
+
         public void Undo()
         {
             foreach (IUndoRedoAction action in commands.OfType<IUndoRedoAction>().Reverse().Where(action => action != null))

@@ -64,7 +64,7 @@ namespace Hercules.App.Modules.Editor.Views
 
                 if (selected != oldIconKey)
                 {
-                    string tansactionName = ResourceManager.GetString("EditIconTransactionName");
+                    string tansactionName = ResourceManager.GetString("TransactionName_EditIcon");
 
                     Document.MakeTransaction(tansactionName, commands =>
                     {

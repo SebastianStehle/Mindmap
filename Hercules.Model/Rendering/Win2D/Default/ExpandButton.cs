@@ -38,21 +38,19 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
         public bool HitTest(Vector2 mousePosition)
         {
-            if (renderBounds.Contains(mousePosition) && node.HasChildren)
+            bool isHit = renderBounds.Contains(mousePosition) && node.HasChildren;
+
+            if (isHit)
             {
-                string transactionName = ResourceManager.GetString("ExpandCollapseTransactionName");
+                string transactionName = ResourceManager.GetString("TransactionName_ExpandCollapse");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
                     commands.Apply(new ToggleCollapseCommand(node));
                 });
+            }
 
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return isHit;
         }
 
         public void Render(CanvasDrawingSession session)

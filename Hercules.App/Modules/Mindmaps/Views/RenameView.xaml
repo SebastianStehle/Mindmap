@@ -15,11 +15,11 @@
         </Grid.RowDefinitions>
 
         <StackPanel>
-            <TextBlock x:Uid="NewMindmapTitleError" Text="You cannot leave the name blank!" Foreground="{StaticResource ErrorBrush}" Opacity="0" x:Name="ErrorTextBlock" />
-            <TextBlock x:Uid="NewMindmapTitleLabel" Text="Enter Title:" Margin="0,0,0,4" />
+            <TextBlock x:Uid="Naming_TitleError" Text="You cannot leave the name blank!" Foreground="{StaticResource ErrorBrush}" Opacity="0" x:Name="ErrorTextBlock" />
+            <TextBlock x:Uid="Naming_TitleLabel" Text="Enter Title:" Margin="0,0,0,4" />
             <TextBox x:Name="TitleTextBox" />
         </StackPanel>
 
-        <Button Margin="0,10,0,0" Grid.Row="1" Content="Save" x:Uid="SaveButton" Click="SaveButton_Click" />
+        <Button x:Uid="Naming_Save" Margin="0,10,0,0" Grid.Row="1" Content="Save" Click="SaveButton_Click" />
     </Grid>
 </controls:MindmapFlyoutView>

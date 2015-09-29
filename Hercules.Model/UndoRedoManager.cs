@@ -49,14 +49,6 @@ namespace Hercules.Model
             get { return redoStack.Count > 0; }
         }
 
-        public void Reset()
-        {
-            undoStack.Clear();
-            redoStack.Clear();
-
-            OnStateChanged(EventArgs.Empty);
-        }
-
         public void Undo()
         {
             if (CanUndo)
@@ -136,6 +128,11 @@ namespace Hercules.Model
         public void RegisterExecutedAction(IUndoRedoAction action)
         {
             Guard.NotNull(action, nameof(action));
+
+            foreach (IUndoRedoAction redoAction in redoStack)
+            {
+                redoAction.Cleanup();
+            }
 
             undoStack.Push(action);
             redoStack.Clear();

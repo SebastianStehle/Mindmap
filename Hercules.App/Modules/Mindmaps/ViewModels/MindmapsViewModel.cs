@@ -52,8 +52,8 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             {
                 return deleteCommand ?? (deleteCommand = new RelayCommand<IMindmapRef>(async item =>
                 {
-                    string content = LocalizationManager.GetString("DeleteMindmapContent"),
-                             title = LocalizationManager.GetString("DeleteMindmapTitle");
+                    string content = LocalizationManager.GetString("DeleteMindmap_Content"),
+                             title = LocalizationManager.GetString("DeleteMindmap_Title");
 
                     if (await MessageDialogService.ConfirmAsync(content, title))
                     {

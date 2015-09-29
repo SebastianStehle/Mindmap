@@ -130,7 +130,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return exportHtmlCommand ?? (exportHtmlCommand = new RelayCommand(async () =>
                 {
-                    string noText = LocalizationManager.GetString("NoText");
+                    string noText = LocalizationManager.GetString("Outline_NoText");
 
                     await MessageDialogService.SaveFileDialogAsync(new string[] { ".html" }, s => OutlineGenerator.GenerateOutline(Document, RendererFactory.Current, s, true, noText));
                 }, () => Document != null));
@@ -147,7 +147,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
                     if (selectedNormalNode != null)
                     {
-                        string tansactionName = ResourceManager.GetString("RemoveNodeTransactionName");
+                        string tansactionName = ResourceManager.GetString("TransactionName_RemoveNode");
 
                         Document.MakeTransaction(tansactionName, commands =>
                         {
@@ -168,7 +168,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
                     if (selectedNode != null)
                     {
-                        string tansactionName = ResourceManager.GetString("AddChildTransactionName");
+                        string tansactionName = ResourceManager.GetString("TransactionName_AddChild");
 
                         Document.MakeTransaction(tansactionName, commands =>
                         {
@@ -189,7 +189,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
                     if (selectedNormalNode != null)
                     {
-                        string tansactionName = ResourceManager.GetString("AddSiblingTransactionName");
+                        string tansactionName = ResourceManager.GetString("TransactionName_AddSibling");
 
                         Document.MakeTransaction(tansactionName, commands =>
                         {

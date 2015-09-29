@@ -87,14 +87,14 @@ namespace Hercules.Model
             nodes.Add(root);
             nodesHashSet[root.Id] = root;
 
-            root.LinkTo(this);
+            root.LinkToDocument(this);
         }
 
         internal void Add(Node newNode)
         {
             if (nodes.Add(newNode))
             {
-                newNode.LinkTo(this);
+                newNode.LinkToDocument(this);
 
                 OnNodeAdded(newNode);
             }
@@ -105,14 +105,22 @@ namespace Hercules.Model
             }
         }
 
+        internal void Release(Node oldNode)
+        {
+            oldNode.UnlinkFromDocument();
+
+            nodesHashSet.Remove(oldNode.Id);
+
+            foreach (Node child in oldNode.Children)
+            {
+                Release(child);
+            }
+        }
+
         internal void Remove(Node oldNode)
         {
             if (nodes.Remove(oldNode))
             {
-                nodesHashSet.Remove(oldNode.Id);
-
-                oldNode.LinkTo((Document)null);
-
                 if (oldNode.IsSelected)
                 {
                     Select(null);

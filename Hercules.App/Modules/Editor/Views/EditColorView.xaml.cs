@@ -55,7 +55,7 @@ namespace Hercules.App.Modules.Editor.Views
 
                 if (index != oldColor)
                 {
-                    string tansactionName = ResourceManager.GetString("EditColorTransactionName");
+                    string tansactionName = ResourceManager.GetString("TransactionName_EditColor");
 
                     Document.MakeTransaction(tansactionName, commands =>
                     {
@@ -76,7 +76,7 @@ namespace Hercules.App.Modules.Editor.Views
 
             if (selectedNode != null)
             {
-                string tansactionName = ResourceManager.GetString("ToggleHullTransactionName");
+                string tansactionName = ResourceManager.GetString("TransactionName_ToggleHull");
 
                 Document.MakeTransaction(tansactionName, commands =>
                 {

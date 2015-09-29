@@ -128,12 +128,12 @@ namespace Hercules.App.Components.Implementations
             TaskCompletionSource<bool> completionSource = new TaskCompletionSource<bool>();
 
             dialog.Commands.Add(new UICommand(
-                ResourceManager.GetString("Yes"), x =>
+                ResourceManager.GetString("Common_Yes"), x =>
                 {
                     completionSource.SetResult(true);
                 }));
             dialog.Commands.Add(new UICommand(
-                ResourceManager.GetString("No"), x =>
+                ResourceManager.GetString("Common_No"), x =>
                 {
                     completionSource.SetResult(false);
                 }));

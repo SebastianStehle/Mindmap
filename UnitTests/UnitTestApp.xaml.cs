@@ -21,7 +21,7 @@ namespace UnitTests
             InitializeComponent();
         }
         
-        protected override void OnLaunched(LaunchActivatedEventArgs e)
+        protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
 #if DEBUG
             DebugSettings.EnableFrameRateCounter |= Debugger.IsAttached;
@@ -39,7 +39,7 @@ namespace UnitTests
             
             Window.Current.Activate();
 
-            UnitTestClient.Run(e.Arguments);
+            UnitTestClient.Run(args.Arguments);
         }
     }
 }

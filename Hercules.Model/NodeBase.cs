@@ -208,14 +208,24 @@ namespace Hercules.Model
             Text = newText;
         }
 
-        internal void LinkTo(Document newDocument)
+        internal void LinkToDocument(Document newDocument)
         {
             document = newDocument;
         }
 
-        internal void LinkTo(NodeBase newParent)
+        internal void UnlinkFromDocument()
+        {
+            document = null;
+        }
+
+        internal void LinkToParent(NodeBase newParent)
         {
             parent = newParent;
+        }
+
+        internal void UnlinkFromParent()
+        {
+            parent = null;
         }
 
         public abstract bool HasChild(Node child);
@@ -247,7 +257,7 @@ namespace Hercules.Model
 
             ChangeSide(child, side);
 
-            child.LinkTo(this);
+            child.LinkToParent(this);
 
             if (Document != null)
             {
@@ -265,7 +275,7 @@ namespace Hercules.Model
 
                 ChangeSide(child, NodeSide.Undefined);
 
-                child.LinkTo((NodeBase)null);
+                child.UnlinkFromParent();
 
                 if (Document != null)
                 {

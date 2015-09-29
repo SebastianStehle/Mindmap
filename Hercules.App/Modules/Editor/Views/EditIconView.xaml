@@ -19,7 +19,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock x:Uid="IconsHeader" FontSize="24" FontWeight="Light" Margin="0,0,0,10">Icons</TextBlock>
+        <TextBlock x:Uid="Editor_IconsHeader" FontSize="24" FontWeight="Light" Margin="0,0,0,10" Text="Icons" />
 
         <GridView Grid.Row="1" Margin="0, 10" x:Name="IconsGrid" ItemsSource="{Binding Source={StaticResource AssetProvider}, Path=Images}">
             <GridView.ItemTemplate>
@@ -33,6 +33,6 @@
             </GridView.ItemTemplate>
         </GridView>
 
-        <Button Grid.Row="2" x:Uid="ClearIconButton" VerticalAlignment="Bottom" Content="Remove Icon" Click="RemoveIconButton_Click" />
+        <Button x:Uid="Editor_IconsClear" Grid.Row="2" VerticalAlignment="Bottom" Content="Remove Icon" Click="RemoveIconButton_Click" />
     </Grid>
 </controls:MindmapFlyoutView>

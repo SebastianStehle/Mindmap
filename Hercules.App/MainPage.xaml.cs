@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using GP.Windows.UI.Interactivity;
+using Hercules.App.Components.Implementations;
 using Hercules.App.Modules.Mindmaps.ViewModels;
 using Hercules.Model;
 
@@ -96,7 +97,9 @@ namespace Hercules.App
 
         private void PrintManager_PrintTaskRequested(PrintManager sender, PrintTaskRequestedEventArgs args)
         {
-            args.Request.CreatePrintTask("Print", (a) =>
+            string title = ResourceManager.GetString("Print_Title");
+
+            args.Request.CreatePrintTask(title, a =>
             {
                 a.SetSource(printDocument);
             });

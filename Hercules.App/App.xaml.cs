@@ -33,7 +33,7 @@ namespace Hercules.App
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
 #if DEBUG
-            //DebugSettings.EnableFrameRateCounter |= Debugger.IsAttached;
+            DebugSettings.EnableFrameRateCounter |= Debugger.IsAttached;
 #endif
             Frame rootFrame = Window.Current.Content as Frame;
             

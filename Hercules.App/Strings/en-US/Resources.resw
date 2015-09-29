@@ -312,6 +312,9 @@
   <data name="Outline_NoText" xml:space="preserve">
     <value>[No Text]</value>
   </data>
+  <data name="Print_Title" xml:space="preserve">
+    <value>Mindmap (by Mindapp)</value>
+  </data>
   <data name="TransactionName_AddChild" xml:space="preserve">
     <value>Add Child</value>
   </data>

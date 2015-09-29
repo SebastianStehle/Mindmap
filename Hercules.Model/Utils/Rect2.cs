@@ -16,6 +16,7 @@ namespace Hercules.Model.Utils
     public struct Rect2 : IEquatable<Rect2>
     {
         public static readonly Rect2 Empty = new Rect2(float.PositiveInfinity, float.PositiveInfinity, float.NegativeInfinity, float.NegativeInfinity);
+        public static readonly Rect2 Infinite = new Rect2(float.NegativeInfinity, float.NegativeInfinity, float.PositiveInfinity, float.PositiveInfinity);
 
         private readonly Vector2 position;
         private readonly Vector2 size;
@@ -87,7 +88,12 @@ namespace Hercules.Model.Utils
 
         public bool IsEmpty
         {
-            get { return size.X < 0; }
+            get { return size.X < 0 || size.Y < 0; }
+        }
+
+        public bool IsInfinite
+        {
+            get { return float.IsPositiveInfinity(size.X) || float.IsPositiveInfinity(size.X); }
         }
 
         public Rect2(Vector2 position, Vector2 size)
@@ -172,7 +178,7 @@ namespace Hercules.Model.Utils
 
         public bool IntersectsWith(Rect2 rect)
         {
-            return !IsEmpty && !rect.IsEmpty && (rect.Left <= Right && rect.Right >= Left && rect.Top <= Bottom) && rect.Bottom >= Top;
+            return !IsEmpty && !rect.IsEmpty && ((rect.Left <= Right && rect.Right >= Left && rect.Top <= Bottom && rect.Bottom >= Top) || IsInfinite || rect.IsInfinite);
         }
 
         public override bool Equals(object obj)

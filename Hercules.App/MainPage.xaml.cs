@@ -6,6 +6,8 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
+using Windows.Graphics.Printing;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -21,6 +23,8 @@ namespace Hercules.App
 {
     public sealed partial class MainPage
     {
+        private IPrintDocumentSource printDocument;
+
         public MainPage()
         {
             InitializeComponent();
@@ -58,6 +62,44 @@ namespace Hercules.App
             {
                 e.Handled = true;
             }
+        }
+
+        private async void PrintItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (printDocument != null)
+            {
+                IDisposable disposable = printDocument as IDisposable;
+
+                if (disposable != null)
+                {
+                    disposable.Dispose();
+                }
+            }
+
+            if (Mindmap.Document != null && Mindmap.Renderer != null)
+            {
+                printDocument = Mindmap.Renderer.Print();
+
+                PrintManager printManager = PrintManager.GetForCurrentView();
+
+                printManager.PrintTaskRequested += PrintManager_PrintTaskRequested;
+                try
+                {
+                    await PrintManager.ShowPrintUIAsync();
+                }
+                finally
+                {
+                    printManager.PrintTaskRequested -= PrintManager_PrintTaskRequested;
+                }
+            }
+        }
+
+        private void PrintManager_PrintTaskRequested(PrintManager sender, PrintTaskRequestedEventArgs args)
+        {
+            args.Request.CreatePrintTask("Print", (a) =>
+            {
+                a.SetSource(printDocument);
+            });
         }
 
         private void MoveLeftCommand_Invoked(object sender, RoutedEventArgs e)

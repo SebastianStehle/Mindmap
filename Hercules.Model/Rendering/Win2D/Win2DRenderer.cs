@@ -12,6 +12,7 @@ using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Graphics.Display;
+using Windows.Graphics.Printing;
 using Windows.Storage.Streams;
 using Windows.UI;
 using GP.Windows;
@@ -20,6 +21,7 @@ using GP.Windows.UI.Controls;
 using Hercules.Model.Layouting;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Printing;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
@@ -228,6 +230,61 @@ namespace Hercules.Model.Rendering.Win2D
             Render(args.DrawingSession);
         }
 
+        public IPrintDocumentSource Print()
+        {
+            CanvasPrintDocument printDocument = new CanvasPrintDocument();
+
+            Action<CanvasDrawingSession, PrintPageDescription> renderForPrint = (session, page) =>
+            {
+                session.Clear(Colors.White);
+
+                float padding = 20;
+
+                Vector2 size = page.PageSize.ToVector2();
+
+                float ratio = sceneBounds.Width / sceneBounds.Height;
+
+                float targetSizeX = size.X - 2 * padding;
+                float targetSizeY = targetSizeX / ratio;
+
+                if (targetSizeY > page.PageSize.Height)
+                {
+                    targetSizeY = size.Y - 2 * padding;
+                    targetSizeX = targetSizeY * ratio;
+                }
+
+                float zoom = targetSizeX / sceneBounds.Width;
+
+                session.Transform =
+                    Matrix3x2.CreateTranslation(
+                        -sceneBounds.Position.X,
+                        -sceneBounds.Position.Y) *
+                    Matrix3x2.CreateScale(zoom) *
+                    Matrix3x2.CreateTranslation(
+                         0.5f * (size.X - targetSizeX),
+                         0.5f * (size.Y - targetSizeY));
+
+                RenderIt(session, RenderFlags.Plain, Rect2.Infinite);
+            };
+
+            printDocument.Preview += (sender, args) =>
+            {
+                sender.SetPageCount(1);
+
+                renderForPrint(args.DrawingSession, args.PrintTaskOptions.GetPageDescription(1));
+            };
+
+            printDocument.Print += (sender, args) =>
+            {
+                using (CanvasDrawingSession session = args.CreateDrawingSession())
+                {
+                    renderForPrint(session, args.PrintTaskOptions.GetPageDescription(1));
+                }
+            };
+
+            return printDocument;
+        }
+
         public async Task RenderScreenshotAsync(IRandomAccessStream stream, Color background, float dpi, float padding = 20)
         {
             Guard.NotNull(stream, nameof(stream));
@@ -249,7 +306,7 @@ namespace Hercules.Model.Rendering.Win2D
                             -sceneBounds.Position.X + padding,
                             -sceneBounds.Position.Y + padding);
 
-                    RenderIt(session, false, false);
+                    RenderIt(session, RenderFlags.Plain, Rect2.Infinite);
                 }
 
                 await target.SaveAsync(stream, CanvasBitmapFileFormat.Png);
@@ -262,11 +319,12 @@ namespace Hercules.Model.Rendering.Win2D
             {
                 session.Transform = transform;
 
+                bool needsRedraw;
+
                 UpdateLayout(session);
+                UpdateArrangement(session, true, out needsRedraw);
 
-                bool needsRedraw = UpdateArrangement(session, true);
-
-                RenderIt(session, true, true);
+                RenderIt(session, RenderFlags.Full, visibleRect);
 
                 if (needsRedraw)
                 {
@@ -303,9 +361,9 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
-        private bool UpdateArrangement(CanvasDrawingSession session, bool animate)
+        private void UpdateArrangement(CanvasDrawingSession session, bool animate, out bool needsRedraw)
         {
-            bool needsRedraw = false;
+            needsRedraw = false;
 
             DateTime utcNow = DateTime.UtcNow;
 
@@ -343,11 +401,9 @@ namespace Hercules.Model.Rendering.Win2D
             }
 
             sceneBounds = new Rect2((float)minX, (float)minY, (float)(maxX - minX), (float)(maxY - minY));
-
-            return needsRedraw;
         }
 
-        private void RenderIt(CanvasDrawingSession session, bool renderControls, bool renderCustoms)
+        private void RenderIt(CanvasDrawingSession session, RenderFlags renderFlags, Rect2 viewRect)
         {
             session.TextAntialiasing = CanvasTextAntialiasing.Grayscale;
 
@@ -369,15 +425,18 @@ namespace Hercules.Model.Rendering.Win2D
 
             foreach (Win2DRenderNode renderNode in AllNodes)
             {
-                if (renderNode.IsVisible && CanRenderPath(renderNode))
+                if (renderNode.IsVisible && CanRenderPath(renderNode, viewRect))
                 {
                     renderNode.RenderPath(session);
                 }
             }
 
+            bool renderCustoms = (renderFlags & RenderFlags.RenderCustoms) == RenderFlags.RenderCustoms;
+            bool renderControls = (renderFlags & RenderFlags.RenderControls) == RenderFlags.RenderControls;
+
             foreach (Win2DRenderNode renderNode in AllNodes)
             {
-                if (renderNode.IsVisible && CanRenderNode(renderNode))
+                if (renderNode.IsVisible && CanRenderNode(renderNode, viewRect))
                 {
                     bool isCustomNode = IsCustomNode(renderNode);
 
@@ -389,14 +448,14 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
-        private bool CanRenderPath(Win2DRenderNode renderNode)
+        private static bool CanRenderPath(Win2DRenderNode renderNode, Rect2 viewRect)
         {
-            return visibleRect.IntersectsWith(renderNode.BoundsWithParent);
+            return viewRect.IntersectsWith(renderNode.BoundsWithParent);
         }
 
-        private bool CanRenderNode(Win2DRenderNode renderNode)
+        private static bool CanRenderNode(Win2DRenderNode renderNode, Rect2 viewRect)
         {
-            return visibleRect.IntersectsWith(renderNode.Bounds);
+            return viewRect.IntersectsWith(renderNode.Bounds);
         }
 
         private bool IsCustomNode(Win2DRenderNode renderNode)

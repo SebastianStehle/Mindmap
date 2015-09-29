@@ -155,6 +155,7 @@
     <Compile Include="Rendering\Win2D\Default\DefaultRendererFactory.cs" />
     <Compile Include="Rendering\Win2D\GeometryBuilder.cs" />
     <Compile Include="Rendering\Win2D\IRendererFactory.cs" />
+    <Compile Include="Rendering\Win2D\RenderFlags.cs" />
     <Compile Include="Rendering\Win2D\Win2DResourceManager.cs" />
     <Compile Include="ToggleHullCommand.cs" />
     <Compile Include="Utils\ConvexHull.cs" />

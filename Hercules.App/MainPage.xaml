@@ -50,6 +50,8 @@
                                     Command="{Binding ExportHtmlCommand}" />
                                 <MenuFlyoutItem x:Uid="AppBarButton_ExportImage" Text="Image"
                                     Command="{Binding ExportImageCommand}" />
+                                <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print"
+                                    Click="PrintItem_Click" />
                             </MenuFlyout>
                         </AppBarButton.Flyout>
                     </AppBarButton>

@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System.Threading.Tasks;
+using Windows.Graphics.Printing;
 using Windows.Storage.Streams;
 using Windows.UI;
 
@@ -17,6 +18,8 @@ namespace Hercules.Model.Layouting
         Task RenderScreenshotAsync(IRandomAccessStream stream, Color background, float dpi, float padding = 20);
 
         ThemeColor FindColor(NodeBase node);
+
+        IPrintDocumentSource Print();
 
         IRenderNode FindRenderNode(NodeBase node);
     }

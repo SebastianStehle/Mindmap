@@ -135,7 +135,7 @@ namespace Hercules.App.Components.Implementations
         {
             MindmapRef mindmapRef = ValidateMindmap(mindmap);
 
-            return this.DoAsync(x => x != mindmap, async () =>
+            return DoAsync(x => x != mindmap, async () =>
             {
                 MindmapRef loadedRef = loadedMindmapRef as MindmapRef;
 

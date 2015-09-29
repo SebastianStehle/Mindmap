@@ -91,8 +91,8 @@
                 </StackPanel>
             </StackPanel>
 
-            <StackPanel x:Uid="AppBarButton_RemoveNode" HorizontalAlignment="Right" Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
-                <AppBarButton IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}" Icon="Delete"
+            <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
+                <AppBarButton x:Uid="AppBarButton_RemoveNode" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}" Icon="Delete"
                     Command="{Binding RemoveCommand}">
                     <i:Interaction.Behaviors>
                         <gpi:CommandShortcutBehavior Invoking="RemoveButton_Invoking" RequiresControlModifier="False" Key="Delete" />
@@ -149,7 +149,7 @@
                                 </Viewbox>
                             </Grid>
 
-                            <TextBlock x:Uid="Mindmaps_AddText" Margin="5,0,0,0" FontSize="16" Text="Add Mindmap" />
+                            <TextBlock x:Uid="Mindmaps_AddButtonText" Margin="5,0,0,0" FontSize="16" Text="Add Mindmap" />
                         </StackPanel>
                         <Button.Flyout>
                             <controls:MindmapFlyout>
@@ -183,10 +183,10 @@
                                         <Grid RightTapped="Grid_RightTapped" Background="Transparent">
                                             <FlyoutBase.AttachedFlyout>
                                                 <MenuFlyout>
-                                                    <MenuFlyoutItem x:Uid="Mindmaps_Delete" Text="Rename" 
+                                                    <MenuFlyoutItem x:Uid="Mindmaps_DeleteMenuItem" Text="Rename" 
                                                         DataContext="{Binding ElementName=Root}" x:Name="RenameButton" Click="RenameButton_Click" />
                                                     <MenuFlyoutSeparator />
-                                                    <MenuFlyoutItem x:Uid="Mindmaps_Rename" Text="Delete"
+                                                    <MenuFlyoutItem x:Uid="Mindmaps_RenameMenuItem" Text="Delete"
                                                         Command="{Binding Path=Mindmaps.DeleteCommand, Source={StaticResource ViewModelLocator}, ElementName=List}" 
                                                         CommandParameter="{Binding}" />
                                                 </MenuFlyout>

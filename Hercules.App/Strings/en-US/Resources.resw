@@ -240,13 +240,13 @@
   <data name="Editor_IconsHeader.Text" xml:space="preserve">
     <value>Icons</value>
   </data>
-  <data name="Editor_ShowHull.Content" xml:space="preserve">
+  <data name="Editor_ShowHullButton.Content" xml:space="preserve">
     <value>Show Hull</value>
   </data>
-  <data name="Editor_ShowHull.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+  <data name="Editor_ShowHullButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Show Hull</value>
   </data>
-  <data name="Editor_ShowHull.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="Editor_ShowHullButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Show hull around subtopic and children</value>
   </data>
   <data name="Mindmaps_AddButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
@@ -255,52 +255,52 @@
   <data name="Mindmaps_AddButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>New mindmap (CTRL + SHIFT + N)</value>
   </data>
-  <data name="Mindmaps_AddText.Text" xml:space="preserve">
+  <data name="Mindmaps_AddButtonText.Text" xml:space="preserve">
     <value>New Mindmap</value>
   </data>
-  <data name="Mindmaps_Delete.Text" xml:space="preserve">
+  <data name="Mindmaps_DeleteMenuItem.Text" xml:space="preserve">
     <value>Delete</value>
   </data>
-  <data name="Mindmaps_Delete.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+  <data name="Mindmaps_DeleteMenuItem.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Delete Mindmap</value>
   </data>
-  <data name="Mindmaps_Delete[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="Mindmaps_DeleteMenuItem.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Delete this mindmap</value>
   </data>
   <data name="Mindmaps_Header.Text" xml:space="preserve">
-    <value>Mindmaps</value>
+    <value>My Mindmaps</value>
   </data>
   <data name="Mindmaps_LastUpdate.Text" xml:space="preserve">
     <value>Last Saved:</value>
   </data>
-  <data name="Mindmaps_Rename.Text" xml:space="preserve">
+  <data name="Mindmaps_RenameMenuItem.Text" xml:space="preserve">
     <value>Rename</value>
   </data>
-  <data name="Mindmaps_Rename.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+  <data name="Mindmaps_RenameMenuItem.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Rename mindmap</value>
   </data>
-  <data name="Mindmaps_Rename.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="Mindmaps_RenameMenuItem.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Rename this mindmap</value>
   </data>
   <data name="MyMindmap" xml:space="preserve">
     <value>My Mindmap</value>
   </data>
-  <data name="Naming_Create.Content" xml:space="preserve">
+  <data name="Naming_CreateButton.Content" xml:space="preserve">
     <value>Create</value>
   </data>
-  <data name="Naming_Create.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+  <data name="Naming_CreateButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Create</value>
   </data>
-  <data name="Naming_Create.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="Naming_CreateButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Create new mindmap</value>
   </data>
-  <data name="Naming_Save.Content" xml:space="preserve">
+  <data name="Naming_SaveButton.Content" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="Naming_Save.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+  <data name="Naming_SaveButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Save</value>
   </data>
-  <data name="Naming_Save.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="Naming_SaveButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Rename the mindmap</value>
   </data>
   <data name="Naming_TitleError.Text" xml:space="preserve">

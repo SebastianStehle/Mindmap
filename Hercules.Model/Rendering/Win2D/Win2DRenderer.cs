@@ -244,12 +244,12 @@ namespace Hercules.Model.Rendering.Win2D
 
                 float ratio = sceneBounds.Width / sceneBounds.Height;
 
-                float targetSizeX = size.X - (2 * padding);
+                float targetSizeX = Math.Min(size.X - (2 * padding), sceneBounds.Width);
                 float targetSizeY = targetSizeX / ratio;
 
                 if (targetSizeY > page.PageSize.Height)
                 {
-                    targetSizeY = size.Y - (2 * padding);
+                    targetSizeY = Math.Min(size.Y - (2 * padding), sceneBounds.Height);
                     targetSizeX = targetSizeY * ratio;
                 }
 

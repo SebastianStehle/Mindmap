@@ -20,8 +20,8 @@ namespace Hercules.Model.Export.Html
 {
     public sealed class HtmlOutlineGenerator : IOutlineGenerator
     {
-        private const string ULStyle = "padding-left:18px;";
-        private const string LIStyle = "padding-top:4px;padding-bottom:4px;";
+        private const string ListStyle = "padding-left:18px;";
+        private const string ListItemStyle = "padding-top:4px;padding-bottom:4px;";
 
         public string GenerateOutlineToString(Document document, IRenderer renderer, bool useColors, string noTextPlaceholder)
         {
@@ -54,12 +54,12 @@ namespace Hercules.Model.Export.Html
             if (children.Count > 0)
             {
                 xmlWriter.WriteStartElement("ul");
-                xmlWriter.WriteAttributeString("style", ULStyle);
+                xmlWriter.WriteAttributeString("style", ListStyle);
 
                 foreach (Node node in children)
                 {
                     xmlWriter.WriteStartElement("li");
-                    xmlWriter.WriteAttributeString("style", LIStyle);
+                    xmlWriter.WriteAttributeString("style", ListItemStyle);
 
                     WriteNodeWithChildren(xmlWriter, node, renderer, "1.2em", useColors, noTextPlaceholder);
 
@@ -80,12 +80,12 @@ namespace Hercules.Model.Export.Html
             if (node.Children.Count > 0)
             {
                 xmlWriter.WriteStartElement("ul");
-                xmlWriter.WriteAttributeString("style", ULStyle);
+                xmlWriter.WriteAttributeString("style", ListStyle);
 
                 foreach (Node child in node.Children)
                 {
                     xmlWriter.WriteStartElement("li");
-                    xmlWriter.WriteAttributeString("style", LIStyle);
+                    xmlWriter.WriteAttributeString("style", ListItemStyle);
 
                     WriteNodeWithChildren(xmlWriter, child, renderer, "1.em", useColors, noTextPlaceholder);
 

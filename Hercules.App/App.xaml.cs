@@ -25,6 +25,8 @@ namespace Hercules.App
 
         public App()
         {
+            WindowsAppInitializer.InitializeAsync();
+
             InitializeComponent();
 
             Suspending += OnSuspending;

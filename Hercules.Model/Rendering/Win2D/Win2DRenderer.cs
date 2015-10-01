@@ -24,6 +24,7 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Printing;
 using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+// ReSharper disable LoopCanBePartlyConvertedToQuery
 
 // ReSharper disable UnusedParameter.Local
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
@@ -230,15 +231,13 @@ namespace Hercules.Model.Rendering.Win2D
             Render(args.DrawingSession);
         }
 
-        public IPrintDocumentSource Print()
+        public IPrintDocumentSource Print(float padding = 2)
         {
             CanvasPrintDocument printDocument = new CanvasPrintDocument();
 
             Action<CanvasDrawingSession, PrintPageDescription> renderForPrint = (session, page) =>
             {
                 session.Clear(Colors.White);
-
-                float padding = 20;
 
                 Vector2 size = page.PageSize.ToVector2();
 
@@ -285,7 +284,7 @@ namespace Hercules.Model.Rendering.Win2D
             return printDocument;
         }
 
-        public async Task RenderScreenshotAsync(IRandomAccessStream stream, Color background, float dpi, float padding = 20)
+        public async Task RenderScreenshotAsync(IRandomAccessStream stream, Color background, float? dpi = null, float padding = 20)
         {
             Guard.NotNull(stream, nameof(stream));
             Guard.GreaterThan(padding, 0, nameof(padding));
@@ -293,9 +292,9 @@ namespace Hercules.Model.Rendering.Win2D
             float w = sceneBounds.Size.X + (2 * padding);
             float h = sceneBounds.Size.Y + (2 * padding);
 
-            dpi = dpi == 0 ? DisplayInformation.GetForCurrentView().LogicalDpi : dpi;
+            float dpiValue = dpi ?? DisplayInformation.GetForCurrentView().LogicalDpi;
 
-            using (CanvasRenderTarget target = new CanvasRenderTarget(canvas.Device, w, h, dpi))
+            using (CanvasRenderTarget target = new CanvasRenderTarget(canvas.Device, w, h, dpiValue))
             {
                 using (CanvasDrawingSession session = target.CreateDrawingSession())
                 {

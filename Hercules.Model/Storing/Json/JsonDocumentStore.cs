@@ -100,14 +100,11 @@ namespace Hercules.Model.Storing.Json
 
             IEnumerable<StorageFile> files = await localFolder.GetFilesAsync();
 
-            foreach (StorageFile file in files)
+            foreach (StorageFile file in files.Where(file => file.FileType.Equals(FileExtension, StringComparison.OrdinalIgnoreCase)))
             {
-                if (file.FileType.Equals(FileExtension, StringComparison.OrdinalIgnoreCase))
-                {
-                    BasicProperties properties = await file.GetBasicPropertiesAsync();
+                BasicProperties properties = await file.GetBasicPropertiesAsync();
 
-                    documentReferences.Add(new DocumentRef(file.DisplayName, properties.DateModified));
-                }
+                documentReferences.Add(new DocumentRef(file.DisplayName, properties.DateModified));
             }
 
             return documentReferences.OrderByDescending(x => x.LastUpdate).ToList();

@@ -14,7 +14,7 @@ namespace Hercules.Model
 {
     public sealed class Document : DocumentObject, IDocumentCommands
     {
-        private readonly Dictionary<Guid, NodeBase> nodesHashSet = new Dictionary<Guid, NodeBase>();
+        private readonly NodeCache nodeCache = new NodeCache();
         private readonly HashSet<NodeBase> nodes = new HashSet<NodeBase>();
         private readonly RootNode root;
         private readonly IUndoRedoManager undoRedoManager = new UndoRedoManager();
@@ -85,7 +85,7 @@ namespace Hercules.Model
             root = new RootNode(id);
 
             nodes.Add(root);
-            nodesHashSet[root.Id] = root;
+            nodeCache.Add(root);
 
             root.LinkToDocument(this);
         }
@@ -109,10 +109,7 @@ namespace Hercules.Model
         {
             if (nodes.Remove(oldNode))
             {
-                if (oldNode.IsSelected)
-                {
-                    Select(null);
-                }
+                oldNode.UnlinkFromDocument();
 
                 OnNodeRemoved(oldNode);
             }
@@ -121,32 +118,16 @@ namespace Hercules.Model
             {
                 Remove(child);
             }
-        }
 
-        internal void Release(Node oldNode)
-        {
-            oldNode.UnlinkFromDocument();
-
-            nodesHashSet.Remove(oldNode.Id);
-
-            foreach (Node child in oldNode.Children)
+            if (oldNode.IsSelected)
             {
-                Release(child);
+                Select(null);
             }
         }
 
         internal NodeBase GetOrCreateNode<T>(Guid id, Func<Guid, T> factory) where T : NodeBase
         {
-            NodeBase result;
-
-            if (!nodesHashSet.TryGetValue(id, out result))
-            {
-                result = factory(id);
-
-                nodesHashSet.Add(id, result);
-            }
-
-            return result;
+            return nodeCache.GetOrCreateNode(id, factory);
         }
         
         public void Apply(CommandBase command)

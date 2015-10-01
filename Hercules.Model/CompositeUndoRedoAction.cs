@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using GP.Windows;
 
 namespace Hercules.Model
@@ -49,27 +48,19 @@ namespace Hercules.Model
             commands.Add(command);
         }
 
-        public void Cleanup()
-        {
-            foreach (CommandBase action in commands)
-            {
-                action.Cleanup();
-            }
-        }
-
         public void Undo()
         {
-            foreach (IUndoRedoAction action in commands.OfType<IUndoRedoAction>().Reverse().Where(action => action != null))
+            foreach (CommandBase command in commands)
             {
-                action.Undo();
+                command.Undo();
             }
         }
 
         public void Redo()
         {
-            foreach (IUndoRedoAction action in commands.Cast<IUndoRedoAction>().Where(action => action != null))
+            foreach (CommandBase command in commands)
             {
-                action.Redo();
+                command.Redo();
             }
         }
     }

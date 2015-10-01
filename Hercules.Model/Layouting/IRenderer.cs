@@ -15,11 +15,11 @@ namespace Hercules.Model.Layouting
 {
     public interface IRenderer
     {
-        Task RenderScreenshotAsync(IRandomAccessStream stream, Color background, float dpi, float padding = 20);
+        Task RenderScreenshotAsync(IRandomAccessStream stream, Color background, float? dpi = null, float padding = 20);
 
         ThemeColor FindColor(NodeBase node);
 
-        IPrintDocumentSource Print();
+        IPrintDocumentSource Print(float padding = 20);
 
         IRenderNode FindRenderNode(NodeBase node);
     }

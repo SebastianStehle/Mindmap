@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
@@ -68,7 +69,7 @@ namespace Hercules.Model.Utils
 
             List<Vector2> sorted = new List<Vector2>(points);
 
-            sorted.Sort((l, r) => l.X == r.X ? l.Y.CompareTo(r.Y) : (l.X > r.X ? 1 : -1));
+            sorted.Sort((l, r) => Math.Abs(l.X - r.X) < float.Epsilon ? l.Y.CompareTo(r.Y) : (l.X > r.X ? 1 : -1));
 
             return ComputeSorted(sorted);
         }

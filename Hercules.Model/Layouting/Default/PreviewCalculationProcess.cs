@@ -262,15 +262,18 @@ namespace Hercules.Model.Layouting.Default
                 {
                     Rect2 nodeBounds = renderer.FindRenderNode(node).Bounds;
 
-                    double minArea = Math.Min(rectArea, nodeBounds.Width * nodeBounds.Height);
-
-                    Rect2 intersection = nodeBounds.Intersect(movementBounds);
+                    Rect2 intersection = movementBounds.Intersect(movementBounds);
 
                     double newArea = intersection.Width * intersection.Height;
 
-                    if (!double.IsInfinity(newArea) && newArea > 0.5f * minArea)
+                    if (!double.IsInfinity(newArea))
                     {
-                        parent = node;
+                        double minArea = Math.Min(rectArea, nodeBounds.Width * nodeBounds.Height);
+
+                        if (newArea > 0.5f * minArea)
+                        {
+                            parent = node;
+                        }
                     }
                 }
             }

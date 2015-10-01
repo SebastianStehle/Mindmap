@@ -9,12 +9,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using GP.Windows;
 using Hercules.Model;
 using Hercules.Model.Storing;
 using Hercules.Model.Utils;
+// ReSharper disable ImplicitlyCapturedClosure
 
 namespace Hercules.App.Components.Implementations
 {
@@ -78,10 +80,8 @@ namespace Hercules.App.Components.Implementations
                     {
                         IEnumerable<DocumentRef> documents = await documentStore.LoadAllAsync();
 
-                        foreach (DocumentRef documentRef in documents)
+                        foreach (MindmapRef mindmapRef in documents.Select(documentRef => new MindmapRef(documentRef, documentStore)))
                         {
-                            MindmapRef mindmapRef = new MindmapRef(documentRef, documentStore);
-
                             allMindmaps.Add(mindmapRef);
                         }
                     }

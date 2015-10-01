@@ -81,7 +81,7 @@ namespace Hercules.Model.Rendering.Win2D
             renderSize.X = (float)Math.Round(Math.Max(renderSize.X, minWidth));
             renderSize.Y = (float)Math.Round(Math.Max(renderSize.Y, minSize));
 
-            if (renderSize.Y % 2 == 1)
+            if (Math.Abs(renderSize.Y % 2 - 1) < float.Epsilon)
             {
                 renderSize.Y += 1;
             }

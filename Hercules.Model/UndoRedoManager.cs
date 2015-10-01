@@ -129,11 +129,6 @@ namespace Hercules.Model
         {
             Guard.NotNull(action, nameof(action));
 
-            foreach (IUndoRedoAction redoAction in redoStack)
-            {
-                redoAction.Cleanup();
-            }
-
             undoStack.Push(action);
             redoStack.Clear();
 

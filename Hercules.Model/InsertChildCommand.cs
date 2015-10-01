@@ -44,14 +44,6 @@ namespace Hercules.Model
             base.Save(properties);
         }
 
-        public override void Cleanup()
-        {
-            if (Child?.Document != null)
-            {
-                Child.Document.Release(Child);
-            }
-        }
-
         protected override void Execute(bool isRedo)
         {
             Node.Insert(Child, index, side);

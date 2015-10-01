@@ -49,10 +49,6 @@ namespace Hercules.Model
 
         protected abstract void Revert();
 
-        public virtual void Cleanup()
-        {
-        }
-
         public void Execute()
         {
             Execute(false);

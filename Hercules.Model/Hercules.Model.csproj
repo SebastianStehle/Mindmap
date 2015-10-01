@@ -144,6 +144,7 @@
     <Compile Include="Layouting\VisibilityUpdater.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="NodeBase.cs" />
+    <Compile Include="NodeCache.cs" />
     <Compile Include="NodeEventArgs.cs" />
     <Compile Include="NodeExtensions.cs" />
     <Compile Include="NodeSide.cs" />

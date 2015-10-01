@@ -12,7 +12,5 @@ namespace Hercules.Model
         void Undo();
 
         void Redo();
-
-        void Cleanup();
     }
 }

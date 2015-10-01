@@ -7,10 +7,10 @@
 // ==========================================================================
 
 using System.Numerics;
-using Hercules.App.Components.Implementations;
 using Hercules.Model;
 using Hercules.Model.Layouting;
 using Hercules.Model.Rendering.Win2D;
+using Hercules.Model.Utils;
 
 namespace Hercules.App.Controls
 {

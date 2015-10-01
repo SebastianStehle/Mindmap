@@ -14,6 +14,7 @@ using Windows.UI.Xaml;
 using GP.Windows;
 using Hercules.Model;
 using Hercules.Model.Storing;
+using Hercules.Model.Utils;
 
 namespace Hercules.App.Components.Implementations
 {
@@ -24,7 +25,6 @@ namespace Hercules.App.Components.Implementations
         private readonly IDocumentStore documentStore;
         private readonly ILoadingManager loadingManager;
         private readonly ISettingsProvider settingsProvider;
-        private readonly ILocalizationManager localizationManager;
         private Document loadedDocument;
         private IMindmapRef loadedMindmapRef;
         private bool isLoaded;
@@ -41,16 +41,14 @@ namespace Hercules.App.Components.Implementations
             get { return loadedDocument; }
         }
 
-        public MindmapStore(IDocumentStore documentStore, ILoadingManager loadingManager, ISettingsProvider settingsProvider, ILocalizationManager localizationManager)
+        public MindmapStore(IDocumentStore documentStore, ILoadingManager loadingManager, ISettingsProvider settingsProvider)
         {
             Guard.NotNull(documentStore, nameof(documentStore));
             Guard.NotNull(loadingManager, nameof(loadingManager));
-            Guard.NotNull(localizationManager, nameof(localizationManager));
             Guard.NotNull(settingsProvider, nameof(settingsProvider));
 
             this.documentStore = documentStore;
             this.loadingManager = loadingManager;
-            this.localizationManager = localizationManager;
             this.settingsProvider = settingsProvider;
 
             StartTimer();
@@ -91,7 +89,7 @@ namespace Hercules.App.Components.Implementations
                     {
                         settingsProvider.IsAlreadyStarted = true;
 
-                        await CreateAsync(localizationManager.GetString("MyMindmap"));
+                        await CreateAsync(ResourceManager.GetString("MyMindmap"));
                     }
                 });
             }

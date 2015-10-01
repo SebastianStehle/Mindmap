@@ -46,8 +46,6 @@ namespace Hercules.App.Modules
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<ILoadingManager, LoadingManager>(
                     new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<ILocalizationManager, ResourcesLocalizationManager>(
-                    new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<INavigationService, NavigationService>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IOutlineGenerator, HtmlOutlineGenerator>(

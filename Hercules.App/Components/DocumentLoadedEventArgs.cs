@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// DocumentSelectedEventArgs.cs
+// DocumentLoadedEventArgs.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle

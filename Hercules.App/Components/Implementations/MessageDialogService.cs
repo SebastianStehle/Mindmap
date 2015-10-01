@@ -15,6 +15,7 @@ using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Popups;
 using GP.Windows;
+using Hercules.Model.Utils;
 
 namespace Hercules.App.Components.Implementations
 {

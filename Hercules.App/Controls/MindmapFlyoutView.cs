@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// MindmapFlyoutPopupView.cs
+// MindmapFlyoutView.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle

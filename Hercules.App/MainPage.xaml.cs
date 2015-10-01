@@ -16,9 +16,9 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using GP.Windows.UI.Interactivity;
-using Hercules.App.Components.Implementations;
 using Hercules.App.Modules.Mindmaps.ViewModels;
 using Hercules.Model;
+using Hercules.Model.Utils;
 
 namespace Hercules.App
 {
@@ -53,16 +53,6 @@ namespace Hercules.App
             MindmapsViewModel viewModel = (MindmapsViewModel)((FrameworkElement)sender).DataContext;
 
             await viewModel.LoadAsync();
-        }
-
-        private void RemoveButton_Invoking(object sender, CommandInvokingEventHandler e)
-        {
-            TextBox textBox = FocusManager.GetFocusedElement() as TextBox;
-
-            if (textBox != null)
-            {
-                e.Handled = true;
-            }
         }
 
         private async void PrintItem_Click(object sender, RoutedEventArgs e)
@@ -103,6 +93,16 @@ namespace Hercules.App
             {
                 a.SetSource(printDocument);
             });
+        }
+
+        private void RemoveButton_Invoking(object sender, CommandInvokingEventHandler e)
+        {
+            TextBox textBox = FocusManager.GetFocusedElement() as TextBox;
+
+            if (textBox != null)
+            {
+                e.Handled = true;
+            }
         }
 
         private void MoveLeftCommand_Invoked(object sender, RoutedEventArgs e)

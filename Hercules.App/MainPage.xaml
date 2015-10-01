@@ -185,10 +185,10 @@
                                         <Grid RightTapped="Grid_RightTapped" Background="Transparent">
                                             <FlyoutBase.AttachedFlyout>
                                                 <MenuFlyout>
-                                                    <MenuFlyoutItem x:Uid="Mindmaps_DeleteMenuItem" Text="Rename" 
+                                                    <MenuFlyoutItem x:Uid="Mindmaps_RenameMenuItem" Text="Delete"
                                                         DataContext="{Binding ElementName=Root}" x:Name="RenameButton" Click="RenameButton_Click" />
                                                     <MenuFlyoutSeparator />
-                                                    <MenuFlyoutItem x:Uid="Mindmaps_RenameMenuItem" Text="Delete"
+                                                    <MenuFlyoutItem x:Uid="Mindmaps_DeleteMenuItem" Text="Rename" 
                                                         Command="{Binding Path=Mindmaps.DeleteCommand, Source={StaticResource ViewModelLocator}, ElementName=List}" 
                                                         CommandParameter="{Binding}" />
                                                 </MenuFlyout>

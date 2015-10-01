@@ -12,13 +12,13 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using Hercules.App.Components;
-using Hercules.App.Components.Implementations;
 using Hercules.App.Messages;
 using Hercules.Model;
 using Hercules.Model.Export;
 using Hercules.Model.Rendering.Win2D;
 using Hercules.Model.Rendering.Win2D.Default;
 using Hercules.Model.Storing;
+using Hercules.Model.Utils;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
 
@@ -43,9 +43,6 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
         [Dependency]
         public IOutlineGenerator OutlineGenerator { get; set; }
-
-        [Dependency]
-        public ILocalizationManager LocalizationManager { get; set; }
 
         [Dependency]
         public IMessageDialogService MessageDialogService { get; set; }
@@ -130,7 +127,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return exportHtmlCommand ?? (exportHtmlCommand = new RelayCommand(async () =>
                 {
-                    string noText = LocalizationManager.GetString("Outline_NoText");
+                    string noText = ResourceManager.GetString("Outline_NoText");
 
                     await MessageDialogService.SaveFileDialogAsync(new string[] { ".html" }, s => OutlineGenerator.GenerateOutline(Document, RendererFactory.Current, s, true, noText));
                 }, () => Document != null));

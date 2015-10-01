@@ -110,15 +110,12 @@
     <Compile Include="Components\IMindmapRef.cs" />
     <Compile Include="Components\ILoadingManager.cs" />
     <Compile Include="Components\IMessageDialogService.cs" />
-    <Compile Include="Components\ILocalizationManager.cs" />
     <Compile Include="Components\IMindmapStore.cs" />
     <Compile Include="Components\Implementations\DefaultSettingsProvider.cs" />
     <Compile Include="Components\Implementations\LoadingManager.cs" />
     <Compile Include="Components\Implementations\MessageDialogService.cs" />
     <Compile Include="Components\Implementations\MindmapRef.cs" />
     <Compile Include="Components\Implementations\MindmapStore.cs" />
-    <Compile Include="Components\Implementations\ResourceManager.cs" />
-    <Compile Include="Components\Implementations\ResourcesLocalizationManager.cs" />
     <Compile Include="Components\ISettingsProvider.cs" />
     <Compile Include="Controls\CanvasControlWrapper.cs" />
     <Compile Include="Controls\MindmapFlyout.cs" />

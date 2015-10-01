@@ -12,11 +12,11 @@ using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Hercules.App.Components.Implementations;
 using Hercules.Model;
 using Hercules.Model.Rendering.Win2D;
-using Windows.UI.Xaml.Input;
+using Hercules.Model.Utils;
 
 namespace Hercules.App.Controls
 {
@@ -116,7 +116,7 @@ namespace Hercules.App.Controls
             {
                 try
                 {
-                    string transactionName = ResourceManager.GetString("ChangeTextTransactionName");
+                    string transactionName = ResourceManager.GetString("TransactionName_ChangeText");
 
                     editingNode.Node.Document.MakeTransaction(transactionName, commands =>
                     {

@@ -13,6 +13,7 @@ using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GP.Windows;
 using Hercules.App.Components;
+using Hercules.Model.Utils;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
 
@@ -41,9 +42,6 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         public IMindmapStore MindmapStore { get; set; }
 
         [Dependency]
-        public ILocalizationManager LocalizationManager { get; set; }
-
-        [Dependency]
         public IMessageDialogService MessageDialogService { get; set; }
 
         public RelayCommand<IMindmapRef> DeleteCommand
@@ -52,8 +50,8 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             {
                 return deleteCommand ?? (deleteCommand = new RelayCommand<IMindmapRef>(async item =>
                 {
-                    string content = LocalizationManager.GetString("DeleteMindmap_Content"),
-                             title = LocalizationManager.GetString("DeleteMindmap_Title");
+                    string content = ResourceManager.GetString("DeleteMindmap_Content"),
+                             title = ResourceManager.GetString("DeleteMindmap_Title");
 
                     if (await MessageDialogService.ConfirmAsync(content, title))
                     {

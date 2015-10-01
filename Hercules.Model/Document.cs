@@ -105,18 +105,6 @@ namespace Hercules.Model
             }
         }
 
-        internal void Release(Node oldNode)
-        {
-            oldNode.UnlinkFromDocument();
-
-            nodesHashSet.Remove(oldNode.Id);
-
-            foreach (Node child in oldNode.Children)
-            {
-                Release(child);
-            }
-        }
-
         internal void Remove(Node oldNode)
         {
             if (nodes.Remove(oldNode))
@@ -132,6 +120,18 @@ namespace Hercules.Model
             foreach (Node child in oldNode.Children)
             {
                 Remove(child);
+            }
+        }
+
+        internal void Release(Node oldNode)
+        {
+            oldNode.UnlinkFromDocument();
+
+            nodesHashSet.Remove(oldNode.Id);
+
+            foreach (Node child in oldNode.Children)
+            {
+                Release(child);
             }
         }
 

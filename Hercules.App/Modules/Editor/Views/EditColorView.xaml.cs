@@ -8,8 +8,8 @@
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Hercules.App.Components.Implementations;
 using Hercules.Model;
+using Hercules.Model.Utils;
 
 namespace Hercules.App.Modules.Editor.Views
 {

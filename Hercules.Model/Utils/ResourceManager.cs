@@ -6,25 +6,31 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
 using System.Globalization;
 using Windows.ApplicationModel.Resources;
 
 namespace Hercules.Model.Utils
 {
-    internal static class ResourceManager
+    public static class ResourceManager
     {
         public static string GetString(string key)
         {
             ResourceLoader resourceLoader = new ResourceLoader();
-            
-            return resourceLoader.GetString(key);
+
+            string result = resourceLoader.GetString(key);
+
+            if (string.IsNullOrWhiteSpace(result))
+            {
+                throw new ArgumentException($"Cannot find text with key '{key}'.");
+            }
+
+            return result;
         }
 
         public static string FormatString(string key, params object[] args)
         {
-            ResourceLoader resourceLoader = new ResourceLoader();
-
-            return string.Format(CultureInfo.CurrentCulture, resourceLoader.GetString(key), args) ?? key;
+            return string.Format(CultureInfo.CurrentCulture, GetString(key), args) ?? key;
         }
     }
 }

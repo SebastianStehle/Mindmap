@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// IDialogService.cs
+// IMessageDialogService.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle

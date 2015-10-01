@@ -6,7 +6,6 @@
 // All rights reserved.
 // ==========================================================================
 
-using GP.Windows;
 using Hercules.Model.Utils;
 
 namespace Hercules.Model.Layouting.Default
@@ -17,35 +16,19 @@ namespace Hercules.Model.Layouting.Default
 
         public int ElementMargin { get; set; }
 
-        public void UpdateLayout(Document document, IRenderer renderer)
+        public void UpdateLayout(Document document, IRenderScene scene)
         {
-            Guard.NotNull(document, nameof(document));
-            Guard.NotNull(renderer, nameof(renderer));
-
-            LayoutProcess process = new LayoutProcess(document, this, renderer);
-
-            process.UpdateLayout();
+            new DefaultLayoutProcess(this, scene, document).UpdateLayout();
         }
 
-        public void UpdateVisibility(Document document, IRenderer renderer)
+        public void UpdateVisibility(Document document, IRenderScene scene)
         {
-            Guard.NotNull(document, nameof(document));
-            Guard.NotNull(renderer, nameof(renderer));
-
-            VisibilityUpdater updater = new VisibilityUpdater(document, renderer);
-
-            updater.UpdateVisibility();
+            new VisibilityUpdater<DefaultLayout>(this, scene, document).UpdateVisibility();
         }
 
-        public AttachTarget CalculateAttachTarget(Document document, IRenderer renderer, Node movingNode, Rect2 movementBounds)
+        public AttachTarget CalculateAttachTarget(Document document, IRenderScene scene, Node movingNode, Rect2 movementBounds)
         {
-            Guard.NotNull(document, nameof(document));
-            Guard.NotNull(renderer, nameof(renderer));
-            Guard.NotNull(movingNode, nameof(movingNode));
-
-            PreviewCalculationProcess process = new PreviewCalculationProcess(document, this, renderer, movingNode, movementBounds);
-
-            return process.CalculateAttachTarget();
+            return new DefaultPreviewCalculationProcess(this, scene, document, movingNode, movementBounds).CalculateAttachTarget();
         }
     }
 }

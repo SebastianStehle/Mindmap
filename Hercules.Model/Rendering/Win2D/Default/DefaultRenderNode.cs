@@ -8,9 +8,9 @@
 
 using System.Numerics;
 using Windows.UI;
+using Hercules.Model.Layouting;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
-using Hercules.Model.Layouting;
 
 namespace Hercules.Model.Rendering.Win2D.Default
 {
@@ -82,7 +82,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
         {
             ClearHull();
 
-            hullGeometry = GeometryBuilder.ComputeHullGeometry(session, Renderer, this);
+            hullGeometry = GeometryBuilder.ComputeHullGeometry(session, Scene, this);
         }
 
         protected override void RenderHullInternal(CanvasDrawingSession session, ThemeColor color)

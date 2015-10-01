@@ -20,7 +20,5 @@ namespace Hercules.Model.Layouting
         ThemeColor FindColor(NodeBase node);
 
         IPrintDocumentSource Print(float padding = 20);
-
-        IRenderNode FindRenderNode(NodeBase node);
     }
 }

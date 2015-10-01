@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// HullRenderer.cs
+// GeometryBuilder.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using GP.Windows;
+using GP.Windows.UI;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
@@ -22,10 +23,10 @@ namespace Hercules.Model.Rendering.Win2D
         private const float Radius = 10;
         private const float Padding = 10;
 
-        public static CanvasGeometry ComputeHullGeometry(CanvasDrawingSession session, Win2DRenderer renderer, Win2DRenderNode renderNode)
+        public static CanvasGeometry ComputeHullGeometry(CanvasDrawingSession session, Scene scene, Win2DRenderNode renderNode)
         {
+            Guard.NotNull(scene, nameof(scene));
             Guard.NotNull(session, nameof(session));
-            Guard.NotNull(renderer, nameof(renderer));
             Guard.NotNull(renderNode, nameof(renderNode));
 
             NodeBase node = renderNode.Node;
@@ -34,7 +35,7 @@ namespace Hercules.Model.Rendering.Win2D
             {
                 IList<Rect2> childBounds =
                     node.AllChildren()
-                        .Select(x => (Win2DRenderNode)renderer.FindRenderNode(x)).Union(new Win2DRenderNode[] { renderNode }).Where(x => x.IsVisible)
+                        .Select(x => (Win2DRenderNode)scene.FindRenderNode(x)).Union(new Win2DRenderNode[] { renderNode }).Where(x => x.IsVisible)
                         .Select(x => Rect2.Inflate(new Rect2(x.TargetPosition, x.RenderSize), new Vector2(Padding, Padding)))
                         .ToList();
 
@@ -129,10 +130,8 @@ namespace Hercules.Model.Rendering.Win2D
                     CalculateCenterR(targetRect, ref point2, targetOffset);
                 }
 
-                point2.X = (float)Math.Round(point2.X);
-                point2.Y = (float)Math.Round(point2.Y);
-                point1.X = (float)Math.Round(point1.X);
-                point1.Y = (float)Math.Round(point1.Y);
+                MathHelper.Round(ref point1);
+                MathHelper.Round(ref point2);
 
                 return CreateFilledPath(session, point1, point2);
             }
@@ -191,10 +190,8 @@ namespace Hercules.Model.Rendering.Win2D
                     CalculateCenterR(targetRect, ref point2, targetOffset);
                 }
 
-                point2.X = (float)Math.Round(point2.X);
-                point2.Y = (float)Math.Round(point2.Y);
-                point1.X = (float)Math.Round(point1.X);
-                point1.Y = (float)Math.Round(point1.Y);
+                MathHelper.Round(ref point1);
+                MathHelper.Round(ref point2);
 
                 return CreateLinePath(session, point1, point2);
             }

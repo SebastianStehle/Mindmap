@@ -30,7 +30,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
         public DefaultRootNode(NodeBase node, Win2DRenderer renderer) 
             : base(node, renderer)
         {
-            textRenderer = new Win2DTextRenderer(20, node, 80);
+            textRenderer = new Win2DTextRenderer(node) { FontSize = 20, MinWidth = 80 };
         }
 
         protected override void ArrangeInternal(CanvasDrawingSession session)

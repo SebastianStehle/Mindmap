@@ -136,11 +136,13 @@
     <Compile Include="Layouting\AttachTarget.cs" />
     <Compile Include="Layouting\Default\DefaultLayout.cs" />
     <Compile Include="Layouting\Default\DefaultLayoutNode.cs" />
-    <Compile Include="Layouting\Default\LayoutProcess.cs" />
-    <Compile Include="Layouting\Default\PreviewCalculationProcess.cs" />
+    <Compile Include="Layouting\Default\DefaultLayoutProcess.cs" />
+    <Compile Include="Layouting\Default\DefaultPreviewCalculationProcess.cs" />
     <Compile Include="Layouting\ILayout.cs" />
     <Compile Include="Layouting\IRenderer.cs" />
     <Compile Include="Layouting\IRenderNode.cs" />
+    <Compile Include="Layouting\IRenderScene.cs" />
+    <Compile Include="Layouting\LayoutOperationBase.cs" />
     <Compile Include="Layouting\VisibilityUpdater.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="NodeBase.cs" />
@@ -156,7 +158,11 @@
     <Compile Include="Rendering\Win2D\Default\DefaultRendererFactory.cs" />
     <Compile Include="Rendering\Win2D\GeometryBuilder.cs" />
     <Compile Include="Rendering\Win2D\IRendererFactory.cs" />
+    <Compile Include="Rendering\Win2D\Printer.cs" />
     <Compile Include="Rendering\Win2D\RenderFlags.cs" />
+    <Compile Include="Rendering\Win2D\Scene.cs" />
+    <Compile Include="Rendering\Win2D\SceneTransformator.cs" />
+    <Compile Include="Rendering\Win2D\ScreenshotMaker.cs" />
     <Compile Include="Rendering\Win2D\Win2DResourceManager.cs" />
     <Compile Include="ToggleHullCommand.cs" />
     <Compile Include="Utils\ConvexHull.cs" />

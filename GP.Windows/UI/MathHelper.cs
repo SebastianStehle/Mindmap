@@ -206,6 +206,61 @@ namespace GP.Windows.UI
         }
 
         /// <summary>
+        /// Rounds the vector
+        /// </summary>
+        /// <param name="value">The vector to round.</param>
+        /// <returns>
+        /// The rounded value.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 Round(this Vector2 value)
+        {
+            return new Vector2((float)Math.Round(value.X), (float)Math.Round(value.Y));
+        }
+
+        /// <summary>
+        /// Rounds the vector
+        /// </summary>
+        /// <param name="value">The vector to round.</param>
+        /// <returns>
+        /// The rounded value.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Round(ref Vector2 value)
+        {
+            value.X = (float)Math.Round(value.X);
+            value.Y = (float)Math.Round(value.Y);
+        }
+
+        /// <summary>
+        /// Rounds the vector
+        /// </summary>
+        /// <param name="value">The vector to round.</param>
+        /// <returns>
+        /// The rounded value.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector3 Round(this Vector3 value)
+        {
+            return new Vector3((float)Math.Round(value.X), (float)Math.Round(value.Y), (float)Math.Round(value.Z));
+        }
+
+        /// <summary>
+        /// Rounds the vector
+        /// </summary>
+        /// <param name="value">The vector to round.</param>
+        /// <returns>
+        /// The rounded value.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void Round(ref Vector3 value)
+        {
+            value.X = (float)Math.Round(value.X);
+            value.Y = (float)Math.Round(value.Y);
+            value.Z = (float)Math.Round(value.Z);
+        }
+
+        /// <summary>
         /// Determines if two points are about equal.
         /// </summary>
         /// <param name="l">The first point.</param>

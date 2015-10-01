@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// PreviewCalculationProcess.cs
+// DefaultPreviewCalculationProcess.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -15,14 +15,11 @@ using Hercules.Model.Utils;
 
 namespace Hercules.Model.Layouting.Default
 {
-    internal sealed class PreviewCalculationProcess
+    internal sealed class DefaultPreviewCalculationProcess : LayoutOperation<DefaultLayout>
     {
-        private readonly IRenderer renderer;
         private readonly Node movingNode;
         private readonly Vector2 movementCenter;
         private readonly Rect2 movementBounds;
-        private readonly Document document;
-        private readonly DefaultLayout layout;
         private IRenderNode parentRenderNode;
         private IReadOnlyList<NodeBase> children;
         private AnchorPoint anchor;
@@ -33,11 +30,11 @@ namespace Hercules.Model.Layouting.Default
         private int renderIndex;
         private int? insertIndex;
 
-        public PreviewCalculationProcess(Document document, DefaultLayout layout, IRenderer renderer, Node movingNode, Rect2 movementBounds)
+        public DefaultPreviewCalculationProcess(DefaultLayout layout, IRenderScene scene, Document document, Node movingNode, Rect2 movementBounds)
+            : base(layout, scene, document)
         {
-            this.layout = layout;
-            this.document = document;
-            this.renderer = renderer;
+            Guard.NotNull(movingNode, nameof(movingNode));
+
             this.movingNode = movingNode;
             this.movementBounds = movementBounds;
             this.movementCenter = movementBounds.Center;
@@ -70,8 +67,8 @@ namespace Hercules.Model.Layouting.Default
 
         private void CalculateCenter()
         {
-            float x = 0.5f * document.Size.X;
-            float y = 0.5f * document.Size.Y;
+            float x = 0.5f * Document.Size.X;
+            float y = 0.5f * Document.Size.Y;
 
             mindmapCenter = new Vector2(x, y);
         }
@@ -163,7 +160,7 @@ namespace Hercules.Model.Layouting.Default
             {
                 Node otherNode = collection[i];
 
-                Rect2 bounds = renderer.FindRenderNode(otherNode).Bounds;
+                Rect2 bounds = Scene.FindRenderNode(otherNode).Bounds;
 
                 if (centerY > bounds.CenterY)
                 {
@@ -181,7 +178,7 @@ namespace Hercules.Model.Layouting.Default
 
         private void CalculatePreviewPoint()
         {
-            parentRenderNode = renderer.FindRenderNode(parent);
+            parentRenderNode = Scene.FindRenderNode(parent);
 
             float y = parentRenderNode.Position.Y;
             float x;
@@ -194,20 +191,20 @@ namespace Hercules.Model.Layouting.Default
                 {
                     if (!insertIndex.HasValue || insertIndex >= children.Count - 1)
                     {
-                        Rect2 bounds = renderer.FindRenderNode(children.Last()).Bounds;
+                        Rect2 bounds = Scene.FindRenderNode(children.Last()).Bounds;
 
-                        y = bounds.Bottom + (layout.ElementMargin * 2f) + (movementBounds.Height * 0.5f);
+                        y = bounds.Bottom + (Layout.ElementMargin * 2f) + (movementBounds.Height * 0.5f);
                     }
                     else if (insertIndex == 0)
                     {
-                        Rect2 bounds = renderer.FindRenderNode(children.First()).Bounds;
+                        Rect2 bounds = Scene.FindRenderNode(children.First()).Bounds;
 
-                        y = bounds.Top - layout.ElementMargin - (movementBounds.Height * 0.5f);
+                        y = bounds.Top - Layout.ElementMargin - (movementBounds.Height * 0.5f);
                     }
                     else
                     {
-                        Rect2 bounds1 = renderer.FindRenderNode(children[renderIndex - 1]).Bounds;
-                        Rect2 bounds2 = renderer.FindRenderNode(children[renderIndex + 0]).Bounds;
+                        Rect2 bounds1 = Scene.FindRenderNode(children[renderIndex - 1]).Bounds;
+                        Rect2 bounds2 = Scene.FindRenderNode(children[renderIndex + 0]).Bounds;
 
                         y = (bounds1.CenterY + bounds2.CenterY) * 0.5f;
                     }
@@ -220,11 +217,11 @@ namespace Hercules.Model.Layouting.Default
             {
                 if (side == NodeSide.Right)
                 {
-                    x = parentRenderNode.Position.X + parentRenderNode.RenderSize.X + layout.HorizontalMargin;
+                    x = parentRenderNode.Position.X + parentRenderNode.RenderSize.X + Layout.HorizontalMargin;
                 }
                 else
                 {
-                    x = parentRenderNode.Position.X - parentRenderNode.RenderSize.X - layout.HorizontalMargin;
+                    x = parentRenderNode.Position.X - parentRenderNode.RenderSize.X - Layout.HorizontalMargin;
 
                     anchor = AnchorPoint.Right;
                 }
@@ -235,13 +232,13 @@ namespace Hercules.Model.Layouting.Default
             {
                 if (side == NodeSide.Right)
                 {
-                    x = parentRenderNode.Position.X + (parentRenderNode.RenderSize.X * 0.5f) + layout.HorizontalMargin;
+                    x = parentRenderNode.Position.X + (parentRenderNode.RenderSize.X * 0.5f) + Layout.HorizontalMargin;
 
                     ajustWithChildren();
                 }
                 else
                 {
-                    x = parentRenderNode.Position.X - (parentRenderNode.RenderSize.X * 0.5f) - layout.HorizontalMargin;
+                    x = parentRenderNode.Position.X - (parentRenderNode.RenderSize.X * 0.5f) - Layout.HorizontalMargin;
 
                     anchor = AnchorPoint.Right;
 
@@ -256,21 +253,21 @@ namespace Hercules.Model.Layouting.Default
         {
             double rectArea = movementBounds.Width * movementBounds.Height;
 
-            foreach (NodeBase node in document.Nodes)
+            foreach (NodeBase node in Document.Nodes)
             {
                 if (node != movingNode && node != movingNode.Parent && !movingNode.HasChild(node as Node))
                 {
-                    Rect2 nodeBounds = renderer.FindRenderNode(node).Bounds;
+                    Rect2 nodeBounds = Scene.FindRenderNode(node).Bounds;
 
-                    Rect2 intersection = movementBounds.Intersect(movementBounds);
+                    Rect2 intersection = nodeBounds.Intersect(movementBounds);
 
-                    double newArea = intersection.Width * intersection.Height;
+                    double intersectionArea = intersection.Width * intersection.Height;
 
-                    if (!double.IsInfinity(newArea))
+                    if (!double.IsInfinity(intersectionArea))
                     {
                         double minArea = Math.Min(rectArea, nodeBounds.Width * nodeBounds.Height);
 
-                        if (newArea > 0.5f * minArea)
+                        if (intersectionArea > 0.5f * minArea)
                         {
                             parent = node;
                         }

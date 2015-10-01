@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// LayoutProcess.cs
+// DefaultLayoutProcess.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -12,18 +12,13 @@ using System.Numerics;
 
 namespace Hercules.Model.Layouting.Default
 {
-    internal sealed class LayoutProcess
+    internal sealed class DefaultLayoutProcess : LayoutOperation<DefaultLayout>
     {
-        private readonly Document document;
-        private readonly IRenderer renderer;
-        private readonly DefaultLayout layout;
         private Vector2 minmapCenter;
 
-        public LayoutProcess(Document document, DefaultLayout layout, IRenderer renderer)
+        public DefaultLayoutProcess(DefaultLayout layout, IRenderScene scene, Document document)
+            : base(layout, scene, document)
         {
-            this.layout = layout;
-            this.document = document;
-            this.renderer = renderer;
         }
 
         public void UpdateLayout()
@@ -37,32 +32,32 @@ namespace Hercules.Model.Layouting.Default
 
         private void CalculateCenter()
         {
-            float x = 0.5f * document.Size.X;
-            float y = 0.5f * document.Size.Y;
+            float x = 0.5f * Document.Size.X;
+            float y = 0.5f * Document.Size.Y;
 
             minmapCenter = new Vector2(x, y);
         }
 
         private void ArrangeRoot()
         {
-            DefaultLayoutNode rootLayoutNode = DefaultLayoutNode.AttachTo(document.Root, renderer.FindRenderNode(document.Root), null);
+            DefaultLayoutNode rootLayoutNode = DefaultLayoutNode.AttachTo(Document.Root, Scene.FindRenderNode(Document.Root), null);
             
             rootLayoutNode.MoveTo(minmapCenter, AnchorPoint.Center);
 
-            Arrange(rootLayoutNode, document.Root.LeftChildren, -1.0f, AnchorPoint.Right);
-            Arrange(rootLayoutNode, document.Root.RightChildren, 1.0f, AnchorPoint.Left);
+            Arrange(rootLayoutNode, Document.Root.LeftChildren, -1.0f, AnchorPoint.Right);
+            Arrange(rootLayoutNode, Document.Root.RightChildren, 1.0f, AnchorPoint.Left);
         }
 
         private void Arrange(DefaultLayoutNode root, IReadOnlyCollection<Node> children, float factor, AnchorPoint anchor)
         {
-            UpdateSizeWithChildren(root, children, document.Root.IsCollapsed);
+            UpdateSizeWithChildren(root, children, Document.Root.IsCollapsed);
 
             float x = minmapCenter.X - (factor * 0.5f * root.NodeWidth);
             float y = minmapCenter.Y;
 
             root.Position = new Vector2(x, y);
 
-            ArrangeNodes(root, children, factor, anchor, document.Root.IsCollapsed);
+            ArrangeNodes(root, children, factor, anchor, Document.Root.IsCollapsed);
         }
 
         private void ArrangeNodes(DefaultLayoutNode parent, IReadOnlyCollection<Node> children, float factor, AnchorPoint anchor, bool isCollapsed)
@@ -75,8 +70,8 @@ namespace Hercules.Model.Layouting.Default
                 {
                     x = parent.Position.X
                      + (factor * parent.NodeWidth)
-                     + (factor * layout.HorizontalMargin);
-                    y = parent.Position.Y - (parent.TreeHeight * 0.5f) + layout.ElementMargin;
+                     + (factor * Layout.HorizontalMargin);
+                    y = parent.Position.Y - (parent.TreeHeight * 0.5f) + Layout.ElementMargin;
                 }
 
                 foreach (Node child in children)
@@ -109,7 +104,7 @@ namespace Hercules.Model.Layouting.Default
                 {
                     foreach (Node child in children)
                     {
-                        DefaultLayoutNode childData = DefaultLayoutNode.AttachTo(child, renderer.FindRenderNode(child), parent);
+                        DefaultLayoutNode childData = DefaultLayoutNode.AttachTo(child, Scene.FindRenderNode(child), parent);
 
                         UpdateSizeWithChildren(childData, child.Children, child.IsCollapsed);
                     }
@@ -121,7 +116,7 @@ namespace Hercules.Model.Layouting.Default
 
                     foreach (Node child in children)
                     {
-                        DefaultLayoutNode childData = DefaultLayoutNode.AttachTo(child, renderer.FindRenderNode(child), parent);
+                        DefaultLayoutNode childData = DefaultLayoutNode.AttachTo(child, Scene.FindRenderNode(child), parent);
 
                         UpdateSizeWithChildren(childData, child.Children, child.IsCollapsed);
 
@@ -129,20 +124,20 @@ namespace Hercules.Model.Layouting.Default
                         childsW = Math.Max(childData.TreeWidth, childsW);
                     }
 
-                    treeW += layout.HorizontalMargin;
+                    treeW += Layout.HorizontalMargin;
                     treeW += childsW;
                     treeH = childsH;
                 }
             }
 
-            treeH += 2 * layout.ElementMargin;
+            treeH += 2 * Layout.ElementMargin;
 
             parent.TreeSize = new Vector2(treeW, treeH);
         }
 
         private void ReleaseLayoutNodes()
         {
-            foreach (NodeBase node in document.Nodes)
+            foreach (NodeBase node in Document.Nodes)
             {
                 node.LayoutData = null;
             }

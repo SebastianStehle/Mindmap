@@ -12,10 +12,10 @@ namespace Hercules.Model.Layouting
 {
     public interface ILayout
     {
-        AttachTarget CalculateAttachTarget(Document document, IRenderer renderer, Node movingNode, Rect2 movementBounds);
+        AttachTarget CalculateAttachTarget(Document document, IRenderScene scene, Node movingNode, Rect2 movementBounds);
 
-        void UpdateLayout(Document document, IRenderer renderer);
+        void UpdateLayout(Document document, IRenderScene scene);
 
-        void UpdateVisibility(Document document, IRenderer renderer);
+        void UpdateVisibility(Document document, IRenderScene scene);
     }
 }

@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Numerics;
 using Windows.Foundation;
+
 // ReSharper disable ImpureMethodCallOnReadonlyValueField
 
 namespace Hercules.Model.Utils

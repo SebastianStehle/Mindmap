@@ -9,6 +9,8 @@
 using System;
 using System.Numerics;
 using Windows.UI;
+using GP.Windows;
+using GP.Windows.UI;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
@@ -19,18 +21,12 @@ namespace Hercules.Model.Rendering.Win2D
     {
         private readonly Vector2 padding = new Vector2(2, 2);
         private readonly NodeBase node;
-        private readonly CanvasTextFormat textFormat;
-        private readonly float fontSize;
-        private readonly float minWidth;
         private CanvasTextLayout textLayout;
+        private CanvasTextFormat textFormat;
         private Vector2 renderSize;
         private Vector2 renderPosition;
+        private float fontSize;
         private float minSize;
-
-        public float FontSize
-        {
-            get { return fontSize; }
-        }
 
         public Rect2 Bounds
         {
@@ -47,15 +43,45 @@ namespace Hercules.Model.Rendering.Win2D
             get { return renderSize; }
         }
 
+        public float MinWidth { get; set; }
+
+        public float FontSize
+        {
+            get
+            {
+                return fontSize;
+            }
+            set
+            {
+                if (Math.Abs(fontSize - value) > float.Epsilon)
+                {
+                    fontSize = value;
+
+                    textFormat = null;
+                }
+            }
+        }
+
+        private CanvasTextFormat TextFormat
+        {
+            get
+            {
+                if (textFormat == null)
+                {
+                    textFormat = new CanvasTextFormat { FontSize = fontSize, WordWrapping = CanvasWordWrapping.NoWrap, HorizontalAlignment = CanvasHorizontalAlignment.Center, VerticalAlignment = CanvasVerticalAlignment.Center };
+                }
+
+                return textFormat;
+            }
+        }
+
         public string OverrideText { get; set; }
 
-        public Win2DTextRenderer(float fontSize, NodeBase node, float minWidth)
+        public Win2DTextRenderer(NodeBase node)
         {
-            this.fontSize = fontSize;
-            this.minWidth = minWidth;
-            this.node = node;
+            Guard.NotNull(node, nameof(node));
 
-            textFormat = new CanvasTextFormat { FontSize = fontSize, WordWrapping = CanvasWordWrapping.NoWrap, HorizontalAlignment = CanvasHorizontalAlignment.Center, VerticalAlignment = CanvasVerticalAlignment.Center };
+            this.node = node;
         }
 
         public void Measure(CanvasDrawingSession session)
@@ -66,7 +92,7 @@ namespace Hercules.Model.Rendering.Win2D
 
             if (!string.IsNullOrWhiteSpace(text))
             {
-                textLayout = new CanvasTextLayout(session, text, textFormat, 0.0f, 0.0f);
+                textLayout = new CanvasTextLayout(session, text, TextFormat, 0.0f, 0.0f);
 
                 renderSize = new Vector2(
                     (float)textLayout.DrawBounds.Width,
@@ -77,11 +103,13 @@ namespace Hercules.Model.Rendering.Win2D
                 renderSize = Vector2.Zero;
             }
 
-            renderSize.X = (float)Math.Round(Math.Max(renderSize.X, minSize));
-            renderSize.X = (float)Math.Round(Math.Max(renderSize.X, minWidth));
-            renderSize.Y = (float)Math.Round(Math.Max(renderSize.Y, minSize));
+            renderSize.X = Math.Max(renderSize.X, minSize);
+            renderSize.X = Math.Max(renderSize.X, MinWidth);
+            renderSize.Y = Math.Max(renderSize.Y, minSize);
 
-            if (Math.Abs(renderSize.Y % 2 - 1) < float.Epsilon)
+            MathHelper.Round(ref renderSize);
+
+            if (Math.Abs((renderSize.Y % 2) - 1) < float.Epsilon)
             {
                 renderSize.Y += 1;
             }
@@ -102,7 +130,7 @@ namespace Hercules.Model.Rendering.Win2D
 #endif
             if (!string.IsNullOrWhiteSpace(text))
             {
-                session.DrawText(text, Bounds, Colors.Black, textFormat);
+                session.DrawText(text, Bounds, Colors.Black, TextFormat);
             }
         }
     }

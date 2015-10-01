@@ -44,6 +44,11 @@ namespace Hercules.Model.Rendering.Win2D
             get { return renderer.Resources; }
         }
 
+        public Scene Scene
+        {
+            get { return renderer.Scene; }
+        }
+
         public NodeBase Node
         {
             get { return node; }

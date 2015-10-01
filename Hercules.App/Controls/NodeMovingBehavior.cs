@@ -10,6 +10,7 @@ using System.Numerics;
 using Windows.UI.Xaml.Input;
 using GP.Windows.UI.Interactivity;
 using Hercules.Model.Rendering.Win2D;
+// ReSharper disable LoopCanBePartlyConvertedToQuery
 
 namespace Hercules.App.Controls
 {
@@ -45,7 +46,7 @@ namespace Hercules.App.Controls
             {
                 Vector2 position = AssociatedElement.Renderer.GetMindmapPosition(e.Position.ToVector2());
 
-                foreach (Win2DRenderNode renderNode in AssociatedElement.Renderer.RenderNodes)
+                foreach (Win2DRenderNode renderNode in AssociatedElement.Scene.DiagramNodes)
                 {
                     if (renderNode.HitTest(position) && renderNode != AssociatedElement.TextEditingNode)
                     {

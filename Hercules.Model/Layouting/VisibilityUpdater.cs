@@ -7,26 +7,20 @@
 // ==========================================================================
 
 using System.Collections.Generic;
-using GP.Windows;
 
 namespace Hercules.Model.Layouting
 {
-    public sealed class VisibilityUpdater
+    public sealed class VisibilityUpdater<TLayout> : LayoutOperation<TLayout> where TLayout : ILayout
     {
-        private readonly Document document;
-        private readonly IRenderer renderer;
-
-        public VisibilityUpdater(Document document, IRenderer renderer)
+        public VisibilityUpdater(TLayout layout, IRenderScene scene, Document document)
+            : base(layout, scene, document)
         {
-            Guard.NotNull(document, nameof(document));
-            Guard.NotNull(renderer, nameof(renderer));
-
-            this.document = document;
-            this.renderer = renderer;
         }
 
         public void UpdateVisibility()
         {
+            Document document = Document;
+
             UpdateVisibility(document.Root.IsCollapsed, document.Root.LeftChildren);
             UpdateVisibility(document.Root.IsCollapsed, document.Root.RightChildren);
         }
@@ -35,7 +29,7 @@ namespace Hercules.Model.Layouting
         {
             foreach (Node child in children)
             {
-                IRenderNode renderNode = renderer.FindRenderNode(child);
+                IRenderNode renderNode = Scene.FindRenderNode(child);
                 
                 if (!isCollapsed)
                 {

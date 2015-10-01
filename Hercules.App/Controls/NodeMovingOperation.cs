@@ -60,7 +60,7 @@ namespace Hercules.App.Controls
 
             if (clone.Bounds.Width > 0 && clone.Bounds.Height > 0)
             {
-                AttachTarget target = layout.CalculateAttachTarget(document, renderer, nodeMoving, clone.Bounds);
+                AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, nodeMoving, clone.Bounds);
 
                 if (target != null)
                 {
@@ -79,7 +79,7 @@ namespace Hercules.App.Controls
             {
                 if ((initialPosition - clone.Position).LengthSquared() > 100)
                 {
-                    AttachTarget target = layout.CalculateAttachTarget(document, renderer, nodeMoving, clone.Bounds);
+                    AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, nodeMoving, clone.Bounds);
 
                     if (target != null)
                     {

@@ -1,23 +1,14 @@
 ﻿// ==========================================================================
-// RenderFlags.cs
+// IRenderScene.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
-using System;
-
-namespace Hercules.Model.Rendering.Win2D
+namespace Hercules.Model.Layouting
 {
-    [Flags]
-    public enum RenderFlags
+    public interface IRenderScene
     {
-        Plain = 0,
-
-        RenderControls = 1,
-        RenderCustoms = 2,
-
-        Full = RenderControls | RenderCustoms
+        IRenderNode FindRenderNode(NodeBase node);
     }
 }

@@ -13,8 +13,8 @@ namespace Hercules.Model.Layouting.Default
     internal sealed class DefaultLayoutNode
     {
         private readonly DefaultLayoutNode parent;
-        private readonly IRenderNode renderNode;
         private readonly Vector2 nodeSize;
+        private readonly IRenderNode renderNode;
 
         public Vector2 Position { get; set; }
 

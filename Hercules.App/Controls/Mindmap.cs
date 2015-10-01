@@ -44,6 +44,11 @@ namespace Hercules.App.Controls
             get { return renderer; }
         }
 
+        public Scene Scene
+        {
+            get { return renderer.Scene; }
+        }
+
         public static readonly DependencyProperty LayoutProperty =
             DependencyProperty.Register("Layout", typeof(ILayout), typeof(Mindmap), new PropertyMetadata(null, OnLayoutChanged));
         public ILayout Layout
@@ -263,7 +268,7 @@ namespace Hercules.App.Controls
             {
                 if (Document?.SelectedNode != null)
                 {
-                    Win2DRenderNode renderNode = (Win2DRenderNode)r.FindRenderNode(Document.SelectedNode);
+                    Win2DRenderNode renderNode = (Win2DRenderNode)r.Scene.FindRenderNode(Document.SelectedNode);
 
                     textEditor.BeginEdit(renderNode);
 
@@ -278,7 +283,7 @@ namespace Hercules.App.Controls
             {
                 Vector2 position = r.GetMindmapPosition(e.GetPosition(this).ToVector2());
 
-                foreach (Win2DRenderNode renderNode in r.RenderNodes)
+                foreach (Win2DRenderNode renderNode in r.Scene.DiagramNodes)
                 {
                     if (renderNode.HitTest(position))
                     {

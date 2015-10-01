@@ -18,11 +18,6 @@ namespace Hercules.Model.Layouting
         private readonly AnchorPoint anchor;
         private readonly int? index;
 
-        public Vector2 Position
-        {
-            get { return position; }
-        }
-
         public AnchorPoint Anchor
         {
             get { return anchor; }
@@ -31,6 +26,11 @@ namespace Hercules.Model.Layouting
         public NodeSide NodeSide
         {
             get { return nodeSide; }
+        }
+
+        public Vector2 Position
+        {
+            get { return position; }
         }
 
         public NodeBase Parent

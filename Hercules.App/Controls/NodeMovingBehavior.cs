@@ -23,6 +23,7 @@ namespace Hercules.App.Controls
         {
             AssociatedElement.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
 
+            AssociatedElement.PointerReleased += AssociatedElement_PointerReleased;
             AssociatedElement.ManipulationStarted += AssociatedElement_ManipulationStarted;
             AssociatedElement.ManipulationDelta += AssociatedElement_ManipulationDelta;
             AssociatedElement.ManipulationCompleted += AssociatedElement_ManipulationCompleted;
@@ -30,9 +31,15 @@ namespace Hercules.App.Controls
 
         protected override void OnDetaching()
         {
+            AssociatedElement.PointerReleased -= AssociatedElement_PointerReleased;
             AssociatedElement.ManipulationStarted -= AssociatedElement_ManipulationStarted;
             AssociatedElement.ManipulationDelta -= AssociatedElement_ManipulationDelta;
             AssociatedElement.ManipulationCompleted -= AssociatedElement_ManipulationCompleted;
+        }
+
+        private void AssociatedElement_PointerReleased(object sender, PointerRoutedEventArgs e)
+        {
+            AssociatedElement.CancelDirectManipulations();
         }
 
         private void AssociatedElement_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)

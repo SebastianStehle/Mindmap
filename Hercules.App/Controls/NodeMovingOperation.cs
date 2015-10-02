@@ -15,9 +15,9 @@ namespace Hercules.App.Controls
 {
     public sealed class NodeMovingOperation
     {
-        private readonly Node nodeMoving;
+        private readonly Node targetNode;
         private readonly Win2DRenderer renderer;
-        private readonly Win2DRenderNode clone;
+        private readonly Win2DRenderNode movingNode;
         private readonly Document document;
         private readonly ILayout layout;
         private readonly Vector2 initialPosition;
@@ -37,29 +37,26 @@ namespace Hercules.App.Controls
             return null;
         }
 
-        internal NodeMovingOperation(Mindmap mindmap, Win2DRenderNode renderNode, Node nodeMoving)
+        internal NodeMovingOperation(Mindmap mindmap, Win2DRenderNode renderNode, Node targetNode)
         {
             this.layout = mindmap.Layout;
             this.document = mindmap.Document;
             this.renderer = mindmap.Renderer;
-            this.nodeMoving = nodeMoving;
-
-            clone = renderNode.CloneUnlinked();
-
-            renderer.AddCustomNode(clone);
+            this.targetNode = targetNode;
+            this.movingNode = renderer.AddCustomNode(renderNode.CloneUnlinked());
 
             initialPosition = renderNode.RenderPosition;
         }
 
         public void Move(Vector2 translation)
         {
-            clone.MoveBy(translation);
+            movingNode.MoveBy(translation);
 
             renderer.Invalidate();
 
-            if (clone.Bounds.Width > 0 && clone.Bounds.Height > 0)
+            if (movingNode.Bounds.Width > 0 && movingNode.Bounds.Height > 0)
             {
-                AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, nodeMoving, clone.Bounds);
+                AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.Bounds);
 
                 if (target != null)
                 {
@@ -76,13 +73,13 @@ namespace Hercules.App.Controls
         {
             try
             {
-                if ((initialPosition - clone.Position).LengthSquared() > 100)
+                if ((initialPosition - movingNode.Position).LengthSquared() > 100)
                 {
-                    AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, nodeMoving, clone.Bounds);
+                    AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.Bounds);
 
                     if (target != null)
                     {
-                        nodeMoving.MoveTransactional(target.Parent, target.Index, target.NodeSide);
+                        targetNode.MoveTransactional(target.Parent, target.Index, target.NodeSide);
                     }
                 }
             }
@@ -95,7 +92,7 @@ namespace Hercules.App.Controls
         public void Cancel()
         {
             renderer.HidePreviewElement();
-            renderer.RemoveCustomNode(clone);
+            renderer.RemoveCustomNode(movingNode);
             renderer.Invalidate();
         }
     }

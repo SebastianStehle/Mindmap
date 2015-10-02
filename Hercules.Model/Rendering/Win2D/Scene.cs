@@ -96,14 +96,22 @@ namespace Hercules.Model.Rendering.Win2D
             return customNodes.Contains(renderNode) || renderNode == previewNode;
         }
 
-        public void AddCustomNode(Win2DRenderNode renderNode)
+        public Win2DRenderNode AddCustomNode(Win2DRenderNode renderNode)
         {
+            Guard.NotNull(renderNode, nameof(renderNode));
+
             customNodes.Add(renderNode);
+
+            return renderNode;
         }
 
-        public void RemoveCustomNode(Win2DRenderNode renderNode)
+        public Win2DRenderNode RemoveCustomNode(Win2DRenderNode renderNode)
         {
+            Guard.NotNull(renderNode, nameof(renderNode));
+
             customNodes.Remove(renderNode);
+
+            return renderNode;
         }
 
         public void InvalidateLayout()

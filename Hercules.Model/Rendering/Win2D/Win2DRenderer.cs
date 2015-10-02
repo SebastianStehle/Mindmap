@@ -203,14 +203,14 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
-        public void AddCustomNode(Win2DRenderNode renderNode)
+        public Win2DRenderNode AddCustomNode(Win2DRenderNode renderNode)
         {
-            scene.AddCustomNode(renderNode);
+            return scene.AddCustomNode(renderNode);
         }
 
-        public void RemoveCustomNode(Win2DRenderNode renderNode)
+        public Win2DRenderNode RemoveCustomNode(Win2DRenderNode renderNode)
         {
-            scene.RemoveCustomNode(renderNode);
+            return scene.RemoveCustomNode(renderNode);
         }
 
         public bool HandleClick(Vector2 hitPosition, out Win2DRenderNode handledNode)

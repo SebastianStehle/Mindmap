@@ -1,26 +1,26 @@
 ﻿// ==========================================================================
-// CommandInvokingEventHandler.cs
+// ToggleButtonShortcutBehavior.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
-using System;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace GP.Windows.UI.Interactivity
 {
     /// <summary>
-    /// Event arguments for an event that is raised before a command is invoked.
+    /// A behavior to invoke the command of the button when the key is pressed.
     /// </summary>
-    public sealed class CommandInvokingEventHandler : EventArgs
+    public class ToggleButtonShortcutBehavior : ShortcutBehaviorBase<ToggleButton>
     {
         /// <summary>
-        /// Gets or sets a value indicating whether this <see cref="CommandInvokingEventHandler"/> is handled.
+        /// Called when the shortcut must be invoked.
         /// </summary>
-        /// <value>
-        /// <c>true</c> if handled; otherwise, <c>false</c>.
-        /// </value>
-        public bool Handled { get; set; }
+        protected override void InvokeShortcut()
+        {
+            AssociatedElement.IsChecked = !AssociatedElement.IsChecked;
+        }
     }
 }

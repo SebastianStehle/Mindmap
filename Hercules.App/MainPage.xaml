@@ -40,8 +40,21 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
                 <AppBarButton x:Uid="AppBarButton_ListMindmaps" RequestedTheme="Dark" Icon="List" Click="ListAppBarButton_Click" Label="Mindmaps">
                     <i:Interaction.Behaviors>
-                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="L" Invoked="ListAppBarButton_Click" />
+                        <gpi:ShortcutBehavior RequiresControlModifier="True" Key="L" Invoked="ListAppBarButton_Click" />
                     </i:Interaction.Behaviors>
+                    <ToolTipService.ToolTip>
+                        <ToolTip x:Uid="AppBarButton_ListMindmaps_Help" IsOpen="{Binding ShowHelp}">CNTRL + L</ToolTip>
+                    </ToolTipService.ToolTip>
+                </AppBarButton>
+
+                <AppBarSeparator />
+
+                <AppBarButton x:Uid="AppBarButton_Help" RequestedTheme="Dark" Icon="Help" Label="Help">
+                    <AppBarButton.Flyout>
+                        <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
+                            <e:HelpView />
+                        </controls:MindmapFlyout>
+                    </AppBarButton.Flyout>
                 </AppBarButton>
 
                 <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
@@ -54,8 +67,11 @@
                                     Command="{Binding ExportHtmlCommand}" />
                                 <MenuFlyoutItem x:Uid="AppBarButton_ExportImage" Text="Image"
                                     Command="{Binding ExportImageCommand}" />
-                                <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print"
-                                    Click="PrintItem_Click" />
+                                <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Click="PrintItem_Click">
+                                    <i:Interaction.Behaviors>
+                                        <gpi:ShortcutBehavior RequiresControlModifier="True" Key="P" Invoked="PrintItem_Click" />
+                                    </i:Interaction.Behaviors>
+                                </MenuFlyoutItem>
                             </MenuFlyout>
                         </AppBarButton.Flyout>
                     </AppBarButton>
@@ -84,14 +100,14 @@
                     <AppBarButton x:Uid="AppBarButton_Undo" Icon="Undo"
                         Command="{Binding UndoCommand}">
                         <i:Interaction.Behaviors>
-                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
+                            <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
                         </i:Interaction.Behaviors>
                     </AppBarButton>
 
                     <AppBarButton x:Uid="AppBarButton_Redo" Icon="Redo"
                         Command="{Binding RedoCommand}">
                         <i:Interaction.Behaviors>
-                            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Y" />
+                            <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Y" />
                         </i:Interaction.Behaviors>
                     </AppBarButton>
                 </StackPanel>
@@ -101,8 +117,8 @@
                 <AppBarButton x:Uid="AppBarButton_RemoveNode" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}" Icon="Delete"
                     Command="{Binding RemoveCommand}">
                     <i:Interaction.Behaviors>
-                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Delete" />
-                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Back" />
+                        <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Delete" />
+                        <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Back" />
                     </i:Interaction.Behaviors>
                 </AppBarButton>
 
@@ -111,14 +127,14 @@
                 <AppBarButton x:Uid="AppBarButton_AddSibling" Style="{StaticResource AppBarButtonStyleSibling}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}"
                     Command="{Binding AddSiblingCommand}">
                     <i:Interaction.Behaviors>
-                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Enter" />
+                        <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Enter" />
                     </i:Interaction.Behaviors>
                 </AppBarButton>
 
                 <AppBarButton x:Uid="AppBarButton_AddChild" Style="{StaticResource AppBarButtonStyleChild}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}"
                     Command="{Binding AddChildCommand}" >
                     <i:Interaction.Behaviors>
-                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Tab" />
+                        <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Tab" />
                     </i:Interaction.Behaviors>
                 </AppBarButton>
             </StackPanel>
@@ -185,7 +201,7 @@
                                                 <m:RenameView MindmapItem="{Binding}" />
                                             </controls:MindmapFlyout>
                                         </FlyoutBase.AttachedFlyout>
-                                        
+
                                         <Grid RightTapped="Grid_RightTapped" Background="Transparent">
                                             <FlyoutBase.AttachedFlyout>
                                                 <MenuFlyout>
@@ -223,11 +239,12 @@
             <SplitView.Content>
                 <Grid>
                     <i:Interaction.Behaviors>
-                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Left" Command="{Binding SelectLeftCommand}" />
-                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Right" Command="{Binding SelectRightCommand}" />
                         <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Up" Command="{Binding SelectTopCommand}" />
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Left" Command="{Binding SelectLeftCommand}" />
                         <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Down" Command="{Binding SelectBottomCommand}" />
-                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="T" Invoked="EditTextCommand_Invoked" />
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Right" Command="{Binding SelectRightCommand}" />
+                        
+                        <gpi:ShortcutBehavior RequiresControlModifier="True" Key="T" Invoked="EditTextCommand_Invoked" />
                     </i:Interaction.Behaviors>
 
                     <gpc:TiledBackground TileSize="60" />
@@ -238,14 +255,14 @@
                         </controls:Mindmap.Layout>
                         <i:Interaction.Behaviors>
                             <controls:NodeMovingBehavior />
-                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Enter" Command="{Binding AddSiblingCommand}" />
                             <gpi:CommandShortcutBehavior ListenToControl="True" Key="Tab" Command="{Binding AddChildCommand}" />
                             <gpi:CommandShortcutBehavior ListenToControl="True" Key="Back" Command="{Binding RemoveCommand}" />
+                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Enter" Command="{Binding AddSiblingCommand}" />
                             <gpi:CommandShortcutBehavior ListenToControl="True" Key="Delete" Command="{Binding RemoveCommand}" />
-                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Left" Command="{Binding SelectLeftCommand}" />
-                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Right" Command="{Binding SelectRightCommand}" />
                             <gpi:CommandShortcutBehavior ListenToControl="True" Key="Up" Command="{Binding SelectTopCommand}" />
+                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Left" Command="{Binding SelectLeftCommand}" />
                             <gpi:CommandShortcutBehavior ListenToControl="True" Key="Down" Command="{Binding SelectBottomCommand}" />
+                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Right" Command="{Binding SelectRightCommand}" />
                         </i:Interaction.Behaviors>
                     </controls:Mindmap>
 

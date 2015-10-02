@@ -196,7 +196,7 @@
     <value>Print Mindmap</value>
   </data>
   <data name="AppBarButton_Print.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Print to paper or export as PDF</value>
+    <value>Print to paper or export as PDF (CNTRL + P)</value>
   </data>
   <data name="AppBarButton_Redo.Label" xml:space="preserve">
     <value>Redo</value>

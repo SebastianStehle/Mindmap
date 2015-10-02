@@ -97,6 +97,7 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Strings\en-US\Help.html" />
     <None Include="Hercules.App_StoreKey.pfx" />
     <None Include="project.json" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
@@ -137,6 +138,9 @@
     </Compile>
     <Compile Include="Modules\Editor\Views\EditIconView.xaml.cs">
       <DependentUpon>EditIconView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Editor\Views\HelpView.xaml.cs">
+      <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Mindmaps\ViewModels\MindmapsViewModel.cs" />
     <Compile Include="Modules\Mindmaps\Views\RenameView.xaml.cs">
@@ -259,6 +263,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modules\Editor\Views\HelpView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Mindmaps\Views\RenameView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -289,9 +297,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ViewModels\" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

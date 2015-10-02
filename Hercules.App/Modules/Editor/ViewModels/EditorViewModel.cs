@@ -11,6 +11,7 @@ using Windows.UI;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
+using GP.Windows;
 using Hercules.App.Components;
 using Hercules.App.Messages;
 using Hercules.Model;
@@ -41,6 +42,9 @@ namespace Hercules.App.Modules.Editor.ViewModels
         private RelayCommand selectLeftCommand;
         private RelayCommand selectRightCommand;
         private RelayCommand selectBottomCommand;
+
+        [NotifyUI]
+        public bool ShowHelp { get; set; }
 
         [Dependency]
         public IDocumentStore DocumentStore { get; set; }

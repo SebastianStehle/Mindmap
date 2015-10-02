@@ -20,23 +20,23 @@ namespace UnitTests
         {
             InitializeComponent();
         }
-        
+
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
 #if DEBUG
             DebugSettings.EnableFrameRateCounter |= Debugger.IsAttached;
 #endif
             Frame rootFrame = Window.Current.Content as Frame;
-            
+
             if (rootFrame == null)
             {
                 rootFrame = new Frame();
 
                 Window.Current.Content = rootFrame;
             }
-            
+
             UnitTestClient.CreateDefaultUI();
-            
+
             Window.Current.Activate();
 
             UnitTestClient.Run(args.Arguments);

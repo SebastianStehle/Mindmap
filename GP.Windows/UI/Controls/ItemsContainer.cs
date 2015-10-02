@@ -24,11 +24,11 @@ namespace GP.Windows.UI.Controls
     public abstract class ItemsContainer<TItem, TControl> : LoadableControl where TControl : FrameworkElement, new()
     {
         private const string PartPanel = "Panel";
-        
+
         private readonly Dictionary<TItem, TControl> controls = new Dictionary<TItem, TControl>();
         private readonly Dictionary<TItem, TControl> controlCache = new Dictionary<TItem, TControl>();
         private Panel controlsPanel;
-            
+
         /// <summary>
         /// Defines the <see cref="Items"/> dependency property.
         /// </summary>

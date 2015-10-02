@@ -36,7 +36,7 @@ namespace UnitTests.Tests
         public void TestRedoForSingleItem()
         {
             MockupAction action = new MockupAction();
-            
+
             undoRedoManager.RegisterExecutedAction(action);
             undoRedoManager.UndoAll();
             undoRedoManager.Redo();
@@ -74,7 +74,7 @@ namespace UnitTests.Tests
         public void TestUndoForSingleItem()
         {
             MockupAction action = new MockupAction();
-            
+
             undoRedoManager.RegisterExecutedAction(action);
             undoRedoManager.Undo();
 
@@ -94,7 +94,7 @@ namespace UnitTests.Tests
         public void TestUndoAllForSingleItem()
         {
             MockupAction action = new MockupAction();
-            
+
             undoRedoManager.RegisterExecutedAction(action);
             undoRedoManager.UndoAll();
 
@@ -109,7 +109,7 @@ namespace UnitTests.Tests
         {
             MockupAction action1 = new MockupAction();
             MockupAction action2 = new MockupAction();
-            
+
             undoRedoManager.RegisterExecutedAction(action1);
             undoRedoManager.RegisterExecutedAction(action2);
             undoRedoManager.UndoAll();

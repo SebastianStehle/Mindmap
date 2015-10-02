@@ -28,11 +28,11 @@ namespace Hercules.Model.Export.Html
             using (MemoryStream memoryStream = new MemoryStream())
             {
                 GenerateOutline(document, renderer, memoryStream, true, noTextPlaceholder);
-                
+
                 memoryStream.Position = 0;
 
                 byte[] buffer = memoryStream.ToArray();
-                
+
                 return Encoding.UTF8.GetString(buffer, 0, buffer.Length);
             }
         }

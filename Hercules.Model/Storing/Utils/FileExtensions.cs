@@ -17,7 +17,7 @@ namespace Hercules.Model.Storing.Utils
     internal static class FileExtensions
     {
         public static async Task<StorageFolder> GetOrCreateFolderAsync(this StorageFolder localFolder, string name)
-        { 
+        {
             StorageFolder folder;
             try
             {

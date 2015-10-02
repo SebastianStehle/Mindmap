@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+
 // ReSharper disable InconsistentNaming
 
 namespace GP.Windows

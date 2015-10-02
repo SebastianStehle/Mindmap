@@ -14,6 +14,21 @@ namespace Hercules.Model
 {
     public static class DocumentExtensions
     {
+        public static void RemoveSelectedNodeTransactional(this Document document)
+        {
+            document?.SelectedNode.RemoveTransactional();
+        }
+
+        public static void AddChildToSelectedNodeTransactional(this Document document)
+        {
+            document?.SelectedNode.AddChildTransactional();
+        }
+
+        public static void AddSibilingToSelectedNodeTransactional(this Document document)
+        {
+            document?.SelectedNode.AddSibilingransactional();
+        }
+
         public static NodeBase SelectRightOfSelectedNode(this Document document)
         {
             Guard.NotNull(document, nameof(document));
@@ -82,7 +97,7 @@ namespace Hercules.Model
             return result;
         }
 
-        public static NodeBase SelectedTopOfSelectedNode(this Document document)
+        public static NodeBase SelectTopOfSelectedNode(this Document document)
         {
             Guard.NotNull(document, nameof(document));
 
@@ -129,7 +144,7 @@ namespace Hercules.Model
             return result;
         }
 
-        public static NodeBase SelectedBottomOfSelectedNode(this Document document)
+        public static NodeBase SelectBottomOfSelectedNode(this Document document)
         {
             Guard.NotNull(document, nameof(document));
 

@@ -124,7 +124,7 @@
     <value>Add Child</value>
   </data>
   <data name="AppBarButton_AddChild.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Add children to selected subtopic (CTRL + M)</value>
+    <value>Add children to selected subtopic (CTRL + TAB)</value>
   </data>
   <data name="AppBarButton_AddSibling.Label" xml:space="preserve">
     <value>Add Sibling</value>
@@ -133,7 +133,7 @@
     <value>Add Sibling</value>
   </data>
   <data name="AppBarButton_AddSibling.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Add sibiling to selected subtopic (CTRL + N)</value>
+    <value>Add sibiling to selected subtopic (CTRL + ENTER)</value>
   </data>
   <data name="AppBarButton_ChangeColor.Label" xml:space="preserve">
     <value>Colors</value>

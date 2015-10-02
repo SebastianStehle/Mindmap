@@ -10,6 +10,7 @@ using System.Numerics;
 using Windows.UI.Xaml.Input;
 using GP.Windows.UI.Interactivity;
 using Hercules.Model.Rendering.Win2D;
+
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 
 namespace Hercules.App.Controls

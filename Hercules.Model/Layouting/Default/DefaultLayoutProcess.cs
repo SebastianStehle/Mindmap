@@ -41,7 +41,7 @@ namespace Hercules.Model.Layouting.Default
         private void ArrangeRoot()
         {
             DefaultLayoutNode rootLayoutNode = DefaultLayoutNode.AttachTo(Document.Root, Scene.FindRenderNode(Document.Root), null);
-            
+
             rootLayoutNode.MoveTo(minmapCenter, AnchorPoint.Center);
 
             Arrange(rootLayoutNode, Document.Root.LeftChildren, -1.0f, AnchorPoint.Right);

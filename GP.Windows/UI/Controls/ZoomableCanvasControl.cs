@@ -173,7 +173,7 @@ namespace GP.Windows.UI.Controls
                         swapChain.ResizeBuffers(w, h);
                     }
 
-                    swapChain.TransformMatrix = 
+                    swapChain.TransformMatrix =
                         Matrix3x2.CreateScale(
                             1f / scaleX,
                             1f / scaleY);

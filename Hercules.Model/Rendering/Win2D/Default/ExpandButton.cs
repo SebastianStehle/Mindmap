@@ -42,12 +42,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
 
             if (isHit)
             {
-                string transactionName = ResourceManager.GetString("TransactionName_ExpandCollapse");
-
-                node.Document.MakeTransaction(transactionName, commands =>
-                {
-                    commands.Apply(new ToggleCollapseCommand(node));
-                });
+                node.ToggleCollapseTransactional();
             }
 
             return isHit;

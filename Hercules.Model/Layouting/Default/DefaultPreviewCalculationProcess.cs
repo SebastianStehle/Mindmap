@@ -13,6 +13,8 @@ using System.Numerics;
 using GP.Windows;
 using Hercules.Model.Utils;
 
+// ReSharper disable LoopCanBePartlyConvertedToQuery
+
 namespace Hercules.Model.Layouting.Default
 {
     internal sealed class DefaultPreviewCalculationProcess : LayoutOperation<DefaultLayout>
@@ -61,7 +63,7 @@ namespace Hercules.Model.Layouting.Default
 
                 return new AttachTarget(parent, side, insertIndex, position, anchor);
             }
-            
+
             return null;
         }
 

@@ -66,12 +66,13 @@ namespace Hercules.Model.Rendering.Win2D
         {
             get
             {
-                if (textFormat == null)
+                return textFormat ?? (textFormat = new CanvasTextFormat
                 {
-                    textFormat = new CanvasTextFormat { FontSize = fontSize, WordWrapping = CanvasWordWrapping.NoWrap, HorizontalAlignment = CanvasHorizontalAlignment.Center, VerticalAlignment = CanvasVerticalAlignment.Center };
-                }
-
-                return textFormat;
+                    FontSize = fontSize,
+                    WordWrapping = CanvasWordWrapping.NoWrap,
+                    HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                    VerticalAlignment = CanvasVerticalAlignment.Center
+                });
             }
         }
 

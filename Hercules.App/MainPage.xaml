@@ -4,7 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:ic="using:Microsoft.Xaml.Interactions.Core" 
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:im="using:Microsoft.Xaml.Interactions.Media"
     xmlns:e="using:Hercules.App.Modules.Editor.Views"
     xmlns:m="using:Hercules.App.Modules.Mindmaps.Views"
@@ -38,7 +38,11 @@
 
         <Grid Background="{StaticResource ThemeMainBrush}" RequestedTheme="Dark">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
-                <AppBarButton x:Uid="AppBarButton_ListMindmaps" RequestedTheme="Dark" Icon="List" Click="AppBarButton_Click" Label="Mindmaps" />
+                <AppBarButton x:Uid="AppBarButton_ListMindmaps" RequestedTheme="Dark" Icon="List" Click="ListAppBarButton_Click" Label="Mindmaps">
+                    <i:Interaction.Behaviors>
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="L" Invoked="ListAppBarButton_Click" />
+                    </i:Interaction.Behaviors>
+                </AppBarButton>
 
                 <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
                     <AppBarSeparator />
@@ -97,8 +101,8 @@
                 <AppBarButton x:Uid="AppBarButton_RemoveNode" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}" Icon="Delete"
                     Command="{Binding RemoveCommand}">
                     <i:Interaction.Behaviors>
-                        <gpi:CommandShortcutBehavior Invoking="RemoveButton_Invoking" RequiresControlModifier="False" Key="Delete" />
-                        <gpi:CommandShortcutBehavior Invoking="RemoveButton_Invoking" RequiresControlModifier="False" Key="Back" />
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Delete" />
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Back" />
                     </i:Interaction.Behaviors>
                 </AppBarButton>
 
@@ -107,14 +111,14 @@
                 <AppBarButton x:Uid="AppBarButton_AddSibling" Style="{StaticResource AppBarButtonStyleSibling}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}"
                     Command="{Binding AddSiblingCommand}">
                     <i:Interaction.Behaviors>
-                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="N" />
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Enter" />
                     </i:Interaction.Behaviors>
                 </AppBarButton>
 
                 <AppBarButton x:Uid="AppBarButton_AddChild" Style="{StaticResource AppBarButtonStyleChild}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}"
                     Command="{Binding AddChildCommand}" >
                     <i:Interaction.Behaviors>
-                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="M" />
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Tab" />
                     </i:Interaction.Behaviors>
                 </AppBarButton>
             </StackPanel>
@@ -172,7 +176,7 @@
                                 FontWeight="Bold" />
                         </Border>
 
-                        <ListBox Grid.Row="1" ItemContainerStyle="{StaticResource ThemeListBoxItemStyle}" x:Name="List" SelectedItem="{Binding SelectedMindmap, Mode=TwoWay}"  ItemsSource="{Binding Mindmaps}" Loaded="ListBox_Loaded">
+                        <ListBox Grid.Row="1" ItemContainerStyle="{StaticResource ThemeListBoxItemStyle}" x:Name="MindmapList" SelectedItem="{Binding SelectedMindmap, Mode=TwoWay}"  ItemsSource="{Binding Mindmaps}" Loaded="ListBox_Loaded">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <Grid x:Name="Root">
@@ -219,11 +223,11 @@
             <SplitView.Content>
                 <Grid>
                     <i:Interaction.Behaviors>
-                        <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Left" Invoked="MoveLeftCommand_Invoked" />
-                        <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Right" Invoked="MoveRightCommand_Invoked" />
-                        <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Up" Invoked="MoveTopCommand_Invoked" />
-                        <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="Down" Invoked="MoveBottomCommand_Invoked" />
-                        <gpi:CommandShortcutBehavior RequiresShiftModifier="True" Key="T" Invoked="EditTextCommand_Invoked" />
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Left" Command="{Binding SelectLeftCommand}" />
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Right" Command="{Binding SelectRightCommand}" />
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Up" Command="{Binding SelectTopCommand}" />
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Down" Command="{Binding SelectBottomCommand}" />
+                        <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="T" Invoked="EditTextCommand_Invoked" />
                     </i:Interaction.Behaviors>
 
                     <gpc:TiledBackground TileSize="60" />
@@ -234,6 +238,14 @@
                         </controls:Mindmap.Layout>
                         <i:Interaction.Behaviors>
                             <controls:NodeMovingBehavior />
+                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Enter" Command="{Binding AddSiblingCommand}" />
+                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Tab" Command="{Binding AddChildCommand}" />
+                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Back" Command="{Binding RemoveCommand}" />
+                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Delete" Command="{Binding RemoveCommand}" />
+                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Left" Command="{Binding SelectLeftCommand}" />
+                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Right" Command="{Binding SelectRightCommand}" />
+                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Up" Command="{Binding SelectTopCommand}" />
+                            <gpi:CommandShortcutBehavior ListenToControl="True" Key="Down" Command="{Binding SelectBottomCommand}" />
                         </i:Interaction.Behaviors>
                     </controls:Mindmap>
 

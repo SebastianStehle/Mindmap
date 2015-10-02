@@ -27,7 +27,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             get { return textRenderer; }
         }
 
-        public DefaultRootNode(NodeBase node, Win2DRenderer renderer) 
+        public DefaultRootNode(NodeBase node, Win2DRenderer renderer)
             : base(node, renderer)
         {
             textRenderer = new Win2DTextRenderer(node) { FontSize = 20, MinWidth = 80 };

@@ -16,6 +16,8 @@ using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
 
+// ReSharper disable LoopCanBePartlyConvertedToQuery
+
 namespace Hercules.Model.Rendering.Win2D
 {
     public sealed class Scene : DisposableObject, IRenderScene
@@ -247,7 +249,7 @@ namespace Hercules.Model.Rendering.Win2D
                 if (renderNode.HandleClick(hitPosition))
                 {
                     handledNode = renderNode;
-                    
+
                     return true;
                 }
             }

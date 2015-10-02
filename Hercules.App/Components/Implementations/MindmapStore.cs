@@ -16,6 +16,7 @@ using GP.Windows;
 using Hercules.Model;
 using Hercules.Model.Storing;
 using Hercules.Model.Utils;
+
 // ReSharper disable ImplicitlyCapturedClosure
 
 namespace Hercules.App.Components.Implementations
@@ -101,21 +102,11 @@ namespace Hercules.App.Components.Implementations
             {
                 Document document = new Document(Guid.NewGuid());
 
-                RenameRoot(name, document);
+                document.Root.ChangeTextTransactional(name);
 
                 DocumentRef documentRef = await documentStore.CreateAsync(name, document);
 
                 allMindmaps.Insert(0, new MindmapRef(documentRef, documentStore));
-            });
-        }
-
-        private static void RenameRoot(string name, Document document)
-        {
-            string transactionName = ResourceManager.GetString("TransactionName_ChangeText");
-
-            document.MakeTransaction(transactionName, commands =>
-            {
-                commands.Apply(new ChangeTextCommand(document.Root, name, true));
             });
         }
 

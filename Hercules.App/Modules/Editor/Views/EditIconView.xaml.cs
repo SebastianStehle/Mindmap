@@ -9,7 +9,6 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Hercules.Model;
-using Hercules.Model.Utils;
 
 namespace Hercules.App.Modules.Editor.Views
 {
@@ -64,12 +63,7 @@ namespace Hercules.App.Modules.Editor.Views
 
                 if (selected != oldIconKey)
                 {
-                    string tansactionName = ResourceManager.GetString("TransactionName_EditIcon");
-
-                    Document.MakeTransaction(tansactionName, commands =>
-                    {
-                        commands.Apply(new ChangeIconKeyCommand(selectedNode, selected));
-                    });
+                    selectedNode.ChangeIconKeyTransactional(selected);
                 }
             }
         }

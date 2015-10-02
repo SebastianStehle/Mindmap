@@ -62,13 +62,13 @@ namespace Hercules.Model.Utils
             {
                 currentThreadIsProcessingItems = true;
                 try
-                { 
+                {
                     while (true)
                     {
                         Task item;
 
                         lock (tasks)
-                        { 
+                        {
                             if (tasks.Count == 0)
                             {
                                 --delegatesQueuedOrRunning;
@@ -82,9 +82,9 @@ namespace Hercules.Model.Utils
                         TryExecuteTask(item);
                     }
                 }
-                finally 
-                { 
-                    currentThreadIsProcessingItems = false; 
+                finally
+                {
+                    currentThreadIsProcessingItems = false;
                 }
             });
 #pragma warning restore 4014

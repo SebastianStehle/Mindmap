@@ -87,7 +87,7 @@ namespace Hercules.Model
                 }
             }
         }
-        
+
         public NodeSide NodeSide
         {
             get
@@ -295,5 +295,5 @@ namespace Hercules.Model
                 Document.Select(this);
             }
         }
-    }    
+    }
 }

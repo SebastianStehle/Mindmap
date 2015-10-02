@@ -31,14 +31,14 @@ namespace Hercules.App
 
             Suspending += OnSuspending;
         }
-        
+
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
 #if DEBUG
             DebugSettings.EnableFrameRateCounter |= Debugger.IsAttached;
 #endif
             Frame rootFrame = Window.Current.Content as Frame;
-            
+
             if (rootFrame == null)
             {
                 rootFrame = new Frame();
@@ -55,7 +55,7 @@ namespace Hercules.App
 
             Window.Current.Activate();
         }
-        
+
         private static void OnNavigationFailed(object sender, NavigationFailedEventArgs e)
         {
             throw new Exception($"Failed to load Page {e.SourcePageType.FullName}");

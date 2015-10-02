@@ -82,7 +82,7 @@ namespace GP.Windows.UI
             byte b = (byte)(integer & 0xFF);
             byte g = (byte)((integer >> 8) & 0xFF);
             byte r = (byte)((integer >> 16) & 0xFF);
-            
+
             Color color = Color.FromArgb(0xFF, r, g, b);
 
             double h;
@@ -149,7 +149,7 @@ namespace GP.Windows.UI
             byte p = (byte)(value * (1 - saturation));
             byte q = (byte)(value * (1 - (f * saturation)));
             byte t = (byte)(value * (1 - ((1 - f) * saturation)));
-            
+
             switch (hi)
             {
                 case 0:

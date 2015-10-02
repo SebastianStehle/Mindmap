@@ -9,7 +9,6 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Hercules.Model;
-using Hercules.Model.Utils;
 
 namespace Hercules.App.Modules.Editor.Views
 {
@@ -17,7 +16,7 @@ namespace Hercules.App.Modules.Editor.Views
     {
         private int oldColor;
         private int oldIndex;
-        
+
         public EditColorView()
         {
             InitializeComponent();
@@ -55,17 +54,12 @@ namespace Hercules.App.Modules.Editor.Views
 
                 if (index != oldColor)
                 {
-                    string tansactionName = ResourceManager.GetString("TransactionName_EditColor");
+                    selectedNode.ChangeColorTransactional(index);
 
-                    Document.MakeTransaction(tansactionName, commands =>
+                    if (ShowHullButton.IsChecked == true && !selectedNode.IsShowingHull)
                     {
-                        commands.Apply(new ChangeColorCommand(selectedNode, index));
-
-                        if (ShowHullButton.IsChecked == true && !selectedNode.IsShowingHull)
-                        {
-                            commands.Apply(new ToggleHullCommand(selectedNode));
-                        }
-                    });
+                        selectedNode.ToggleHullTransactional();
+                    }
                 }
             }
         }
@@ -76,12 +70,7 @@ namespace Hercules.App.Modules.Editor.Views
 
             if (selectedNode != null)
             {
-                string tansactionName = ResourceManager.GetString("TransactionName_ToggleHull");
-
-                Document.MakeTransaction(tansactionName, commands =>
-                {
-                    commands.Apply(new ToggleHullCommand(selectedNode));
-                });
+                selectedNode.ToggleHullTransactional();
             }
         }
     }

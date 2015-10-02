@@ -11,13 +11,10 @@ using Windows.Graphics.Printing;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using GP.Windows.UI.Interactivity;
 using Hercules.App.Modules.Mindmaps.ViewModels;
-using Hercules.Model;
 using Hercules.Model.Utils;
 
 namespace Hercules.App
@@ -95,60 +92,16 @@ namespace Hercules.App
             });
         }
 
-        private void RemoveButton_Invoking(object sender, CommandInvokingEventHandler e)
-        {
-            TextBox textBox = FocusManager.GetFocusedElement() as TextBox;
-
-            if (textBox != null)
-            {
-                e.Handled = true;
-            }
-        }
-
-        private void MoveLeftCommand_Invoked(object sender, RoutedEventArgs e)
-        {
-            if (Mindmap.Document != null)
-            {
-                Mindmap.Document.SelectLeftOfSelectedNode();
-                Mindmap.Renderer.Invalidate();
-            }
-        }
-
-        private void MoveRightCommand_Invoked(object sender, RoutedEventArgs e)
-        {
-            if (Mindmap.Document != null)
-            {
-                Mindmap.Document.SelectRightOfSelectedNode();
-                Mindmap.Renderer.Invalidate();
-            }
-        }
-
-        private void MoveTopCommand_Invoked(object sender, RoutedEventArgs e)
-        {
-            if (Mindmap.Document != null)
-            {
-                Mindmap.Document.SelectedTopOfSelectedNode();
-                Mindmap.Renderer.Invalidate();
-            }
-        }
-
-        private void MoveBottomCommand_Invoked(object sender, RoutedEventArgs e)
-        {
-            if (Mindmap.Document != null)
-            {
-                Mindmap.Document.SelectedBottomOfSelectedNode();
-                Mindmap.Renderer.Invalidate();
-            }
-        }
-
         private void EditTextCommand_Invoked(object sender, RoutedEventArgs e)
         {
             Mindmap.EditText();
         }
 
-        private void AppBarButton_Click(object sender, RoutedEventArgs e)
+        private void ListAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             SplitView.IsPaneOpen = !SplitView.IsPaneOpen;
+
+            MindmapList.Focus(FocusState.Programmatic);
         }
 
         private void Grid_RightTapped(object sender, RightTappedRoutedEventArgs e)

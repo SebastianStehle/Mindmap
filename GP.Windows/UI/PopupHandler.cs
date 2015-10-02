@@ -18,7 +18,7 @@ namespace GP.Windows.UI
     /// <summary>
     /// Manages the current popup and allows to simply show any view as popup with one method call.
     /// </summary>
-    public static class PopupHandler 
+    public static class PopupHandler
     {
         private static FrameworkElement popupView;
         private static Popup popupContainer;
@@ -235,17 +235,17 @@ namespace GP.Windows.UI
                 Func<double> calculateTop =
                     () => popupOffset.Value.X;
 
-                Func<double> calculateLeft = 
+                Func<double> calculateLeft =
                     () => popupOffset.Value.X;
 
-                Func<double> calculateRight = 
+                Func<double> calculateRight =
                     () => Window.Current.Bounds.Width - popupView.ActualWidth - popupOffset.Value.X;
 
-                Func<double> calculateBottom = 
+                Func<double> calculateBottom =
                     () => Window.Current.Bounds.Height - popupView.ActualHeight - popupOffset.Value.Y;
 
-                double x = 0;
-                double y = 0;
+                double x;
+                double y;
 
                 switch (popupMode)
                 {
@@ -269,13 +269,17 @@ namespace GP.Windows.UI
                         x = 0.5 * (Window.Current.Bounds.Width  - popupView.ActualWidth);
                         y = 0.5 * (Window.Current.Bounds.Height - popupView.ActualWidth);
                         break;
+                    default:
+                        x = 0.5 * (Window.Current.Bounds.Width - popupView.ActualWidth);
+                        y = 0.5 * (Window.Current.Bounds.Height - popupView.ActualWidth);
+                        break;
                 }
 
                 popupContainer.VerticalOffset = y;
                 popupContainer.HorizontalOffset = x;
             }
         }
-       
+
         private static void Current_SizeChanged(object sender, WindowSizeChangedEventArgs e)
         {
             UpdatePopupOffset();

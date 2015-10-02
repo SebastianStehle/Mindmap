@@ -17,7 +17,7 @@ namespace Hercules.Model.Utils
     public sealed class ConvexHull
     {
         private readonly List<Vector2> points;
-        
+
         public IReadOnlyList<Vector2> Points
         {
             get

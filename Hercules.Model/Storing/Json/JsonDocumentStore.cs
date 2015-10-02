@@ -29,7 +29,7 @@ namespace Hercules.Model.Storing.Json
         private readonly TaskFactory taskFactory = new TaskFactory(new LimitedThreadsScheduler());
         private readonly string subfolderName;
         private StorageFolder localFolder;
-          
+
         public JsonDocumentStore()
             : this(DefaultSubfolder)
         {
@@ -136,7 +136,7 @@ namespace Hercules.Model.Storing.Json
 
             return documentRef.Rename(file.DisplayName);
         }
-        
+
         private async Task RenameInternalAsync(DocumentRef documentRef, string newName)
         {
             StorageFile file = await GetFileAsync(documentRef);

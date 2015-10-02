@@ -21,7 +21,7 @@ namespace Hercules.Model
         private readonly Vector2 size = new Vector2(5000, 5000);
         private CompositeUndoRedoAction transaction;
         private NodeBase selectedNode;
-        
+
         public event EventHandler<NodeEventArgs> NodeAdded;
 
         public event EventHandler<NodeEventArgs> NodeRemoved;
@@ -129,7 +129,7 @@ namespace Hercules.Model
         {
             return nodeCache.GetOrCreateNode(id, factory);
         }
-        
+
         public void Apply(CommandBase command)
         {
             if (IsChangeTracking)

@@ -17,7 +17,7 @@ namespace GP.Windows.UI.Controls
     /// Interface for different canvas implementaitons.
     /// </summary>
     public interface ICanvasControl
-    {    
+    {
         /// <summary>
         /// Provides access to the core dispatcher associated to this object.
         /// </summary>

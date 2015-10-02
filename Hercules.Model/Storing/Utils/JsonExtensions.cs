@@ -35,7 +35,7 @@ namespace Hercules.Model.Storing.Utils
                 writer.Flush();
             }
         }
-        
+
         public static T DeserializeAsJsonFromStream<T>(this Stream stream, JsonSerializerSettings settings = null)
         {
             using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))

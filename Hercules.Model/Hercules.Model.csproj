@@ -150,6 +150,7 @@
     <Compile Include="NodeEventArgs.cs" />
     <Compile Include="NodeExtensions.cs" />
     <Compile Include="NodeSide.cs" />
+    <Compile Include="NodeTransactionExtensions.cs" />
     <Compile Include="PropertiesBag.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyValue.cs" />

@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
 using System.Numerics;
 using Windows.Foundation;
 using Windows.System;
@@ -16,7 +17,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Hercules.Model;
 using Hercules.Model.Rendering.Win2D;
-using Hercules.Model.Utils;
 
 namespace Hercules.App.Controls
 {
@@ -30,10 +30,12 @@ namespace Hercules.App.Controls
             get { return editingNode; }
         }
 
-        private bool IsEditing
+        public bool IsEditing
         {
             get { return editingNode != null; }
         }
+
+        public event EventHandler EditingEnded;
 
         public TextEditor()
         {
@@ -42,7 +44,7 @@ namespace Hercules.App.Controls
 
         protected override void OnLostFocus(RoutedEventArgs e)
         {
-            CancelEdit();
+            EndEdit(true);
 
             base.OnLostFocus(e);
         }
@@ -57,7 +59,7 @@ namespace Hercules.App.Controls
             base.OnGotFocus(e);
         }
 
-        protected override void OnKeyDown(KeyRoutedEventArgs e)
+        protected override void OnKeyUp(KeyRoutedEventArgs e)
         {
             if (IsEditing)
             {
@@ -67,20 +69,18 @@ namespace Hercules.App.Controls
 
                     if ((shiftKeyState & CoreVirtualKeyStates.Down) != CoreVirtualKeyStates.Down)
                     {
-                        EndEdit();
-
-                        e.Handled = true;
+                        EndEdit(true);
                     }
                 }
                 else if (e.Key == VirtualKey.Escape)
                 {
-                    CancelEdit();
-
-                    e.Handled = true;
+                    CancelEdit(true);
                 }
             }
 
-            base.OnKeyDown(e);
+            base.OnKeyUp(e);
+
+            e.Handled = true;
         }
 
         public void UpdateTransform()
@@ -95,7 +95,7 @@ namespace Hercules.App.Controls
             {
                 if (editingNode != renderNode)
                 {
-                    EndEdit();
+                    EndEdit(false);
 
                     BindToNode(renderNode);
 
@@ -110,33 +110,33 @@ namespace Hercules.App.Controls
             }
         }
 
-        public void EndEdit()
+        public void EndEdit(bool invokeEvent)
         {
             if (IsEditing)
             {
                 try
                 {
-                    string transactionName = ResourceManager.GetString("TransactionName_ChangeText");
-
-                    editingNode.Node.Document.MakeTransaction(transactionName, commands =>
-                    {
-                        commands.Apply(new ChangeTextCommand(editingNode.Node, Text, true));
-                    });
+                    editingNode.Node.ChangeTextTransactional(Text);
                 }
                 finally
                 {
-                    CancelEdit();
+                    CancelEdit(invokeEvent);
                 }
             }
         }
 
-        public void CancelEdit()
+        public void CancelEdit(bool invokeEvent)
         {
             if (IsEditing)
             {
                 Hide();
 
                 UnbindFromNode();
+
+                if (invokeEvent)
+                {
+                    OnEditingEnded();
+                }
             }
         }
 
@@ -163,7 +163,7 @@ namespace Hercules.App.Controls
             if (IsEditing)
             {
                 Vector2 renderSize = editingNode.TextRenderer.RenderSize;
-                
+
                 Size actualSize = base.MeasureOverride(availableSize);
 
                 double minSizeX = renderSize.X + Padding.Left + Padding.Right + BorderThickness.Left + BorderThickness.Right;
@@ -216,6 +216,11 @@ namespace Hercules.App.Controls
         private void Hide()
         {
             Visibility = Visibility.Collapsed;
+        }
+
+        private void OnEditingEnded()
+        {
+            EditingEnded?.Invoke(this, EventArgs.Empty);
         }
     }
 }

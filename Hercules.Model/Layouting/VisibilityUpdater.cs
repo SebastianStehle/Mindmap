@@ -30,7 +30,7 @@ namespace Hercules.Model.Layouting
             foreach (Node child in children)
             {
                 IRenderNode renderNode = Scene.FindRenderNode(child);
-                
+
                 if (!isCollapsed)
                 {
                     renderNode.Show();

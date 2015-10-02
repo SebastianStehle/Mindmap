@@ -37,6 +37,10 @@ namespace Hercules.App.Modules.Editor.ViewModels
         private RelayCommand addSiblingCommand;
         private RelayCommand exportHtmlCommand;
         private RelayCommand exportImageCommand;
+        private RelayCommand selectTopCommand;
+        private RelayCommand selectLeftCommand;
+        private RelayCommand selectRightCommand;
+        private RelayCommand selectBottomCommand;
 
         [Dependency]
         public IDocumentStore DocumentStore { get; set; }
@@ -134,23 +138,57 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
+        public RelayCommand SelectTopCommand
+        {
+            get
+            {
+                return selectTopCommand ?? (selectTopCommand = new RelayCommand(() =>
+                {
+                    Document.SelectTopOfSelectedNode();
+                }));
+            }
+        }
+
+        public RelayCommand SelectRightCommand
+        {
+            get
+            {
+                return selectRightCommand ?? (selectRightCommand = new RelayCommand(() =>
+                {
+                    Document.SelectRightOfSelectedNode();
+                }));
+            }
+        }
+
+        public RelayCommand SelectBottomCommand
+        {
+            get
+            {
+                return selectBottomCommand ?? (selectBottomCommand = new RelayCommand(() =>
+                {
+                    Document.SelectBottomOfSelectedNode();
+                }));
+            }
+        }
+
+        public RelayCommand SelectLeftCommand
+        {
+            get
+            {
+                return selectLeftCommand ?? (selectLeftCommand = new RelayCommand(() =>
+                {
+                    Document.SelectLeftOfSelectedNode();
+                }));
+            }
+        }
+
         public RelayCommand RemoveCommand
         {
             get
             {
                 return removeCommand ?? (removeCommand = new RelayCommand(() =>
                 {
-                    Node selectedNormalNode = Document.SelectedNode as Node;
-
-                    if (selectedNormalNode != null)
-                    {
-                        string tansactionName = ResourceManager.GetString("TransactionName_RemoveNode");
-
-                        Document.MakeTransaction(tansactionName, commands =>
-                        {
-                            commands.Apply(new RemoveChildCommand(selectedNormalNode.Parent, selectedNormalNode));
-                        });
-                    }
+                    Document.RemoveSelectedNodeTransactional();
                 }));
             }
         }
@@ -161,17 +199,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return addChildCommand ?? (addChildCommand = new RelayCommand(() =>
                 {
-                    NodeBase selectedNode = Document.SelectedNode;
-
-                    if (selectedNode != null)
-                    {
-                        string tansactionName = ResourceManager.GetString("TransactionName_AddChild");
-
-                        Document.MakeTransaction(tansactionName, commands =>
-                        {
-                            commands.Apply(new InsertChildCommand(selectedNode, null, NodeSide.Undefined));
-                        });
-                    }
+                    Document.AddChildToSelectedNodeTransactional();
                 }));
             }
         }
@@ -182,17 +210,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return addSiblingCommand ?? (addSiblingCommand = new RelayCommand(() =>
                 {
-                    Node selectedNormalNode = Document.SelectedNode as Node;
-
-                    if (selectedNormalNode != null)
-                    {
-                        string tansactionName = ResourceManager.GetString("TransactionName_AddSibling");
-
-                        Document.MakeTransaction(tansactionName, commands =>
-                        {
-                            commands.Apply(new InsertChildCommand(selectedNormalNode.Parent, null, selectedNormalNode.NodeSide));
-                        });
-                    }
+                    Document.AddSibilingToSelectedNodeTransactional();
                 }));
             }
         }

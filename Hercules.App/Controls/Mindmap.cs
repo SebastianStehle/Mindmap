@@ -8,6 +8,7 @@
 
 using System;
 using System.Numerics;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
@@ -16,6 +17,8 @@ using Hercules.Model.Layouting;
 using Hercules.Model.Rendering.Win2D;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+
+// ReSharper disable LoopCanBePartlyConvertedToQuery
 
 namespace Hercules.App.Controls
 {
@@ -111,6 +114,11 @@ namespace Hercules.App.Controls
         private void BindTextEditor()
         {
             textEditor = GetTemplateChild(TextBoxPart) as TextEditor;
+
+            if (textEditor != null)
+            {
+                textEditor.EditingEnded += TextEditor_EditingEnded;
+            }
         }
 
         private void BindScrollViewer()
@@ -213,7 +221,7 @@ namespace Hercules.App.Controls
         {
             if (textEditor != null)
             {
-                textEditor.CancelEdit();
+                textEditor.CancelEdit(true);
             }
 
             if (renderer != null)
@@ -252,13 +260,34 @@ namespace Hercules.App.Controls
             }
         }
 
+        protected override void OnKeyUp(KeyRoutedEventArgs e)
+        {
+            if (e.Key == VirtualKey.Space)
+            {
+                EditText();
+
+                e.Handled = true;
+            }
+
+            base.OnKeyUp(e);
+        }
+
+        private void TextEditor_EditingEnded(object sender, EventArgs e)
+        {
+            Focus(FocusState.Programmatic);
+        }
+
         protected override void OnPointerPressed(PointerRoutedEventArgs e)
         {
+            Focus(FocusState.Programmatic);
+
             e.Handled = true;
         }
 
         protected override void OnPointerReleased(PointerRoutedEventArgs e)
         {
+            Focus(FocusState.Programmatic);
+
             e.Handled = true;
         }
 
@@ -286,7 +315,6 @@ namespace Hercules.App.Controls
                     if (renderNode.HitTest(position))
                     {
                         textEditor.BeginEdit(renderNode);
-                        
                         break;
                     }
                 }
@@ -305,7 +333,7 @@ namespace Hercules.App.Controls
 
                     if (!r.HandleClick(position, out handledNode) || handledNode != textEditor.EditingNode)
                     {
-                        textEditor.EndEdit();
+                        textEditor.EndEdit(true);
                     }
                 }
             });

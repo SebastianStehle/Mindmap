@@ -40,7 +40,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             get { return new Vector2(0, -VerticalOffset); }
         }
 
-        public DefaultLevel2Node(NodeBase node, Win2DRenderer renderer) 
+        public DefaultLevel2Node(NodeBase node, Win2DRenderer renderer)
             : base(node, renderer)
         {
             textRenderer = new Win2DTextRenderer(node) { FontSize = 14, MinWidth = 60 };
@@ -115,7 +115,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             ICanvasBrush borderBrush = Resources.ThemeDarkBrush(color);
 
             ICanvasBrush lineBrush = Resources.Brush(PathColor, 1);
-            
+
             Vector2 left = new Vector2(
                 (float)Math.Round(Bounds.Left - 1),
                 (float)Math.Round(Bounds.CenterY) + VerticalOffset);

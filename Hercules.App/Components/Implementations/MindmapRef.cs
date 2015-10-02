@@ -20,12 +20,12 @@ namespace Hercules.App.Components.Implementations
     {
         private readonly IDocumentStore documentStore;
         private readonly DocumentRef documentRef;
-        
+
         public string Title
         {
             get { return documentRef.DocumentName; }
         }
-        
+
         public DateTimeOffset LastUpdate
         {
             get { return documentRef.LastUpdate; }

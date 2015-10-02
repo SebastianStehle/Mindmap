@@ -21,10 +21,10 @@ namespace Hercules.App.Assets
                 return images;
             }
         }
-        
+
         public AssetProvider()
         {
-            images = new List<string> 
+            images = new List<string>
             {
                 "/Assets/Icons/Alerts.png",
                 "/Assets/Icons/Arrow_Left.png",

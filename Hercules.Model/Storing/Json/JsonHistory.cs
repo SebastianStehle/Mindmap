@@ -11,6 +11,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
+// ReSharper disable LoopCanBePartlyConvertedToQuery
+
 namespace Hercules.Model.Storing.Json
 {
     [DataContract]

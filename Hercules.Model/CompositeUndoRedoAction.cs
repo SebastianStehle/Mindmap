@@ -36,7 +36,7 @@ namespace Hercules.Model
         public CompositeUndoRedoAction(string name, DateTimeOffset date)
         {
             Guard.NotNullOrEmpty(name, nameof(name));
-          
+
             this.date = date;
             this.name = name;
         }

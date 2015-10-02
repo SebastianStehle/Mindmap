@@ -10,7 +10,6 @@ using System.Numerics;
 using Hercules.Model;
 using Hercules.Model.Layouting;
 using Hercules.Model.Rendering.Win2D;
-using Hercules.Model.Utils;
 
 namespace Hercules.App.Controls
 {
@@ -44,7 +43,7 @@ namespace Hercules.App.Controls
             this.document = mindmap.Document;
             this.renderer = mindmap.Renderer;
             this.nodeMoving = nodeMoving;
-            
+
             clone = renderNode.CloneUnlinked();
 
             renderer.AddCustomNode(clone);
@@ -83,14 +82,7 @@ namespace Hercules.App.Controls
 
                     if (target != null)
                     {
-                        string tansactionName = ResourceManager.GetString("TransactionName_MoveNode");
-
-                        document.MakeTransaction(tansactionName, commands =>
-                        {
-                            commands.Apply(new RemoveChildCommand(nodeMoving.Parent, nodeMoving));
-
-                            commands.Apply(new InsertChildCommand(target.Parent, target.Index, target.NodeSide, nodeMoving));
-                        });
+                        nodeMoving.MoveTransactional(target.Parent, target.Index, target.NodeSide);
                     }
                 }
             }

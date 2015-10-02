@@ -7,11 +7,13 @@
 // ==========================================================================
 
 using System;
+using System.Windows.Input;
 using Windows.ApplicationModel;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 namespace GP.Windows.UI.Interactivity
 {
@@ -70,14 +72,23 @@ namespace GP.Windows.UI.Interactivity
         /// <value>The key that must be pressed when the command should be invoked.</value>
         public VirtualKey Key
         {
-            get
-            {
-                return (VirtualKey)GetValue(KeyProperty);
-            }
-            set
-            {
-                SetValue(KeyProperty, value);
-            }
+            get { return (VirtualKey)GetValue(KeyProperty); }
+            set { SetValue(KeyProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="ListenToControl"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty ListenToControlProperty =
+            DependencyProperty.Register("ListenToControl", typeof(bool), typeof(CommandShortcutBehavior), new PropertyMetadata(false));
+        /// <summary>
+        /// Gets or sets a value indicating if the keys of the control will be handled.
+        /// </summary>
+        /// <value>A value indicating if the keys of the control will be handled.</value>
+        public bool ListenToControl
+        {
+            get { return (bool)GetValue(ListenToControlProperty); }
+            set { SetValue(ListenToControlProperty, value); }
         }
 
         /// <summary>
@@ -88,7 +99,7 @@ namespace GP.Windows.UI.Interactivity
         /// <summary>
         /// Gets or sets a value indicating if the control key must be pressed.
         /// </summary>
-        /// <value>A value indicating if the control key must be pressed..</value>
+        /// <value>A value indicating if the control key must be pressed.</value>
         public bool RequiresControlModifier
         {
             get { return (bool)GetValue(RequiresControlModifierProperty); }
@@ -103,11 +114,41 @@ namespace GP.Windows.UI.Interactivity
         /// <summary>
         /// Gets or sets a value indicating if the shift key must be pressed.
         /// </summary>
-        /// <value>A value indicating if the shift key must be pressed..</value>
+        /// <value>A value indicating if the shift key must be pressed.</value>
         public bool RequiresShiftModifier
         {
             get { return (bool)GetValue(RequiresShiftModifierProperty); }
             set { SetValue(RequiresShiftModifierProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="Command"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CommandProperty =
+            DependencyProperty.Register("Command", typeof(ICommand), typeof(CommandShortcutBehavior), new PropertyMetadata(null));
+        /// <summary>
+        /// Gets or sets the command to invoke.
+        /// </summary>
+        /// <value>The command to invoke.</value>
+        public ICommand Command
+        {
+            get { return (ICommand)GetValue(CommandProperty); }
+            set { SetValue(CommandProperty, value); }
+        }
+
+        /// <summary>
+        /// Defines the <see cref="CommandParameter"/> dependency property.
+        /// </summary>
+        public static readonly DependencyProperty CommandParameterProperty =
+            DependencyProperty.Register("CommandParameter", typeof(object), typeof(CommandShortcutBehavior), new PropertyMetadata(null));
+        /// <summary>
+        /// Gets or sets parameter for the command to invoke.
+        /// </summary>
+        /// <value>The parameter for the command to invoke.</value>
+        public object CommandParameter
+        {
+            get { return GetValue(CommandParameterProperty); }
+            set { SetValue(CommandParameterProperty, value); }
         }
 
         /// <summary>
@@ -116,6 +157,9 @@ namespace GP.Windows.UI.Interactivity
         /// <remarks>Override this to hook up functionality to the AssociatedObject.</remarks>
         protected override void OnAttached()
         {
+            AssociatedElement.KeyDown += AssociatedElement_KeyDown;
+            AssociatedElement.KeyUp   += AssociatedElement_KeyUp;
+
             if (!DesignMode.DesignModeEnabled)
             {
                 CoreWindow currentWindow = CoreWindow.GetForCurrentThread();
@@ -131,6 +175,9 @@ namespace GP.Windows.UI.Interactivity
         /// <remarks>Override this to unhook functionality from the AssociatedObject.</remarks>
         protected override void OnDetaching()
         {
+            AssociatedElement.KeyDown -= AssociatedElement_KeyDown;
+            AssociatedElement.KeyUp   -= AssociatedElement_KeyUp;
+
             if (!DesignMode.DesignModeEnabled)
             {
                 CoreWindow currentWindow = CoreWindow.GetForCurrentThread();
@@ -140,56 +187,106 @@ namespace GP.Windows.UI.Interactivity
             }
         }
 
-        private void corewWindow_KeyUp(CoreWindow sender, KeyEventArgs args)
+        private void AssociatedElement_KeyUp(object sender, KeyRoutedEventArgs e)
         {
-            if (args.VirtualKey == VirtualKey.Shift)
+            VirtualKey key = e.Key;
+
+            if (ListenToControl && IsCorrectKey(key))
             {
-                isShiftKeyPressed = false;
-            }
-            else if (args.VirtualKey == VirtualKey.Control)
-            {
-                isControlKeyPressed = false;
-            }
-            else if (args.VirtualKey == Key && (isShiftKeyPressed || !RequiresShiftModifier) && (isControlKeyPressed || !RequiresControlModifier))
-            {
-                Button button = AssociatedObject as Button;
+                Invoke();
 
-                CommandInvokingEventHandler eventArgs = new CommandInvokingEventHandler();
-
-                if (button?.Command != null)
-                {
-                    OnInvoking(eventArgs);
-
-                    if (!eventArgs.Handled)
-                    {
-                        if (button.Command.CanExecute(button.CommandParameter))
-                        {
-                            button.Command.Execute(button.CommandParameter);
-                        }
-                    }
-                }
-                else
-                {
-                    OnInvoked(new RoutedEventArgs());
-                }
-
-                args.Handled = true;
+                e.Handled = true;
             }
         }
 
-        private void corewWindow_KeyDown(CoreWindow sender, KeyEventArgs args)
+        private void AssociatedElement_KeyDown(object sender, KeyRoutedEventArgs e)
         {
-            if (args.VirtualKey == VirtualKey.Shift)
+            VirtualKey key = e.Key;
+
+            if (ListenToControl && IsCorrectKey(key))
+            {
+                e.Handled = true;
+            }
+        }
+
+        private void corewWindow_KeyUp(CoreWindow sender, KeyEventArgs e)
+        {
+            VirtualKey key = e.VirtualKey;
+
+            if (key == VirtualKey.Shift)
+            {
+                isShiftKeyPressed = false;
+            }
+            else if (key == VirtualKey.Control)
+            {
+                isControlKeyPressed = false;
+            }
+            else if (!ListenToControl && IsCorrectKey(key))
+            {
+                Invoke();
+
+                e.Handled = true;
+            }
+        }
+
+        private void corewWindow_KeyDown(CoreWindow sender, KeyEventArgs e)
+        {
+            VirtualKey key = e.VirtualKey;
+
+            if (key == VirtualKey.Shift)
             {
                 isShiftKeyPressed = true;
             }
-            else if (args.VirtualKey == VirtualKey.Control)
+            else if (key == VirtualKey.Control)
             {
                 isControlKeyPressed = true;
             }
-            else if (args.VirtualKey == Key && (isShiftKeyPressed || !RequiresShiftModifier) && (isControlKeyPressed || !RequiresControlModifier))
+            else if (!ListenToControl && IsCorrectKey(key))
             {
-                args.Handled = true;
+                e.Handled = true;
+            }
+        }
+
+        private bool IsCorrectKey(VirtualKey key)
+        {
+            return key == Key && (isShiftKeyPressed || !RequiresShiftModifier) && (isControlKeyPressed || !RequiresControlModifier);
+        }
+
+        private void Invoke()
+        {
+            object parameter = CommandParameter;
+
+            ICommand command = Command;
+
+            if (command == null)
+            {
+                Button button = AssociatedObject as Button;
+
+                if (button?.Command != null)
+                {
+                    command = button.Command;
+
+                    parameter = button.CommandParameter;
+                }
+            }
+
+            if (command != null)
+            {
+                CommandInvokingEventHandler eventArgs = new CommandInvokingEventHandler();
+
+                OnInvoking(eventArgs);
+
+                if (!eventArgs.Handled)
+                {
+                    if (command.CanExecute(parameter))
+                    {
+                        command.Execute(parameter);
+                    }
+                }
+            }
+            else
+            {
+                OnInvoked(new RoutedEventArgs());
             }
         }
     }

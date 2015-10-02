@@ -30,7 +30,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             get { return textRenderer; }
         }
 
-        public DefaultLevel1Node(NodeBase node, Win2DRenderer renderer) 
+        public DefaultLevel1Node(NodeBase node, Win2DRenderer renderer)
             : base(node, renderer)
         {
             textRenderer = new Win2DTextRenderer(node) { FontSize = 16, MinWidth = 50 };
@@ -108,7 +108,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
                 Node.IsSelected ?
                     Resources.ThemeLightBrush(color) :
                     Resources.ThemeNormalBrush(color);
-            
+
             session.FillRoundedRectangle(Bounds, 10, 10, backgroundBrush);
             session.DrawRoundedRectangle(Bounds, 10, 10, borderBrush);
 

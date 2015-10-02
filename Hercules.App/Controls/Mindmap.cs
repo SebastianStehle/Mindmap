@@ -29,10 +29,10 @@ namespace Hercules.App.Controls
         private const string ScrollViewerPart = "PART_ScrollViewer";
         private IRendererFactory lastRendererFactory;
         private ScrollViewer scrollViewer;
+        private ScrollViewerView lastView;
         private Win2DRenderer renderer;
         private CanvasControlWrapper canvasControl;
         private TextEditor textEditor;
-        private ScrollViewerView lastView;
 
         public Win2DRenderNode TextEditingNode
         {
@@ -271,8 +271,6 @@ namespace Hercules.App.Controls
                     Win2DRenderNode renderNode = (Win2DRenderNode)r.Scene.FindRenderNode(Document.SelectedNode);
 
                     textEditor.BeginEdit(renderNode);
-
-                    r.Invalidate();
                 }
             });
         }
@@ -288,8 +286,6 @@ namespace Hercules.App.Controls
                     if (renderNode.HitTest(position))
                     {
                         textEditor.BeginEdit(renderNode);
-
-                        r.Invalidate();
                         
                         break;
                     }
@@ -310,8 +306,6 @@ namespace Hercules.App.Controls
                     if (!r.HandleClick(position, out handledNode) || handledNode != textEditor.EditingNode)
                     {
                         textEditor.EndEdit();
-
-                        r.Invalidate();
                     }
                 }
             });

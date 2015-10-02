@@ -86,7 +86,7 @@ namespace Hercules.Model.Rendering.Win2D
 
         public void Measure(CanvasDrawingSession session)
         {
-            minSize = textFormat.FontSize * 2;
+            minSize = TextFormat.FontSize * 2;
 
             string text = OverrideText ?? node.Text;
 

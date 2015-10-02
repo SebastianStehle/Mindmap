@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Graphics.Display;

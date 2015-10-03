@@ -11,9 +11,9 @@ using Windows.UI.Xaml;
 namespace GP.Windows.UI.Interactivity
 {
     /// <summary>
-    /// A behavior to invoke the event when the key is pressed.
+    /// A behavior to invoke the event when the shortcut key is pressed.
     /// </summary>
-    public class ShortcutBehavior : ShortcutBehaviorBase<FrameworkElement>
+    public class ShortcutBehavior : ShortcutBehaviorBase
     {
         /// <summary>
         /// Called when the shortcut must be invoked.

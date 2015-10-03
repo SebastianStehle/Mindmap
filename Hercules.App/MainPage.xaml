@@ -42,9 +42,6 @@
                     <i:Interaction.Behaviors>
                         <gpi:ShortcutBehavior RequiresControlModifier="True" Key="L" Invoked="ListAppBarButton_Click" />
                     </i:Interaction.Behaviors>
-                    <ToolTipService.ToolTip>
-                        <ToolTip x:Uid="AppBarButton_ListMindmaps_Help" IsOpen="{Binding ShowHelp}">CNTRL + L</ToolTip>
-                    </ToolTipService.ToolTip>
                 </AppBarButton>
 
                 <AppBarSeparator />
@@ -55,6 +52,10 @@
                             <e:HelpView />
                         </controls:MindmapFlyout>
                     </AppBarButton.Flyout>
+                    <i:Interaction.Behaviors>
+                        <gpi:FlyoutShortcutBehavior RequiresControlModifier="True" Key="H" />
+                        <gpi:FlyoutShortcutBehavior RequiresControlModifier="False" Key="F1" />
+                    </i:Interaction.Behaviors>
                 </AppBarButton>
 
                 <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
@@ -84,6 +85,9 @@
                                 <e:EditIconView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
                             </controls:MindmapFlyout>
                         </AppBarButton.Flyout>
+                        <i:Interaction.Behaviors>
+                            <gpi:FlyoutShortcutBehavior RequiresControlModifier="True" Key="I" />
+                        </i:Interaction.Behaviors>
                         <TextBlock TextAlignment="Center" FontSize="20" Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" />
                     </AppBarButton>
                     <AppBarButton x:Uid="AppBarButton_ChangeColor" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=true}">
@@ -92,6 +96,9 @@
                                 <e:EditColorView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
                             </controls:MindmapFlyout>
                         </AppBarButton.Flyout>
+                        <i:Interaction.Behaviors>
+                            <gpi:FlyoutShortcutBehavior RequiresControlModifier="True" Key="O" />
+                        </i:Interaction.Behaviors>
                         <TextBlock TextAlignment="Center" FontSize="20" Text="&#xE2B1;" FontFamily="Segoe MDL2 Assets" />
                     </AppBarButton>
 
@@ -243,7 +250,7 @@
                         <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Left" Command="{Binding SelectLeftCommand}" />
                         <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Down" Command="{Binding SelectBottomCommand}" />
                         <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Right" Command="{Binding SelectRightCommand}" />
-                        
+
                         <gpi:ShortcutBehavior RequiresControlModifier="True" Key="T" Invoked="EditTextCommand_Invoked" />
                     </i:Interaction.Behaviors>
 

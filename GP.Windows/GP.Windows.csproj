@@ -132,6 +132,7 @@
     <Compile Include="UI\GreaterZeroVisibilityConverter.cs" />
     <Compile Include="UI\Interactivity\Behavior.cs" />
     <Compile Include="UI\Interactivity\CommandShortcutBehavior.cs" />
+    <Compile Include="UI\Interactivity\FlyoutShortcutBehavior.cs" />
     <Compile Include="UI\Interactivity\ToggleButtonShortcutBehavior.cs" />
     <Compile Include="UI\Interactivity\CenterScrollViewerWhenExtendSizeChanged.cs" />
     <Compile Include="UI\Interactivity\ShortcutBehavior.cs" />

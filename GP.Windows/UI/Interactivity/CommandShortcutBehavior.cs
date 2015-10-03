@@ -12,15 +12,15 @@ using Windows.UI.Xaml;
 namespace GP.Windows.UI.Interactivity
 {
     /// <summary>
-    /// A behavior to invoke a command when the key is pressed.
+    /// A behavior to invoke a command when the shortcut key is pressed.
     /// </summary>
-    public class CommandShortcutBehavior : ShortcutBehaviorBase<FrameworkElement>
+    public class CommandShortcutBehavior : ShortcutBehaviorBase
     {
         /// <summary>
         /// Defines the <see cref="Command"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CommandProperty =
-            DependencyProperty.Register("Command", typeof(ICommand), typeof(ButtonCommandShortcutBehavior), new PropertyMetadata(null));
+            DependencyProperty.Register("Command", typeof(ICommand), typeof(CommandShortcutBehavior), new PropertyMetadata(null));
         /// <summary>
         /// Gets or sets the command to invoke.
         /// </summary>
@@ -35,7 +35,7 @@ namespace GP.Windows.UI.Interactivity
         /// Defines the <see cref="CommandParameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CommandParameterProperty =
-            DependencyProperty.Register("CommandParameter", typeof(object), typeof(ButtonCommandShortcutBehavior), new PropertyMetadata(null));
+            DependencyProperty.Register("CommandParameter", typeof(object), typeof(CommandShortcutBehavior), new PropertyMetadata(null));
         /// <summary>
         /// Gets or sets parameter for the command to invoke.
         /// </summary>

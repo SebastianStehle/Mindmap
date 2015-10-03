@@ -16,14 +16,10 @@ using Windows.UI.Xaml.Input;
 namespace GP.Windows.UI.Interactivity
 {
     /// <summary>
-    /// A behavior to invoke the command of the button when the key is pressed.
+    /// A behavior to make an invocation when the shortcut key is pressed.
     /// </summary>
-    public abstract class ShortcutBehaviorBase<T> : Behavior<T> where T : FrameworkElement
-    {
-        private bool isShiftKeyPressed;
-        private bool isControlKeyPressed;
-
-        /// <summary>
+    public abstract class ShortcutBehaviorBase : Behavior<FrameworkElement> 
+    {/// <summary>
         /// Occurs when when the behavior is invoking.
         /// </summary>
         public event EventHandler<ShortcutInvokingEventHandler> Invoking;
@@ -63,7 +59,7 @@ namespace GP.Windows.UI.Interactivity
         /// Defines the <see cref="Key"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty KeyProperty =
-            DependencyProperty.Register("Key", typeof(VirtualKey), typeof(ButtonCommandShortcutBehavior), new PropertyMetadata(VirtualKey.None));
+            DependencyProperty.Register("Key", typeof(VirtualKey), typeof(ShortcutBehaviorBase), new PropertyMetadata(VirtualKey.None));
         /// <summary>
         /// Gets or sets the key that must be pressed when the command should be invoked.
         /// </summary>
@@ -78,7 +74,7 @@ namespace GP.Windows.UI.Interactivity
         /// Defines the <see cref="ListenToControl"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ListenToControlProperty =
-            DependencyProperty.Register("ListenToControl", typeof(bool), typeof(ButtonCommandShortcutBehavior), new PropertyMetadata(false));
+            DependencyProperty.Register("ListenToControl", typeof(bool), typeof(ShortcutBehaviorBase), new PropertyMetadata(false));
         /// <summary>
         /// Gets or sets a value indicating if the keys of the control will be handled.
         /// </summary>
@@ -93,7 +89,7 @@ namespace GP.Windows.UI.Interactivity
         /// Defines the <see cref="RequiresControlModifier"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RequiresControlModifierProperty =
-            DependencyProperty.Register("RequiresControlModifier", typeof(bool), typeof(ButtonCommandShortcutBehavior), new PropertyMetadata(false));
+            DependencyProperty.Register("RequiresControlModifier", typeof(bool), typeof(ShortcutBehaviorBase), new PropertyMetadata(false));
         /// <summary>
         /// Gets or sets a value indicating if the control key must be pressed.
         /// </summary>
@@ -108,7 +104,7 @@ namespace GP.Windows.UI.Interactivity
         /// Defines the <see cref="RequiresShiftModifier"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty RequiresShiftModifierProperty =
-            DependencyProperty.Register("RequiresShiftModifier", typeof(bool), typeof(ButtonCommandShortcutBehavior), new PropertyMetadata(false));
+            DependencyProperty.Register("RequiresShiftModifier", typeof(bool), typeof(ShortcutBehaviorBase), new PropertyMetadata(false));
         /// <summary>
         /// Gets or sets a value indicating if the shift key must be pressed.
         /// </summary>
@@ -135,7 +131,7 @@ namespace GP.Windows.UI.Interactivity
 
             if (!DesignMode.DesignModeEnabled)
             {
-                CoreWindow currentWindow = CoreWindow.GetForCurrentThread();
+                CoreWindow currentWindow = Window.Current.CoreWindow;
 
                 currentWindow.KeyDown += corewWindow_KeyDown;
                 currentWindow.KeyUp   += corewWindow_KeyUp;
@@ -153,7 +149,7 @@ namespace GP.Windows.UI.Interactivity
 
             if (!DesignMode.DesignModeEnabled)
             {
-                CoreWindow currentWindow = CoreWindow.GetForCurrentThread();
+                CoreWindow currentWindow = Window.Current.CoreWindow;
 
                 currentWindow.KeyDown -= corewWindow_KeyDown;
                 currentWindow.KeyUp   -= corewWindow_KeyUp;
@@ -186,15 +182,7 @@ namespace GP.Windows.UI.Interactivity
         {
             VirtualKey key = e.VirtualKey;
 
-            if (key == VirtualKey.Shift)
-            {
-                isShiftKeyPressed = false;
-            }
-            else if (key == VirtualKey.Control)
-            {
-                isControlKeyPressed = false;
-            }
-            else if (!ListenToControl && IsCorrectKey(key) )
+            if (!ListenToControl && IsCorrectKey(key))
             {
                 Invoke();
 
@@ -206,15 +194,7 @@ namespace GP.Windows.UI.Interactivity
         {
             VirtualKey key = e.VirtualKey;
 
-            if (key == VirtualKey.Shift)
-            {
-                isShiftKeyPressed = true;
-            }
-            else if (key == VirtualKey.Control)
-            {
-                isControlKeyPressed = true;
-            }
-            else if (!ListenToControl && IsCorrectKey(key))
+            if (!ListenToControl && IsCorrectKey(key))
             {
                 e.Handled = true;
             }
@@ -222,7 +202,21 @@ namespace GP.Windows.UI.Interactivity
 
         private bool IsCorrectKey(VirtualKey key)
         {
-            return key == Key && (isShiftKeyPressed == RequiresShiftModifier) && (isControlKeyPressed == RequiresControlModifier);
+            return key == Key && (IsShiftKeyPressed() == RequiresShiftModifier) && (IsControlKeyPressed() == RequiresControlModifier);
+        }
+
+        private static bool IsControlKeyPressed()
+        {
+            CoreVirtualKeyStates state = Window.Current.CoreWindow.GetKeyState(VirtualKey.Control);
+
+            return state.HasFlag(CoreVirtualKeyStates.Down);
+        }
+
+        private static bool IsShiftKeyPressed()
+        {
+            CoreVirtualKeyStates state = Window.Current.CoreWindow.GetKeyState(VirtualKey.Shift);
+
+            return state.HasFlag(CoreVirtualKeyStates.Down);
         }
 
         private void Invoke()

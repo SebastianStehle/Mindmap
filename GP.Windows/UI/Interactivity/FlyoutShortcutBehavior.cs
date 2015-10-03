@@ -1,41 +1,41 @@
 ﻿// ==========================================================================
-// ButtonCommandShortcutBehavior.cs
+// FlyoutShortcutBehavior.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
-using System.Windows.Input;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 
 namespace GP.Windows.UI.Interactivity
 {
     /// <summary>
-    /// A behavior to invoke the command of the button when the shortcut key is pressed.
+    /// A behavior to show the attached flyout when the shortcut key is pressed.
     /// </summary>
-    public class ButtonCommandShortcutBehavior : ShortcutBehaviorBase
+    public class FlyoutShortcutBehavior : ShortcutBehaviorBase
     {
         /// <summary>
         /// Called when the shortcut must be invoked.
         /// </summary>
         protected override void InvokeShortcut()
         {
-            Button associatedButton = AssociatedElement as Button;
+            FlyoutBase flyout = FlyoutBase.GetAttachedFlyout(AssociatedElement);
 
-            if (associatedButton != null)
+            if (flyout == null)
             {
-                ICommand command = associatedButton.Command;
+                Button button = AssociatedElement as Button;
 
-                if (command != null)
+                if (button != null)
                 {
-                    object parameter = associatedButton.CommandParameter;
-
-                    if (command.CanExecute(parameter))
-                    {
-                        command.Execute(parameter);
-                    }
+                    flyout = button.Flyout;
                 }
+            }
+
+            if (flyout != null)
+            {
+                flyout.ShowAt(AssociatedElement);
             }
         }
     }

@@ -97,7 +97,6 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="Strings\en-US\Help.html" />
     <None Include="Hercules.App_StoreKey.pfx" />
     <None Include="project.json" />
     <PRIResource Include="Strings\en-US\Resources.resw" />
@@ -117,6 +116,8 @@
     <Compile Include="Components\Implementations\MessageDialogService.cs" />
     <Compile Include="Components\Implementations\MindmapRef.cs" />
     <Compile Include="Components\Implementations\MindmapStore.cs" />
+    <Compile Include="Components\Implementations\PrintService.cs" />
+    <Compile Include="Components\IPrintService.cs" />
     <Compile Include="Components\ISettingsProvider.cs" />
     <Compile Include="Controls\CanvasControlWrapper.cs" />
     <Compile Include="Controls\MindmapFlyout.cs" />
@@ -139,10 +140,19 @@
     <Compile Include="Modules\Editor\Views\EditIconView.xaml.cs">
       <DependentUpon>EditIconView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Editor\Views\EditorView.xaml.cs">
+      <DependentUpon>EditorView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Editor\Views\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Editor\Views\ToolbarView.xaml.cs">
+      <DependentUpon>ToolbarView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Mindmaps\ViewModels\MindmapsViewModel.cs" />
+    <Compile Include="Modules\Mindmaps\Views\ListView.xaml.cs">
+      <DependentUpon>ListView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Mindmaps\Views\RenameView.xaml.cs">
       <DependentUpon>RenameView.xaml</DependentUpon>
     </Compile>
@@ -263,7 +273,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Modules\Editor\Views\EditorView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Modules\Editor\Views\HelpView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Editor\Views\ToolbarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Mindmaps\Views\ListView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

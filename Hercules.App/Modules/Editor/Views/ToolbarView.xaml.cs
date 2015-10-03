@@ -1,25 +1,18 @@
 ﻿// ==========================================================================
-// EditorView.xaml.cs
+// ToolbarView.xaml.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
-using Windows.UI.Xaml;
-
 namespace Hercules.App.Modules.Editor.Views
 {
-    public sealed partial class EditorView 
+    public sealed partial class ToolbarView
     {
-        public EditorView()
+        public ToolbarView()
         {
             InitializeComponent();
-        }
-
-        private void EditTextCommand_Invoked(object sender, RoutedEventArgs e)
-        {
-            Mindmap.EditText();
         }
     }
 }

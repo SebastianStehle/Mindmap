@@ -11,7 +11,9 @@ using Windows.ApplicationModel;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Media;
 
 namespace GP.Windows.UI.Interactivity
 {
@@ -221,16 +223,45 @@ namespace GP.Windows.UI.Interactivity
 
         private void Invoke()
         {
-            ShortcutInvokingEventHandler eventArgs = new ShortcutInvokingEventHandler();
-
-            OnInvoking(eventArgs);
-
-            if (!eventArgs.Handled)
+            if (IsEnabled())
             {
-                InvokeShortcut();
+                ShortcutInvokingEventHandler eventArgs = new ShortcutInvokingEventHandler();
+
+                OnInvoking(eventArgs);
+
+                if (!eventArgs.Handled)
+                {
+                    InvokeShortcut();
+                }
+
+                OnInvoked(new RoutedEventArgs());
+            }
+        }
+
+        private bool IsEnabled()
+        {
+            DependencyObject target = AssociatedElement;
+
+            while (target != null)
+            {
+                Control control = AssociatedElement as Control;
+
+                if (control != null && !control.IsEnabled)
+                {
+                    return false;
+                }
+
+                UIElement element = target as UIElement;
+
+                if (element != null && (element.Visibility == Visibility.Collapsed || Math.Abs(element.Opacity) < float.Epsilon))
+                {
+                    return false;
+                }
+
+                target = VisualTreeHelper.GetParent(target);
             }
 
-            OnInvoked(new RoutedEventArgs());
+            return true;
         }
     }
 }

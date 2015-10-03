@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using System.Globalization;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.ViewManagement;
@@ -260,6 +261,40 @@ namespace GP.Windows.UI
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Loads the resource with the name and type from the application resources.
+        /// </summary>
+        /// <typeparam name="T">The type of the resource.</typeparam>
+        /// <param name="key">The name of the resource to load.</param>
+        /// <returns>
+        /// The loaded resource.
+        /// </returns>
+        public static T LoadFromAppResource<T>(string key) where T : class
+        {
+            Guard.NotNull(key, nameof(key));
+
+            key = key.Replace("{culture}", CultureInfo.CurrentCulture.Name);
+
+            Application application = Application.Current;
+
+            T result = application.Resources[key] as T;
+
+            if (result == null)
+            {
+                foreach (ResourceDictionary mergedDictionary in application.Resources.MergedDictionaries)
+                {
+                    result = mergedDictionary[key] as T;
+
+                    if (result != null)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return result;
         }
 
         /// <summary>

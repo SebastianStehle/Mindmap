@@ -131,6 +131,7 @@
     <Compile Include="UI\Controls\ZoomableCanvasControl.cs" />
     <Compile Include="UI\GreaterZeroVisibilityConverter.cs" />
     <Compile Include="UI\Interactivity\Behavior.cs" />
+    <Compile Include="UI\Interactivity\MenuFlyoutItemCommandShortcutBehavior.cs" />
     <Compile Include="UI\Interactivity\CommandShortcutBehavior.cs" />
     <Compile Include="UI\Interactivity\FlyoutShortcutBehavior.cs" />
     <Compile Include="UI\Interactivity\ToggleButtonShortcutBehavior.cs" />

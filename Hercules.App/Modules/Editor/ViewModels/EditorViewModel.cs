@@ -31,6 +31,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
         private readonly IRendererFactory rendererFactory = new DefaultRendererFactory();
         private readonly IMindmapStore mindmapStore;
         private Document document;
+        private RelayCommand printCommand;
         private RelayCommand redoCommand;
         private RelayCommand undoCommand;
         private RelayCommand removeCommand;
@@ -45,6 +46,9 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
         [NotifyUI]
         public bool ShowHelp { get; set; }
+
+        [Dependency]
+        public IPrintService PrintService { get; set; }
 
         [Dependency]
         public IDocumentStore DocumentStore { get; set; }
@@ -142,6 +146,17 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
+        public RelayCommand PrintCommand
+        {
+            get
+            {
+                return printCommand ?? (printCommand = new RelayCommand(() =>
+                {
+                    PrintService.PrintAsync(Document, RendererFactory.Current);
+                }, () => Document != null));
+            }
+        }
+
         public RelayCommand SelectTopCommand
         {
             get
@@ -149,7 +164,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return selectTopCommand ?? (selectTopCommand = new RelayCommand(() =>
                 {
                     Document.SelectTopOfSelectedNode();
-                }));
+                }, () => Document != null));
             }
         }
 
@@ -160,7 +175,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return selectRightCommand ?? (selectRightCommand = new RelayCommand(() =>
                 {
                     Document.SelectRightOfSelectedNode();
-                }));
+                }, () => Document != null));
             }
         }
 
@@ -171,7 +186,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return selectBottomCommand ?? (selectBottomCommand = new RelayCommand(() =>
                 {
                     Document.SelectBottomOfSelectedNode();
-                }));
+                }, () => Document != null));
             }
         }
 
@@ -182,7 +197,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return selectLeftCommand ?? (selectLeftCommand = new RelayCommand(() =>
                 {
                     Document.SelectLeftOfSelectedNode();
-                }));
+                }, () => Document != null));
             }
         }
 
@@ -193,7 +208,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return removeCommand ?? (removeCommand = new RelayCommand(() =>
                 {
                     Document.RemoveSelectedNodeTransactional();
-                }));
+                }, () => Document != null));
             }
         }
 
@@ -204,7 +219,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return addChildCommand ?? (addChildCommand = new RelayCommand(() =>
                 {
                     Document.AddChildToSelectedNodeTransactional();
-                }));
+                }, () => Document != null));
             }
         }
 
@@ -215,7 +230,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return addSiblingCommand ?? (addSiblingCommand = new RelayCommand(() =>
                 {
                     Document.AddSibilingToSelectedNodeTransactional();
-                }));
+                }, () => Document != null));
             }
         }
 
@@ -237,6 +252,26 @@ namespace Hercules.App.Modules.Editor.ViewModels
             Document = e.Document;
 
             UpdateUndoRedo();
+        }
+
+        public void OnDocumentChanged()
+        {
+            UpdateUndoRedo();
+
+            ExportHtmlCommand.RaiseCanExecuteChanged();
+            ExportImageCommand.RaiseCanExecuteChanged();
+
+            PrintCommand.RaiseCanExecuteChanged();
+
+            AddChildCommand.RaiseCanExecuteChanged();
+            AddSiblingCommand.RaiseCanExecuteChanged();
+
+            RemoveCommand.RaiseCanExecuteChanged();
+
+            SelectTopCommand.RaiseCanExecuteChanged();
+            selectLeftCommand.RaiseCanExecuteChanged();
+            SelectRightCommand.RaiseCanExecuteChanged();
+            SelectBottomCommand.RaiseCanExecuteChanged();
         }
 
         private async void OnSaveMindmap(SaveMindmapMessage message)

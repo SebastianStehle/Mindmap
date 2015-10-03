@@ -1,5 +1,4 @@
-﻿<UserControl
-    x:Class="Hercules.App.Modules.Editor.Views.EditorView"
+﻿<UserControl x:Class="Hercules.App.Modules.Editor.Views.EditorView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -11,10 +10,16 @@
     xmlns:modelLayout="using:Hercules.Model.Layouting.Default"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignWidth="400"
+    DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
 
     <Grid>
         <i:Interaction.Behaviors>
+            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Up" Command="{Binding SelectTopCommand}" />
+            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Left" Command="{Binding SelectLeftCommand}" />
+            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Down" Command="{Binding SelectBottomCommand}" />
+            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Right" Command="{Binding SelectRightCommand}" />
+
             <gpi:ShortcutBehavior RequiresControlModifier="True" Key="T" Invoked="EditTextCommand_Invoked" />
         </i:Interaction.Behaviors>
 
@@ -26,6 +31,14 @@
             </controls:Mindmap.Layout>
             <i:Interaction.Behaviors>
                 <controls:NodeMovingBehavior />
+                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Tab" Command="{Binding AddChildCommand}" />
+                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Back" Command="{Binding RemoveCommand}" />
+                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Enter" Command="{Binding AddSiblingCommand}" />
+                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Delete" Command="{Binding RemoveCommand}" />
+                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Up" Command="{Binding SelectTopCommand}" />
+                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Left" Command="{Binding SelectLeftCommand}" />
+                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Down" Command="{Binding SelectBottomCommand}" />
+                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Right" Command="{Binding SelectRightCommand}" />
             </i:Interaction.Behaviors>
         </controls:Mindmap>
 

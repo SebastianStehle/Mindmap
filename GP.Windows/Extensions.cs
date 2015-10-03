@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Windows.Foundation;
 
 namespace GP.Windows
@@ -21,6 +22,15 @@ namespace GP.Windows
     /// </summary>
     public static class Extensions
     {
+        /// <summary>
+        /// Does nothing.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        public static void Forget(this Task task)
+        {
+            
+        }
+
         /// <summary>
         /// Registers the specified collection changed event handler to the event source.
         /// </summary>

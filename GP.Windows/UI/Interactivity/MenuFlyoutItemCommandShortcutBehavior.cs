@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// MenuFlyoutItemCommandShortcutBehavior.cs
+// ButtonCommandShortcutBehavior.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -14,22 +14,22 @@ namespace GP.Windows.UI.Interactivity
     /// <summary>
     /// A behavior to invoke the command of the button when the shortcut key is pressed.
     /// </summary>
-    public class MenuFlyoutItemCommandShortcutBehavior : ShortcutBehaviorBase
+    public class ButtonCommandShortcutBehavior : ShortcutBehaviorBase
     {
         /// <summary>
         /// Called when the shortcut must be invoked.
         /// </summary>
         protected override void InvokeShortcut()
         {
-            MenuFlyoutItem flyoutItem = AssociatedElement as MenuFlyoutItem;
+            Button associatedButton = AssociatedElement as Button;
             
-            if (flyoutItem != null)
+            if (associatedButton != null)
             {
-                ICommand command = flyoutItem.Command;
+                ICommand command = associatedButton.Command;
 
                 if (command != null)
                 {
-                    object parameter = flyoutItem.CommandParameter;
+                    object parameter = associatedButton.CommandParameter;
 
                     if (command.CanExecute(parameter))
                     {

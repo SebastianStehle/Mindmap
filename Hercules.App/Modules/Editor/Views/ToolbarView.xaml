@@ -1,0 +1,117 @@
+﻿<UserControl x:Class="Hercules.App.Modules.Editor.Views.ToolbarView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:e="using:Hercules.App.Modules.Editor.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:gpi="using:GP.Windows.UI.Interactivity"
+    xmlns:controls="using:Hercules.App.Controls"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="800"
+    DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
+
+    <Grid>
+        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left">
+            <AppBarButton x:Uid="AppBarButton_Help" RequestedTheme="Dark" Icon="Help" Label="Help">
+                <AppBarButton.Flyout>
+                    <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
+                        <e:HelpView />
+                    </controls:MindmapFlyout>
+                </AppBarButton.Flyout>
+                <i:Interaction.Behaviors>
+                    <gpi:FlyoutShortcutBehavior RequiresControlModifier="True" Key="H" />
+                    <gpi:FlyoutShortcutBehavior RequiresControlModifier="False" Key="F1" />
+                </i:Interaction.Behaviors>
+            </AppBarButton>
+
+            <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
+                <AppBarSeparator />
+
+                <AppBarButton x:Uid="AppBarButton_Export" Icon="Save">
+                    <AppBarButton.Flyout>
+                        <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
+                            <MenuFlyoutItem x:Uid="AppBarButton_ExportHtml" Text="Html"
+                                Command="{Binding ExportHtmlCommand}" />
+                            <MenuFlyoutItem x:Uid="AppBarButton_ExportImage" Text="Image"
+                                Command="{Binding ExportImageCommand}" />
+                            <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{Binding PrintCommand}">
+                                <i:Interaction.Behaviors>
+                                    <gpi:MenuFlyoutItemCommandShortcutBehavior RequiresControlModifier="True" Key="P" />
+                                </i:Interaction.Behaviors>
+                            </MenuFlyoutItem>
+                        </MenuFlyout>
+                    </AppBarButton.Flyout>
+                </AppBarButton>
+
+                <AppBarSeparator />
+
+                <AppBarButton x:Uid="AppBarButton_ChangeIcon" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}">
+                    <AppBarButton.Flyout>
+                        <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
+                            <e:EditIconView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
+                        </controls:MindmapFlyout>
+                    </AppBarButton.Flyout>
+                    <i:Interaction.Behaviors>
+                        <gpi:FlyoutShortcutBehavior RequiresControlModifier="True" Key="I" />
+                    </i:Interaction.Behaviors>
+                    <TextBlock TextAlignment="Center" FontSize="20" Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" />
+                </AppBarButton>
+                <AppBarButton x:Uid="AppBarButton_ChangeColor" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=true}">
+                    <AppBarButton.Flyout>
+                        <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
+                            <e:EditColorView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
+                        </controls:MindmapFlyout>
+                    </AppBarButton.Flyout>
+                    <i:Interaction.Behaviors>
+                        <gpi:FlyoutShortcutBehavior RequiresControlModifier="True" Key="O" />
+                    </i:Interaction.Behaviors>
+                    <TextBlock TextAlignment="Center" FontSize="20" Text="&#xE2B1;" FontFamily="Segoe MDL2 Assets" />
+                </AppBarButton>
+
+                <AppBarSeparator />
+
+                <AppBarButton x:Uid="AppBarButton_Undo" Icon="Undo"
+                    Command="{Binding UndoCommand}">
+                    <i:Interaction.Behaviors>
+                        <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
+                    </i:Interaction.Behaviors>
+                </AppBarButton>
+
+                <AppBarButton x:Uid="AppBarButton_Redo" Icon="Redo"
+                    Command="{Binding RedoCommand}">
+                    <i:Interaction.Behaviors>
+                        <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Y" />
+                    </i:Interaction.Behaviors>
+                </AppBarButton>
+            </StackPanel>
+        </StackPanel>
+
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
+            <AppBarButton x:Uid="AppBarButton_RemoveNode" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}" Icon="Delete"
+                Command="{Binding RemoveCommand}">
+                <i:Interaction.Behaviors>
+                    <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Delete" />
+                    <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Back" />
+                </i:Interaction.Behaviors>
+            </AppBarButton>
+
+            <Rectangle Fill="{ThemeResource ApplicationForegroundThemeBrush}" Width="1" Margin="20" HorizontalAlignment="Stretch" />
+
+            <AppBarButton x:Uid="AppBarButton_AddSibling" Style="{StaticResource AppBarButtonStyleSibling}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}"
+                Command="{Binding AddSiblingCommand}">
+                <i:Interaction.Behaviors>
+                    <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Enter" />
+                </i:Interaction.Behaviors>
+            </AppBarButton>
+
+            <AppBarButton x:Uid="AppBarButton_AddChild" Style="{StaticResource AppBarButtonStyleChild}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}"
+                Command="{Binding AddChildCommand}" >
+                <i:Interaction.Behaviors>
+                    <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Tab" />
+                </i:Interaction.Behaviors>
+            </AppBarButton>
+        </StackPanel>
+    </Grid>
+</UserControl>

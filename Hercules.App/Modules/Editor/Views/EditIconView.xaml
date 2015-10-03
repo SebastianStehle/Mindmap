@@ -6,6 +6,8 @@
     xmlns:assets="using:Hercules.App.Assets"
     xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
     Width="410">
 
     <controls:MindmapFlyoutView.Resources>

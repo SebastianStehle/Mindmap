@@ -6,8 +6,6 @@
 // All rights reserved.
 // ==========================================================================
 
-using Windows.UI.Xaml;
-
 namespace GP.Windows.UI.Interactivity
 {
     /// <summary>

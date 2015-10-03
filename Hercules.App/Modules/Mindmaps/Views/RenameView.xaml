@@ -6,6 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
+    d:DesignHeight="130"
+    d:DesignWidth="250"
     Height="130" Width="250">
 
     <Grid>

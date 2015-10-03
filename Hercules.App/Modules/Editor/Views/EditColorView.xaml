@@ -5,6 +5,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400"
     Width="310">
 
     <controls:MindmapFlyoutView.Resources>

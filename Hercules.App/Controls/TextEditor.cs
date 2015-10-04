@@ -98,13 +98,13 @@ namespace Hercules.App.Controls
                     EndEdit(false);
 
                     BindToNode(renderNode);
-
-                    UpdateTransform();
-                    UpdateStyle();
-                    UpdateText();
-
-                    Show();
                 }
+
+                UpdateTransform();
+                UpdateStyle();
+                UpdateText();
+
+                Show();
 
                 Focus(FocusState.Pointer);
             }

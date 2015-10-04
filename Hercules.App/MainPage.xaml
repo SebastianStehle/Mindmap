@@ -11,6 +11,7 @@
     xmlns:gpi="using:GP.Windows.UI.Interactivity"
     xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
+    IsTabStop="False"
     IsEnabled="{Binding LoadingManager.IsLoading, Source={StaticResource ViewModelLocator}, Converter={StaticResource BooleanInverseConverter}}"
     DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
 

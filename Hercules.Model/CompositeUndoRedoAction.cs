@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using GP.Windows;
 
 namespace Hercules.Model
@@ -50,7 +51,7 @@ namespace Hercules.Model
 
         public void Undo()
         {
-            foreach (CommandBase command in commands)
+            foreach (CommandBase command in commands.OfType<CommandBase>().Reverse())
             {
                 command.Undo();
             }

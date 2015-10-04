@@ -31,11 +31,6 @@ namespace Hercules.App.Modules.Mindmaps.Views
             }
         }
 
-        protected override void OnGotFocus(RoutedEventArgs e)
-        {
-            MindmapList.Focus(FocusState.Programmatic);
-        }
-
         private void Mindmap_RightTapped(object sender, RightTappedRoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)sender);

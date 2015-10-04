@@ -23,14 +23,14 @@ namespace Hercules.Model
 
         public void Add(NodeBase node)
         {
-            Cleanup();
+            //Cleanup();
 
             nodes[node.Id] = new WeakReference<NodeBase>(node);
         }
 
         public NodeBase GetOrCreateNode<T>(Guid id, Func<Guid, T> factory) where T : NodeBase
         {
-            Cleanup();
+            //Cleanup();
 
             NodeBase result;
             WeakReference<NodeBase> reference;

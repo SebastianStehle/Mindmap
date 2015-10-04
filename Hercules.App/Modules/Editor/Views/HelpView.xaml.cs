@@ -12,7 +12,7 @@ namespace Hercules.App.Modules.Editor.Views
     {
         public HelpView()
         {
-            this.InitializeComponent();
+            InitializeComponent();
         }
     }
 }

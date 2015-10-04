@@ -261,6 +261,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Assets\HelpText_en-US.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Modules\Editor\Views\EditColorView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

@@ -9,6 +9,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
+using GalaSoft.MvvmLight;
 using Hercules.App.Modules.Mindmaps.ViewModels;
 
 namespace Hercules.App.Modules.Mindmaps.Views
@@ -18,6 +19,16 @@ namespace Hercules.App.Modules.Mindmaps.Views
         public ListView()
         {
             InitializeComponent();
+        }
+
+        private async void ListView_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (!ViewModelBase.IsInDesignModeStatic)
+            {
+                MindmapsViewModel viewModel = (MindmapsViewModel)DataContext;
+
+                await viewModel.LoadAsync();
+            }
         }
 
         protected override void OnGotFocus(RoutedEventArgs e)
@@ -33,13 +44,6 @@ namespace Hercules.App.Modules.Mindmaps.Views
         private void Mindmap_RenameClicked(object sender, RoutedEventArgs e)
         {
             FlyoutBase.ShowAttachedFlyout((FrameworkElement)((FrameworkElement)sender).DataContext);
-        }
-
-        private async void UserControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            MindmapsViewModel viewModel = (MindmapsViewModel)DataContext;
-
-            await viewModel.LoadAsync();
         }
     }
 }

@@ -2,7 +2,6 @@
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!--
     <Style x:Key="HelpText_en-US" TargetType="ContentControl">
         <Setter Property="Template">
             <Setter.Value>
@@ -114,5 +113,5 @@
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
-    </Style>-->
+    </Style>
 </ResourceDictionary>

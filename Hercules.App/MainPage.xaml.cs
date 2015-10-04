@@ -20,7 +20,12 @@ namespace Hercules.App
         {
             InitializeComponent();
 
-            SolidColorBrush themeDarkBrush  = VisualTreeExtensions.LoadFromAppResource<SolidColorBrush>("ThemeDarkBrush");
+            ApplyThemeColors();
+        }
+
+        private static void ApplyThemeColors()
+        {
+            SolidColorBrush themeDarkBrush = VisualTreeExtensions.LoadFromAppResource<SolidColorBrush>("ThemeDarkBrush");
             SolidColorBrush themeLightBrush = VisualTreeExtensions.LoadFromAppResource<SolidColorBrush>("ThemeLightBrush");
 
             ApplicationViewTitleBar titleBar = ApplicationView.GetForCurrentView().TitleBar;

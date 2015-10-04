@@ -278,14 +278,14 @@ namespace GP.Windows.UI
             key = key.Replace("{culture}", CultureInfo.CurrentCulture.Name);
 
             Application application = Application.Current;
-
-            T result = application.Resources[key] as T;
+            
+            T result = application.Resources.TryGetResourceByKey<T>(key);
 
             if (result == null)
             {
                 foreach (ResourceDictionary mergedDictionary in application.Resources.MergedDictionaries)
                 {
-                    result = mergedDictionary[key] as T;
+                    result = mergedDictionary.TryGetResourceByKey<T>(key);
 
                     if (result != null)
                     {
@@ -295,6 +295,15 @@ namespace GP.Windows.UI
             }
 
             return result;
+        }
+
+        private static T TryGetResourceByKey<T>(this ResourceDictionary resources, string key) where T : class
+        {
+            object temp;
+
+            resources.TryGetValue(key, out temp);
+
+            return temp as T;
         }
 
         /// <summary>

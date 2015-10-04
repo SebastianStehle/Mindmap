@@ -6,10 +6,10 @@
 // All rights reserved.
 // ==========================================================================
 
+using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
-using GalaSoft.MvvmLight;
 using Hercules.App.Modules.Mindmaps.ViewModels;
 
 namespace Hercules.App.Modules.Mindmaps.Views
@@ -23,7 +23,7 @@ namespace Hercules.App.Modules.Mindmaps.Views
 
         private async void ListView_Loaded(object sender, RoutedEventArgs e)
         {
-            if (!ViewModelBase.IsInDesignModeStatic)
+            if (!DesignMode.DesignModeEnabled)
             {
                 MindmapsViewModel viewModel = (MindmapsViewModel)DataContext;
 

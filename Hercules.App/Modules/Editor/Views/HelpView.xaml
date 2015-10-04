@@ -7,9 +7,10 @@
     xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400">
+    d:DesignWidth="400"
+    MaxHeight="300">
 
-    <Grid Width="400" Height="300">
-        <WebView Source="ms-appx-web:///Strings/en-US/Help.html" DefaultBackgroundColor="Transparent" ScrollViewer.VerticalScrollBarVisibility="Visible" Margin="-11" />
-    </Grid>
+    <ScrollViewer Background="Transparent" Margin="-11" Padding="10,10,20,10">
+        <ContentControl x:Name="HelpTextControl" />
+    </ScrollViewer>
 </controls:MindmapFlyoutView>

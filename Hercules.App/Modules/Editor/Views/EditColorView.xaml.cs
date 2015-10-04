@@ -14,14 +14,25 @@ namespace Hercules.App.Modules.Editor.Views
 {
     public sealed partial class EditColorView
     {
-        private int oldColor;
-        private int oldIndex;
-
         public EditColorView()
         {
             InitializeComponent();
 
             ColorsGrid.SelectionChanged += ColorsGrid_SelectionChanged;
+        }
+
+        public override void OnOpened()
+        {
+            NodeBase selectedNode = Document?.SelectedNode;
+
+            ColorsGrid.ItemsSource = Renderer.Resources.Colors;
+
+            if (selectedNode != null)
+            {
+                ColorsGrid.SelectedIndex = selectedNode.Color;
+
+                ShowHullButton.IsChecked = selectedNode.IsShowingHull;
+            }
         }
 
         private void ColorsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -31,42 +42,22 @@ namespace Hercules.App.Modules.Editor.Views
             Change(selected);
         }
 
-        public override void OnOpened()
+        private void Change(int colorIndex)
         {
-            NodeBase selectedNode = Document.SelectedNode;
-
-            oldColor = selectedNode.Color;
-            oldIndex = Document.UndoRedoManager.Index;
-
-            ColorsGrid.ItemsSource = Renderer.Resources.Colors;
-            ColorsGrid.SelectedIndex = oldColor;
-
-            ShowHullButton.IsChecked = selectedNode.IsShowingHull;
-        }
-
-        private void Change(int index)
-        {
-            NodeBase selectedNode = Document.SelectedNode;
+            NodeBase selectedNode = Document?.SelectedNode;
 
             if (selectedNode != null)
             {
-                Document.UndoRedoManager.RevertTo(oldIndex);
-
-                if (index != oldColor)
+                if (colorIndex != selectedNode.Color)
                 {
-                    selectedNode.ChangeColorTransactional(index);
-
-                    if (ShowHullButton.IsChecked == true && !selectedNode.IsShowingHull)
-                    {
-                        selectedNode.ToggleHullTransactional();
-                    }
+                    selectedNode.ChangeColorTransactional(colorIndex);
                 }
             }
         }
 
         private void ShowHullButton_Click(object sender, RoutedEventArgs e)
         {
-            NodeBase selectedNode = Document.SelectedNode;
+            NodeBase selectedNode = Document?.SelectedNode;
 
             if (selectedNode != null)
             {

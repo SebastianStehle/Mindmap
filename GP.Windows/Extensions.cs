@@ -28,7 +28,6 @@ namespace GP.Windows
         /// <param name="task">The task.</param>
         public static void Forget(this Task task)
         {
-            
         }
 
         /// <summary>

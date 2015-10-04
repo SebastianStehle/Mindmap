@@ -38,7 +38,6 @@
                                 Command="{Binding ExportImageCommand}" />
                             <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{Binding PrintCommand}">
                                 <i:Interaction.Behaviors>
-                                    <gpi:MenuFlyoutItemCommandShortcutBehavior RequiresControlModifier="True" Key="P" />
                                 </i:Interaction.Behaviors>
                             </MenuFlyoutItem>
                         </MenuFlyout>

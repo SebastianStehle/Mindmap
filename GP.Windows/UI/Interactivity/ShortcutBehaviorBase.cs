@@ -21,7 +21,8 @@ namespace GP.Windows.UI.Interactivity
     /// A behavior to make an invocation when the shortcut key is pressed.
     /// </summary>
     public abstract class ShortcutBehaviorBase : Behavior<FrameworkElement> 
-    {/// <summary>
+    {
+        /// <summary>
         /// Occurs when when the behavior is invoking.
         /// </summary>
         public event EventHandler<ShortcutInvokingEventHandler> Invoking;

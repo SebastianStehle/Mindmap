@@ -11,6 +11,7 @@
                     <v:ViewModelLocator x:Key="ViewModelLocator" />
                 </ResourceDictionary>
                 <ResourceDictionary Source="Assets/AppStyles.xaml" />
+                <ResourceDictionary Source="Assets/HelpText_en-US.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>

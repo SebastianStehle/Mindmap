@@ -12,7 +12,7 @@
     
     <gp:NotNullBooleanConverter x:Key="NotNullBooleanConverter" />
     <gp:NotNullVisibilityConverter x:Key="NotNullVisibilityConverter" />
-
+    
     <gp:BooleanInverseConverter x:Key="BooleanInverseConverter" />
     
     <gp:VisibleWhenFalseConverter x:Key="VisibleWhenFalseConverter" />
@@ -27,6 +27,34 @@
     <SolidColorBrush x:Key="ThemeButtonHoverBrush" Color="#D8E8FF" />
     <SolidColorBrush x:Key="ThemeButtonPressedBrush" Color="#CCE1FF" />
     <SolidColorBrush x:Key="ThemeForegroundBrush" Color="White" />
+
+    <Style x:Key="HelpH1Style" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="24" />
+        <Setter Property="FontWeight" Value="SemiLight" />
+        <Setter Property="Grid.Column" Value="0" />
+        <Setter Property="Grid.ColumnSpan" Value="2" />
+    </Style>
+
+    <Style x:Key="HelpH2Style" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="FontWeight" Value="SemiBold" />
+        <Setter Property="Margin" Value="0,10,0,0" />
+        <Setter Property="Grid.Column" Value="0" />
+        <Setter Property="Grid.ColumnSpan" Value="2" />
+    </Style>
+
+    <Style x:Key="HelpShortcutStyle" TargetType="TextBlock">
+        <Setter Property="Margin" Value="0,2,15,2" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="FontStyle" Value="Italic" />
+        <Setter Property="Grid.Column" Value="0" />
+    </Style>
+
+    <Style x:Key="HelpCommentStyle" TargetType="TextBlock">
+        <Setter Property="Margin" Value="0,2,0,2" />
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Grid.Column" Value="1" />
+    </Style>
 
     <Style x:Key="ThemeButton" TargetType="Button">
         <Setter Property="Background" Value="Transparent"/>
@@ -227,7 +255,6 @@
                                     <Rectangle x:Name="Node2" RadiusX="1" RadiusY="1" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" Width="14" Height="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
                                 </Grid>
                             </Grid>
-
                             <TextBlock x:Name="TextLabel" Foreground="{TemplateBinding Foreground}" FontSize="12" FontFamily="{TemplateBinding FontFamily}" Margin="0,0,0,6" TextAlignment="Center" TextWrapping="Wrap" Text="{TemplateBinding Label}"/>
                         </StackPanel>
                         <TextBlock x:Name="OverflowTextLabel" Foreground="{TemplateBinding Foreground}" FontSize="15" FontFamily="{TemplateBinding FontFamily}" HorizontalAlignment="Stretch" Margin="12,11,0,13" TextAlignment="Left" TextWrapping="NoWrap" Text="{TemplateBinding Label}" TextTrimming="Clip" Visibility="Collapsed" VerticalAlignment="Center"/>
@@ -366,7 +393,6 @@
                                     <Rectangle x:Name="Node2" RadiusX="1" RadiusY="1" Stroke="{TemplateBinding Foreground}" StrokeThickness="1.5" Width="14" Height="8" HorizontalAlignment="Right" VerticalAlignment="Bottom" />
                                 </Grid>
                             </Grid>
-
                             <TextBlock x:Name="TextLabel" Foreground="{TemplateBinding Foreground}" FontSize="12" FontFamily="{TemplateBinding FontFamily}" Margin="0,0,0,6" TextAlignment="Center" TextWrapping="Wrap" Text="{TemplateBinding Label}"/>
                         </StackPanel>
                         <TextBlock x:Name="OverflowTextLabel" Foreground="{TemplateBinding Foreground}" FontSize="15" FontFamily="{TemplateBinding FontFamily}" HorizontalAlignment="Stretch" Margin="12,11,0,13" TextAlignment="Left" TextWrapping="NoWrap" Text="{TemplateBinding Label}" TextTrimming="Clip" Visibility="Collapsed" VerticalAlignment="Center"/>
@@ -481,6 +507,7 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
+                        
                         <Rectangle x:Name="PressedBackground" Fill="Transparent" Control.IsTemplateFocusTarget="True"/>
 
                         <Border x:Name="Border" BorderThickness="0,0.5,0,0" BorderBrush="Transparent">
@@ -712,6 +739,7 @@
                                 <VisualState x:Name="ButtonCollapsed"/>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
+                        
                         <Border x:Name="BackgroundElement" Background="{TemplateBinding Background}" Grid.ColumnSpan="2" Margin="{TemplateBinding BorderThickness}"/>
                         <Border x:Name="BorderElement" 
                             BorderBrush="{TemplateBinding BorderBrush}" 
@@ -856,6 +884,7 @@
                                 </VisualState>
                             </VisualStateGroup>
                         </VisualStateManager.VisualStateGroups>
+                        
                         <Grid x:Name="ContentRoot" Background="{TemplateBinding Background}" Height="{TemplateBinding Height}" Margin="{TemplateBinding Padding}" MinHeight="{ThemeResource AppBarThemeMinHeight}" Opacity="{TemplateBinding Opacity}" VerticalAlignment="Top">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="*"/>

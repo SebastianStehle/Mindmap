@@ -7,7 +7,9 @@
 // ==========================================================================
 
 using System;
+using System.Diagnostics;
 using Windows.ApplicationModel;
+using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
@@ -205,7 +207,12 @@ namespace GP.Windows.UI.Interactivity
 
         private bool IsCorrectKey(VirtualKey key)
         {
-            return key == Key && (IsShiftKeyPressed() == RequiresShiftModifier) && (IsControlKeyPressed() == RequiresControlModifier);
+            return key == Key && (key != VirtualKey.Tab || !IsInSimulator()) && (IsShiftKeyPressed() == RequiresShiftModifier) && (IsControlKeyPressed() == RequiresControlModifier);
+        }
+
+        private static bool IsInSimulator()
+        {
+            return Debugger.IsAttached;
         }
 
         private static bool IsControlKeyPressed()

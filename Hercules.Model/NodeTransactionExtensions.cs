@@ -67,7 +67,7 @@ namespace Hercules.Model
                 {
                     commands.Apply(new RemoveChildCommand(selectedNormalNode.Parent, selectedNormalNode));
 
-                    commands.Apply(new InsertChildCommand(target, index, target.NodeSide, selectedNormalNode));
+                    commands.Apply(new InsertChildCommand(target, index, side, selectedNormalNode));
                 });
             }
         }

@@ -7,7 +7,9 @@
 // ==========================================================================
 
 using System.Numerics;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
+using GP.Windows.UI;
 using GP.Windows.UI.Interactivity;
 using Hercules.Model.Rendering.Win2D;
 
@@ -15,14 +17,13 @@ using Hercules.Model.Rendering.Win2D;
 
 namespace Hercules.App.Controls
 {
-    public sealed class NodeMovingBehavior : Behavior<Mindmap>
+    public sealed class NodeMovingBehavior : Behavior<FrameworkElement>
     {
         private NodeMovingOperation movingOperation;
 
         protected override void OnAttached()
         {
-            AssociatedElement.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
-
+            AssociatedElement.PointerPressed += AssociatedElement_PointerPressed;
             AssociatedElement.PointerReleased += AssociatedElement_PointerReleased;
             AssociatedElement.ManipulationStarted += AssociatedElement_ManipulationStarted;
             AssociatedElement.ManipulationDelta += AssociatedElement_ManipulationDelta;
@@ -31,15 +32,24 @@ namespace Hercules.App.Controls
 
         protected override void OnDetaching()
         {
+            AssociatedElement.PointerPressed -= AssociatedElement_PointerPressed;
             AssociatedElement.PointerReleased -= AssociatedElement_PointerReleased;
             AssociatedElement.ManipulationStarted -= AssociatedElement_ManipulationStarted;
             AssociatedElement.ManipulationDelta -= AssociatedElement_ManipulationDelta;
             AssociatedElement.ManipulationCompleted -= AssociatedElement_ManipulationCompleted;
         }
 
+        private void AssociatedElement_PointerPressed(object sender, PointerRoutedEventArgs e)
+        {
+            if (AcquireOperation(e.GetCurrentPoint(AssociatedElement).Position.ToVector2()) != null)
+            {
+                AssociatedElement.ManipulationMode = ManipulationModes.TranslateX | ManipulationModes.TranslateY;
+            }
+        }
+
         private void AssociatedElement_PointerReleased(object sender, PointerRoutedEventArgs e)
         {
-            AssociatedElement.CancelDirectManipulations();
+            AssociatedElement.ManipulationMode = ManipulationModes.System;
         }
 
         private void AssociatedElement_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
@@ -50,26 +60,14 @@ namespace Hercules.App.Controls
                 movingOperation = null;
             }
 
-            if (AssociatedElement.Renderer != null)
-            {
-                Vector2 position = AssociatedElement.Renderer.GetMindmapPosition(e.Position.ToVector2());
-
-                foreach (Win2DRenderNode renderNode in AssociatedElement.Scene.DiagramNodes)
-                {
-                    if (renderNode.HitTest(position) && renderNode != AssociatedElement.TextEditingNode)
-                    {
-                        movingOperation = NodeMovingOperation.Start(AssociatedElement, renderNode);
-                        break;
-                    }
-                }
-            }
+            movingOperation = AcquireOperation(e.Position.ToVector2());
         }
 
         private void AssociatedElement_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
             if (movingOperation != null)
             {
-                Vector2 translation = AssociatedElement.Renderer.GetMindmapSize(e.Delta.Translation.ToVector2());
+                Vector2 translation = movingOperation.Mindmap.Renderer.GetMindmapSize(e.Delta.Translation.ToVector2());
 
                 movingOperation.Move(translation);
             }
@@ -77,11 +75,31 @@ namespace Hercules.App.Controls
 
         private void AssociatedElement_ManipulationCompleted(object sender, ManipulationCompletedRoutedEventArgs e)
         {
+            AssociatedElement.ManipulationMode = ManipulationModes.None;
+
             if (movingOperation != null)
             {
                 movingOperation.Complete();
                 movingOperation = null;
             }
+        }
+
+        private NodeMovingOperation AcquireOperation(Vector2 position)
+        {
+            Mindmap mindmap = VisualTreeExtensions.FindParent<Mindmap>(AssociatedElement);
+
+            if (mindmap?.Renderer != null)
+            {
+                foreach (Win2DRenderNode renderNode in mindmap.Scene.DiagramNodes)
+                {
+                    if (renderNode.HitTest(position) && renderNode != mindmap.TextEditingNode)
+                    {
+                        return NodeMovingOperation.Start(mindmap, renderNode);
+                    }
+                }
+            }
+
+            return null;
         }
     }
 }

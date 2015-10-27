@@ -100,7 +100,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             pathGeometry = GeometryBuilder.ComputeFilledPath(this, Parent, session);
         }
 
-        protected override void RenderInternal(CanvasDrawingSession session, ThemeColor color, bool renderControls)
+        protected override void RenderInternal(CanvasDrawingSession session, Layouting.LayoutThemeColor color, bool renderControls)
         {
             ICanvasBrush borderBrush = Resources.ThemeDarkBrush(color);
 

@@ -85,7 +85,7 @@ namespace Hercules.Model.Rendering.Win2D.Default
             }
         }
 
-        protected override void RenderInternal(CanvasDrawingSession session, ThemeColor color, bool renderControls)
+        protected override void RenderInternal(CanvasDrawingSession session, Layouting.LayoutThemeColor color, bool renderControls)
         {
             if (Parent != null)
             {

@@ -249,8 +249,11 @@
   <data name="Editor_Busy.Text" xml:space="preserve">
     <value>Working hard...</value>
   </data>
-  <data name="Editor_ColorsHeader.Text" xml:space="preserve">
-    <value>Colors</value>
+  <data name="Editor_ColorsCustom.Header" xml:space="preserve">
+    <value>Custom</value>
+  </data>
+  <data name="Editor_ColorsTheme.Header" xml:space="preserve">
+    <value>Theme</value>
   </data>
   <data name="Editor_IconsClear.Content" xml:space="preserve">
     <value>Remove Icon</value>

@@ -127,8 +127,10 @@
     <Compile Include="Export\Html\HtmlOutlineGenerator.cs" />
     <Compile Include="Export\IOutlineGenerator.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IColor.cs" />
     <Compile Include="IconSize.cs" />
     <Compile Include="IDocumentCommands.cs" />
+    <Compile Include="ThemeColor.cs" />
     <Compile Include="InsertChildCommand.cs" />
     <Compile Include="IUndoRedoAction.cs" />
     <Compile Include="IUndoRedoManager.cs" />
@@ -175,7 +177,7 @@
     <Compile Include="Rendering\Win2D\Default\DefaultRootNode.cs" />
     <Compile Include="Rendering\Win2D\Default\ExpandButton.cs" />
     <Compile Include="Rendering\Win2D\Win2DTextRenderer.cs" />
-    <Compile Include="Layouting\ThemeColor.cs" />
+    <Compile Include="Layouting\LayoutThemeColor.cs" />
     <Compile Include="Rendering\Win2D\Win2DRenderer.cs" />
     <Compile Include="Rendering\Win2D\Win2DRenderNode.cs" />
     <Compile Include="RootNode.cs" />
@@ -192,6 +194,7 @@
     <Compile Include="UndoRedoManager.cs" />
     <Compile Include="Utils\LimitedThreadsScheduler.cs" />
     <Compile Include="Utils\Rect2.cs" />
+    <Compile Include="CustomColor.cs" />
     <Content Include="Properties\Hercules.Model.rd.xml" />
   </ItemGroup>
   <ItemGroup>

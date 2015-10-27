@@ -17,7 +17,7 @@ namespace Hercules.App.Controls
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            ThemeColor color = (ThemeColor)value;
+            LayoutThemeColor color = (LayoutThemeColor)value;
 
             return new SolidColorBrush(color.Normal);
         }

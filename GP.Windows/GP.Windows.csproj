@@ -116,6 +116,7 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UI\Controls\ColorPicker.cs" />
     <Compile Include="UI\DependencyPropertyListener.cs" />
     <Compile Include="DisposableObject.cs" />
     <Compile Include="Extensions.cs" />

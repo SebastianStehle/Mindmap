@@ -9,13 +9,13 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI;
 using Windows.UI.Core;
 using GP.Windows;
-using GP.Windows.UI;
 using GP.Windows.UI.Controls;
 using Hercules.Model.Layouting;
 using Microsoft.Graphics.Canvas;
@@ -27,7 +27,7 @@ namespace Hercules.Model.Rendering.Win2D
     {
         private readonly Dictionary<Tuple<Color, float>, ICanvasBrush> cachedColors = new Dictionary<Tuple<Color, float>, ICanvasBrush>();
         private readonly Dictionary<string, ImageContainer> cachedImages = new Dictionary<string, ImageContainer>();
-        private readonly List<ThemeColor> colors = new List<ThemeColor>();
+        private readonly List<LayoutThemeColor> colors = new List<LayoutThemeColor>();
         private readonly ICanvasControl canvas;
 
         private sealed class ImageContainer
@@ -57,7 +57,7 @@ namespace Hercules.Model.Rendering.Win2D
             }
         }
 
-        public IReadOnlyList<ThemeColor> Colors
+        public IReadOnlyList<LayoutThemeColor> Colors
         {
             get
             {
@@ -74,13 +74,7 @@ namespace Hercules.Model.Rendering.Win2D
 
         public void AddThemeColors(params int[] newColors)
         {
-            foreach (int color in newColors)
-            {
-                colors.Add(new ThemeColor(
-                    ColorsHelper.ConvertToColor(color, 0, 0, 0),
-                    ColorsHelper.ConvertToColor(color, 0, 0.2, -0.3),
-                    ColorsHelper.ConvertToColor(color, 0, -0.2, 0.2)));
-            }
+            colors.AddRange(newColors.Select(x => new LayoutThemeColor(x)));
         }
 
         public void ClearResources()
@@ -100,21 +94,30 @@ namespace Hercules.Model.Rendering.Win2D
             cachedImages.Clear();
         }
 
-        public ThemeColor FindColor(NodeBase node)
+        public LayoutThemeColor FindColor(NodeBase node)
         {
             Guard.NotNull(node, nameof(node));
 
-            return colors[node.Color];
+            ThemeColor themeColor = node.Color as ThemeColor;
+
+            if (themeColor != null)
+            {
+                return colors[themeColor.Index];
+            }
+            else
+            {
+                return new LayoutThemeColor((CustomColor)node.Color);
+            }
         }
 
         public ICanvasBrush ThemeNormalBrush(int colorIndex)
         {
-            ThemeColor color = colors[colorIndex];
+            LayoutThemeColor color = colors[colorIndex];
 
             return ThemeNormalBrush(color);
         }
 
-        public ICanvasBrush ThemeNormalBrush(ThemeColor color)
+        public ICanvasBrush ThemeNormalBrush(LayoutThemeColor color)
         {
             Guard.NotNull(color, nameof(color));
 
@@ -123,30 +126,30 @@ namespace Hercules.Model.Rendering.Win2D
 
         public ICanvasBrush ThemeDarkBrush(int colorIndex)
         {
-            ThemeColor color = colors[colorIndex];
+            LayoutThemeColor color = colors[colorIndex];
 
-            return Brush(color.Dark, 1);
+            return Brush(color.Darker, 1);
         }
 
-        public ICanvasBrush ThemeDarkBrush(ThemeColor color)
+        public ICanvasBrush ThemeDarkBrush(LayoutThemeColor color)
         {
             Guard.NotNull(color, nameof(color));
 
-            return Brush(color.Dark, 1);
+            return Brush(color.Darker, 1);
         }
 
         public ICanvasBrush ThemeLightBrush(int colorIndex)
         {
-            ThemeColor color = colors[colorIndex];
+            LayoutThemeColor color = colors[colorIndex];
 
-            return Brush(color.Light, 1);
+            return Brush(color.Lighter, 1);
         }
 
-        public ICanvasBrush ThemeLightBrush(ThemeColor color)
+        public ICanvasBrush ThemeLightBrush(LayoutThemeColor color)
         {
             Guard.NotNull(color, nameof(color));
 
-            return Brush(color.Light, 1);
+            return Brush(color.Lighter, 1);
         }
 
         public ICanvasBrush Brush(Color color, float opacity)

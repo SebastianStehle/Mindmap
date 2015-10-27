@@ -41,6 +41,13 @@ namespace Hercules.Model
             return internalDictionary.ContainsKey(propertyName);
         }
 
+        public bool Contains(string propertyName)
+        {
+            Guard.NotNullOrEmpty(propertyName, nameof(propertyName));
+
+            return internalDictionary.ContainsKey(propertyName);
+        }
+
         public void Set(string propertyName, object value)
         {
             Guard.NotNullOrEmpty(propertyName, nameof(propertyName));

@@ -102,9 +102,9 @@ namespace Hercules.Model.Export.Html
 
             if (useColors)
             {
-                ThemeColor themeColor = renderer.FindColor(nodeBase);
+                LayoutThemeColor themeColor = renderer.FindColor(nodeBase);
 
-                color = ColorsHelper.ConvertToRGBString(themeColor.Dark);
+                color = ColorsHelper.ConvertToRGBString(themeColor.Darker);
             }
 
             xmlWriter.WriteStartElement("span");

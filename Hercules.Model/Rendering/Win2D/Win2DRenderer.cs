@@ -255,7 +255,7 @@ namespace Hercules.Model.Rendering.Win2D
             Invalidate();
         }
 
-        public ThemeColor FindColor(NodeBase node)
+        public Layouting.LayoutThemeColor FindColor(NodeBase node)
         {
             return resources.FindColor(node);
         }

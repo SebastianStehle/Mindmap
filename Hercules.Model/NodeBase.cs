@@ -17,7 +17,7 @@ namespace Hercules.Model
         private NodeBase parent;
         private IconSize iconSize;
         private NodeSide nodeSide;
-        private int color;
+        private IColor color = new ThemeColor(0);
         private string text;
         private string iconKey;
         private bool isShowingHull;
@@ -40,22 +40,6 @@ namespace Hercules.Model
             get { return parent; }
         }
 
-        public int Color
-        {
-            get
-            {
-                return color;
-            }
-            protected set
-            {
-                if (color != value)
-                {
-                    color = value;
-                    OnPropertyChanged("Color");
-                }
-            }
-        }
-
         public string Text
         {
             get
@@ -68,6 +52,22 @@ namespace Hercules.Model
                 {
                     text = value;
                     OnPropertyChanged("Text");
+                }
+            }
+        }
+
+        public IColor Color
+        {
+            get
+            {
+                return color;
+            }
+            protected set
+            {
+                if (!Equals(color, value))
+                {
+                    color = value;
+                    OnPropertyChanged("Color");
                 }
             }
         }
@@ -188,7 +188,7 @@ namespace Hercules.Model
             IsShowingHull = newIsShowingHull;
         }
 
-        internal void ChangeColor(int newColor)
+        internal void ChangeColor(IColor newColor)
         {
             Color = newColor;
         }

@@ -17,7 +17,7 @@ namespace Hercules.Model.Layouting
     {
         Task RenderScreenshotAsync(IRandomAccessStream stream, Color background, float? dpi = null, float padding = 20);
 
-        ThemeColor FindColor(NodeBase node);
+        LayoutThemeColor FindColor(NodeBase node);
 
         IPrintDocumentSource Print(float padding = 20);
     }

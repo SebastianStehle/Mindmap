@@ -111,7 +111,7 @@ namespace Hercules.Model
             }
         }
 
-        public static void ChangeColorTransactional(this NodeBase node, int color)
+        public static void ChangeColorTransactional(this NodeBase node, IColor color)
         {
             if (node?.Document != null)
             {

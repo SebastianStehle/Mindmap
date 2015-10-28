@@ -168,6 +168,7 @@
     <Compile Include="Rendering\Win2D\ScreenshotMaker.cs" />
     <Compile Include="Rendering\Win2D\Win2DResourceManager.cs" />
     <Compile Include="ToggleHullCommand.cs" />
+    <Compile Include="UndoRedoExtensions.cs" />
     <Compile Include="Utils\ConvexHull.cs" />
     <Compile Include="Utils\ResourceManager.cs" />
     <Compile Include="Rendering\Win2D\Default\DefaultLevel1Node.cs" />

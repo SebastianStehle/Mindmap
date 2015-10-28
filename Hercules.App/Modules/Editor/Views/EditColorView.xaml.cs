@@ -17,6 +17,8 @@ namespace Hercules.App.Modules.Editor.Views
 {
     public sealed partial class EditColorView
     {
+        private bool hasChange;
+
         public EditColorView()
         {
             InitializeComponent();
@@ -90,7 +92,17 @@ namespace Hercules.App.Modules.Editor.Views
             {
                 if (!newColor.Equals(selectedNode.Color))
                 {
-                    selectedNode.ChangeColorTransactional(newColor);
+                    if (hasChange == Document.UndoRedoManager.IsLastCommand<ChangeColorCommand>(x => x.Node.Id == selectedNode.Id))
+                    {
+                        Document.UndoRedoManager.RevertOnce();
+                    }
+
+                    if (!newColor.Equals(selectedNode.Color))
+                    {
+                        selectedNode.ChangeColorTransactional(newColor);
+
+                        hasChange = true;
+                    }
                 }
             }
         }
@@ -101,7 +113,14 @@ namespace Hercules.App.Modules.Editor.Views
 
             if (selectedNode != null)
             {
+                if (hasChange == Document.UndoRedoManager.IsLastCommand<ToggleHullCommand>())
+                {
+                    Document.UndoRedoManager.RevertOnce();
+                }
+
                 selectedNode.ToggleHullTransactional();
+
+                hasChange = true;
             }
         }
     }

@@ -5,6 +5,10 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
+using System;
+using System.Threading.Tasks;
+
 namespace Hercules.App.Components
 {
     public interface ILoadingManager
@@ -14,5 +18,7 @@ namespace Hercules.App.Components
         void BeginLoading();
 
         void FinishLoading();
+
+        Task DoWhenNotLoadingAsync(Func<Task> action);
     }
 }

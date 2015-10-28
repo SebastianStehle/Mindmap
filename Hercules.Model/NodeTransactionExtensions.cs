@@ -12,17 +12,44 @@ namespace Hercules.Model
 {
     public static class NodeTransactionExtensions
     {
-        public static void AddChildTransactional(this NodeBase node)
+        public static NodeBase AddSibilingransactional(this NodeBase node)
+        {
+            Node selectedNormalNode = node as Node;
+
+            if (selectedNormalNode?.Document != null)
+            {
+                InsertChildCommand command = new InsertChildCommand(selectedNormalNode.Parent, null, selectedNormalNode.NodeSide);
+
+                string tansactionName = ResourceManager.GetString("TransactionName_AddSibling");
+
+                selectedNormalNode.Document.MakeTransaction(tansactionName, commands =>
+                {
+                    commands.Apply(command);
+                });
+
+                return command.Child;
+            }
+
+            return null;
+        }
+
+        public static NodeBase AddChildTransactional(this NodeBase node)
         {
             if (node?.Document != null)
             {
+                InsertChildCommand command = new InsertChildCommand(node, null, NodeSide.Undefined);
+
                 string tansactionName = ResourceManager.GetString("TransactionName_AddChild");
 
                 node.Document.MakeTransaction(tansactionName, commands =>
                 {
-                    commands.Apply(new InsertChildCommand(node, null, NodeSide.Undefined));
+                    commands.Apply(command);
                 });
+
+                return command.Child;
             }
+
+            return null;
         }
 
         public static void RemoveTransactional(this NodeBase node)
@@ -36,21 +63,6 @@ namespace Hercules.Model
                 node.Document.MakeTransaction(tansactionName, commands =>
                 {
                     commands.Apply(new RemoveChildCommand(selectedNormalNode.Parent, selectedNormalNode));
-                });
-            }
-        }
-
-        public static void AddSibilingransactional(this NodeBase node)
-        {
-            Node selectedNormalNode = node as Node;
-
-            if (selectedNormalNode?.Document != null)
-            {
-                string tansactionName = ResourceManager.GetString("TransactionName_AddSibling");
-
-                selectedNormalNode.Document.MakeTransaction(tansactionName, commands =>
-                {
-                    commands.Apply(new InsertChildCommand(selectedNormalNode.Parent, null, selectedNormalNode.NodeSide));
                 });
             }
         }

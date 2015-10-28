@@ -80,7 +80,6 @@ namespace GP.Windows.UI
             return ConvertToRGBString(intColor, 0, 0, 0);
         }
 
-
         /// <summary>
         /// Converts the integer to a string, not taking int account the alpha value using the offset for hue, saturation and value.
         /// </summary>
@@ -170,7 +169,6 @@ namespace GP.Windows.UI
 
             return color;
         }
-
 
         /// <summary>
         /// Converts the integer to a color object, not taking int account the alpha value using the offset for hue, saturation and value.

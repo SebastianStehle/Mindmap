@@ -104,7 +104,7 @@ namespace Hercules.Model
             OnStateChanged(EventArgs.Empty);
         }
 
-        public void RevertOnce()
+        public void Revert()
         {
             if (CanUndo)
             {

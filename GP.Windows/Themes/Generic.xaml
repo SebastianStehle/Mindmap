@@ -115,7 +115,7 @@
                                 <TickBar Grid.Row="0" Grid.Column="0" Opacity="0" x:Name="TopTickBar" />
                                 <TickBar Grid.Row="0" Grid.Column="0" Opacity="0" x:Name="HorizontalInlineTickBar" />
                                 <TickBar Grid.Row="0" Grid.Column="0" Opacity="0" x:Name="BottomTickBar" />
-                                <Thumb x:Name="HorizontalThumb" AutomationProperties.AccessibilityView="Raw" Background="{TemplateBinding Foreground}" Grid.Column="1" DataContext="{TemplateBinding Value}" Height="24" Grid.Row="0" Grid.RowSpan="3" Style="{StaticResource SliderThumbStyle}" Width="8" />
+                                <Thumb x:Name="HorizontalThumb" AutomationProperties.AccessibilityView="Raw" Background="{TemplateBinding Foreground}" Grid.Column="1" DataContext="{TemplateBinding Value}" Height="24" Grid.Row="0" Style="{StaticResource SliderThumbStyle}" Width="8" />
                             </Grid>
                             <Grid x:Name="VerticalTemplate" MinWidth="44" Visibility="Collapsed">
                                 <Grid.ColumnDefinitions>
@@ -191,7 +191,7 @@
                                     </Rectangle>
 
                                     <Canvas Margin="-18">
-                                        <Thumb IsHitTestVisible="False" x:Name="ColorThumb" Foreground="White" Width="36" Height="36" Style="{StaticResource CircleThumbStyle}"></Thumb>
+                                        <Thumb IsHitTestVisible="False" x:Name="ColorThumb" Foreground="White" Width="36" Height="36" Style="{StaticResource CircleThumbStyle}" />
                                     </Canvas>
                                 </Grid>
                             </Border>

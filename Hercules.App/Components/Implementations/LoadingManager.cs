@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using GalaSoft.MvvmLight;
 using GP.Windows;
@@ -42,6 +43,22 @@ namespace Hercules.App.Components.Implementations
         public void FinishLoading()
         {
             lazyTimer.Start();
+        }
+
+        public async Task DoWhenNotLoadingAsync(Func<Task> action)
+        {
+            if (!IsLoading)
+            {
+                BeginLoading();
+                try
+                {
+                    await action();
+                }
+                finally
+                {
+                    FinishLoading();
+                }
+            }
         }
     }
 }

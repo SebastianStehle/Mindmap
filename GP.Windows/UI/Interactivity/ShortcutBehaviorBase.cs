@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// CommandShortcutBehavior.cs
+// ShortcutBehaviorBase.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -9,7 +9,6 @@
 using System;
 using System.Diagnostics;
 using Windows.ApplicationModel;
-using Windows.Security.ExchangeActiveSyncProvisioning;
 using Windows.System;
 using Windows.UI.Core;
 using Windows.UI.Xaml;

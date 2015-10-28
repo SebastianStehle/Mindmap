@@ -16,10 +16,10 @@ using Hercules.App.Components;
 using Hercules.App.Messages;
 using Hercules.Model;
 using Hercules.Model.Export;
-using Hercules.Model.Rendering.Win2D;
-using Hercules.Model.Rendering.Win2D.Default;
 using Hercules.Model.Storing;
 using Hercules.Model.Utils;
+using Hercules.Win2D.Rendering;
+using Hercules.Win2D.Rendering.Themes.ModernPastel;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
 
@@ -28,7 +28,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
     [ImplementPropertyChanged]
     public sealed class EditorViewModel : ViewModelBase
     {
-        private readonly IRendererFactory rendererFactory = new DefaultRendererFactory();
+        private readonly IWin2DRendererProvider rendererProvider = new ModernPastelRendererProvider();
         private readonly IMindmapStore mindmapStore;
         private Document document;
         private RelayCommand printCommand;
@@ -39,6 +39,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
         private RelayCommand addSiblingCommand;
         private RelayCommand exportHtmlCommand;
         private RelayCommand exportImageCommand;
+        private RelayCommand importXmindCommand;
         private RelayCommand selectTopCommand;
         private RelayCommand selectLeftCommand;
         private RelayCommand selectRightCommand;
@@ -57,13 +58,16 @@ namespace Hercules.App.Modules.Editor.ViewModels
         public IOutlineGenerator OutlineGenerator { get; set; }
 
         [Dependency]
+        public ILoadingManager LoadingManager { get; set; }
+
+        [Dependency]
         public IMessageDialogService MessageDialogService { get; set; }
 
-        public IRendererFactory RendererFactory
+        public IWin2DRendererProvider RendererProvider
         {
             get
             {
-                return rendererFactory;
+                return rendererProvider;
             }
         }
 
@@ -122,13 +126,24 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
+        public RelayCommand ImportXMindCommand
+        {
+            get
+            {
+                return importXmindCommand ?? (importXmindCommand = new RelayCommand(() =>
+                {
+                    MessengerInstance.Send(new ImportXMindMessage());
+                }, () => Document != null));
+            }
+        }
+
         public RelayCommand ExportImageCommand
         {
             get
             {
                 return exportImageCommand ?? (exportImageCommand = new RelayCommand(async () =>
                 {
-                    await MessageDialogService.SaveFileDialogAsync(new string[] { ".png" }, s => RendererFactory.Current.RenderScreenshotAsync(s, Colors.White, 300));
+                    await LoadingManager.DoWhenNotLoadingAsync(() => MessageDialogService.SaveFileDialogAsync(new string[] { ".png" }, s => RendererProvider.Current.RenderScreenshotAsync(s, Colors.White, 300)));
                 }, () => Document != null));
             }
         }
@@ -141,7 +156,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 {
                     string noText = ResourceManager.GetString("Outline_NoText");
 
-                    await MessageDialogService.SaveFileDialogAsync(new string[] { ".html" }, s => OutlineGenerator.GenerateOutline(Document, RendererFactory.Current, s, true, noText));
+                    await LoadingManager.DoWhenNotLoadingAsync(() => MessageDialogService.SaveFileDialogAsync(new string[] { ".html" }, s => OutlineGenerator.WriteOutlineAsync(Document, RendererProvider.Current, s, true, noText)));
                 }, () => Document != null));
             }
         }
@@ -150,9 +165,9 @@ namespace Hercules.App.Modules.Editor.ViewModels
         {
             get
             {
-                return printCommand ?? (printCommand = new RelayCommand(() =>
+                return printCommand ?? (printCommand = new RelayCommand(async () =>
                 {
-                    PrintService.PrintAsync(Document, RendererFactory.Current);
+                    await LoadingManager.DoWhenNotLoadingAsync(() => PrintService.PrintAsync(Document, RendererProvider.Current));
                 }, () => Document != null));
             }
         }
@@ -260,6 +275,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
             ExportHtmlCommand.RaiseCanExecuteChanged();
             ExportImageCommand.RaiseCanExecuteChanged();
+            ImportXMindCommand.RaiseCanExecuteChanged();
 
             PrintCommand.RaiseCanExecuteChanged();
 

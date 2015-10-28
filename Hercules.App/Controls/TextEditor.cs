@@ -16,7 +16,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Hercules.Model;
-using Hercules.Model.Rendering.Win2D;
+using Hercules.Win2D.Rendering;
 
 namespace Hercules.App.Controls
 {

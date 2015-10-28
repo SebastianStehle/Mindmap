@@ -64,7 +64,7 @@ namespace Hercules.App.Modules.Editor.Views
                 {
                     if (hasChange && Document.UndoRedoManager.IsLastCommand<ChangeIconKeyCommand>(x => x.Node.Id == selectedNode.Id))
                     {
-                        Document.UndoRedoManager.RevertOnce();
+                        Document.UndoRedoManager.Revert();
                     }
 
                     if (selected != selectedNode.IconKey)

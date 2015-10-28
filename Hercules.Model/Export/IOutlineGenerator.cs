@@ -7,14 +7,13 @@
 // ==========================================================================
 
 using System.IO;
-using Hercules.Model.Layouting;
+using System.Threading.Tasks;
+using Hercules.Model.Rendering;
 
 namespace Hercules.Model.Export
 {
     public interface IOutlineGenerator
     {
-        void GenerateOutline(Document document, IRenderer renderer, Stream stream, bool useColors, string noTextPlaceholder);
-
-        string GenerateOutlineToString(Document document, IRenderer renderer, bool useColors, string noTextPlaceholder);
+        Task WriteOutlineAsync(Document document, IRenderer renderer, Stream stream, bool useColors, string noTextPlaceholder);
     }
 }

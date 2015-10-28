@@ -23,7 +23,7 @@ namespace Hercules.Model
 
         bool CanRedo { get; }
 
-        void RevertOnce();
+        void Revert();
 
         void RevertTo(int index);
 

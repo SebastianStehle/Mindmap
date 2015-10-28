@@ -69,6 +69,16 @@ namespace Hercules.App.Components.Implementations
             await SaveAsync();
         }
 
+        public async Task AddNewNonLoadingAsync(string name, Document document)
+        {
+            Guard.NotNullOrEmpty(name, nameof(name));
+            Guard.NotNullOrEmpty(name, nameof(name));
+
+            DocumentRef documentRef = await documentStore.CreateAsync(name, document);
+
+            allMindmaps.Insert(0, new MindmapRef(documentRef, documentStore));
+        }
+
         public async Task LoadAllAsync()
         {
             if (!isLoaded)
@@ -98,6 +108,8 @@ namespace Hercules.App.Components.Implementations
 
         public Task CreateAsync(string name)
         {
+            Guard.NotNullOrEmpty(name, nameof(name));
+
             return DoAsync(x => true, async () =>
             {
                 Document document = new Document(Guid.NewGuid());

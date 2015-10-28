@@ -351,7 +351,7 @@ namespace GP.Windows.UI.Controls
         {
             if (hueBackground != null)
             {
-                Value = 100 - (int)Math.Round(((translateTransform.Y / hueBackground.ActualHeight) * 100));
+                Value = 100 - (int)Math.Round((translateTransform.Y / hueBackground.ActualHeight) * 100);
             }
         }
 
@@ -373,12 +373,12 @@ namespace GP.Windows.UI.Controls
 
         private void UpdateSaturation(double saturation)
         {
-            Saturation = (int)Math.Round((saturation * 100));
+            Saturation = (int)Math.Round(saturation * 100);
         }
 
         private void UpdateValue(double value)
         {
-            Value = (int)Math.Round((value * 100));
+            Value = (int)Math.Round(value * 100);
         }
 
         private void UpdateHue(double hue)

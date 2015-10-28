@@ -8,7 +8,7 @@
 
 using System.Threading.Tasks;
 using Hercules.Model;
-using Hercules.Model.Layouting;
+using Hercules.Model.Rendering;
 
 namespace Hercules.App.Components
 {

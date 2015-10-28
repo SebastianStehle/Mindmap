@@ -29,17 +29,23 @@
             <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
                 <AppBarSeparator />
 
-                <AppBarButton x:Uid="AppBarButton_Export" Icon="Save">
+                <AppBarButton x:Uid="AppBarButton_Share" Icon="Download">
                     <AppBarButton.Flyout>
                         <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
                             <MenuFlyoutItem x:Uid="AppBarButton_ExportHtml" Text="Html"
                                 Command="{Binding ExportHtmlCommand}" />
                             <MenuFlyoutItem x:Uid="AppBarButton_ExportImage" Text="Image"
                                 Command="{Binding ExportImageCommand}" />
-                            <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{Binding PrintCommand}">
-                                <i:Interaction.Behaviors>
-                                </i:Interaction.Behaviors>
-                            </MenuFlyoutItem>
+                            
+                            <MenuFlyoutSeparator />
+                            
+                            <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print"
+                                Command="{Binding PrintCommand}" />
+                            
+                            <MenuFlyoutSeparator />
+                            
+                            <MenuFlyoutItem x:Uid="AppBarButton_ImportXmind" Text="XMind"
+                                Command="{Binding ImportXMindCommand}" />
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>
@@ -49,7 +55,7 @@
                 <AppBarButton x:Uid="AppBarButton_ChangeIcon" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}">
                     <AppBarButton.Flyout>
                         <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
-                            <e:EditIconView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
+                            <e:EditIconView Renderer="{Binding RendererProvider.Current}" Document="{Binding Document}" />
                         </controls:MindmapFlyout>
                     </AppBarButton.Flyout>
                     <i:Interaction.Behaviors>
@@ -60,7 +66,7 @@
                 <AppBarButton x:Uid="AppBarButton_ChangeColor" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=true}">
                     <AppBarButton.Flyout>
                         <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
-                            <e:EditColorView Renderer="{Binding RendererFactory.Current}" Document="{Binding Document}" />
+                            <e:EditColorView Renderer="{Binding RendererProvider.Current}" Document="{Binding Document}" />
                         </controls:MindmapFlyout>
                     </AppBarButton.Flyout>
                     <i:Interaction.Behaviors>

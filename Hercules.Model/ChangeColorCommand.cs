@@ -6,8 +6,6 @@
 // All rights reserved.
 // ==========================================================================
 
-using System.Globalization;
-
 namespace Hercules.Model
 {
     public sealed class ChangeColorCommand : CommandBase

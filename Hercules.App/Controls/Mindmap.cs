@@ -14,8 +14,8 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Hercules.Model;
 using Hercules.Model.Layouting;
-using Hercules.Model.Rendering.Win2D;
 using Hercules.Model.Utils;
+using Hercules.Win2D.Rendering;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
 // ReSharper disable LoopCanBePartlyConvertedToQuery
@@ -30,7 +30,7 @@ namespace Hercules.App.Controls
         private const string CanvasPart = "PART_Canvas";
         private const string TextBoxPart = "PART_TextBox";
         private const string ScrollViewerPart = "PART_ScrollViewer";
-        private IRendererFactory lastRendererFactory;
+        private IWin2DRendererProvider lastWin2DRendererProvider;
         private ScrollViewer scrollViewer;
         private ScrollViewerView lastView;
         private Win2DRenderer renderer;
@@ -47,7 +47,7 @@ namespace Hercules.App.Controls
             get { return renderer; }
         }
 
-        public Scene Scene
+        public Win2DScene Scene
         {
             get { return renderer.Scene; }
         }
@@ -67,12 +67,12 @@ namespace Hercules.App.Controls
             owner?.InitializeLayout();
         }
 
-        public static readonly DependencyProperty RendererFactoryProperty =
-            DependencyProperty.Register("RendererFactory", typeof(IRendererFactory), typeof(Mindmap), new PropertyMetadata(null, OnRendererChanged));
-        public IRendererFactory RendererFactory
+        public static readonly DependencyProperty Win2DRendererProviderProperty =
+            DependencyProperty.Register("Win2DRendererProvider", typeof(IWin2DRendererProvider), typeof(Mindmap), new PropertyMetadata(null, OnRendererChanged));
+        public IWin2DRendererProvider Win2DRendererProvider
         {
-            get { return (IRendererFactory)GetValue(RendererFactoryProperty); }
-            set { SetValue(RendererFactoryProperty, value); }
+            get { return (IWin2DRendererProvider)GetValue(Win2DRendererProviderProperty); }
+            set { SetValue(Win2DRendererProviderProperty, value); }
         }
 
         private static void OnRendererChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
@@ -230,13 +230,13 @@ namespace Hercules.App.Controls
                 renderer = null;
             }
 
-            if (canvasControl != null && Document != null && RendererFactory != null)
+            if (canvasControl != null && Document != null && Win2DRendererProvider != null)
             {
-                if (renderer == null || renderer.Document != Document || renderer.Canvas != canvasControl || RendererFactory != lastRendererFactory)
+                if (renderer == null || renderer.Document != Document || renderer.Canvas != canvasControl || Win2DRendererProvider != lastWin2DRendererProvider)
                 {
-                    renderer = RendererFactory.CreateRenderer(Document, canvasControl);
+                    renderer = Win2DRendererProvider.CreateRenderer(Document, canvasControl);
 
-                    lastRendererFactory = RendererFactory;
+                    lastWin2DRendererProvider = Win2DRendererProvider;
                 }
             }
 

@@ -21,9 +21,84 @@ namespace Hercules.App.Components.Implementations
 {
     public sealed class MessageDialogService : IMessageDialogService
     {
+        public async Task OpenFileDialogAsync(string[] extensions, Action<Stream> open)
+        {
+            Guard.NotNull(extensions, nameof(extensions));
+            Guard.NotNull(open, nameof(open));
+
+            FileOpenPicker filePicker = CreateFileOpenPicker(extensions);
+
+            StorageFile file = await filePicker.PickSingleFileAsync();
+
+            if (file != null)
+            {
+                using (Stream fileStream = await file.OpenStreamForWriteAsync())
+                {
+                    open(fileStream);
+                }
+            }
+        }
+
+        public async Task OpenFileDialogAsync(string[] extensions, Func<Stream, Task> open)
+        {
+            Guard.NotNull(extensions, nameof(extensions));
+            Guard.NotNull(open, nameof(open));
+
+            FileOpenPicker filePicker = CreateFileOpenPicker(extensions);
+
+            StorageFile file = await filePicker.PickSingleFileAsync();
+
+            if (file != null)
+            {
+                using (Stream fileStream = await file.OpenStreamForWriteAsync())
+                {
+                    await open(fileStream);
+                }
+            }
+        }
+
+        public async Task OpenFileDialogAsync(string[] extensions, Action<IRandomAccessStream> open)
+        {
+            Guard.NotNull(extensions, nameof(extensions));
+            Guard.NotNull(open, nameof(open));
+
+            FileOpenPicker filePicker = CreateFileOpenPicker(extensions);
+
+            StorageFile file = await filePicker.PickSingleFileAsync();
+
+            if (file != null)
+            {
+                using (IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    open(fileStream);
+                }
+            }
+        }
+
+        public async Task OpenFileDialogAsync(string[] extensions, Func<IRandomAccessStream, Task> open)
+        {
+            Guard.NotNull(extensions, nameof(extensions));
+            Guard.NotNull(open, nameof(open));
+
+            FileOpenPicker filePicker = CreateFileOpenPicker(extensions);
+
+            StorageFile file = await filePicker.PickSingleFileAsync();
+
+            if (file != null)
+            {
+                using (IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                {
+                    await open(fileStream);
+                }
+            }
+        }
+
         public async Task SaveFileDialogAsync(string[] extensions, Action<Stream> save)
         {
-            FileSavePicker filePicker = CreateFilePicker(extensions);
+            Guard.NotNull(extensions, nameof(extensions));
+            Guard.NotNull(save, nameof(save));
+
+            FileSavePicker filePicker = CreateFileSavePicker(extensions);
 
             StorageFile file = await filePicker.PickSaveFileAsync();
 
@@ -38,7 +113,10 @@ namespace Hercules.App.Components.Implementations
 
         public async Task SaveFileDialogAsync(string[] extensions, Func<Stream, Task> save)
         {
-            FileSavePicker filePicker = CreateFilePicker(extensions);
+            Guard.NotNull(extensions, nameof(extensions));
+            Guard.NotNull(save, nameof(save));
+
+            FileSavePicker filePicker = CreateFileSavePicker(extensions);
 
             StorageFile file = await filePicker.PickSaveFileAsync();
 
@@ -53,7 +131,10 @@ namespace Hercules.App.Components.Implementations
 
         public async Task SaveFileDialogAsync(string[] extensions, Action<IRandomAccessStream> save)
         {
-            FileSavePicker filePicker = CreateFilePicker(extensions);
+            Guard.NotNull(extensions, nameof(extensions));
+            Guard.NotNull(save, nameof(save));
+
+            FileSavePicker filePicker = CreateFileSavePicker(extensions);
 
             StorageFile file = await filePicker.PickSaveFileAsync();
 
@@ -68,7 +149,10 @@ namespace Hercules.App.Components.Implementations
 
         public async Task SaveFileDialogAsync(string[] extensions, Func<IRandomAccessStream, Task> save)
         {
-            FileSavePicker filePicker = CreateFilePicker(extensions);
+            Guard.NotNull(extensions, nameof(extensions));
+            Guard.NotNull(save, nameof(save));
+
+            FileSavePicker filePicker = CreateFileSavePicker(extensions);
 
             StorageFile file = await filePicker.PickSaveFileAsync();
 
@@ -81,7 +165,22 @@ namespace Hercules.App.Components.Implementations
             }
         }
 
-        private static FileSavePicker CreateFilePicker(string[] extensions)
+        private static FileOpenPicker CreateFileOpenPicker(string[] extensions)
+        {
+            FileOpenPicker filePicker = new FileOpenPicker();
+
+            if (extensions != null)
+            {
+                foreach (string extension in extensions)
+                {
+                    filePicker.FileTypeFilter.Add(extension);
+                }
+            }
+
+            return filePicker;
+        }
+
+        private static FileSavePicker CreateFileSavePicker(string[] extensions)
         {
             FileSavePicker filePicker = new FileSavePicker();
 
@@ -107,7 +206,7 @@ namespace Hercules.App.Components.Implementations
 
             MessageDialog dialog = new MessageDialog(content, title);
 
-            dialog.Commands.Add(new UICommand(ResourceManager.GetString("OK")));
+            dialog.Commands.Add(new UICommand(ResourceManager.GetString("Common_OK")));
 
             dialog.CancelCommandIndex = 0;
             dialog.DefaultCommandIndex = 0;

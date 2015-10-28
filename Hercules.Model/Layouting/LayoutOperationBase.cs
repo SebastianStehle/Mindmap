@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using GP.Windows;
+using Hercules.Model.Rendering;
 
 namespace Hercules.Model.Layouting
 {

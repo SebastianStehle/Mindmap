@@ -9,7 +9,7 @@
 using System.Numerics;
 using Hercules.Model;
 using Hercules.Model.Layouting;
-using Hercules.Model.Rendering.Win2D;
+using Hercules.Win2D.Rendering;
 
 namespace Hercules.App.Controls
 {

@@ -153,17 +153,8 @@
   <data name="AppBarButton_ChangeIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Change icon of selected subtopic (CTRL + I)</value>
   </data>
-  <data name="AppBarButton_Export.Label" xml:space="preserve">
-    <value>Export</value>
-  </data>
-  <data name="AppBarButton_Export.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Export</value>
-  </data>
-  <data name="AppBarButton_Export.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Export current mindmap</value>
-  </data>
   <data name="AppBarButton_ExportHtml.Text" xml:space="preserve">
-    <value>Html (Outline)</value>
+    <value>Export as Html (Outline)</value>
   </data>
   <data name="AppBarButton_ExportHtml.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Export Html</value>
@@ -172,7 +163,7 @@
     <value>Export mindmap to HTML</value>
   </data>
   <data name="AppBarButton_ExportImage.Text" xml:space="preserve">
-    <value>Image (.png)</value>
+    <value>Export Image (.png)</value>
   </data>
   <data name="AppBarButton_ExportImage.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Export Image</value>
@@ -188,6 +179,15 @@
   </data>
   <data name="AppBarButton_Help.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Show Help (CTRL + H)</value>
+  </data>
+  <data name="AppBarButton_ImportXMind.Text" xml:space="preserve">
+    <value>Import from XMind (.xmind)</value>
+  </data>
+  <data name="AppBarButton_ImportXMind.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Import from XMind</value>
+  </data>
+  <data name="AppBarButton_ImportXMind.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Import Mindmaps from XMind</value>
   </data>
   <data name="AppBarButton_ListMindmaps.Label" xml:space="preserve">
     <value>Mindmaps</value>
@@ -225,6 +225,15 @@
   <data name="AppBarButton_RemoveNode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Remove selected root (DELETE)</value>
   </data>
+  <data name="AppBarButton_Share.Label" xml:space="preserve">
+    <value>Ex-Import</value>
+  </data>
+  <data name="AppBarButton_Share.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Ex-Import</value>
+  </data>
+  <data name="AppBarButton_Share.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Export current mindmap or import mindmaps</value>
+  </data>
   <data name="AppBarButton_Undo.Label" xml:space="preserve">
     <value>Undo</value>
   </data>
@@ -236,6 +245,9 @@
   </data>
   <data name="Common_No" xml:space="preserve">
     <value>No</value>
+  </data>
+  <data name="Common_OK" xml:space="preserve">
+    <value>OK</value>
   </data>
   <data name="Common_Yes" xml:space="preserve">
     <value>Yes</value>
@@ -269,6 +281,12 @@
   </data>
   <data name="Editor_ShowHullButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Show hull around subtopic and children</value>
+  </data>
+  <data name="ImportFailed_Content" xml:space="preserve">
+    <value>Sorry, we failed to import your mindmaps. Please send us an bug report.</value>
+  </data>
+  <data name="ImportFailed_Title" xml:space="preserve">
+    <value>Importing mindmap failed.</value>
   </data>
   <data name="Mindmaps_AddButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>New mindmap</value>

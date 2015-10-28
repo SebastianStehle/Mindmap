@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// CommandInvokingEventHandler.cs
+// ShortcutInvokingEventHandler.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle

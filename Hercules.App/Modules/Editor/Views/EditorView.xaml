@@ -25,7 +25,7 @@
 
         <gpc:TiledBackground TileSize="60" />
 
-        <controls:Mindmap Document="{Binding Document}" RendererFactory="{Binding RendererFactory}" x:Name="Mindmap">
+        <controls:Mindmap Document="{Binding Document}" Win2DRendererProvider="{Binding RendererProvider}" x:Name="Mindmap">
             <controls:Mindmap.Layout>
                 <modelLayout:DefaultLayout ElementMargin="10" HorizontalMargin="50" />
             </controls:Mindmap.Layout>

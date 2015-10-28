@@ -129,6 +129,7 @@
     <Compile Include="Controls\NotRootToVisibilityConverter.cs" />
     <Compile Include="Controls\TextEditor.cs" />
     <Compile Include="Controls\ThemeBrushConverter.cs" />
+    <Compile Include="Messages\ImportXMindMessage.cs" />
     <Compile Include="Messages\SaveMindmapMessage.cs" />
     <Compile Include="Modules\Editor\Views\EditColorView.xaml.cs">
       <DependentUpon>EditColorView.xaml</DependentUpon>
@@ -314,6 +315,10 @@
     <ProjectReference Include="..\Hercules.Model\Hercules.Model.csproj">
       <Project>{b0aa10fc-a13f-4d7e-b605-f450bbe9194d}</Project>
       <Name>Hercules.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hercules.Win2D\Hercules.Win2D.csproj">
+      <Project>{c0a898b4-b04c-4a54-9c73-c127c096a3da}</Project>
+      <Name>Hercules.Win2D</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

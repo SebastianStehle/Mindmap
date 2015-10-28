@@ -23,6 +23,14 @@ namespace Hercules.App.Components
 
         Task SaveFileDialogAsync(string[] extensions, Func<IRandomAccessStream, Task> save);
 
+        Task OpenFileDialogAsync(string[] extensions, Action<Stream> open);
+
+        Task OpenFileDialogAsync(string[] extensions, Func<Stream, Task> open);
+
+        Task OpenFileDialogAsync(string[] extensions, Action<IRandomAccessStream> open);
+
+        Task OpenFileDialogAsync(string[] extensions, Func<IRandomAccessStream, Task> open);
+
         Task<bool> ConfirmAsync(string content);
 
         Task<bool> ConfirmAsync(string content, string title);

@@ -11,7 +11,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using GP.Windows.UI;
 using GP.Windows.UI.Interactivity;
-using Hercules.Model.Rendering.Win2D;
+using Hercules.Win2D.Rendering;
 
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 
@@ -86,7 +86,7 @@ namespace Hercules.App.Controls
 
         private NodeMovingOperation AcquireOperation(Vector2 position)
         {
-            Mindmap mindmap = VisualTreeExtensions.FindParent<Mindmap>(AssociatedElement);
+            Mindmap mindmap = AssociatedElement.FindParent<Mindmap>();
 
             if (mindmap?.Renderer != null)
             {

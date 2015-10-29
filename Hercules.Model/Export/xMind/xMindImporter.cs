@@ -22,6 +22,16 @@ namespace Hercules.Model.Export.xMind
     {
         private static readonly Regex ColorRegex = new Regex("^#[0-9A-F]{6}$", RegexOptions.Compiled);
 
+        public string NameKey
+        {
+            get { return "xMind"; }
+        }
+
+        public IEnumerable<FileExtension> Extensions
+        {
+            get { yield return FileExtension.XMIND; }
+        }
+
         public Task<List<KeyValuePair<string, Document>>> ImportAsync(Stream stream, PropertiesBag properties = null)
         {
             Guard.NotNull(stream, nameof(stream));

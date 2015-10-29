@@ -1,14 +1,22 @@
 ﻿// ==========================================================================
-// xMindStyle.cs
+// IImportSource.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-namespace Hercules.Model.Export.xMind
+
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Hercules.Model;
+using Hercules.Model.Export;
+
+namespace Hercules.App.Components
 {
-    internal sealed class xMindStyle
+    public interface IImportSource
     {
-        public int Color { get; set; } = -1;
+        string NameKey { get; }
+
+        Task<List<KeyValuePair<string, Document>>> ImportAsync(IImporter importer);
     }
 }

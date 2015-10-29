@@ -107,11 +107,15 @@
     </Compile>
     <Compile Include="Assets\AssetProvider.cs" />
     <Compile Include="Components\DocumentLoadedEventArgs.cs" />
+    <Compile Include="Components\IExportTarget.cs" />
+    <Compile Include="Components\IImportSource.cs" />
     <Compile Include="Components\IMindmapRef.cs" />
     <Compile Include="Components\ILoadingManager.cs" />
     <Compile Include="Components\IMessageDialogService.cs" />
     <Compile Include="Components\IMindmapStore.cs" />
     <Compile Include="Components\Implementations\DefaultSettingsProvider.cs" />
+    <Compile Include="Components\Implementations\FileImportSource.cs" />
+    <Compile Include="Components\Implementations\FileExportTarget.cs" />
     <Compile Include="Components\Implementations\LoadingManager.cs" />
     <Compile Include="Components\Implementations\MessageDialogService.cs" />
     <Compile Include="Components\Implementations\MindmapRef.cs" />
@@ -120,6 +124,8 @@
     <Compile Include="Components\IPrintService.cs" />
     <Compile Include="Components\ISettingsProvider.cs" />
     <Compile Include="Controls\CanvasControlWrapper.cs" />
+    <Compile Include="Controls\ImportGeneratorBehavior.cs" />
+    <Compile Include="Controls\ExportGeneratorBehavior.cs" />
     <Compile Include="Controls\MindmapFlyout.cs" />
     <Compile Include="Controls\MindmapFlyoutView.cs" />
     <Compile Include="Controls\Mindmap.cs" />
@@ -129,7 +135,7 @@
     <Compile Include="Controls\NotRootToVisibilityConverter.cs" />
     <Compile Include="Controls\TextEditor.cs" />
     <Compile Include="Controls\ThemeBrushConverter.cs" />
-    <Compile Include="Messages\ImportXMindMessage.cs" />
+    <Compile Include="Messages\ImportMessage.cs" />
     <Compile Include="Messages\SaveMindmapMessage.cs" />
     <Compile Include="Modules\Editor\Views\EditColorView.xaml.cs">
       <DependentUpon>EditColorView.xaml</DependentUpon>
@@ -150,6 +156,8 @@
     <Compile Include="Modules\Editor\Views\ToolbarView.xaml.cs">
       <DependentUpon>ToolbarView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\ImportModel.cs" />
+    <Compile Include="Modules\ExportModel.cs" />
     <Compile Include="Modules\Mindmaps\ViewModels\MindmapsViewModel.cs" />
     <Compile Include="Modules\Mindmaps\Views\ListView.xaml.cs">
       <DependentUpon>ListView.xaml</DependentUpon>

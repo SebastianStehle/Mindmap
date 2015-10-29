@@ -127,6 +127,7 @@
     <Compile Include="Export\Html\HtmlOutlineExporter.cs" />
     <Compile Include="Export\IExporter.cs" />
     <Compile Include="Export\IImporter.cs" />
+    <Compile Include="Export\Image\ImageExporter.cs" />
     <Compile Include="Export\IOutlineGenerator.cs" />
     <Compile Include="Export\xMind\xMindImporter.cs" />
     <Compile Include="Export\xMind\xMindStyle.cs" />

@@ -16,8 +16,6 @@ using GP.Windows;
 using Hercules.App.Components;
 using Hercules.App.Messages;
 using Hercules.Model;
-using Hercules.Model.Export;
-using Hercules.Model.Export.xMind;
 using Hercules.Model.Utils;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
@@ -42,9 +40,6 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
         [NotifyUI]
         public IMindmapRef SelectedMindmap { get; set; }
-
-        [Dependency]
-        public xMindImporter xMindImporter { get; set; }
 
         [Dependency]
         public IMindmapStore MindmapStore { get; set; }
@@ -74,42 +69,39 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
         public MindmapsViewModel()
         {
-            MessengerInstance.Register<ImportXMindMessage>(this, OnImportXMind);
+            MessengerInstance.Register<ImportMessage>(this, OnImport);
         }
 
-        public void OnImportXMind(ImportXMindMessage message)
+        public void OnImport(ImportMessage message)
         {
-            ImportAsync(xMindImporter);
+            ImportAsync(message.Content);
         }
 
-        private void ImportAsync(IImporter importer)
+        private void ImportAsync(ImportModel model)
         {
-            LoadingManager.DoWhenNotLoadingAsync(() =>
+            LoadingManager.DoWhenNotLoadingAsync(async () =>
             {
-                return MessageDialogService.OpenFileDialogAsync(new string[] { ".xmind" }, async stream =>
+                try
                 {
-                    try
-                    {
-                        List<KeyValuePair<string, Document>> documents = await importer.ImportAsync(stream);
+                    List<KeyValuePair<string, Document>> documents = await model.Source.ImportAsync(model.Importer);
 
-                        if (documents.Count > 0)
+                    if (documents.Count > 0)
+                    {
+                        foreach (var document in documents)
                         {
-                            foreach (var document in documents)
-                            {
-                                await MindmapStore.AddNewNonLoadingAsync(document.Key, document.Value);
-                            }
-
-                            await MindmapStore.LoadAsync(MindmapStore.AllMindmaps[0]);
+                            await MindmapStore.AddNewNonLoadingAsync(document.Key, document.Value);
                         }
-                    }
-                    catch
-                    {
-                        string content = ResourceManager.GetString("ImportFailed_Content"),
-                                 title = ResourceManager.GetString("ImportFailed_Title");
 
-                        await MessageDialogService.AlertAsync(content, title);
+                        await MindmapStore.LoadAsync(MindmapStore.AllMindmaps[0]);
                     }
-                });
+                }
+                catch
+                {
+                    string content = ResourceManager.GetString("ImportFailed_Content"),
+                        title = ResourceManager.GetString("ImportFailed_Title");
+
+                    await MessageDialogService.AlertAsync(content, title);
+                }
             }).Forget();
         }
 

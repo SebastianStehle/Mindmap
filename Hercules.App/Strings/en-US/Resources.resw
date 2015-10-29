@@ -282,11 +282,26 @@
   <data name="Editor_ShowHullButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Show hull around subtopic and children</value>
   </data>
+  <data name="Exporter_HtmlOutline" xml:space="preserve">
+    <value>Html Outline (.html)</value>
+  </data>
+  <data name="Exporter_Image" xml:space="preserve">
+    <value>Image (.png)</value>
+  </data>
+  <data name="ExportTarget_File" xml:space="preserve">
+    <value>File</value>
+  </data>
+  <data name="Importer_xMind" xml:space="preserve">
+    <value>xMind (.xmind)</value>
+  </data>
   <data name="ImportFailed_Content" xml:space="preserve">
     <value>Sorry, we failed to import your mindmaps. Please send us an bug report.</value>
   </data>
   <data name="ImportFailed_Title" xml:space="preserve">
     <value>Importing mindmap failed.</value>
+  </data>
+  <data name="ImportSource_File" xml:space="preserve">
+    <value>File</value>
   </data>
   <data name="Mindmaps_AddButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>New mindmap</value>

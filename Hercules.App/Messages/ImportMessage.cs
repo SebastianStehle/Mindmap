@@ -1,14 +1,21 @@
 ﻿// ==========================================================================
-// xMindStyle.cs
+// ImportMessage.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-namespace Hercules.Model.Export.xMind
+
+using GalaSoft.MvvmLight.Messaging;
+using Hercules.App.Modules;
+
+namespace Hercules.App.Messages
 {
-    internal sealed class xMindStyle
+    public sealed class ImportMessage : GenericMessage<ImportModel>
     {
-        public int Color { get; set; } = -1;
+        public ImportMessage(ImportModel content) 
+            : base(content)
+        {
+        }
     }
 }

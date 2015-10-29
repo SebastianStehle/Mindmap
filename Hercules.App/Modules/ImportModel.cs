@@ -1,14 +1,20 @@
 ﻿// ==========================================================================
-// xMindStyle.cs
+// ImportModel.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-namespace Hercules.Model.Export.xMind
+
+using Hercules.App.Components;
+using Hercules.Model.Export;
+
+namespace Hercules.App.Modules
 {
-    internal sealed class xMindStyle
+    public sealed class ImportModel
     {
-        public int Color { get; set; } = -1;
+        public IImportSource Source { get; set; }
+
+        public IImporter Importer { get; set; }
     }
 }

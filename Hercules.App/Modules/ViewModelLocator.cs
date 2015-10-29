@@ -15,6 +15,8 @@ using Hercules.App.Modules.Editor.ViewModels;
 using Hercules.App.Modules.Mindmaps.ViewModels;
 using Hercules.Model.Export;
 using Hercules.Model.Export.Html;
+using Hercules.Model.Export.Image;
+using Hercules.Model.Export.xMind;
 using Hercules.Model.Storing;
 using Hercules.Model.Storing.Json;
 using Microsoft.Practices.Unity;
@@ -55,6 +57,16 @@ namespace Hercules.App.Modules
                 unityContainer.RegisterType<IMindmapStore, MindmapStore>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IMessageDialogService, MessageDialogService>(
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IImportSource, FileImportSource>("File",
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IImporter, xMindImporter>("xMind",
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IExportTarget, FileExportTarget>("File",
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IExporter, ImageExporter>("Image",
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IExporter, HtmlOutlineExporter>("HtmlOutline",
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<MindmapsViewModel>(
                     new PerResolveLifetimeManager());

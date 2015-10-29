@@ -32,20 +32,19 @@
                 <AppBarButton x:Uid="AppBarButton_Share" Icon="Download">
                     <AppBarButton.Flyout>
                         <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
-                            <MenuFlyoutItem x:Uid="AppBarButton_ExportHtml" Text="Html"
-                                Command="{Binding ExportHtmlCommand}" />
-                            <MenuFlyoutItem x:Uid="AppBarButton_ExportImage" Text="Image"
-                                Command="{Binding ExportImageCommand}" />
-                            
-                            <MenuFlyoutSeparator />
-                            
+                            <MenuFlyoutSubItem x:Uid="AppBarButton_Export" Text="Export">
+                                <i:Interaction.Behaviors>
+                                    <controls:ExportGeneratorBehavior EditorViewModel="{Binding}" />
+                                </i:Interaction.Behaviors>
+                            </MenuFlyoutSubItem>
+                            <MenuFlyoutSubItem x:Uid="AppBarButton_Import" Text="Import">
+                                <i:Interaction.Behaviors>
+                                    <controls:ImportGeneratorBehavior EditorViewModel="{Binding}" />
+                                </i:Interaction.Behaviors>
+                            </MenuFlyoutSubItem>
+
                             <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print"
                                 Command="{Binding PrintCommand}" />
-                            
-                            <MenuFlyoutSeparator />
-                            
-                            <MenuFlyoutItem x:Uid="AppBarButton_ImportXmind" Text="XMind"
-                                Command="{Binding ImportXMindCommand}" />
                         </MenuFlyout>
                     </AppBarButton.Flyout>
                 </AppBarButton>

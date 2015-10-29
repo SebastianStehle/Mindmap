@@ -116,6 +116,12 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="FileExtension.cs" />
+    <Compile Include="FileExtensions.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>FileExtensions.tt</DependentUpon>
+    </Compile>
     <Compile Include="UI\Controls\ColorPicker.cs" />
     <Compile Include="UI\DependencyPropertyListener.cs" />
     <Compile Include="DisposableObject.cs" />
@@ -156,7 +162,12 @@
     <Compile Include="UI\VisibleWhenFalseConverter.cs" />
     <Compile Include="UI\VisibleWhenTrueConverter.cs" />
     <Compile Include="UI\VisualTreeTreeExtensions.cs" />
+    <Content Include="FileExtensions.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>FileExtensions.cs</LastGenOutput>
+    </Content>
     <Content Include="Properties\GP.Windows.rd.xml" />
+    <Content Include="Resources\MimeTypes.txt" />
   </ItemGroup>
   <ItemGroup>
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
@@ -168,6 +179,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

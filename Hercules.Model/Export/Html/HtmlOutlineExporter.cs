@@ -24,13 +24,23 @@ namespace Hercules.Model.Export.Html
         private const string ListItemStyle = "padding-top:4px;padding-bottom:4px;";
         private const string NoTextDefault = "<NoText>";
 
+        public string NameKey
+        {
+            get { return "HtmlOutline"; }
+        }
+
+        public IEnumerable<FileExtension> Extensions
+        {
+            get { yield return FileExtension.HTML; }
+        }
+
         public Task ExportAsync(Document document, IRenderer renderer, Stream stream, PropertiesBag properties = null)
         {
             Guard.NotNull(document, nameof(document));
             Guard.NotNull(renderer, nameof(renderer));
             Guard.NotNull(stream, nameof(stream));
 
-            bool useColors = properties != null && properties.HasProperty("HasColors") && properties["HasColors"].ToBoolean(CultureInfo.InvariantCulture);
+            bool useColors = properties == null || !properties.HasProperty("HasColors") || properties["HasColors"].ToBoolean(CultureInfo.InvariantCulture);
 
             string noTextPlaceholder =
                 properties != null &&

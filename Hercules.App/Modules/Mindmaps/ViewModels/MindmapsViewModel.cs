@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GP.Windows;
+using GP.Windows.Mvvm;
 using Hercules.App.Components;
 using Hercules.App.Messages;
 using Hercules.Model;

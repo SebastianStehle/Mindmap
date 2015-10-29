@@ -396,4 +396,13 @@
   <data name="TransactionName_ToggleHull" xml:space="preserve">
     <value>Show Border</value>
   </data>
+  <data name="ExportTarget_Email" xml:space="preserve">
+    <value>Email</value>
+  </data>
+  <data name="Export_EmailAttachment" xml:space="preserve">
+    <value>Mindmap</value>
+  </data>
+  <data name="Export_EmailSubject" xml:space="preserve">
+    <value>Hey, have a look to my mindmap</value>
+  </data>
 </root>

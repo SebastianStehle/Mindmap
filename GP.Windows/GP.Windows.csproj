@@ -122,6 +122,11 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>FileExtensions.tt</DependentUpon>
     </Compile>
+    <Compile Include="Mvvm\ILoadingManager.cs" />
+    <Compile Include="Mvvm\IMessageDialogService.cs" />
+    <Compile Include="Mvvm\LoadingManager.cs" />
+    <Compile Include="Mvvm\MessageDialogService.cs" />
+    <Compile Include="Properties\Annotations.cs" />
     <Compile Include="UI\Controls\ColorPicker.cs" />
     <Compile Include="UI\DependencyPropertyListener.cs" />
     <Compile Include="DisposableObject.cs" />

@@ -9,10 +9,9 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using GP.Windows.UI.Interactivity;
-using Hercules.App.Components;
 using Hercules.App.Modules;
 using Hercules.App.Modules.Editor.ViewModels;
-using Hercules.Model.Export;
+using Hercules.Model.ExImport;
 using Hercules.Model.Utils;
 
 namespace Hercules.App.Controls

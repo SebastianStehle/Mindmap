@@ -6,8 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
-using Hercules.App.Components;
-using Hercules.Model.Export;
+using Hercules.Model.ExImport;
 
 namespace Hercules.App.Modules
 {

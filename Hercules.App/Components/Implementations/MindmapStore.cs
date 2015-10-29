@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using GP.Windows;
+using GP.Windows.Mvvm;
 using Hercules.Model;
 using Hercules.Model.Storing;
 using Hercules.Model.Utils;

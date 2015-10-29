@@ -107,17 +107,9 @@
     </Compile>
     <Compile Include="Assets\AssetProvider.cs" />
     <Compile Include="Components\DocumentLoadedEventArgs.cs" />
-    <Compile Include="Components\IExportTarget.cs" />
-    <Compile Include="Components\IImportSource.cs" />
     <Compile Include="Components\IMindmapRef.cs" />
-    <Compile Include="Components\ILoadingManager.cs" />
-    <Compile Include="Components\IMessageDialogService.cs" />
     <Compile Include="Components\IMindmapStore.cs" />
     <Compile Include="Components\Implementations\DefaultSettingsProvider.cs" />
-    <Compile Include="Components\Implementations\FileImportSource.cs" />
-    <Compile Include="Components\Implementations\FileExportTarget.cs" />
-    <Compile Include="Components\Implementations\LoadingManager.cs" />
-    <Compile Include="Components\Implementations\MessageDialogService.cs" />
     <Compile Include="Components\Implementations\MindmapRef.cs" />
     <Compile Include="Components\Implementations\MindmapStore.cs" />
     <Compile Include="Components\Implementations\PrintService.cs" />

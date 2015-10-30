@@ -150,8 +150,8 @@ namespace Hercules.Model.Rendering.Win2D
                 builder.AddCubicBezier(
                     new Vector2(halfX, point1.Y - 2),
                     new Vector2(halfX, point2.Y - 2),
-                    new Vector2(point2.X + 1, point2.Y - 1));
-                builder.AddLine(point2.X + 1, point2.Y + 1);
+                    new Vector2(point2.X, point2.Y - 1));
+                builder.AddLine(point2.X, point2.Y + 1);
                 builder.AddCubicBezier(
                     new Vector2(halfX, point2.Y + 2),
                     new Vector2(halfX, point1.Y + 2),

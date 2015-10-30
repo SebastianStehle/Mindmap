@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using GP.Windows;
+using Hercules.Model.Rendering;
 using Hercules.Model.Utils;
 
 // ReSharper disable LoopCanBePartlyConvertedToQuery

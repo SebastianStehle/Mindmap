@@ -5,7 +5,6 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 namespace GP.Windows.UI.Interactivity
 {
     /// <summary>

@@ -9,7 +9,7 @@
 using System.Numerics;
 using Hercules.Model;
 using Hercules.Model.Layouting;
-using Hercules.Model.Rendering.Win2D;
+using Hercules.Win2D.Rendering;
 
 namespace Hercules.App.Controls
 {
@@ -17,10 +17,20 @@ namespace Hercules.App.Controls
     {
         private readonly Node targetNode;
         private readonly Win2DRenderer renderer;
-        private readonly Win2DRenderNode movingNode;
+        private readonly Win2DRenderNode renderNode;
         private readonly Document document;
         private readonly ILayout layout;
         private readonly Vector2 initialPosition;
+        private readonly Mindmap mindmap;
+        private Win2DRenderNode movingNode;
+
+        public Mindmap Mindmap
+        {
+            get
+            {
+                return mindmap;
+            }
+        }
 
         public static NodeMovingOperation Start(Mindmap mindmap, Win2DRenderNode renderNode)
         {
@@ -39,17 +49,23 @@ namespace Hercules.App.Controls
 
         internal NodeMovingOperation(Mindmap mindmap, Win2DRenderNode renderNode, Node targetNode)
         {
+            this.mindmap = mindmap;
             this.layout = mindmap.Layout;
             this.document = mindmap.Document;
             this.renderer = mindmap.Renderer;
+            this.renderNode = renderNode;
             this.targetNode = targetNode;
-            this.movingNode = renderer.AddCustomNode(renderNode.CloneUnlinked());
 
             initialPosition = renderNode.RenderPosition;
         }
 
         public void Move(Vector2 translation)
         {
+            if (movingNode == null)
+            {
+                movingNode = renderer.AddCustomNode(renderNode.CloneUnlinked());
+            }
+
             movingNode.MoveBy(translation);
 
             renderer.Invalidate();

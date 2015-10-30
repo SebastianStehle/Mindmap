@@ -124,11 +124,25 @@
     <Compile Include="DocumentExtensions.cs" />
     <Compile Include="DocumentObjectWithId.cs" />
     <Compile Include="DocumentObject.cs" />
-    <Compile Include="Export\Html\HtmlOutlineGenerator.cs" />
-    <Compile Include="Export\IOutlineGenerator.cs" />
+    <Compile Include="ExImport\Channels\Email\EmailAttachmentSource.cs" />
+    <Compile Include="ExImport\Channels\Email\EmailExportTarget.cs" />
+    <Compile Include="ExImport\Channels\Email\StreamWrapper.cs" />
+    <Compile Include="ExImport\Channels\File\FileExportTarget.cs" />
+    <Compile Include="ExImport\Channels\File\FileImportSource.cs" />
+    <Compile Include="ExImport\Formats\Html\HtmlOutlineExporter.cs" />
+    <Compile Include="ExImport\IExporter.cs" />
+    <Compile Include="ExImport\IExportTarget.cs" />
+    <Compile Include="ExImport\IImporter.cs" />
+    <Compile Include="ExImport\IImportSource.cs" />
+    <Compile Include="ExImport\Formats\Image\ImageExporter.cs" />
+    <Compile Include="ExImport\IOutlineGenerator.cs" />
+    <Compile Include="ExImport\Formats\xMind\xMindImporter.cs" />
+    <Compile Include="ExImport\Formats\xMind\xMindStyle.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IColor.cs" />
     <Compile Include="IconSize.cs" />
     <Compile Include="IDocumentCommands.cs" />
+    <Compile Include="ThemeColor.cs" />
     <Compile Include="InsertChildCommand.cs" />
     <Compile Include="IUndoRedoAction.cs" />
     <Compile Include="IUndoRedoManager.cs" />
@@ -139,9 +153,9 @@
     <Compile Include="Layouting\Default\DefaultLayoutProcess.cs" />
     <Compile Include="Layouting\Default\DefaultPreviewCalculationProcess.cs" />
     <Compile Include="Layouting\ILayout.cs" />
-    <Compile Include="Layouting\IRenderer.cs" />
-    <Compile Include="Layouting\IRenderNode.cs" />
-    <Compile Include="Layouting\IRenderScene.cs" />
+    <Compile Include="Rendering\IRenderer.cs" />
+    <Compile Include="Rendering\IRenderNode.cs" />
+    <Compile Include="Rendering\IRenderScene.cs" />
     <Compile Include="Layouting\LayoutOperationBase.cs" />
     <Compile Include="Layouting\VisibilityUpdater.cs" />
     <Compile Include="Node.cs" />
@@ -155,29 +169,11 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyValue.cs" />
     <Compile Include="RemoveChildCommand.cs" />
-    <Compile Include="Rendering\Win2D\Default\DefaultPreviewNode.cs" />
-    <Compile Include="Rendering\Win2D\Default\DefaultRendererFactory.cs" />
-    <Compile Include="Rendering\Win2D\GeometryBuilder.cs" />
-    <Compile Include="Rendering\Win2D\IRendererFactory.cs" />
-    <Compile Include="Rendering\Win2D\Printer.cs" />
-    <Compile Include="Rendering\Win2D\RenderFlags.cs" />
-    <Compile Include="Rendering\Win2D\Scene.cs" />
-    <Compile Include="Rendering\Win2D\SceneTransformator.cs" />
-    <Compile Include="Rendering\Win2D\ScreenshotMaker.cs" />
-    <Compile Include="Rendering\Win2D\Win2DResourceManager.cs" />
     <Compile Include="ToggleHullCommand.cs" />
+    <Compile Include="UndoRedoExtensions.cs" />
     <Compile Include="Utils\ConvexHull.cs" />
     <Compile Include="Utils\ResourceManager.cs" />
-    <Compile Include="Rendering\Win2D\Default\DefaultLevel1Node.cs" />
-    <Compile Include="Rendering\Win2D\Default\DefaultLevel2Node.cs" />
-    <Compile Include="Rendering\Win2D\Default\DefaultRenderer.cs" />
-    <Compile Include="Rendering\Win2D\Default\DefaultRenderNode.cs" />
-    <Compile Include="Rendering\Win2D\Default\DefaultRootNode.cs" />
-    <Compile Include="Rendering\Win2D\Default\ExpandButton.cs" />
-    <Compile Include="Rendering\Win2D\Win2DTextRenderer.cs" />
-    <Compile Include="Layouting\ThemeColor.cs" />
-    <Compile Include="Rendering\Win2D\Win2DRenderer.cs" />
-    <Compile Include="Rendering\Win2D\Win2DRenderNode.cs" />
+    <Compile Include="Rendering\RenderThemeColor.cs" />
     <Compile Include="RootNode.cs" />
     <Compile Include="Storing\DocumentRef.cs" />
     <Compile Include="Storing\IDocumentStore.cs" />
@@ -192,6 +188,7 @@
     <Compile Include="UndoRedoManager.cs" />
     <Compile Include="Utils\LimitedThreadsScheduler.cs" />
     <Compile Include="Utils\Rect2.cs" />
+    <Compile Include="CustomColor.cs" />
     <Content Include="Properties\Hercules.Model.rd.xml" />
   </ItemGroup>
   <ItemGroup>
@@ -200,6 +197,7 @@
       <Name>GP.Windows</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>
   </PropertyGroup>

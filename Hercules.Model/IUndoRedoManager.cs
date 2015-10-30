@@ -23,6 +23,8 @@ namespace Hercules.Model
 
         bool CanRedo { get; }
 
+        void Revert();
+
         void RevertTo(int index);
 
         void Undo();

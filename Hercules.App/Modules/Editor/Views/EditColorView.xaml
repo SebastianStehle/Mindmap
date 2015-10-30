@@ -3,6 +3,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:gpc="using:GP.Windows.UI.Controls"
     xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
@@ -16,25 +17,30 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
-            <RowDefinition Height="10" />
-            <RowDefinition Height="Auto" />
             <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock x:Uid="Editor_ColorsHeader" FontSize="24" FontWeight="Light" Margin="0,0,0,10" Text="Colors" />
-
-        <GridView VerticalAlignment="Top" Grid.Row="2" x:Name="ColorsGrid" Padding="0">
-            <GridView.ItemContainerTransitions>
-                <TransitionCollection />
-            </GridView.ItemContainerTransitions>
-            <GridView.ItemTemplate>
-                <DataTemplate>
-                    <Border Background="{Binding Converter={StaticResource ThemeBrushConverter}}" Width="32" Height="32" />
-                </DataTemplate>
-            </GridView.ItemTemplate>
-        </GridView>
-
-        <ToggleButton x:Uid="Editor_ShowHullButton" Grid.Row="4" Content="Show Hull" x:Name="ShowHullButton" Click="ShowHullButton_Click" />
+        <Pivot x:Name="ColorsPivot" Height="340" SelectionChanged="ColorsPivot_SelectionChanged">
+            <Pivot.Items>
+                <PivotItem x:Uid="Editor_ColorsTheme" Header="Theme">
+                    <GridView VerticalAlignment="Top" x:Name="ColorsGrid" Padding="0">
+                        <GridView.ItemContainerTransitions>
+                            <TransitionCollection />
+                        </GridView.ItemContainerTransitions>
+                        <GridView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Background="{Binding Converter={StaticResource ThemeBrushConverter}}" Width="32" Height="32" />
+                            </DataTemplate>
+                        </GridView.ItemTemplate>
+                    </GridView>
+                </PivotItem>
+                <PivotItem x:Uid="Editor_ColorsCustom" Header="Custom">
+                    <gpc:ColorPicker x:Name="ColorsPicker" SelectedColorChanged="ColorsPicker_SelectedColorChanged" />
+                </PivotItem>
+            </Pivot.Items>
+        </Pivot>
+        
+        <ToggleButton x:Uid="Editor_ShowHullButton" Grid.Row="2" Content="Show Hull" x:Name="ShowHullButton" Click="ShowHullButton_Click" Margin="10,0,0,0" />
     </Grid>
 </controls:MindmapFlyoutView>

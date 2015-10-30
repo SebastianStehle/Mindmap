@@ -104,6 +104,18 @@ namespace Hercules.Model
             OnStateChanged(EventArgs.Empty);
         }
 
+        public void Revert()
+        {
+            if (CanUndo)
+            {
+                IUndoRedoAction lastUndoAction = undoStack.Pop();
+
+                lastUndoAction.Undo();
+            }
+
+            OnStateChanged(EventArgs.Empty);
+        }
+
         public void RevertTo(int index)
         {
             while (undoStack.Count > index)

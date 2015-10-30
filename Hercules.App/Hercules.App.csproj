@@ -108,18 +108,16 @@
     <Compile Include="Assets\AssetProvider.cs" />
     <Compile Include="Components\DocumentLoadedEventArgs.cs" />
     <Compile Include="Components\IMindmapRef.cs" />
-    <Compile Include="Components\ILoadingManager.cs" />
-    <Compile Include="Components\IMessageDialogService.cs" />
     <Compile Include="Components\IMindmapStore.cs" />
     <Compile Include="Components\Implementations\DefaultSettingsProvider.cs" />
-    <Compile Include="Components\Implementations\LoadingManager.cs" />
-    <Compile Include="Components\Implementations\MessageDialogService.cs" />
     <Compile Include="Components\Implementations\MindmapRef.cs" />
     <Compile Include="Components\Implementations\MindmapStore.cs" />
     <Compile Include="Components\Implementations\PrintService.cs" />
     <Compile Include="Components\IPrintService.cs" />
     <Compile Include="Components\ISettingsProvider.cs" />
     <Compile Include="Controls\CanvasControlWrapper.cs" />
+    <Compile Include="Controls\ImportGeneratorBehavior.cs" />
+    <Compile Include="Controls\ExportGeneratorBehavior.cs" />
     <Compile Include="Controls\MindmapFlyout.cs" />
     <Compile Include="Controls\MindmapFlyoutView.cs" />
     <Compile Include="Controls\Mindmap.cs" />
@@ -129,6 +127,7 @@
     <Compile Include="Controls\NotRootToVisibilityConverter.cs" />
     <Compile Include="Controls\TextEditor.cs" />
     <Compile Include="Controls\ThemeBrushConverter.cs" />
+    <Compile Include="Messages\ImportMessage.cs" />
     <Compile Include="Messages\SaveMindmapMessage.cs" />
     <Compile Include="Modules\Editor\Views\EditColorView.xaml.cs">
       <DependentUpon>EditColorView.xaml</DependentUpon>
@@ -149,6 +148,8 @@
     <Compile Include="Modules\Editor\Views\ToolbarView.xaml.cs">
       <DependentUpon>ToolbarView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\ImportModel.cs" />
+    <Compile Include="Modules\ExportModel.cs" />
     <Compile Include="Modules\Mindmaps\ViewModels\MindmapsViewModel.cs" />
     <Compile Include="Modules\Mindmaps\Views\ListView.xaml.cs">
       <DependentUpon>ListView.xaml</DependentUpon>
@@ -314,6 +315,10 @@
     <ProjectReference Include="..\Hercules.Model\Hercules.Model.csproj">
       <Project>{b0aa10fc-a13f-4d7e-b605-f450bbe9194d}</Project>
       <Name>Hercules.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hercules.Win2D\Hercules.Win2D.csproj">
+      <Project>{c0a898b4-b04c-4a54-9c73-c127c096a3da}</Project>
+      <Name>Hercules.Win2D</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

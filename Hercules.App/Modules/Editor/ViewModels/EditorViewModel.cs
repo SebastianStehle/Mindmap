@@ -7,19 +7,18 @@
 // ==========================================================================
 
 using System;
-using Windows.UI;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GP.Windows;
+using GP.Windows.Mvvm;
 using Hercules.App.Components;
 using Hercules.App.Messages;
 using Hercules.Model;
-using Hercules.Model.Export;
-using Hercules.Model.Rendering.Win2D;
-using Hercules.Model.Rendering.Win2D.Default;
+using Hercules.Model.ExImport;
 using Hercules.Model.Storing;
-using Hercules.Model.Utils;
+using Hercules.Win2D.Rendering;
+using Hercules.Win2D.Rendering.Themes.ModernPastel;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
 
@@ -28,17 +27,17 @@ namespace Hercules.App.Modules.Editor.ViewModels
     [ImplementPropertyChanged]
     public sealed class EditorViewModel : ViewModelBase
     {
-        private readonly IRendererFactory rendererFactory = new DefaultRendererFactory();
+        private readonly IWin2DRendererProvider rendererProvider = new ModernPastelRendererProvider();
         private readonly IMindmapStore mindmapStore;
         private Document document;
+        private RelayCommand<ExportModel> exportCommand;
+        private RelayCommand<ImportModel> importCommand;
         private RelayCommand printCommand;
         private RelayCommand redoCommand;
         private RelayCommand undoCommand;
         private RelayCommand removeCommand;
         private RelayCommand addChildCommand;
         private RelayCommand addSiblingCommand;
-        private RelayCommand exportHtmlCommand;
-        private RelayCommand exportImageCommand;
         private RelayCommand selectTopCommand;
         private RelayCommand selectLeftCommand;
         private RelayCommand selectRightCommand;
@@ -57,13 +56,28 @@ namespace Hercules.App.Modules.Editor.ViewModels
         public IOutlineGenerator OutlineGenerator { get; set; }
 
         [Dependency]
+        public IExportTarget[] ExportTargets { get; set; }
+
+        [Dependency]
+        public IExporter[] Exporters { get; set; }
+
+        [Dependency]
+        public IImportSource[] IImportSources { get; set; }
+
+        [Dependency]
+        public IImporter[] Importers { get; set; }
+
+        [Dependency]
+        public ILoadingManager LoadingManager { get; set; }
+
+        [Dependency]
         public IMessageDialogService MessageDialogService { get; set; }
 
-        public IRendererFactory RendererFactory
+        public IWin2DRendererProvider RendererProvider
         {
             get
             {
-                return rendererFactory;
+                return rendererProvider;
             }
         }
 
@@ -91,6 +105,17 @@ namespace Hercules.App.Modules.Editor.ViewModels
                         document.UndoRedoManager.StateChanged += UndoRedoManager_StateChanged;
                     }
                 }
+            }
+        }
+
+        public RelayCommand<ImportModel> ImportCommand
+        {
+            get
+            {
+                return importCommand ?? (importCommand = new RelayCommand<ImportModel>(x =>
+                {
+                    MessengerInstance.Send(new ImportMessage(x));
+                }));
             }
         }
 
@@ -122,27 +147,14 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
-        public RelayCommand ExportImageCommand
+        public RelayCommand<ExportModel> ExportCommand
         {
             get
             {
-                return exportImageCommand ?? (exportImageCommand = new RelayCommand(async () =>
+                return exportCommand ?? (exportCommand = new RelayCommand<ExportModel>(async x =>
                 {
-                    await MessageDialogService.SaveFileDialogAsync(new string[] { ".png" }, s => RendererFactory.Current.RenderScreenshotAsync(s, Colors.White, 300));
-                }, () => Document != null));
-            }
-        }
-
-        public RelayCommand ExportHtmlCommand
-        {
-            get
-            {
-                return exportHtmlCommand ?? (exportHtmlCommand = new RelayCommand(async () =>
-                {
-                    string noText = ResourceManager.GetString("Outline_NoText");
-
-                    await MessageDialogService.SaveFileDialogAsync(new string[] { ".html" }, s => OutlineGenerator.GenerateOutline(Document, RendererFactory.Current, s, true, noText));
-                }, () => Document != null));
+                    await LoadingManager.DoWhenNotLoadingAsync(() => x.Target.ExportAsync(Document, x.Exporter, RendererProvider.Current));
+                }, x => Document != null));
             }
         }
 
@@ -150,9 +162,9 @@ namespace Hercules.App.Modules.Editor.ViewModels
         {
             get
             {
-                return printCommand ?? (printCommand = new RelayCommand(() =>
+                return printCommand ?? (printCommand = new RelayCommand(async () =>
                 {
-                    PrintService.PrintAsync(Document, RendererFactory.Current);
+                    await LoadingManager.DoWhenNotLoadingAsync(() => PrintService.PrintAsync(Document, RendererProvider.Current));
                 }, () => Document != null));
             }
         }
@@ -258,8 +270,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
         {
             UpdateUndoRedo();
 
-            ExportHtmlCommand.RaiseCanExecuteChanged();
-            ExportImageCommand.RaiseCanExecuteChanged();
+            ExportCommand.RaiseCanExecuteChanged();
 
             PrintCommand.RaiseCanExecuteChanged();
 

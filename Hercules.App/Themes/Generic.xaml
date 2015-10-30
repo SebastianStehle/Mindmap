@@ -7,19 +7,12 @@
     xmlns:controls="using:Hercules.App.Controls">
 
     <Style TargetType="controls:Mindmap">
-        <Setter Property="i:Interaction.Behaviors">
-            <Setter.Value>
-                <i:BehaviorCollection>
-                    <controls:NodeMovingBehavior />
-                </i:BehaviorCollection>
-            </Setter.Value>
-        </Setter>
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="controls:Mindmap">
                     <Grid>
                         <canvas:CanvasControl x:Name="PART_Canvas" />
-                        
+
                         <ScrollViewer x:Name="PART_ScrollViewer" ZoomMode="Enabled" MaxZoomFactor="4" Background="Transparent" Padding="0"
                             VerticalScrollBarVisibility="Auto" 
                             HorizontalScrollBarVisibility="Auto" 
@@ -32,9 +25,13 @@
                                 <gpi:ScrollViewerBringIntoViewInputPaneBehavior />
                             </i:Interaction.Behaviors>
 
-                            <Grid Width="{Binding Document.Width, RelativeSource={RelativeSource TemplatedParent}}" Height="{Binding Document.Height, RelativeSource={RelativeSource TemplatedParent}}" />
+                            <Grid Background="Transparent" Width="{Binding Document.Width, RelativeSource={RelativeSource TemplatedParent}}" Height="{Binding Document.Height, RelativeSource={RelativeSource TemplatedParent}}">
+                                <i:Interaction.Behaviors>
+                                    <controls:NodeMovingBehavior />
+                                </i:Interaction.Behaviors>
+                            </Grid>
                         </ScrollViewer>
-                        
+
                         <controls:TextEditor x:Name="PART_TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="5,0"
                             MinHeight="0"
                             MinWidth="0"

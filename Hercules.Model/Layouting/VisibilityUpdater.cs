@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System.Collections.Generic;
+using Hercules.Model.Rendering;
 
 namespace Hercules.Model.Layouting
 {

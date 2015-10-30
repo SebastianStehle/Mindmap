@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using Hercules.Model.Rendering;
 using Hercules.Model.Utils;
 
 namespace Hercules.Model.Layouting

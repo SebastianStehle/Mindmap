@@ -10,7 +10,7 @@ using System;
 using System.Threading.Tasks;
 using Windows.Graphics.Printing;
 using Hercules.Model;
-using Hercules.Model.Layouting;
+using Hercules.Model.Rendering;
 using Hercules.Model.Utils;
 
 namespace Hercules.App.Components.Implementations

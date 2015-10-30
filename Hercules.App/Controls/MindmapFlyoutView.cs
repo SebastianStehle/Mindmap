@@ -9,7 +9,7 @@
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Hercules.Model;
-using Hercules.Model.Rendering.Win2D;
+using Hercules.Win2D.Rendering;
 
 namespace Hercules.App.Controls
 {

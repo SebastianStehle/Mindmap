@@ -9,7 +9,10 @@
 using System;
 using System.Globalization;
 using System.Text;
+using Windows.Foundation;
 using Windows.UI;
+using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 
 namespace GP.Windows.UI
 {
@@ -18,6 +21,55 @@ namespace GP.Windows.UI
     /// </summary>
     public static class ColorsHelper
     {
+        private static readonly Color[] ColorGradients =
+        {
+            Color.FromArgb(255, 255, 0, 0),
+            Color.FromArgb(255, 255, 255, 0),
+            Color.FromArgb(255, 0, 255, 0),
+            Color.FromArgb(255, 0, 255, 255),
+            Color.FromArgb(255, 0, 0, 255),
+            Color.FromArgb(255, 255, 0, 255)
+        };
+
+        /// <summary>
+        /// Gets a brush with all colors.
+        /// </summary>
+        /// <param name="orientation">The orientation of the brush.</param>
+        /// <returns>
+        /// The generated brush.
+        /// </returns>
+        public static LinearGradientBrush GetColorGradientBrush(Orientation orientation)
+        {
+            return CreateGradientBrush(orientation, ColorGradients);
+        }
+
+        private static LinearGradientBrush CreateGradientBrush(Orientation orientation, params Color[] colors)
+        {
+            LinearGradientBrush brush = new LinearGradientBrush();
+
+            float negatedStops = 1 / (float)colors.Length;
+
+            for (var i = 0; i < colors.Length; i++)
+            {
+                brush.GradientStops.Add(new GradientStop { Offset = negatedStops * i, Color = colors[i] });
+            }
+
+            brush.GradientStops.Add(new GradientStop { Offset = negatedStops * colors.Length, Color = colors[0] });
+
+            if (orientation == Orientation.Vertical)
+            {
+                brush.StartPoint = new Point(0, 1);
+
+                brush.EndPoint = new Point();
+            }
+            else
+            {
+                brush.EndPoint = new Point(1, 0);
+            }
+
+            return brush;
+        }
+
         /// <summary>
         /// Converts the integer to a string, not taking int account the alpha value.
         /// </summary>
@@ -42,7 +94,7 @@ namespace GP.Windows.UI
         }
 
         /// <summary>
-        /// Converts the integer to a string, not taking int account the alpha value.
+        /// Converts the color to a string, not taking int account the alpha value.
         /// </summary>
         /// <param name="color">The color value.</param>
         /// <returns>The resulting string.</returns>
@@ -55,6 +107,16 @@ namespace GP.Windows.UI
             stringBuilder.AppendFormat(CultureInfo.InvariantCulture, "{0:X2}", color.B);
 
             return stringBuilder.ToString();
+        }
+
+        /// <summary>
+        /// Converts the color to a integer, not taking int account the alpha value.
+        /// </summary>
+        /// <param name="color">The color value.</param>
+        /// <returns>The resulting integer.</returns>
+        public static int ConvertToInt(Color color)
+        {
+            return color.R << 16 | color.G << 8 | color.B;
         }
 
         /// <summary>
@@ -75,16 +137,23 @@ namespace GP.Windows.UI
         /// <param name="offsetV">The value offset.</param>
         /// <param name="intColor">The color value.</param>
         /// <returns>The resulting color object.</returns>
-        public static Color ConvertToColor(int intColor, double offsetH, double offsetS, double offsetV)
+        public static int AdjustColor(int intColor, double offsetH, double offsetS, double offsetV)
         {
-            int integer = intColor;
+            Color color = ConvertToColor(intColor, offsetH, offsetS, offsetV);
 
-            byte b = (byte)(integer & 0xFF);
-            byte g = (byte)((integer >> 8) & 0xFF);
-            byte r = (byte)((integer >> 16) & 0xFF);
+            return ConvertToInt(color);
+        }
 
-            Color color = Color.FromArgb(0xFF, r, g, b);
-
+        /// <summary>
+        /// Adjust the colorvalue using the offset for hue, saturation and value.
+        /// </summary>
+        /// <param name="offsetH">The hue offset.</param>
+        /// <param name="offsetS">The saturation offset.</param>
+        /// <param name="offsetV">The value offset.</param>
+        /// <param name="color">The color value.</param>
+        /// <returns>The resulting color object.</returns>
+        public static Color AdjustColor(Color color, double offsetH, double offsetS, double offsetV)
+        {
             double h;
             double s;
             double v;
@@ -101,7 +170,35 @@ namespace GP.Windows.UI
             return color;
         }
 
-        private static void ColorToHSV(Color color, out double hue, out double saturation, out double value)
+        /// <summary>
+        /// Converts the integer to a color object, not taking int account the alpha value using the offset for hue, saturation and value.
+        /// </summary>
+        /// <param name="offsetH">The hue offset.</param>
+        /// <param name="offsetS">The saturation offset.</param>
+        /// <param name="offsetV">The value offset.</param>
+        /// <param name="intColor">The color value.</param>
+        /// <returns>The resulting color object.</returns>
+        public static Color ConvertToColor(int intColor, double offsetH, double offsetS, double offsetV)
+        {
+            int integer = intColor;
+
+            byte b = (byte)(integer & 0xFF);
+            byte g = (byte)((integer >> 8) & 0xFF);
+            byte r = (byte)((integer >> 16) & 0xFF);
+
+            Color color = Color.FromArgb(0xFF, r, g, b);
+
+            return AdjustColor(color, offsetH, offsetS, offsetV);
+        }
+
+        /// <summary>
+        /// Converts the color to HSV color space.
+        /// </summary>
+        /// <param name="color">The color to convert.</param>
+        /// <param name="hue">The resulting hue number.</param>
+        /// <param name="saturation">The resulting saturation number.</param>
+        /// <param name="value">The resulting value number.</param>
+        public static void ColorToHSV(Color color, out double hue, out double saturation, out double value)
         {
             double r = color.R / 255d;
             double g = color.G / 255d;
@@ -137,7 +234,16 @@ namespace GP.Windows.UI
             value = max;
         }
 
-        private static Color ColorFromHSV(double hue, double saturation, double value)
+        /// <summary>
+        /// Converts from HSV color space to ARGB.
+        /// </summary>
+        /// <param name="hue">The hue number.</param>
+        /// <param name="saturation">The saturation number.</param>
+        /// <param name="value">The value number.</param>
+        /// <returns>
+        /// The resulting color.
+        /// </returns>
+        public static Color ColorFromHSV(double hue, double saturation, double value)
         {
             int hi = (int)Math.Floor(hue / 60) % 6;
 

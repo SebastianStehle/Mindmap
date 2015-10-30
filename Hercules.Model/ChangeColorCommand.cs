@@ -5,23 +5,20 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
-using System.Globalization;
-
 namespace Hercules.Model
 {
     public sealed class ChangeColorCommand : CommandBase
     {
-        private readonly int newColor;
-        private int oldColor;
+        private readonly IColor newColor;
+        private IColor oldColor;
 
         public ChangeColorCommand(PropertiesBag properties, Document document)
             : base(properties, document)
         {
-            newColor = properties["Color"].ToInt32(CultureInfo.InvariantCulture);
+            newColor = ThemeColor.TryParse(properties) ?? CustomColor.TryParse(properties);
         }
 
-        public ChangeColorCommand(NodeBase node, int newColor)
+        public ChangeColorCommand(NodeBase node, IColor newColor)
             : base(node)
         {
             this.newColor = newColor;
@@ -29,7 +26,7 @@ namespace Hercules.Model
 
         public override void Save(PropertiesBag properties)
         {
-            properties.Set("Color", newColor);
+            newColor.Save(properties);
 
             base.Save(properties);
         }

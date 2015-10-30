@@ -15,7 +15,7 @@ namespace Hercules.Model
     {
         private readonly Node child;
 
-        protected Node Child
+        public Node Child
         {
             get { return child; }
         }

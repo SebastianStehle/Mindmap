@@ -9,12 +9,17 @@
 using Windows.ApplicationModel;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
+using GP.Windows.Mvvm;
 using Hercules.App.Components;
 using Hercules.App.Components.Implementations;
 using Hercules.App.Modules.Editor.ViewModels;
 using Hercules.App.Modules.Mindmaps.ViewModels;
-using Hercules.Model.Export;
-using Hercules.Model.Export.Html;
+using Hercules.Model.ExImport;
+using Hercules.Model.ExImport.Channels.Email;
+using Hercules.Model.ExImport.Channels.File;
+using Hercules.Model.ExImport.Formats.Html;
+using Hercules.Model.ExImport.Formats.Image;
+using Hercules.Model.ExImport.Formats.xMind;
 using Hercules.Model.Storing;
 using Hercules.Model.Storing.Json;
 using Microsoft.Practices.Unity;
@@ -48,13 +53,23 @@ namespace Hercules.App.Modules
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<INavigationService, NavigationService>(
                     new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IOutlineGenerator, HtmlOutlineGenerator>(
+                unityContainer.RegisterType<IOutlineGenerator, HtmlOutlineExporter>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IPrintService, PrintService>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IMindmapStore, MindmapStore>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IMessageDialogService, MessageDialogService>(
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IImportSource, FileImportSource>("File",
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IImporter, xMindImporter>("xMind",
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IExportTarget, FileExportTarget>("File",
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IExporter, ImageExporter>("Image",
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IExporter, HtmlOutlineExporter>("HtmlOutline",
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<MindmapsViewModel>(
                     new PerResolveLifetimeManager());

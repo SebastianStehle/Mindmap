@@ -6,13 +6,17 @@
 // All rights reserved.
 // ==========================================================================
 
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GP.Windows;
+using GP.Windows.Mvvm;
 using Hercules.App.Components;
+using Hercules.App.Messages;
+using Hercules.Model;
 using Hercules.Model.Utils;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
@@ -42,6 +46,9 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         public IMindmapStore MindmapStore { get; set; }
 
         [Dependency]
+        public ILoadingManager LoadingManager { get; set; }
+
+        [Dependency]
         public IMessageDialogService MessageDialogService { get; set; }
 
         public RelayCommand<IMindmapRef> DeleteCommand
@@ -59,6 +66,44 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                     }
                 }));
             }
+        }
+
+        public MindmapsViewModel()
+        {
+            MessengerInstance.Register<ImportMessage>(this, OnImport);
+        }
+
+        public void OnImport(ImportMessage message)
+        {
+            ImportAsync(message.Content);
+        }
+
+        private void ImportAsync(ImportModel model)
+        {
+            LoadingManager.DoWhenNotLoadingAsync(async () =>
+            {
+                try
+                {
+                    List<KeyValuePair<string, Document>> documents = await model.Source.ImportAsync(model.Importer);
+
+                    if (documents.Count > 0)
+                    {
+                        foreach (var document in documents)
+                        {
+                            await MindmapStore.AddNewNonLoadingAsync(document.Key, document.Value);
+                        }
+
+                        await MindmapStore.LoadAsync(MindmapStore.AllMindmaps[0]);
+                    }
+                }
+                catch
+                {
+                    string content = ResourceManager.GetString("ImportFailed_Content"),
+                        title = ResourceManager.GetString("ImportFailed_Title");
+
+                    await MessageDialogService.AlertAsync(content, title);
+                }
+            }).Forget();
         }
 
         public async void OnSelectedMindmapChanged()

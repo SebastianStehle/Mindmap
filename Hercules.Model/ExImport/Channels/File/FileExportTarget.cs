@@ -1,0 +1,51 @@
+﻿// ==========================================================================
+// FileExportTarget.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using GP.Windows;
+using Hercules.Model.Rendering;
+
+namespace Hercules.Model.ExImport.Channels.File
+{
+    public sealed class FileExportTarget : IExportTarget
+    {
+        public string NameKey
+        {
+            get { return "File"; }
+        }
+
+        public async Task ExportAsync(Document document, IExporter exporter, IRenderer renderer)
+        {
+            Guard.NotNull(document, nameof(document));
+            Guard.NotNull(renderer, nameof(renderer));
+            Guard.NotNull(exporter, nameof(exporter));
+
+            FileSavePicker filePicker = new FileSavePicker();
+
+            foreach (FileExtension extension in exporter.Extensions)
+            {
+                filePicker.FileTypeChoices.Add(extension.Extension, new List<string> { extension.Extension });
+            }
+
+            StorageFile file = await filePicker.PickSaveFileAsync();
+
+            if (file != null)
+            {
+                using (Stream fileStream = await file.OpenStreamForWriteAsync())
+                {
+                    await exporter.ExportAsync(document, renderer, fileStream);
+                }
+            }
+        }
+    }
+}

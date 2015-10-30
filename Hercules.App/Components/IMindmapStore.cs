@@ -30,5 +30,7 @@ namespace Hercules.App.Components
         Task DeleteAsync(IMindmapRef mindmap);
 
         Task CreateAsync(string name);
+
+        Task AddNewNonLoadingAsync(string name, Document document);
     }
 }

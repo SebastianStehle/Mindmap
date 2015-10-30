@@ -14,6 +14,8 @@ namespace Hercules.App.Modules.Editor.Views
 {
     public sealed partial class EditIconView
     {
+        private bool hasChange;
+
         public EditIconView()
         {
             InitializeComponent();
@@ -36,6 +38,8 @@ namespace Hercules.App.Modules.Editor.Views
                     IconsGrid.SelectedItem = selectedNode.IconKey;
                 }
             }
+
+            hasChange = false;
         }
 
         private void IconsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -58,7 +62,17 @@ namespace Hercules.App.Modules.Editor.Views
             {
                 if (selected != selectedNode.IconKey)
                 {
-                    selectedNode.ChangeIconKeyTransactional(selected);
+                    if (hasChange && Document.UndoRedoManager.IsLastCommand<ChangeIconKeyCommand>(x => x.Node.Id == selectedNode.Id))
+                    {
+                        Document.UndoRedoManager.Revert();
+                    }
+
+                    if (selected != selectedNode.IconKey)
+                    {
+                        selectedNode.ChangeIconKeyTransactional(selected);
+
+                        hasChange = true;
+                    }
                 }
             }
         }

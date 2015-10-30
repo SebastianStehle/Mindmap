@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// CommandShortcutBehavior.cs
+// ShortcutBehaviorBase.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using System.Diagnostics;
 using Windows.ApplicationModel;
 using Windows.System;
 using Windows.UI.Core;
@@ -205,7 +206,12 @@ namespace GP.Windows.UI.Interactivity
 
         private bool IsCorrectKey(VirtualKey key)
         {
-            return key == Key && (IsShiftKeyPressed() == RequiresShiftModifier) && (IsControlKeyPressed() == RequiresControlModifier);
+            return key == Key && (key != VirtualKey.Tab || !IsInSimulator()) && (IsShiftKeyPressed() == RequiresShiftModifier) && (IsControlKeyPressed() == RequiresControlModifier);
+        }
+
+        private static bool IsInSimulator()
+        {
+            return Debugger.IsAttached;
         }
 
         private static bool IsControlKeyPressed()

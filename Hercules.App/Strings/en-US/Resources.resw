@@ -399,10 +399,15 @@
   <data name="ExportTarget_Email" xml:space="preserve">
     <value>Email</value>
   </data>
-  <data name="Export_EmailAttachment" xml:space="preserve">
-    <value>Mindmap</value>
+  <data name="Export_EmailBody" xml:space="preserve">
+    <value>Hey,
+
+I want to share my mindmap for you. You can download it here: {0}. The download link will expire in 48 hours.</value>
   </data>
   <data name="Export_EmailSubject" xml:space="preserve">
     <value>Hey, have a look to my mindmap</value>
+  </data>
+  <data name="Export_EmailConfirm" xml:space="preserve">
+    <value>Your exported mindmap will be uploaded to our server. The link to download it will attached to the email and expires after 48 hours. Depending on the size of your mindmap this can take a while. You can also export the mindmap as file and add it as attachment. Do you want to upload the exported mindmap to send it by mail?</value>
   </data>
 </root>

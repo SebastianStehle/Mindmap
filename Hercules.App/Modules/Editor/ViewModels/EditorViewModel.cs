@@ -68,7 +68,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
         public IImporter[] Importers { get; set; }
 
         [Dependency]
-        public ILoadingManager LoadingManager { get; set; }
+        public IProcessManager ProcessManager { get; set; }
 
         [Dependency]
         public IMessageDialogService MessageDialogService { get; set; }
@@ -153,7 +153,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return exportCommand ?? (exportCommand = new RelayCommand<ExportModel>(async x =>
                 {
-                    await LoadingManager.DoWhenNotLoadingAsync(() => x.Target.ExportAsync(Document, x.Exporter, RendererProvider.Current));
+                    await ProcessManager.RunMainProcessAsync(this, () => x.Target.ExportAsync(mindmapStore.LoadedMindmap.Title, Document, x.Exporter, RendererProvider.Current));
                 }, x => Document != null));
             }
         }
@@ -164,7 +164,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return printCommand ?? (printCommand = new RelayCommand(async () =>
                 {
-                    await LoadingManager.DoWhenNotLoadingAsync(() => PrintService.PrintAsync(Document, RendererProvider.Current));
+                    await ProcessManager.RunMainProcessAsync(this, () => PrintService.PrintAsync(Document, RendererProvider.Current));
                 }, () => Document != null));
             }
         }

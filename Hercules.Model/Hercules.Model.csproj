@@ -124,9 +124,7 @@
     <Compile Include="DocumentExtensions.cs" />
     <Compile Include="DocumentObjectWithId.cs" />
     <Compile Include="DocumentObject.cs" />
-    <Compile Include="ExImport\Channels\Email\EmailAttachmentSource.cs" />
     <Compile Include="ExImport\Channels\Email\EmailExportTarget.cs" />
-    <Compile Include="ExImport\Channels\Email\StreamWrapper.cs" />
     <Compile Include="ExImport\Channels\File\FileExportTarget.cs" />
     <Compile Include="ExImport\Channels\File\FileImportSource.cs" />
     <Compile Include="ExImport\Formats\Html\HtmlOutlineExporter.cs" />

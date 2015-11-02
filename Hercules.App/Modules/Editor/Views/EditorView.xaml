@@ -42,7 +42,7 @@
             </i:Interaction.Behaviors>
         </controls:Mindmap>
 
-        <Grid DataContext="{Binding LoadingManager, Source={StaticResource ViewModelLocator}}" Visibility="{Binding IsLoading, Converter={StaticResource VisibleWhenTrueConverter}}">
+        <Grid DataContext="{Binding ProcessManager, Source={StaticResource ViewModelLocator}}" Visibility="{Binding IsMainProcessRunning, Converter={StaticResource VisibleWhenTrueConverter}}">
             <Border Background="White" Opacity="0.9" IsHitTestVisible="True" />
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">

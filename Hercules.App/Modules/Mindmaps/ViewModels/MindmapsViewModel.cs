@@ -46,7 +46,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         public IMindmapStore MindmapStore { get; set; }
 
         [Dependency]
-        public ILoadingManager LoadingManager { get; set; }
+        public IProcessManager ProcessManager { get; set; }
 
         [Dependency]
         public IMessageDialogService MessageDialogService { get; set; }
@@ -57,10 +57,10 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             {
                 return deleteCommand ?? (deleteCommand = new RelayCommand<IMindmapRef>(async item =>
                 {
-                    string content = ResourceManager.GetString("DeleteMindmap_Content"),
-                             title = ResourceManager.GetString("DeleteMindmap_Title");
+                    string content = ResourceManager.GetString("DeleteMindmap_Content");
+                    string message = ResourceManager.GetString("DeleteMindmap_Title");
 
-                    if (await MessageDialogService.ConfirmAsync(content, title))
+                    if (await MessageDialogService.ConfirmAsync(content, message))
                     {
                         await MindmapStore.DeleteAsync(item);
                     }
@@ -80,7 +80,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
         private void ImportAsync(ImportModel model)
         {
-            LoadingManager.DoWhenNotLoadingAsync(async () =>
+            ProcessManager.RunMainProcessAsync(MindmapStore, async () =>
             {
                 try
                 {
@@ -90,7 +90,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                     {
                         foreach (var document in documents)
                         {
-                            await MindmapStore.AddNewNonLoadingAsync(document.Key, document.Value);
+                            await MindmapStore.AddAsync(document.Key, document.Value);
                         }
 
                         await MindmapStore.LoadAsync(MindmapStore.AllMindmaps[0]);
@@ -98,10 +98,10 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                 }
                 catch
                 {
-                    string content = ResourceManager.GetString("ImportFailed_Content"),
-                        title = ResourceManager.GetString("ImportFailed_Title");
+                    string content = ResourceManager.GetString("ImportFailed_Content");
+                    string message = ResourceManager.GetString("ImportFailed_Title");
 
-                    await MessageDialogService.AlertAsync(content, title);
+                    await MessageDialogService.AlertAsync(content, message);
                 }
             }).Forget();
         }

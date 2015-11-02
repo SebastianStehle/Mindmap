@@ -35,7 +35,7 @@ namespace Hercules.App.Modules
         public MindmapsViewModel Mindmaps { get; set; }
 
         [Dependency]
-        public ILoadingManager LoadingManager { get; set; }
+        public IProcessManager ProcessManager { get; set; }
 
         public ViewModelLocator()
         {
@@ -49,7 +49,7 @@ namespace Hercules.App.Modules
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<ISettingsProvider, DefaultSettingsProvider>(
                     new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<ILoadingManager, LoadingManager>(
+                unityContainer.RegisterType<IProcessManager, ProcessManager>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<INavigationService, NavigationService>(
                     new ContainerControlledLifetimeManager());
@@ -66,6 +66,8 @@ namespace Hercules.App.Modules
                 unityContainer.RegisterType<IImporter, xMindImporter>("xMind",
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IExportTarget, FileExportTarget>("File",
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IExportTarget, EmailExportTarget>("Email",
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IExporter, ImageExporter>("Image",
                     new ContainerControlledLifetimeManager());

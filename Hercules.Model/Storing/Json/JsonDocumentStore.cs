@@ -46,7 +46,7 @@ namespace Hercules.Model.Storing.Json
 
         public Task<IList<DocumentRef>> LoadAllAsync()
         {
-            return taskFactory.StartNew(() => LoadAllInternalAsync()).Unwrap();
+            return taskFactory.StartNew(LoadAllInternalAsync).Unwrap();
         }
 
         public Task RenameAsync(DocumentRef documentRef, string newName)
@@ -62,7 +62,9 @@ namespace Hercules.Model.Storing.Json
             Guard.NotNull(document, nameof(document));
             Guard.NotNull(documentRef, nameof(documentRef));
 
-            return taskFactory.StartNew(() => StoreInternalAsync(documentRef, document)).Unwrap();
+            JsonHistory history = new JsonHistory(document);
+
+            return taskFactory.StartNew(() => StoreInternalAsync(documentRef, history)).Unwrap();
         }
 
         public Task<DocumentRef> CreateAsync(string name, Document document)
@@ -89,7 +91,7 @@ namespace Hercules.Model.Storing.Json
 
         public Task ClearAsync()
         {
-            return taskFactory.StartNew(() => ClearInternalAsync()).Unwrap();
+            return taskFactory.StartNew(ClearInternalAsync).Unwrap();
         }
 
         private async Task<IList<DocumentRef>> LoadAllInternalAsync()
@@ -147,11 +149,11 @@ namespace Hercules.Model.Storing.Json
             documentRef.Updated().Rename(file.DisplayName);
         }
 
-        private async Task StoreInternalAsync(DocumentRef documentRef, Document document)
+        private async Task StoreInternalAsync(DocumentRef documentRef, JsonHistory history)
         {
             StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.ReplaceExisting);
 
-            await file.SerializeAsJsonAsync(new JsonHistory(document), historySerializerSettings);
+            await file.SerializeAsJsonAsync(history, historySerializerSettings);
 
             documentRef.Updated();
         }

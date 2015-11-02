@@ -12,7 +12,7 @@
     xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
     IsTabStop="False"
-    IsEnabled="{Binding LoadingManager.IsLoading, Source={StaticResource ViewModelLocator}, Converter={StaticResource BooleanInverseConverter}}"
+    IsEnabled="{Binding ProcessManager.IsMainProcessRunning, Source={StaticResource ViewModelLocator}, Converter={StaticResource BooleanInverseConverter}}"
     DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
 
     <Page.Resources>

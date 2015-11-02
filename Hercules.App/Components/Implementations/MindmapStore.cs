@@ -27,7 +27,7 @@ namespace Hercules.App.Components.Implementations
         private readonly ObservableCollection<IMindmapRef> allMindmaps = new ObservableCollection<IMindmapRef>();
         private readonly DispatcherTimer autosaveTimer = new DispatcherTimer();
         private readonly IDocumentStore documentStore;
-        private readonly ILoadingManager loadingManager;
+        private readonly IProcessManager processManager;
         private readonly ISettingsProvider settingsProvider;
         private Document loadedDocument;
         private IMindmapRef loadedMindmapRef;
@@ -45,14 +45,19 @@ namespace Hercules.App.Components.Implementations
             get { return loadedDocument; }
         }
 
-        public MindmapStore(IDocumentStore documentStore, ILoadingManager loadingManager, ISettingsProvider settingsProvider)
+        public IMindmapRef LoadedMindmap
+        {
+            get { return loadedMindmapRef; }
+        }
+
+        public MindmapStore(IDocumentStore documentStore, IProcessManager processManager, ISettingsProvider settingsProvider)
         {
             Guard.NotNull(documentStore, nameof(documentStore));
-            Guard.NotNull(loadingManager, nameof(loadingManager));
+            Guard.NotNull(processManager, nameof(processManager));
             Guard.NotNull(settingsProvider, nameof(settingsProvider));
 
             this.documentStore = documentStore;
-            this.loadingManager = loadingManager;
+            this.processManager = processManager;
             this.settingsProvider = settingsProvider;
 
             StartTimer();
@@ -70,23 +75,13 @@ namespace Hercules.App.Components.Implementations
             await SaveAsync();
         }
 
-        public async Task AddNewNonLoadingAsync(string name, Document document)
-        {
-            Guard.NotNullOrEmpty(name, nameof(name));
-            Guard.NotNullOrEmpty(name, nameof(name));
-
-            DocumentRef documentRef = await documentStore.CreateAsync(name, document);
-
-            allMindmaps.Insert(0, new MindmapRef(documentRef, documentStore));
-        }
-
         public async Task LoadAllAsync()
         {
             if (!isLoaded)
             {
                 isLoaded = true;
 
-                await DoAsync(x => true, async () =>
+                await DoAsync(async () =>
                 {
                     if (settingsProvider.IsAlreadyStarted)
                     {
@@ -111,12 +106,23 @@ namespace Hercules.App.Components.Implementations
         {
             Guard.NotNullOrEmpty(name, nameof(name));
 
-            return DoAsync(x => true, async () =>
+            return DoAsync(async () =>
             {
                 Document document = new Document(Guid.NewGuid());
 
                 document.Root.ChangeTextTransactional(name);
 
+                await AddAsync(name, document);
+            });
+        }
+
+        public Task AddAsync(string name, Document document)
+        {
+            Guard.NotNullOrEmpty(name, nameof(name));
+            Guard.NotNullOrEmpty(name, nameof(name));
+
+            return DoAsync(async () =>
+            {
                 DocumentRef documentRef = await documentStore.CreateAsync(name, document);
 
                 allMindmaps.Insert(0, new MindmapRef(documentRef, documentStore));
@@ -157,7 +163,7 @@ namespace Hercules.App.Components.Implementations
         {
             MindmapRef mindmapRef = ValidateMindmap(mindmap);
 
-            return DoAsync(x => true, async () =>
+            return DoAsync(async () =>
             {
                 await mindmapRef.DeleteAsync();
 
@@ -181,19 +187,16 @@ namespace Hercules.App.Components.Implementations
             return mindmap as MindmapRef;
         }
 
+        private Task DoAsync(Func<Task> action)
+        {
+            return DoAsync(x => true, action);
+        }
+
         private async Task DoAsync(Predicate<IMindmapRef> predicate, Func<Task> action)
         {
             if (isLoaded && predicate(loadedMindmapRef))
             {
-                loadingManager.BeginLoading();
-                try
-                {
-                    await action();
-                }
-                finally
-                {
-                    loadingManager.FinishLoading();
-                }
+                await processManager.RunMainProcessAsync(this, action);
             }
         }
 

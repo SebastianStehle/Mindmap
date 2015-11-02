@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -24,7 +25,7 @@ namespace Hercules.Model.ExImport.Channels.File
             get { return "File"; }
         }
 
-        public async Task ExportAsync(Document document, IExporter exporter, IRenderer renderer)
+        public async Task ExportAsync(string name, Document document, IExporter exporter, IRenderer renderer)
         {
             Guard.NotNull(document, nameof(document));
             Guard.NotNull(renderer, nameof(renderer));
@@ -32,9 +33,14 @@ namespace Hercules.Model.ExImport.Channels.File
 
             FileSavePicker filePicker = new FileSavePicker();
 
-            foreach (FileExtension extension in exporter.Extensions)
+            if (exporter.Extensions.Any())
             {
-                filePicker.FileTypeChoices.Add(extension.Extension, new List<string> { extension.Extension });
+                filePicker.SuggestedFileName = name + exporter.Extensions.First().Extension;
+
+                foreach (FileExtension extension in exporter.Extensions)
+                {
+                    filePicker.FileTypeChoices.Add(extension.Extension, new List<string> { extension.Extension });
+                }
             }
 
             StorageFile file = await filePicker.PickSaveFileAsync();

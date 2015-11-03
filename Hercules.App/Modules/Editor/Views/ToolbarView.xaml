@@ -26,7 +26,7 @@
                 </i:Interaction.Behaviors>
             </AppBarButton>
 
-            <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
+            <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource VisibleWhenNotNullConverter}, FallbackValue=Collapsed}">
                 <AppBarSeparator />
 
                 <AppBarButton x:Uid="AppBarButton_Share" Icon="Download">
@@ -51,7 +51,7 @@
 
                 <AppBarSeparator />
 
-                <AppBarButton x:Uid="AppBarButton_ChangeIcon" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}">
+                <AppBarButton x:Uid="AppBarButton_ChangeIcon" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource TrueWhenNotNullConverter}, FallbackValue=false}">
                     <AppBarButton.Flyout>
                         <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
                             <e:EditIconView Renderer="{Binding RendererProvider.Current}" Document="{Binding Document}" />
@@ -62,7 +62,7 @@
                     </i:Interaction.Behaviors>
                     <TextBlock TextAlignment="Center" FontSize="20" Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" />
                 </AppBarButton>
-                <AppBarButton x:Uid="AppBarButton_ChangeColor" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=true}">
+                <AppBarButton x:Uid="AppBarButton_ChangeColor" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource TrueWhenNotNullConverter}, FallbackValue=true}">
                     <AppBarButton.Flyout>
                         <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
                             <e:EditColorView Renderer="{Binding RendererProvider.Current}" Document="{Binding Document}" />
@@ -92,7 +92,7 @@
             </StackPanel>
         </StackPanel>
 
-        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource NotNullVisibilityConverter}, FallbackValue=Collapsed}">
+        <StackPanel HorizontalAlignment="Right" Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource VisibleWhenNotNullConverter}, FallbackValue=Collapsed}">
             <AppBarButton x:Uid="AppBarButton_RemoveNode" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}" Icon="Delete"
                 Command="{Binding RemoveCommand}">
                 <i:Interaction.Behaviors>
@@ -110,7 +110,7 @@
                 </i:Interaction.Behaviors>
             </AppBarButton>
 
-            <AppBarButton x:Uid="AppBarButton_AddChild" Style="{StaticResource AppBarButtonStyleChild}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotNullBooleanConverter}, FallbackValue=false}"
+            <AppBarButton x:Uid="AppBarButton_AddChild" Style="{StaticResource AppBarButtonStyleChild}" IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource TrueWhenNotNullConverter}, FallbackValue=false}"
                 Command="{Binding AddChildCommand}" >
                 <i:Interaction.Behaviors>
                     <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Tab" />

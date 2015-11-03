@@ -159,8 +159,8 @@
     <Compile Include="UI\IntToLightBrushConverter.cs" />
     <Compile Include="UI\IPopupControl.cs" />
     <Compile Include="UI\MathHelper.cs" />
-    <Compile Include="UI\NotNullBooleanConverter.cs" />
-    <Compile Include="UI\NotNullVisibilityConverter.cs" />
+    <Compile Include="UI\TrueWhenNotNullConverter.cs" />
+    <Compile Include="UI\VisibleWhenNotNullConverter.cs" />
     <Compile Include="UI\PopupHandler.cs" />
     <Compile Include="UI\BooleanInverseConverter.cs" />
     <Compile Include="UI\VisibleWhenFalseConverter.cs" />

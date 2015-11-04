@@ -92,7 +92,7 @@ namespace Hercules.App.Modules.Editor.Views
             {
                 if (!newColor.Equals(selectedNode.Color))
                 {
-                    if (hasChange == Document.UndoRedoManager.IsLastCommand<ChangeColorCommand>(x => x.Node.Id == selectedNode.Id))
+                    if (hasChange && Document.UndoRedoManager.IsLastCommand<ChangeColorCommand>(x => x.Node.Id == selectedNode.Id))
                     {
                         Document.UndoRedoManager.Revert();
                     }

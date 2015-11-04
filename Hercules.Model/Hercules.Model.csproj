@@ -128,6 +128,13 @@
     <Compile Include="ExImport\Channels\File\FileExportTarget.cs" />
     <Compile Include="ExImport\Channels\File\FileImportSource.cs" />
     <Compile Include="ExImport\Formats\Html\HtmlOutlineExporter.cs" />
+    <Compile Include="ExImport\Formats\xMind\ContentReader.cs" />
+    <Compile Include="ExImport\Formats\xMind\ContentWriter.cs" />
+    <Compile Include="ExImport\Formats\xMind\Extensions.cs" />
+    <Compile Include="ExImport\Formats\xMind\Namespaces.cs" />
+    <Compile Include="ExImport\Formats\xMind\StylesWriter.cs" />
+    <Compile Include="ExImport\Formats\xMind\xMindExporter.cs" />
+    <Compile Include="ExImport\Formats\xMind\StylesReader.cs" />
     <Compile Include="ExImport\IExporter.cs" />
     <Compile Include="ExImport\IExportTarget.cs" />
     <Compile Include="ExImport\IImporter.cs" />

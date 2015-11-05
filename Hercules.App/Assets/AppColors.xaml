@@ -1,0 +1,71 @@
+﻿<ResourceDictionary
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d">
+
+    <ResourceDictionary.ThemeDictionaries>
+        <ResourceDictionary x:Key="Light">
+            <Color x:Key="SystemAccentColor">#FF2B69CE</Color>
+
+            <SolidColorBrush x:Key="LightBorderBrush" Color="LightGray" />
+
+            <SolidColorBrush x:Key="ThemeButtonForegroundBrush" Color="{StaticResource ThemeMainColor}" />
+            <SolidColorBrush x:Key="ThemeButtonHoverForegroundBrush" Color="{StaticResource ThemeDarkColor}" />
+            <SolidColorBrush x:Key="ThemeButtonHoverBackgroundBrush" Color="#FFD8E8FF" />
+            <SolidColorBrush x:Key="ThemeButtonPressedForegroundBrush" Color="#FF163F82" />
+            <SolidColorBrush x:Key="ThemeButtonPressedBackgroundBrush" Color="#FFCCE1FF" />
+            <SolidColorBrush x:Key="ThemeButtonBorderBrush" Color="Transparent" />
+
+            <Thickness x:Key="ThemeButtonBorderThickness">0</Thickness>
+            
+            <SolidColorBrush x:Key="ThemedAppBarBackgroundBrush" Color="{StaticResource ThemeLightColor}" />
+            <SolidColorBrush x:Key="ThemedAppBarForegroundBrush" Color="Black" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="Dark">
+            <Color x:Key="SystemAccentColor">#FF2B69CE</Color>
+
+            <SolidColorBrush x:Key="LightBorderBrush" Color="LightGray" />
+
+            <SolidColorBrush x:Key="ThemeButtonForegroundBrush" Color="{StaticResource ThemeLightColor}" />
+            <SolidColorBrush x:Key="ThemeButtonHoverForegroundBrush" Color="{StaticResource ThemeMainColor}" />
+            <SolidColorBrush x:Key="ThemeButtonHoverBackgroundBrush" Color="#FFD8E8FF" />
+            <SolidColorBrush x:Key="ThemeButtonPressedForegroundBrush" Color="{StaticResource ThemeDarkColor}" />
+            <SolidColorBrush x:Key="ThemeButtonPressedBackgroundBrush" Color="#FFCCE1FF" />
+            <SolidColorBrush x:Key="ThemeButtonBorderBrush" Color="Transparent" />
+
+            <Thickness x:Key="ThemeButtonBorderThickness">0</Thickness>
+            
+            <SolidColorBrush x:Key="ThemedAppBarBackgroundBrush" Color="{StaticResource ThemeMainColor}" />
+            <SolidColorBrush x:Key="ThemedAppBarForegroundBrush" Color="White" />
+        </ResourceDictionary>
+        <ResourceDictionary x:Key="HighContrast">
+            <SolidColorBrush x:Key="LightBorderBrush" Color="{ThemeResource SystemColorButtonTextColor}" />
+
+            <SolidColorBrush x:Key="ThemeButtonForegroundBrush" Color="{ThemeResource SystemColorButtonTextColor}" />
+            <SolidColorBrush x:Key="ThemeButtonHoverForegroundBrush" Color="{ThemeResource SystemColorHighlightTextColor}" />
+            <SolidColorBrush x:Key="ThemeButtonHoverBackgroundBrush" Color="{ThemeResource SystemColorHighlightColor}" />
+            <SolidColorBrush x:Key="ThemeButtonPressedForegroundBrush" Color="{ThemeResource SystemColorHighlightTextColor}" />
+            <SolidColorBrush x:Key="ThemeButtonPressedBackgroundBrush" Color="{ThemeResource SystemColorHighlightColor}" />
+            <SolidColorBrush x:Key="ThemeButtonBorderBrush" Color="Transparent" />
+
+            <Thickness x:Key="ThemeButtonBorderThickness">0</Thickness>
+            
+            <SolidColorBrush x:Key="ThemedAppBarBackgroundBrush" Color="{ThemeResource SystemColorButtonFaceColor}" />
+            <SolidColorBrush x:Key="ThemedAppBarForegroundBrush" Color="{ThemeResource SystemColorButtonTextColor}" />
+        </ResourceDictionary>
+    </ResourceDictionary.ThemeDictionaries>
+
+    <Color x:Key="ThemeMainColor">#FF2B69CE</Color>
+    <Color x:Key="ThemeDarkColor">#FF1A4A99</Color>
+    <Color x:Key="ThemeLightColor">#FF609DFF</Color>
+
+    <Color x:Key="ErrorColor">#FFFF0000</Color>
+
+    <SolidColorBrush x:Key="ThemeMainBrush" Color="{StaticResource ThemeMainColor}" />
+    <SolidColorBrush x:Key="ThemeDarkBrush" Color="{StaticResource ThemeDarkColor}" />
+    <SolidColorBrush x:Key="ThemeLightBrush" Color="{StaticResource ThemeLightColor}" />
+    
+    <SolidColorBrush x:Key="ErrorBrush" Color="{StaticResource ErrorColor}" />
+</ResourceDictionary>

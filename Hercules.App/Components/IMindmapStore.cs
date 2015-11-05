@@ -21,6 +21,8 @@ namespace Hercules.App.Components
 
         Document LoadedDocument { get; }
 
+        IMindmapRef LoadedMindmap { get; }
+
         Task SaveAsync();
 
         Task LoadAsync(IMindmapRef mindmap);
@@ -31,6 +33,6 @@ namespace Hercules.App.Components
 
         Task CreateAsync(string name);
 
-        Task AddNewNonLoadingAsync(string name, Document document);
+        Task AddAsync(string name, Document document);
     }
 }

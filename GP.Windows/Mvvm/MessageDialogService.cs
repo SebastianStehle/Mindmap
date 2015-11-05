@@ -193,7 +193,7 @@ namespace GP.Windows.Mvvm
         {
             Guard.NotNullOrEmpty(content, nameof(content));
 
-            MessageDialog dialog = new MessageDialog(content, title);
+            MessageDialog dialog = string.IsNullOrWhiteSpace(title) ? new MessageDialog(content) : new MessageDialog(content, title);
 
             dialog.Commands.Add(new UICommand(GetString("Common_OK")));
 
@@ -231,7 +231,7 @@ namespace GP.Windows.Mvvm
         {
             Guard.NotNullOrEmpty(content, nameof(content));
 
-            MessageDialog dialog = new MessageDialog(content, title);
+            MessageDialog dialog = string.IsNullOrWhiteSpace(title) ? new MessageDialog(content) : new MessageDialog(content, title);
 
             TaskCompletionSource<bool> completionSource = new TaskCompletionSource<bool>();
 

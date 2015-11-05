@@ -15,6 +15,6 @@ namespace Hercules.Model.ExImport
     {
         string NameKey { get; }
 
-        Task ExportAsync(Document document, IExporter exporter, IRenderer renderer);
+        Task ExportAsync(string name, Document document, IExporter exporter, IRenderer renderer);
     }
 }

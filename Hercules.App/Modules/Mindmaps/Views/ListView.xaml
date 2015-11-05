@@ -17,13 +17,13 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Border Grid.Row="0" BorderBrush="LightGray" BorderThickness="0,0,0,1" Padding="10,0,0,6">
+        <Border Grid.Row="0" BorderBrush="{ThemeResource SystemControlHighlightListLowBrush}" BorderThickness="0,0,0,1" Padding="10,0,0,6">
             <TextBlock x:Uid="Mindmaps_Header" Foreground="Black" Text="Mindmaps"
                 FontSize="20" 
                 FontWeight="Bold" />
         </Border>
 
-        <ListBox Grid.Row="1" ItemContainerStyle="{StaticResource ThemeListBoxItemStyle}" SelectedItem="{Binding SelectedMindmap, Mode=TwoWay}" x:Name="MindmapList" ItemsSource="{Binding Mindmaps}">
+        <ListBox Grid.Row="1" ItemContainerStyle="{StaticResource BorderedListBoxItemStyle}" SelectedItem="{Binding SelectedMindmap, Mode=TwoWay}" x:Name="MindmapList" ItemsSource="{Binding Mindmaps}">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid x:Name="Root">
@@ -49,7 +49,7 @@
                             <StackPanel>
                                 <TextBlock Text="{Binding Title}" FontSize="15" TextTrimming="WordEllipsis" />
 
-                                <StackPanel Orientation="Horizontal" Opacity="0.7" Margin="0,2">
+                                <StackPanel Orientation="Horizontal" Opacity="0.8" Margin="0,2">
                                     <TextBlock x:Uid="Mindmaps_LastUpdate" FontSize="13"
                                         Text="Modified:"
                                         TextAlignment="Left"

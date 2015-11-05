@@ -7,10 +7,13 @@
 // ==========================================================================
 
 using System;
+using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Threading.Tasks;
 using Windows.ApplicationModel.Email;
 using GP.Windows;
+using GP.Windows.Mvvm;
 using Hercules.Model.Rendering;
 using Hercules.Model.Utils;
 
@@ -18,28 +21,64 @@ namespace Hercules.Model.ExImport.Channels.Email
 {
     public sealed class EmailExportTarget : IExportTarget
     {
+        private readonly IMessageDialogService dialogService;
+
         public string NameKey
         {
             get { return "Email"; }
         }
 
-        public async Task ExportAsync(Document document, IExporter exporter, IRenderer renderer)
+        public EmailExportTarget(IMessageDialogService dialogService)
         {
-            FileExtension extension = exporter.Extensions.FirstOrDefault();
+            Guard.NotNull(dialogService, nameof(dialogService));
 
-            if (extension == null)
+            this.dialogService = dialogService;
+        }
+
+        public async Task ExportAsync(string name, Document document, IExporter exporter, IRenderer renderer)
+        {
+            if (await dialogService.ConfirmAsync(ResourceManager.GetString("Export_EmailConfirm")))
             {
-                throw new InvalidOperationException("The exporter needs to specify at least one file extension.");
+                FileExtension extension = exporter.Extensions.FirstOrDefault();
+
+                if (extension == null)
+                {
+                    throw new InvalidOperationException("The exporter needs to specify at least one file extension.");
+                }
+
+                byte[] buffer = await SerializeAsync(document, exporter, renderer);
+
+                string downloadUri = await UploadAsync(name, extension, buffer);
+
+                string subj = ResourceManager.GetString("Export_EmailSubject");
+                string body = ResourceManager.GetString("Export_EmailBody", downloadUri);
+
+                EmailMessage message = new EmailMessage { Subject = subj, Body = body };
+
+                await EmailManager.ShowComposeNewEmailAsync(message);
             }
+        }
 
-            string subj = ResourceManager.GetString("Export_EmailSubject");
-            string file = ResourceManager.GetString("Export_EmailAttachment") + extension.Extension;
+        private static async Task<string> UploadAsync(string name, FileExtension extension, byte[] buffer)
+        {
+            object upload = new { ContentType = extension.MimeType, Content = Convert.ToBase64String(buffer), Name = name + extension.Extension };
 
-            EmailMessage message = new EmailMessage {  Subject = subj };
+            HttpClient httpClient = new HttpClient();
 
-            message.Attachments.Add(new EmailAttachment(file, new EmailAttachmentSource(document, exporter, renderer)));
+            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://upload.getmindapp.com/api/upload", upload);
 
-            await EmailManager.ShowComposeNewEmailAsync(message);
+            response.EnsureSuccessStatusCode();
+
+            return response.Headers.Location.ToString();
+        }
+
+        private static async Task<byte[]> SerializeAsync(Document document, IExporter exporter, IRenderer renderer)
+        {
+            MemoryStream memoryStream = new MemoryStream();
+
+            await exporter.ExportAsync(document, renderer, memoryStream);
+
+            return memoryStream.ToArray();
         }
     }
 }

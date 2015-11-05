@@ -28,7 +28,7 @@ namespace Hercules.Model.Utils
             return result;
         }
 
-        public static string FormatString(string key, params object[] args)
+        public static string GetString(string key, params object[] args)
         {
             return string.Format(CultureInfo.CurrentCulture, GetString(key), args) ?? key;
         }

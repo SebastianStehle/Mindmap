@@ -12,7 +12,7 @@
     xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
     IsTabStop="False"
-    IsEnabled="{Binding LoadingManager.IsLoading, Source={StaticResource ViewModelLocator}, Converter={StaticResource BooleanInverseConverter}}"
+    IsEnabled="{Binding ProcessManager.IsMainProcessRunning, Source={StaticResource ViewModelLocator}, Converter={StaticResource BooleanInverseConverter}}"
     DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
 
     <Page.Resources>
@@ -29,29 +29,31 @@
         </Storyboard>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}" RequestedTheme="Light">
+    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <Grid Background="{StaticResource ThemeMainBrush}" RequestedTheme="Dark">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
+        <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="{ThemeResource ThemedAppBarForegroundBrush}" RequestedTheme="Dark">
+            <Grid Background="{ThemeResource ThemedAppBarBackgroundBrush}">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
 
-            <AppBarButton x:Uid="AppBarButton_ListMindmaps" Grid.Column="0" RequestedTheme="Dark" Icon="List" Click="ListAppBarButton_Click" Label="Mindmaps">
-                <i:Interaction.Behaviors>
-                    <gpi:ShortcutBehavior RequiresControlModifier="True" Key="L" Invoked="ListAppBarButton_Click" />
-                </i:Interaction.Behaviors>
-            </AppBarButton>
+                <AppBarButton x:Uid="AppBarButton_ListMindmaps" Grid.Column="0" Icon="List" Click="ListAppBarButton_Click" Label="Mindmaps">
+                    <i:Interaction.Behaviors>
+                        <gpi:ShortcutBehavior RequiresControlModifier="True" Key="L" Invoked="ListAppBarButton_Click" />
+                    </i:Interaction.Behaviors>
+                </AppBarButton>
 
-            <AppBarSeparator Grid.Column="1" />
+                <AppBarSeparator Grid.Column="1" />
             
-            <e:ToolbarView Grid.Column="2" />
-        </Grid>
+                <e:ToolbarView Grid.Column="2" />
+            </Grid>
+        </ContentControl>
 
         <SplitView Grid.Row="1" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="68" x:Name="SplitView">
             <i:Interaction.Behaviors>
@@ -76,7 +78,7 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Button x:Uid="Mindmaps_AddButton" TabIndex="-1" Padding="0,10,0,10" Margin="0,20,0,20" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalAlignment="Top" Foreground="{StaticResource ThemeMainBrush}" Style="{StaticResource ThemeButton}">
+                    <Button x:Uid="Mindmaps_AddButton" TabIndex="-1" Padding="0,10,0,10" Margin="0,20,0,20" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ThemeButton}">
                         <StackPanel Orientation="Horizontal">
                             <Grid>
                                 <Viewbox Width="64" Height="26">

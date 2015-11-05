@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// LoadingManager.cs
+// ProcessManager.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -11,17 +11,17 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
-using GP.Windows.Annotations;
 
 namespace GP.Windows.Mvvm
 {
     /// <summary>
     /// Notifies the system that some operation is loading right now.
     /// </summary>
-    public sealed class LoadingManager : ILoadingManager
+    public sealed class ProcessManager : IProcessManager
     {
         private readonly DispatcherTimer lazyTimer = new DispatcherTimer { Interval = TimeSpan.FromMilliseconds(500) };
-        private bool isLoading;
+        private bool isMainProcessRunning;
+        private object currentOwner;
 
         /// <summary>
         /// Invoked, when a property has been changed.
@@ -31,23 +31,26 @@ namespace GP.Windows.Mvvm
         /// <summary>
         /// Gets a value indicating if there is a operation running.
         /// </summary>
-        public bool IsLoading
+        public bool IsMainProcessRunning
         {
-            get { return isLoading; }
+            get
+            {
+                return isMainProcessRunning;
+            }
             set
             {
-                if (isLoading != value)
+                if (isMainProcessRunning != value)
                 {
-                    isLoading = value;
+                    isMainProcessRunning = value;
                     OnPropertyChanged();
                 }
             }
         }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="LoadingManager"/> class.
+        /// Initializes a new instance of the <see cref="ProcessManager"/> class.
         /// </summary>
-        public LoadingManager()
+        public ProcessManager()
         {
             lazyTimer.Tick += LazyTimer_Tick;
         }
@@ -56,50 +59,42 @@ namespace GP.Windows.Mvvm
         {
             lazyTimer.Stop();
 
-            IsLoading = false;
-        }
-
-        /// <summary>
-        /// Starts the loading.
-        /// </summary>
-        public void BeginLoading()
-        {
-            IsLoading = true;
-        }
-
-        /// <summary>
-        /// Finishs the loading.
-        /// </summary>
-        public void FinishLoading()
-        {
-            lazyTimer.Start();
+            IsMainProcessRunning = false;
         }
 
         /// <summary>
         /// Invokes the specified action when there is no loading operation.
         /// </summary>
+        /// <param name="owner">The owner of the current process.</param>
         /// <param name="action">The action to invoke. Cannot be null</param>
-        /// <exception cref="ArgumentNullException"><paramref name="action"/> is null.</exception>
+        /// <exception cref="ArgumentNullException">
+        ///     <paramref name="owner"/> is null.
+        ///     <paramref name="action"/> is null.
+        /// </exception>
         /// <returns>
         /// The task for synchronization.
         /// </returns>
-        public async Task DoWhenNotLoadingAsync(Func<Task> action)
+        public async Task RunMainProcessAsync(object owner, Func<Task> action)
         {
-            if (!IsLoading)
+            Guard.NotNull(owner, nameof(owner));
+            Guard.NotNull(action, nameof(action));
+
+            if (!IsMainProcessRunning || currentOwner == owner)
             {
-                BeginLoading();
+                currentOwner = owner;
+
+                IsMainProcessRunning = true;
                 try
                 {
                     await action();
                 }
                 finally
                 {
-                    FinishLoading();
+                    lazyTimer.Start();
                 }
             }
         }
-
-        [NotifyPropertyChangedInvocator]
+        
         private void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

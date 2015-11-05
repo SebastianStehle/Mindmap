@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// NotNullBooleanConverter.cs
+// TrueWhenNotNullConverter.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -14,7 +14,7 @@ namespace GP.Windows.UI
     /// <summary>
     /// Converter that shows a element when the value is not null.
     /// </summary>
-    public sealed class NotNullBooleanConverter : IValueConverter
+    public sealed class TrueWhenNotNullConverter : IValueConverter
     {
         /// <summary>
         /// Modifies the source data before passing it to the target for display in the UI.

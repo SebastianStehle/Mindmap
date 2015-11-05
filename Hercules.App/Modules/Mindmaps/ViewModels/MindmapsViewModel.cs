@@ -94,6 +94,8 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                         }
 
                         await MindmapStore.LoadAsync(MindmapStore.AllMindmaps[0]);
+
+                        SelectedMindmap = MindmapStore.AllMindmaps[0];
                     }
                 }
                 catch

@@ -12,6 +12,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
+using GalaSoft.MvvmLight;
 using GP.Windows;
 using GP.Windows.Mvvm;
 using Hercules.Model;
@@ -22,7 +23,7 @@ using Hercules.Model.Utils;
 
 namespace Hercules.App.Components.Implementations
 {
-    public sealed class MindmapStore : IMindmapStore
+    public sealed class MindmapStore : ViewModelBase, IMindmapStore
     {
         private readonly ObservableCollection<IMindmapRef> allMindmaps = new ObservableCollection<IMindmapRef>();
         private readonly DispatcherTimer autosaveTimer = new DispatcherTimer();
@@ -155,6 +156,9 @@ namespace Hercules.App.Components.Implementations
                 loadedMindmapRef = mindmap;
                 loadedDocument = await documentStore.LoadAsync(mindmapRef.DocumentRef);
 
+                RaisePropertyChanged(nameof(LoadedDocument));
+                RaisePropertyChanged(nameof(LoadedMindmap));
+
                 OnDocumentLoaded(loadedDocument);
             });
         }
@@ -173,6 +177,9 @@ namespace Hercules.App.Components.Implementations
                 {
                     loadedMindmapRef = null;
                     loadedDocument = null;
+
+                    RaisePropertyChanged(nameof(LoadedDocument));
+                    RaisePropertyChanged(nameof(LoadedMindmap));
 
                     OnDocumentLoaded(null);
                 }

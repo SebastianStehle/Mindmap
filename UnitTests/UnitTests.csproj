@@ -96,13 +96,16 @@
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
       <Name>Behaviors SDK %28XAML%29</Name>
     </SDKReference>
-    <SDKReference Include="MSTestFramework.Universal, Version=$(UnitTestPlatformVersion)" />
+    <SDKReference Include="MSTestFramework.Universal, Version=14.0">
+      <Name>MSTest for Managed Projects</Name>
+    </SDKReference>
     <SDKReference Include="TestPlatform.Universal, Version=$(UnitTestPlatformVersion)" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Mockups\MockupAction.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\ColorsHelperTest.cs" />
+    <Compile Include="Tests\DocumentTest.cs" />
     <Compile Include="Tests\LimitedThreadsSchedulerTest.cs" />
     <Compile Include="Tests\UndoRedoManagerTests.cs" />
     <Compile Include="UnitTestApp.xaml.cs">

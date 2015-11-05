@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using System.Linq;
 using Hercules.Model;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 using UnitTests.Mockups;
@@ -21,19 +22,25 @@ namespace UnitTests.Tests
         private readonly UndoRedoManager undoRedoManager = new UndoRedoManager();
 
         [TestMethod]
-        public void TestConstructor()
+        public void Constructor()
         {
             new UndoRedoManager();
         }
 
         [TestMethod]
-        public void TestRedoForEmptyLog()
+        public void Redo_EmptyLog_DoesNothing()
         {
-            undoRedoManager.Undo();
+            undoRedoManager.Redo();
         }
 
         [TestMethod]
-        public void TestRedoForSingleItem()
+        public void RedoAll_EmptyLog_DoesNothing()
+        {
+            undoRedoManager.RedoAll();
+        }
+
+        [TestMethod]
+        public void Redo_SingleAction_RedoInvoked()
         {
             MockupAction action = new MockupAction();
 
@@ -47,7 +54,7 @@ namespace UnitTests.Tests
         }
 
         [TestMethod]
-        public void TestRedoAllForMultipleItems()
+        public void Redo_MultipleItems_RedoInvoked_CanRedo()
         {
             MockupAction action1 = new MockupAction();
             MockupAction action2 = new MockupAction();
@@ -65,13 +72,19 @@ namespace UnitTests.Tests
         }
 
         [TestMethod]
-        public void TestUndoForEmptyLog()
+        public void Undo_EmtyLog_DoesNothing()
         {
             undoRedoManager.Undo();
         }
 
         [TestMethod]
-        public void TestUndoForSingleItem()
+        public void UndoAll_EmtyLog_DoesNothing()
+        {
+            undoRedoManager.UndoAll();
+        }
+
+        [TestMethod]
+        public void Undo_SingleAction_UndoInvoked()
         {
             MockupAction action = new MockupAction();
 
@@ -85,27 +98,7 @@ namespace UnitTests.Tests
         }
 
         [TestMethod]
-        public void TestUndoAllForEmptyLog()
-        {
-            undoRedoManager.UndoAll();
-        }
-
-        [TestMethod]
-        public void TestUndoAllForSingleItem()
-        {
-            MockupAction action = new MockupAction();
-
-            undoRedoManager.RegisterExecutedAction(action);
-            undoRedoManager.UndoAll();
-
-            Assert.IsTrue(action.IsUndoInvoked);
-
-            Assert.IsTrue(undoRedoManager.CanRedo);
-            Assert.IsFalse(undoRedoManager.CanUndo);
-        }
-
-        [TestMethod]
-        public void TestUndoAllForMultipleItems()
+        public void Undo_MultipleActions_UndoInvoked_CanUndo()
         {
             MockupAction action1 = new MockupAction();
             MockupAction action2 = new MockupAction();
@@ -121,13 +114,48 @@ namespace UnitTests.Tests
         }
 
         [TestMethod]
-        public void TestRegisterExecutedActionNullActionException()
+        public void Revert_UndoInvoked_CannotRedo()
+        {
+            MockupAction action1 = new MockupAction();
+            MockupAction action2 = new MockupAction();
+
+            undoRedoManager.RegisterExecutedAction(action1);
+            undoRedoManager.RegisterExecutedAction(action2);
+            undoRedoManager.Revert();
+
+            Assert.IsTrue(action2.IsUndoInvoked);
+            Assert.IsTrue(undoRedoManager.CanUndo);
+            Assert.IsFalse(undoRedoManager.CanRedo);
+        }
+
+        [TestMethod]
+        public void RevertToIndex_UndoInvoked_CannotRedo()
+        {
+            MockupAction action1 = new MockupAction();
+            MockupAction action2 = new MockupAction();
+            MockupAction action3 = new MockupAction();
+
+            undoRedoManager.RegisterExecutedAction(action1);
+            undoRedoManager.RegisterExecutedAction(action2);
+            undoRedoManager.RegisterExecutedAction(action3);
+
+            Assert.AreEqual(3, undoRedoManager.Index);
+
+            undoRedoManager.RevertTo(1);
+
+            Assert.AreEqual(1, undoRedoManager.History.Count());
+            Assert.IsFalse(undoRedoManager.CanRedo);
+            Assert.IsTrue(undoRedoManager.CanUndo);
+        }
+
+        [TestMethod]
+        public void RegisterExecutedAction_ActionIsNull_ThrowsException()
         {
             Assert.ThrowsException<ArgumentNullException>(() => undoRedoManager.RegisterExecutedAction(null));
         }
 
         [TestMethod]
-        public void TestRegisterExecutedAction()
+        public void RegisterExecutedAction_CanUndo()
         {
             MockupAction action1 = new MockupAction();
             MockupAction action2 = new MockupAction();
@@ -142,7 +170,7 @@ namespace UnitTests.Tests
         }
 
         [TestMethod]
-        public void TestRegisterExecutedActionAfterUndoAll()
+        public void RegisterExecutedAction_WithUndoneActions_StartedFromScratch()
         {
             MockupAction oldAction1 = new MockupAction();
             MockupAction oldAction2 = new MockupAction();
@@ -164,7 +192,7 @@ namespace UnitTests.Tests
         }
 
         [TestMethod]
-        public void TestRegisterExecutedActionAfterUndo()
+        public void RegisterExecutedAction_WithUndoAction_StartedAfterFirstAction()
         {
             MockupAction oldAction1 = new MockupAction();
             MockupAction oldAction2 = new MockupAction();

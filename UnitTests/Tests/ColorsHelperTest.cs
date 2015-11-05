@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using Windows.UI;
 using GP.Windows.UI;
 using Microsoft.VisualStudio.TestPlatform.UnitTestFramework;
 
@@ -26,6 +27,14 @@ namespace UnitTests.Tests
         public void ColorToRGBString2()
         {
             string actual = ColorsHelper.ConvertToRGBString(0x0000FF);
+
+            Assert.AreEqual("#0000FF", actual);
+        }
+
+        [TestMethod]
+        public void ColorToRGBString3()
+        {
+            string actual = ColorsHelper.ConvertToRGBString(Colors.Blue);
 
             Assert.AreEqual("#0000FF", actual);
         }

@@ -14,11 +14,21 @@ namespace Hercules.Model.Utils
 {
     public static class ResourceManager
     {
+        public static Func<string, string> StringProvider { get; set; }
+
+        static ResourceManager()
+        {
+            StringProvider = key =>
+            {
+                ResourceLoader resourceLoader = new ResourceLoader();
+
+                return resourceLoader.GetString(key);
+            };
+        }
+
         public static string GetString(string key)
         {
-            ResourceLoader resourceLoader = new ResourceLoader();
-
-            string result = resourceLoader.GetString(key);
+            string result = StringProvider(key);
 
             if (string.IsNullOrWhiteSpace(result))
             {

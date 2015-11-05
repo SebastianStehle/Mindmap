@@ -62,7 +62,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
         public IExporter[] Exporters { get; set; }
 
         [Dependency]
-        public IImportSource[] IImportSources { get; set; }
+        public IImportSource[] ImportSources { get; set; }
 
         [Dependency]
         public IImporter[] Importers { get; set; }

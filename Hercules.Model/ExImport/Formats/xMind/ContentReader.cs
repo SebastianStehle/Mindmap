@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// xMindContentParser.cs
+// XMindContentParser.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -11,11 +11,11 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
 
-namespace Hercules.Model.ExImport.Formats.xMind
+namespace Hercules.Model.ExImport.Formats.XMind
 {
     internal static class ContentReader
     {
-        public static IEnumerable<KeyValuePair<string, Document>> ReadContent(XDocument content, IReadOnlyDictionary<string, xMindStyle> stylesById)
+        public static IEnumerable<ImportResult> ReadContent(XDocument content, IReadOnlyDictionary<string, XMindStyle> stylesById)
         {
             IEnumerable<XElement> sheets = content.Root.Elements(Namespaces.Content("sheet"));
 
@@ -34,12 +34,12 @@ namespace Hercules.Model.ExImport.Formats.xMind
                         ReadNode(root, document.Root, stylesById);
                     }
 
-                    yield return new KeyValuePair<string, Document>(title, document);
+                    yield return new ImportResult(document, title);
                 }
             }
         }
 
-        private static void ReadNode(XElement topic, NodeBase node, IReadOnlyDictionary<string, xMindStyle> stylesById)
+        private static void ReadNode(XElement topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById)
         {
             List<NodeBase> children = new List<NodeBase>();
 
@@ -60,7 +60,7 @@ namespace Hercules.Model.ExImport.Formats.xMind
             }
         }
 
-        private static void ReadChilds(XContainer topic, NodeBase node, IReadOnlyDictionary<string, xMindStyle> stylesById, ICollection<NodeBase> children)
+        private static void ReadChilds(XContainer topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById, ICollection<NodeBase> children)
         {
             XElement topics = topic.Element(Namespaces.Content("children"))?.Element(Namespaces.Content("topics"));
 
@@ -77,11 +77,11 @@ namespace Hercules.Model.ExImport.Formats.xMind
             }
         }
 
-        private static void ReadStyle(XElement topic, NodeBase node, IReadOnlyDictionary<string, xMindStyle> stylesById)
+        private static void ReadStyle(XElement topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById)
         {
             string styleId = topic.AttributeValue("style-id");
 
-            xMindStyle style;
+            XMindStyle style;
 
             if (!string.IsNullOrWhiteSpace(styleId) && stylesById.TryGetValue(styleId, out style))
             {

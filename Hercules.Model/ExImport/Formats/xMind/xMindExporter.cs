@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// xMindExporter.cs
+// XMindExporter.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -14,13 +14,13 @@ using System.Xml.Linq;
 using GP.Windows;
 using Hercules.Model.Rendering;
 
-namespace Hercules.Model.ExImport.Formats.xMind
+namespace Hercules.Model.ExImport.Formats.XMind
 {
-    public sealed class xMindExporter : IExporter
+    public sealed class XMindExporter : IExporter
     {
         public string NameKey
         {
-            get { return "xMind"; }
+            get { return "XMind"; }
         }
 
         public IEnumerable<FileExtension> Extensions

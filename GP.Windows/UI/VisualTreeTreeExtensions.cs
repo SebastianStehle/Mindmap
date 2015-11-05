@@ -278,7 +278,7 @@ namespace GP.Windows.UI
             key = key.Replace("{culture}", CultureInfo.CurrentCulture.Name);
 
             Application application = Application.Current;
-            
+
             T result = application.Resources.TryGetResourceByKey<T>(key);
 
             if (result == null)

@@ -6,7 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
-namespace Hercules.Model.ExImport.Formats.xMind
+namespace Hercules.Model.ExImport.Formats.XMind
 {
     internal static class Namespaces
     {

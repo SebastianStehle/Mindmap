@@ -55,7 +55,6 @@
                             </Style>
                             <Style x:Key="BodyContentPresenterStyle" BasedOn="{StaticResource BaseContentPresenterStyle}" TargetType="ContentPresenter">
                                 <Setter Property="FontWeight" Value="Normal"/>
-                                <Setter Property="FontSize" Value="15"/>
                             </Style>
                         </Grid.Resources>
                         <VisualStateManager.VisualStateGroups>

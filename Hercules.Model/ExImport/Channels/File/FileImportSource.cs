@@ -23,11 +23,11 @@ namespace Hercules.Model.ExImport.Channels.File
             get { return "File"; }
         }
 
-        public async Task<List<KeyValuePair<string, Document>>> ImportAsync(IImporter importer)
+        public async Task<List<ImportResult>> ImportAsync(IImporter importer)
         {
             Guard.NotNull(importer, nameof(importer));
 
-            List<KeyValuePair<string, Document>> result = new List<KeyValuePair<string, Document>>();
+            List<ImportResult> result = new List<ImportResult>();
 
             FileOpenPicker filePicker = new FileOpenPicker();
 
@@ -42,7 +42,16 @@ namespace Hercules.Model.ExImport.Channels.File
             {
                 using (Stream fileStream = await file.OpenStreamForReadAsync())
                 {
-                    result = await importer.ImportAsync(fileStream);
+                    string nameWithoutExtension = file.Name;
+
+                    int lastDot = file.Name.LastIndexOf('.');
+
+                    if (lastDot > 0)
+                    {
+                        nameWithoutExtension = nameWithoutExtension.Substring(0, lastDot);
+                    }
+
+                    result = await importer.ImportAsync(fileStream, nameWithoutExtension);
                 }
             }
 

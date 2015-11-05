@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// xMindStylesReader.cs
+// XMindStylesReader.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -11,13 +11,13 @@ using System.Globalization;
 using System.Text.RegularExpressions;
 using System.Xml.Linq;
 
-namespace Hercules.Model.ExImport.Formats.xMind
+namespace Hercules.Model.ExImport.Formats.XMind
 {
-    internal static class StylesReader 
+    internal static class StylesReader
     {
         private static readonly Regex ColorRegex = new Regex("^#[0-9A-F]{6}$", RegexOptions.Compiled);
-        
-        public static void ReadStyles(XDocument mapStyles, IDictionary<string, xMindStyle> stylesById)
+
+        public static void ReadStyles(XDocument mapStyles, IDictionary<string, XMindStyle> stylesById)
         {
             XElement nodeStyles = mapStyles.Root.Element(Namespaces.Styles("styles"));
 
@@ -55,7 +55,7 @@ namespace Hercules.Model.ExImport.Formats.xMind
 
                     if (int.TryParse(fillString.Substring(1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out color))
                     {
-                        stylesById[id] = new xMindStyle { Color = color };
+                        stylesById[id] = new XMindStyle { Color = color };
                     }
                 }
             }

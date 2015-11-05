@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// ImageExporter.cs
+// MindappExporter.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -7,36 +7,41 @@
 // ==========================================================================
 
 using System.Collections.Generic;
-using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
-using Windows.UI;
 using GP.Windows;
 using Hercules.Model.Rendering;
+using Hercules.Model.Storing.Json;
 
-namespace Hercules.Model.ExImport.Formats.Image
+namespace Hercules.Model.ExImport.Formats.Mindapp
 {
-    public sealed class ImageExporter : IExporter
+    public sealed class MindappExporter : IExporter
     {
         public string NameKey
         {
-            get { return "Image"; }
+            get
+            {
+                return "Mindapp";
+            }
         }
 
         public IEnumerable<FileExtension> Extensions
         {
-            get { yield return FileExtension.PNG; }
+            get
+            {
+                yield return JsonDocumentSerializer.FileExtension;
+            }
         }
 
         public Task ExportAsync(Document document, IRenderer renderer, Stream stream, PropertiesBag properties = null)
         {
-            int dpi =
-                properties != null &&
-                properties.Contains("DPI") ?
-                properties["DPI"].ToInt32(CultureInfo.InvariantCulture) :
-                300;
+            Guard.NotNull(document, nameof(document));
+            Guard.NotNull(stream, nameof(stream));
 
-            return renderer.RenderScreenshotAsync(stream.AsRandomAccessStream(), Colors.White, dpi);
+            return Task.Run(() =>
+            {
+                JsonDocumentSerializer.SerializeToStream(stream, document);
+            });
         }
     }
 }

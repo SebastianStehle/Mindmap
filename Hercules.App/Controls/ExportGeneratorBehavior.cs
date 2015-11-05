@@ -63,7 +63,7 @@ namespace Hercules.App.Controls
 
                             targetItem.Items?.Add(exportButton);
                         }
-                        
+
                         items.Add(targetItem);
                     }
                 }

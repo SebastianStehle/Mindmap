@@ -12,7 +12,7 @@ using System.IO.Compression;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Hercules.Model.ExImport.Formats.xMind
+namespace Hercules.Model.ExImport.Formats.XMind
 {
     public static class Extensions
     {
@@ -43,15 +43,27 @@ namespace Hercules.Model.ExImport.Formats.xMind
         {
             ZipArchiveEntry contentEntry = archive.CreateEntry(path);
 
-            using (Stream stream = contentEntry.Open())
+            Stream stream = null;
+            try
             {
+                stream = contentEntry.Open();
+
                 XDocument content = new XDocument();
 
                 xmlWriter(content);
 
                 using (XmlWriter writer = XmlWriter.Create(stream))
                 {
+                    stream = null;
+
                     content.WriteTo(writer);
+                }
+            }
+            finally
+            {
+                if (stream != null)
+                {
+                    stream.Dispose();
                 }
             }
         }

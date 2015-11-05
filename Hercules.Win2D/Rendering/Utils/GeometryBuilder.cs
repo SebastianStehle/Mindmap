@@ -19,7 +19,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Win2D.Rendering.Utils
 {
-    public sealed class GeometryBuilder
+    public static class GeometryBuilder
     {
         private const float Radius = 10;
         private const float Padding = 10;

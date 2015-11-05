@@ -16,6 +16,7 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+// ReSharper disable InconsistentNaming
 <#
 string[][] mimeTypes = File.ReadAllLines(Host.ResolvePath("Resources\\MimeTypes.txt"))
 	.Select(x => x.Split(';').Select(z => z.ToLower()).ToArray())

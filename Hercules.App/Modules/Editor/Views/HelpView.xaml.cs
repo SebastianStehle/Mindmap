@@ -20,7 +20,7 @@ namespace Hercules.App.Modules.Editor.Views
 
             if (!DesignMode.DesignModeEnabled)
             {
-                HelpTextControl.Style = 
+                HelpTextControl.Style =
                     VisualTreeExtensions.LoadFromAppResource<Style>("HelpText_{culture}") ??
                     VisualTreeExtensions.LoadFromAppResource<Style>("HelpText_en-US");
             }

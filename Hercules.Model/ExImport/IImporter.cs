@@ -19,6 +19,6 @@ namespace Hercules.Model.ExImport
 
         IEnumerable<FileExtension> Extensions { get; }
 
-        Task<List<KeyValuePair<string, Document>>> ImportAsync(Stream stream, PropertiesBag properties = null);
+        Task<List<ImportResult>> ImportAsync(Stream stream, string name, PropertiesBag properties = null);
     }
 }

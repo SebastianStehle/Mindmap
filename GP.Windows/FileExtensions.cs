@@ -1,6 +1,6 @@
 ﻿// ==========================================================================
-// FileExtensions.cs
-// Hercules Mindmap App
+// Currencies.cs
+// Green Parrot Framework
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
@@ -9,6 +9,7 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+// ReSharper disable InconsistentNaming
 
 namespace GP.Windows
 {

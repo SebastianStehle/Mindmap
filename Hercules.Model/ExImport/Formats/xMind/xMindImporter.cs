@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// xMindImporter.cs
+// XMindImporter.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 using System.Xml.Linq;
 using GP.Windows;
 
-namespace Hercules.Model.ExImport.Formats.xMind
+namespace Hercules.Model.ExImport.Formats.XMind
 {
-    public sealed class xMindImporter : IImporter
+    public sealed class XMindImporter : IImporter
     {
         public string NameKey
         {
-            get { return "xMind"; }
+            get { return "XMind"; }
         }
 
         public IEnumerable<FileExtension> Extensions
@@ -27,17 +27,17 @@ namespace Hercules.Model.ExImport.Formats.xMind
             get { yield return FileExtension.XMIND; }
         }
 
-        public Task<List<KeyValuePair<string, Document>>> ImportAsync(Stream stream, PropertiesBag properties = null)
+        public Task<List<ImportResult>> ImportAsync(Stream stream, string name, PropertiesBag properties = null)
         {
             Guard.NotNull(stream, nameof(stream));
 
             return Task.Run(() =>
             {
-                List<KeyValuePair<string, Document>> result = new List<KeyValuePair<string, Document>>();
+                List<ImportResult> result = new List<ImportResult>();
 
                 using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Read))
                 {
-                    Dictionary<string, xMindStyle> stylesById = new Dictionary<string, xMindStyle>();
+                    Dictionary<string, XMindStyle> stylesById = new Dictionary<string, XMindStyle>();
 
                     ImportStyles(archive, stylesById);
 
@@ -48,7 +48,7 @@ namespace Hercules.Model.ExImport.Formats.xMind
             });
         }
 
-        private static void ImportStyles(ZipArchive archive, IDictionary<string, xMindStyle> stylesById)
+        private static void ImportStyles(ZipArchive archive, IDictionary<string, XMindStyle> stylesById)
         {
             ZipArchiveEntry mapStylesEntry = archive.GetEntry("styles.xml");
 
@@ -65,7 +65,7 @@ namespace Hercules.Model.ExImport.Formats.xMind
             }
         }
 
-        private static void ImportContent(ZipArchive archive, IReadOnlyDictionary<string, xMindStyle> stylesById, List<KeyValuePair<string, Document>> result)
+        private static void ImportContent(ZipArchive archive, IReadOnlyDictionary<string, XMindStyle> stylesById, List<ImportResult> result)
         {
             ZipArchiveEntry contentEntry = archive.GetEntry("content.xml");
 

@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// xMindContentWriter.cs
+// XMindContentWriter.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -12,14 +12,14 @@ using System.Globalization;
 using System.Linq;
 using System.Xml.Linq;
 
-namespace Hercules.Model.ExImport.Formats.xMind
+namespace Hercules.Model.ExImport.Formats.XMind
 {
     public static class ContentWriter
     {
         public static void WriteContent(Document document, XDocument content)
         {
             string timestamp = ((int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds).ToString(CultureInfo.InvariantCulture);
-            
+
             XElement root =
                 new XElement(Namespaces.Content("xmap-content"),
                     new XAttribute("version", "2.0"),
@@ -36,7 +36,7 @@ namespace Hercules.Model.ExImport.Formats.xMind
 
         private static XElement CreateTopic(string timestamp, NodeBase node, IReadOnlyList<Node> children)
         {
-            XElement topic = 
+            XElement topic =
                 new XElement(Namespaces.Content("topic"),
                     new XAttribute("id", node.Id),
                     new XAttribute("timestamp", timestamp),

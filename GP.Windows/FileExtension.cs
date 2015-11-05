@@ -158,7 +158,7 @@ namespace GP.Windows
         public static FileExtension GetFileExtension(string extension)
         {
             Guard.NotNull(extension, "extension");
-            
+
             return extensionMappings[extension];
         }
     }

@@ -10,7 +10,7 @@ using System.Xml.Linq;
 using GP.Windows.UI;
 using Hercules.Model.Rendering;
 
-namespace Hercules.Model.ExImport.Formats.xMind
+namespace Hercules.Model.ExImport.Formats.XMind
 {
     internal static class StylesWriter
     {

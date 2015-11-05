@@ -46,7 +46,7 @@ namespace Hercules.App.Controls
 
                 if (items != null)
                 {
-                    foreach (IImportSource source in viewModel.IImportSources)
+                    foreach (IImportSource source in viewModel.ImportSources)
                     {
                         string text = ResourceManager.GetString($"ImportSource_{source.NameKey}");
 
@@ -63,7 +63,7 @@ namespace Hercules.App.Controls
 
                             targetItem.Items?.Add(importButton);
                         }
-                        
+
                         items.Add(targetItem);
                     }
                 }

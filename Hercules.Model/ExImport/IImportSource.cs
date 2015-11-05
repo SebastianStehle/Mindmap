@@ -15,6 +15,6 @@ namespace Hercules.Model.ExImport
     {
         string NameKey { get; }
 
-        Task<List<KeyValuePair<string, Document>>> ImportAsync(IImporter importer);
+        Task<List<ImportResult>> ImportAsync(IImporter importer);
     }
 }

@@ -32,7 +32,7 @@ namespace Hercules.Model.Rendering
         {
             get { return lighter; }
         }
-        
+
         public LayoutThemeColor(Color normal, Color darker, Color lighter)
         {
             this.darker = darker;

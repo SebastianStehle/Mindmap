@@ -16,7 +16,7 @@ using GP.Windows;
 using GP.Windows.Mvvm;
 using Hercules.App.Components;
 using Hercules.App.Messages;
-using Hercules.Model;
+using Hercules.Model.ExImport;
 using Hercules.Model.Utils;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
@@ -84,13 +84,13 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             {
                 try
                 {
-                    List<KeyValuePair<string, Document>> documents = await model.Source.ImportAsync(model.Importer);
+                    List<ImportResult> results = await model.Source.ImportAsync(model.Importer);
 
-                    if (documents.Count > 0)
+                    if (results.Count > 0)
                     {
-                        foreach (var document in documents)
+                        foreach (var result in results)
                         {
-                            await MindmapStore.AddAsync(document.Key, document.Value);
+                            await MindmapStore.AddAsync(result.Name, result.Document);
                         }
 
                         await MindmapStore.LoadAsync(MindmapStore.AllMindmaps[0]);

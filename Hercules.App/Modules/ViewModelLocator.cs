@@ -19,7 +19,8 @@ using Hercules.Model.ExImport.Channels.Email;
 using Hercules.Model.ExImport.Channels.File;
 using Hercules.Model.ExImport.Formats.Html;
 using Hercules.Model.ExImport.Formats.Image;
-using Hercules.Model.ExImport.Formats.xMind;
+using Hercules.Model.ExImport.Formats.Mindapp;
+using Hercules.Model.ExImport.Formats.XMind;
 using Hercules.Model.Storing;
 using Hercules.Model.Storing.Json;
 using Microsoft.Practices.Unity;
@@ -63,7 +64,9 @@ namespace Hercules.App.Modules
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IImportSource, FileImportSource>("File",
                     new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IImporter, xMindImporter>("xMind",
+                unityContainer.RegisterType<IImporter, XMindImporter>("XMind",
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IImporter, MindappImporter>("Mindapp",
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IExportTarget, FileExportTarget>("File",
                     new ContainerControlledLifetimeManager());
@@ -71,7 +74,9 @@ namespace Hercules.App.Modules
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IExporter, ImageExporter>("Image",
                     new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IExporter, xMindExporter>("xMind",
+                unityContainer.RegisterType<IExporter, XMindExporter>("XMind",
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IExporter, MindappExporter>("Mindapp",
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IExporter, HtmlOutlineExporter>("HtmlOutline",
                     new ContainerControlledLifetimeManager());

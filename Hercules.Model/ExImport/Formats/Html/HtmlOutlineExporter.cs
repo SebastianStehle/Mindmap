@@ -44,7 +44,7 @@ namespace Hercules.Model.ExImport.Formats.Html
 
             string noTextPlaceholder =
                 properties != null &&
-                properties.HasProperty("NoTextPlaceholder") ? 
+                properties.HasProperty("NoTextPlaceholder") ?
                 properties.HasProperty("NoTextPlaceholder").ToString() :
                 NoTextDefault;
 

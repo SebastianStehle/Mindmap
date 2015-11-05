@@ -13,7 +13,7 @@ namespace Hercules.App.Messages
 {
     public sealed class ImportMessage : GenericMessage<ImportModel>
     {
-        public ImportMessage(ImportModel content) 
+        public ImportMessage(ImportModel content)
             : base(content)
         {
         }

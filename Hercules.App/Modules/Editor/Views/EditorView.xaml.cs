@@ -10,7 +10,7 @@ using Windows.UI.Xaml;
 
 namespace Hercules.App.Modules.Editor.Views
 {
-    public sealed partial class EditorView 
+    public sealed partial class EditorView
     {
         public EditorView()
         {

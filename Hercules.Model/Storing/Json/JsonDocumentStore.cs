@@ -8,24 +8,19 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
-using Windows.Storage.Streams;
 using GP.Windows;
 using Hercules.Model.Storing.Utils;
 using Hercules.Model.Utils;
-using Newtonsoft.Json;
 
 namespace Hercules.Model.Storing.Json
 {
     public sealed class JsonDocumentStore : IDocumentStore
     {
-        private const string FileExtension = ".mmd";
         private const string DefaultSubfolder = "Mindapp";
-        private readonly JsonSerializerSettings historySerializerSettings = new JsonSerializerSettings();
         private readonly TaskFactory taskFactory = new TaskFactory(new LimitedThreadsScheduler());
         private readonly string subfolderName;
         private StorageFolder localFolder;
@@ -40,8 +35,6 @@ namespace Hercules.Model.Storing.Json
             Guard.NotNullOrEmpty(subfolderName, nameof(subfolderName));
 
             this.subfolderName = subfolderName;
-
-            historySerializerSettings.Converters.Add(new PropertiesBagConverter());
         }
 
         public Task<IList<DocumentRef>> LoadAllAsync()
@@ -102,7 +95,7 @@ namespace Hercules.Model.Storing.Json
 
             IEnumerable<StorageFile> files = await localFolder.GetFilesAsync();
 
-            foreach (StorageFile file in files.Where(file => file.FileType.Equals(FileExtension, StringComparison.OrdinalIgnoreCase)))
+            foreach (StorageFile file in files.Where(file => file.FileType.Equals(JsonDocumentSerializer.FileExtension.Extension, StringComparison.OrdinalIgnoreCase)))
             {
                 BasicProperties properties = await file.GetBasicPropertiesAsync();
 
@@ -116,16 +109,7 @@ namespace Hercules.Model.Storing.Json
         {
             StorageFile file = await GetFileAsync(documentRef);
 
-            using (IRandomAccessStream stream = await file.OpenReadAsync())
-            {
-                Stream normalStream = stream.AsStreamForRead();
-
-                JsonHistory history = normalStream.DeserializeAsJsonFromStream<JsonHistory>(historySerializerSettings);
-
-                Document document = history.ToDocument();
-
-                return document;
-            }
+            return await JsonDocumentSerializer.DeserializeFromFileAsync(file);
         }
 
         private async Task<DocumentRef> CreateInternalAsync(string name, Document document)
@@ -134,7 +118,7 @@ namespace Hercules.Model.Storing.Json
 
             StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.GenerateUniqueName);
 
-            await file.SerializeAsJsonAsync(new JsonHistory(document), historySerializerSettings);
+            await JsonDocumentSerializer.SerializeToFileAsync(file, document);
 
             return documentRef.Rename(file.DisplayName);
         }
@@ -143,7 +127,7 @@ namespace Hercules.Model.Storing.Json
         {
             StorageFile file = await GetFileAsync(documentRef);
 
-            await file.RenameAsync($"{newName}{FileExtension}", NameCollisionOption.GenerateUniqueName);
+            await file.RenameAsync($"{newName}{JsonDocumentSerializer.FileExtension.Extension}", NameCollisionOption.GenerateUniqueName);
             await file.GetBasicPropertiesAsync();
 
             documentRef.Updated().Rename(file.DisplayName);
@@ -153,7 +137,7 @@ namespace Hercules.Model.Storing.Json
         {
             StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.ReplaceExisting);
 
-            await file.SerializeAsJsonAsync(history, historySerializerSettings);
+            await JsonDocumentSerializer.SerializeToFileAsync(file, history);
 
             documentRef.Updated();
         }
@@ -169,7 +153,7 @@ namespace Hercules.Model.Storing.Json
         {
             await EnsureFolderAsync();
 
-            string fileName = $"{documentRef.DocumentName}{FileExtension}";
+            string fileName = $"{documentRef.DocumentName}{JsonDocumentSerializer.FileExtension.Extension}";
 
             return await localFolder.CreateFileAsync(fileName, options);
         }
@@ -178,7 +162,7 @@ namespace Hercules.Model.Storing.Json
         {
             await EnsureFolderAsync();
 
-            string fileName = $"{documentRef.DocumentName}{FileExtension}";
+            string fileName = $"{documentRef.DocumentName}{JsonDocumentSerializer.FileExtension.Extension}";
 
             return await localFolder.GetFileAsync(fileName);
         }

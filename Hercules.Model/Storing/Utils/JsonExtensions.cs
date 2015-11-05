@@ -18,15 +18,15 @@ namespace Hercules.Model.Storing.Utils
     {
         private static readonly JsonSerializerSettings DefaultSettings = new JsonSerializerSettings();
 
-        public static async Task SerializeAsJsonAsync<T>(this StorageFile file, T value, JsonSerializerSettings settings = null)
+        public static async Task SerializeAsJsonAsync<T>(this T value, StorageFile file, JsonSerializerSettings settings = null)
         {
             using (Stream fileStream = await file.OpenStreamForWriteAsync())
             {
-                value.SerializeAsJsonToStream(fileStream, settings ?? DefaultSettings);
+                value.SerializeAsJson(fileStream, settings ?? DefaultSettings);
             }
         }
 
-        public static void SerializeAsJsonToStream<T>(this T value, Stream stream, JsonSerializerSettings settings = null)
+        public static void SerializeAsJson<T>(this T value, Stream stream, JsonSerializerSettings settings = null)
         {
             using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8, 4096, true))
             {
@@ -36,7 +36,7 @@ namespace Hercules.Model.Storing.Utils
             }
         }
 
-        public static T DeserializeAsJsonFromStream<T>(this Stream stream, JsonSerializerSettings settings = null)
+        public static T DeserializeAsJson<T>(this Stream stream, JsonSerializerSettings settings = null)
         {
             using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
             {

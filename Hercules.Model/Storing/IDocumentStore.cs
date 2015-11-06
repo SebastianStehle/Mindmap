@@ -17,7 +17,7 @@ namespace Hercules.Model.Storing
 
         Task<Document> LoadAsync(DocumentRef documentRef);
 
-        Task DeleteAsync(DocumentRef documentRef);
+        Task<bool> DeleteAsync(DocumentRef documentRef);
 
         Task RenameAsync(DocumentRef documentRef, string newName);
 

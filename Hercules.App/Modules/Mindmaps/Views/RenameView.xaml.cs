@@ -17,10 +17,10 @@ namespace Hercules.App.Modules.Mindmaps.Views
     public sealed partial class RenameView : IPopupControl
     {
         public static readonly DependencyProperty MindmapItemProperty =
-            DependencyProperty.Register("MindmapItem", typeof(IMindmapRef), typeof(RenameView), new PropertyMetadata(null));
-        public IMindmapRef MindmapItem
+            DependencyProperty.Register("MindmapItem", typeof(MindmapRef), typeof(RenameView), new PropertyMetadata(null));
+        public MindmapRef MindmapItem
         {
-            get { return (IMindmapRef)GetValue(MindmapItemProperty); }
+            get { return (MindmapRef)GetValue(MindmapItemProperty); }
             set { SetValue(MindmapItemProperty, value); }
         }
 
@@ -35,12 +35,12 @@ namespace Hercules.App.Modules.Mindmaps.Views
         {
             ErrorTextBlock.Opacity = 0;
 
-            TitleTextBox.Text = MindmapItem.Title;
+            NameTextBox.Text = MindmapItem.Name;
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
+            if (string.IsNullOrWhiteSpace(NameTextBox.Text))
             {
                 ErrorTextBlock.Opacity = 1;
             }
@@ -48,7 +48,7 @@ namespace Hercules.App.Modules.Mindmaps.Views
             {
                 try
                 {
-                    await MindmapItem.RenameAsync(TitleTextBox.Text);
+                    await MindmapItem.RenameAsync(NameTextBox.Text);
                 }
                 catch (FileNotFoundException)
                 {

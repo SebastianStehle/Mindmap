@@ -14,14 +14,14 @@ using GP.Windows;
 using Hercules.Model;
 using Hercules.Model.Storing;
 
-namespace Hercules.App.Components.Implementations
+namespace Hercules.App.Components
 {
-    public sealed class MindmapRef : ViewModelBase, IMindmapRef
+    public sealed class MindmapRef : ViewModelBase
     {
-        private readonly IDocumentStore documentStore;
+        private readonly IMindmapStore mindmapStore;
         private readonly DocumentRef documentRef;
 
-        public string Title
+        public string Name
         {
             get { return documentRef.DocumentName; }
         }
@@ -48,46 +48,42 @@ namespace Hercules.App.Components.Implementations
         {
         }
 
-        public MindmapRef(DocumentRef documentRef, IDocumentStore documentStore)
+        public MindmapRef(DocumentRef documentRef, IMindmapStore mindmapStore)
         {
-            Guard.NotNull(documentRef, nameof(documentRef));
-            Guard.NotNull(documentStore, nameof(documentStore));
+            Guard.NotNull(documentRef, nameof(documentRef));;
+            Guard.NotNull(mindmapStore, nameof(mindmapStore));
 
             this.documentRef = documentRef;
-            this.documentStore = documentStore;
+            this.mindmapStore = mindmapStore;
         }
 
-        internal async Task DeleteAsync()
+        public async Task DeleteAsync()
         {
             if (documentRef != null)
             {
-                await documentStore.DeleteAsync(documentRef);
+                await mindmapStore.DeleteAsync(this);
             }
         }
 
-        internal async Task SaveAsync(Document document)
+        public async Task SaveAsync(Document document)
         {
             if (documentRef != null)
             {
-                await documentStore.StoreAsync(documentRef, document);
-
-                RefreshProperties();
+                await mindmapStore.SaveAsync(this, document);
             }
         }
 
-        public async Task RenameAsync(string newTitle)
+        public async Task RenameAsync(string newName)
         {
             if (documentRef != null)
             {
-                await documentStore.RenameAsync(documentRef, newTitle);
-
-                RefreshProperties();
+                await mindmapStore.RenameAsync(this, newName);
             }
         }
 
         public void RefreshProperties()
         {
-            RaisePropertyChanged(nameof(Title));
+            RaisePropertyChanged(nameof(Name));
             RaisePropertyChanged(nameof(LastUpdate));
             RaisePropertyChanged(nameof(LastUpdateText));
         }

@@ -26,9 +26,9 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
     [ImplementPropertyChanged]
     public sealed class MindmapsViewModel : ViewModelBase
     {
-        private RelayCommand<IMindmapRef> deleteCommand;
+        private RelayCommand<MindmapRef> deleteCommand;
 
-        public ObservableCollection<IMindmapRef> Mindmaps
+        public ObservableCollection<MindmapRef> Mindmaps
         {
             get
             {
@@ -40,7 +40,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         public bool IsLoaded { get; set; }
 
         [NotifyUI]
-        public IMindmapRef SelectedMindmap { get; set; }
+        public MindmapRef SelectedMindmap { get; set; }
 
         [Dependency]
         public IMindmapStore MindmapStore { get; set; }
@@ -51,14 +51,14 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         [Dependency]
         public IMessageDialogService MessageDialogService { get; set; }
 
-        public RelayCommand<IMindmapRef> DeleteCommand
+        public RelayCommand<MindmapRef> DeleteCommand
         {
             get
             {
-                return deleteCommand ?? (deleteCommand = new RelayCommand<IMindmapRef>(async item =>
+                return deleteCommand ?? (deleteCommand = new RelayCommand<MindmapRef>(async item =>
                 {
                     string content = ResourceManager.GetString("DeleteMindmap_Content");
-                    string message = ResourceManager.GetString("DeleteMindmap_Title");
+                    string message = ResourceManager.GetString("DeleteMindmap_Heading");
 
                     if (await MessageDialogService.ConfirmAsync(content, message))
                     {
@@ -101,9 +101,9 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                 catch
                 {
                     string content = ResourceManager.GetString("ImportFailed_Content");
-                    string message = ResourceManager.GetString("ImportFailed_Title");
+                    string heading = ResourceManager.GetString("ImportFailed_Heading");
 
-                    await MessageDialogService.AlertAsync(content, message);
+                    await MessageDialogService.AlertAsync(content, heading);
                 }
             }).Forget();
         }

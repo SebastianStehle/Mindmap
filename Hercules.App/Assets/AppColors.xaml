@@ -61,7 +61,7 @@
     <Color x:Key="ThemeDarkColor">#FF1A4A99</Color>
     <Color x:Key="ThemeLightColor">#FF609DFF</Color>
 
-    <Color x:Key="ErrorColor">#FFFF0000</Color>
+    <Color x:Key="ErrorColor">#FF991A1A</Color>
 
     <SolidColorBrush x:Key="ThemeMainBrush" Color="{StaticResource ThemeMainColor}" />
     <SolidColorBrush x:Key="ThemeDarkBrush" Color="{StaticResource ThemeDarkColor}" />

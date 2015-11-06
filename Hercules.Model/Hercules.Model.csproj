@@ -150,6 +150,7 @@
     <Compile Include="IColor.cs" />
     <Compile Include="IconSize.cs" />
     <Compile Include="IDocumentCommands.cs" />
+    <Compile Include="Storing\DocumentNotFoundException.cs" />
     <Compile Include="Storing\Json\JsonDocumentSerializer.cs" />
     <Compile Include="ThemeColor.cs" />
     <Compile Include="InsertChildCommand.cs" />

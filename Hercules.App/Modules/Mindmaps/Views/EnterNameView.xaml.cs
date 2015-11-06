@@ -27,12 +27,12 @@ namespace Hercules.App.Modules.Mindmaps.Views
         {
             ErrorTextBlock.Opacity = 0;
 
-            TitleTextBox.Text = string.Empty;
+            NameTextBox.Text = string.Empty;
         }
 
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(TitleTextBox.Text))
+            if (string.IsNullOrWhiteSpace(NameTextBox.Text))
             {
                 ErrorTextBlock.Opacity = 1;
             }
@@ -42,7 +42,7 @@ namespace Hercules.App.Modules.Mindmaps.Views
 
                 try
                 {
-                    await viewModel.CreateNewMindmapAsync(TitleTextBox.Text);
+                    await viewModel.CreateNewMindmapAsync(NameTextBox.Text);
                 }
                 catch (FileNotFoundException)
                 {

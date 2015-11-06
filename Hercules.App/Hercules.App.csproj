@@ -107,10 +107,9 @@
     </Compile>
     <Compile Include="Assets\AssetProvider.cs" />
     <Compile Include="Components\DocumentLoadedEventArgs.cs" />
-    <Compile Include="Components\IMindmapRef.cs" />
     <Compile Include="Components\IMindmapStore.cs" />
     <Compile Include="Components\Implementations\DefaultSettingsProvider.cs" />
-    <Compile Include="Components\Implementations\MindmapRef.cs" />
+    <Compile Include="Components\MindmapRef.cs" />
     <Compile Include="Components\Implementations\MindmapStore.cs" />
     <Compile Include="Components\Implementations\PrintService.cs" />
     <Compile Include="Components\IPrintService.cs" />

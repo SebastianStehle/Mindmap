@@ -51,9 +51,9 @@ namespace Hercules.App.Components.Implementations
 
         private void PrintManager_PrintTaskRequested(PrintManager sender, PrintTaskRequestedEventArgs args)
         {
-            string title = ResourceManager.GetString("Print_Title");
+            string heading = ResourceManager.GetString("Print_Heading");
 
-            args.Request.CreatePrintTask(title, a =>
+            args.Request.CreatePrintTask(heading, a =>
             {
                 a.SetSource(printDocument);
             });

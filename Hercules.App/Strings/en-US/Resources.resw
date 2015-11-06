@@ -255,7 +255,7 @@
   <data name="DeleteMindmap_Content" xml:space="preserve">
     <value>Do you really want to delete the mindmap? It is not possible to restore a deleted mindmap.</value>
   </data>
-  <data name="DeleteMindmap_Title" xml:space="preserve">
+  <data name="DeleteMindmap_Heading" xml:space="preserve">
     <value>Delete Mindmap?</value>
   </data>
   <data name="Editor_Busy.Text" xml:space="preserve">
@@ -297,7 +297,7 @@
   <data name="ImportFailed_Content" xml:space="preserve">
     <value>Sorry, we failed to import your mindmaps. Please send us an bug report.</value>
   </data>
-  <data name="ImportFailed_Title" xml:space="preserve">
+  <data name="ImportFailed_Heading" xml:space="preserve">
     <value>Importing mindmap failed.</value>
   </data>
   <data name="ImportSource_File" xml:space="preserve">
@@ -357,16 +357,16 @@
   <data name="Naming_SaveButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Rename the mindmap</value>
   </data>
-  <data name="Naming_TitleError.Text" xml:space="preserve">
-    <value>Title cannot be empty!</value>
+  <data name="Naming_HeadingError.Text" xml:space="preserve">
+    <value>Name cannot be empty!</value>
   </data>
-  <data name="Naming_TitleLabel.Text" xml:space="preserve">
-    <value>Mindmap Title:</value>
+  <data name="Naming_HeadingLabel.Text" xml:space="preserve">
+    <value>Mindmap Name:</value>
   </data>
   <data name="Outline_NoText" xml:space="preserve">
     <value>[No Text]</value>
   </data>
-  <data name="Print_Title" xml:space="preserve">
+  <data name="Print_Heading" xml:space="preserve">
     <value>Mindmap (by Mindapp)</value>
   </data>
   <data name="TransactionName_AddChild" xml:space="preserve">
@@ -418,5 +418,11 @@ I want to share my mindmap for you. You can download it here: {0}. The download 
   </data>
   <data name="Importer_Mindapp" xml:space="preserve">
     <value>Mindapp (.mmd)</value>
+  </data>
+  <data name="MindmapDeleted_Content" xml:space="preserve">
+    <value>The mindmap has been deleted in the meantime.</value>
+  </data>
+  <data name="MindmapDeleted_Heading" xml:space="preserve">
+    <value>Mindmap has been deleted.</value>
   </data>
 </root>

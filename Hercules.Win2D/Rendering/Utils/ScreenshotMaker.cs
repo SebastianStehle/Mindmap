@@ -20,6 +20,9 @@ namespace Hercules.Win2D.Rendering.Utils
 {
     public static class ScreenshotMaker
     {
+        private const float MaxAllowedSize = 5000;
+        private const float DpiWithPixelMapping = 96;
+
         public static async Task RenderScreenshotAsync(Win2DScene scene, ICanvasResourceCreator device, IRandomAccessStream stream, Color background, float? dpi = null, float padding = 20)
         {
             Guard.NotNull(scene, nameof(scene));
@@ -33,6 +36,13 @@ namespace Hercules.Win2D.Rendering.Utils
             float h = sceneBounds.Size.Y + (2 * padding);
 
             float dpiValue = dpi ?? DisplayInformation.GetForCurrentView().LogicalDpi;
+
+            float dpiFactor = dpiValue / DpiWithPixelMapping;
+
+            if (w * dpiFactor > MaxAllowedSize || h * dpiFactor > MaxAllowedSize)
+            {
+                dpiValue = DpiWithPixelMapping;
+            }
 
             using (CanvasRenderTarget target = new CanvasRenderTarget(device, w, h, dpiValue))
             {

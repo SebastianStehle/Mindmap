@@ -41,7 +41,7 @@ namespace Hercules.Model.Storing.Json
 
             JsonHistory history = new JsonHistory(document);
 
-            history.SerializeAsJson(stream, HistorySerializerSettings);
+            JsonStreamConvert.SerializeAsJson(history, stream, HistorySerializerSettings);
         }
 
         public static Task SerializeToFileAsync(StorageFile file, Document document)
@@ -51,7 +51,7 @@ namespace Hercules.Model.Storing.Json
 
             JsonHistory history = new JsonHistory(document);
 
-            return history.SerializeAsJsonAsync(file, HistorySerializerSettings);
+            return SerializeToFileAsync(history, file);
         }
 
         public static void SerializeToStream(Stream stream, JsonHistory history)
@@ -59,7 +59,7 @@ namespace Hercules.Model.Storing.Json
             Guard.NotNull(stream, nameof(stream));
             Guard.NotNull(history, nameof(history));
 
-            history.SerializeAsJson(stream, HistorySerializerSettings);
+            JsonStreamConvert.SerializeAsJson(history, stream, HistorySerializerSettings);
         }
 
         public static Task SerializeToFileAsync(StorageFile file, JsonHistory history)
@@ -67,14 +67,14 @@ namespace Hercules.Model.Storing.Json
             Guard.NotNull(file, nameof(file));
             Guard.NotNull(history, nameof(history));
 
-            return history.SerializeAsJsonAsync(file, HistorySerializerSettings);
+            return SerializeToFileAsync(history, file);
         }
 
         public static Document DeserializeFromStream(Stream stream)
         {
             Guard.NotNull(stream, nameof(stream));
 
-            JsonHistory history = stream.DeserializeAsJson<JsonHistory>(HistorySerializerSettings);
+            JsonHistory history = JsonStreamConvert.DeserializeAsJson<JsonHistory>(stream, HistorySerializerSettings);
 
             return history.ToDocument();
         }
@@ -85,13 +85,23 @@ namespace Hercules.Model.Storing.Json
 
             using (IRandomAccessStream stream = await file.OpenReadAsync())
             {
-                Stream normalStream = stream.AsStreamForRead();
-
-                JsonHistory history = normalStream.DeserializeAsJson<JsonHistory>(HistorySerializerSettings);
+                JsonHistory history = JsonStreamConvert.DeserializeAsJson<JsonHistory>(stream.AsStreamForRead(), HistorySerializerSettings);
 
                 Document document = history.ToDocument();
 
                 return document;
+            }
+        }
+
+        private static async Task SerializeToFileAsync(object value, StorageFile file)
+        {
+            using (StorageStreamTransaction transaction = await file.OpenTransactedWriteAsync(StorageOpenOptions.None))
+            {
+                Stream fileStream = transaction.Stream.AsStreamForWrite();
+
+                JsonStreamConvert.SerializeAsJson(value, fileStream, HistorySerializerSettings);
+
+                await transaction.CommitAsync();
             }
         }
     }

@@ -107,8 +107,12 @@ namespace Hercules.App.Controls
 
         public void Cancel()
         {
+            if (movingNode != null)
+            {
+                renderer.RemoveCustomNode(movingNode);
+            }
+
             renderer.HidePreviewElement();
-            renderer.RemoveCustomNode(movingNode);
             renderer.Invalidate();
         }
     }

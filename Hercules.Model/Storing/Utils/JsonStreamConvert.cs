@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// JsonExtensions.cs
+// JsonStreamConvert.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -8,25 +8,15 @@
 
 using System.IO;
 using System.Text;
-using System.Threading.Tasks;
-using Windows.Storage;
 using Newtonsoft.Json;
 
 namespace Hercules.Model.Storing.Utils
 {
-    internal static class JsonExtensions
+    internal static class JsonStreamConvert
     {
         private static readonly JsonSerializerSettings DefaultSettings = new JsonSerializerSettings();
 
-        public static async Task SerializeAsJsonAsync<T>(this T value, StorageFile file, JsonSerializerSettings settings = null)
-        {
-            using (Stream fileStream = await file.OpenStreamForWriteAsync())
-            {
-                value.SerializeAsJson(fileStream, settings ?? DefaultSettings);
-            }
-        }
-
-        public static void SerializeAsJson<T>(this T value, Stream stream, JsonSerializerSettings settings = null)
+        public static void SerializeAsJson<T>(T value, Stream stream, JsonSerializerSettings settings = null)
         {
             using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8, 4096, true))
             {
@@ -36,7 +26,7 @@ namespace Hercules.Model.Storing.Utils
             }
         }
 
-        public static T DeserializeAsJson<T>(this Stream stream, JsonSerializerSettings settings = null)
+        public static T DeserializeAsJson<T>(Stream stream, JsonSerializerSettings settings = null)
         {
             using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
             {

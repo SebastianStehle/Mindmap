@@ -7,15 +7,29 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.Storage.Streams;
+using GP.Windows;
 
 namespace Hercules.Model.Storing.Utils
 {
     internal static class FileExtensions
     {
+        public static Task<List<StorageFile>> GetFilesAsync(this StorageFolder localFolder, FileExtension extension)
+        {
+            return localFolder.GetFilesAsync(extension.Extension);
+        }
+
+        public static async Task<List<StorageFile>> GetFilesAsync(this StorageFolder localFolder, string extension)
+        {
+            IEnumerable<StorageFile> files = await localFolder.GetFilesAsync();
+
+            return files.Where(file => file.FileType.Equals(extension, StringComparison.OrdinalIgnoreCase)).ToList();
+        }
+
         public static async Task<StorageFolder> GetOrCreateFolderAsync(this StorageFolder localFolder, string name)
         {
             StorageFolder folder;
@@ -29,43 +43,6 @@ namespace Hercules.Model.Storing.Utils
             }
 
             return folder;
-        }
-
-        public static async Task TryWriteDataAsync(this StorageFolder localFolder, string name, IRandomAccessStream contents)
-        {
-            if (contents != null)
-            {
-                StorageFile file = await localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
-
-                using (Stream fileStream = await file.OpenStreamForWriteAsync())
-                {
-                    await contents.AsStream().CopyToAsync(fileStream);
-                }
-            }
-        }
-
-        public static async Task WriteDataAsync(this StorageFolder localFolder, string name, MemoryStream contents)
-        {
-            StorageFile file = await localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
-
-            using (Stream fileStream = await file.OpenStreamForWriteAsync())
-            {
-                contents.WriteTo(fileStream);
-            }
-        }
-
-        public static async Task WriteDataAsync(this StorageFolder localFolder, string name, byte[] contents)
-        {
-            StorageFile file = await localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
-
-            await FileIO.WriteBytesAsync(file, contents);
-        }
-
-        public static async Task WriteTextAsync(this StorageFolder localFolder, string name, string contents)
-        {
-            StorageFile file = await localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
-
-            await FileIO.WriteTextAsync(file, contents);
         }
 
         public static async Task<bool> TryDeleteIfExistsAsync(this StorageFolder localFolder, string name)

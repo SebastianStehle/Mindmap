@@ -39,7 +39,12 @@ namespace Hercules.Model.Storing.Json
 
         public Task<IList<DocumentRef>> LoadAllAsync()
         {
-            return taskFactory.StartNew(LoadAllInternalAsync).Unwrap();
+            return taskFactory.StartNew(() => LoadAllInternalAsync()).Unwrap();
+        }
+
+        public Task ClearAsync()
+        {
+            return taskFactory.StartNew(() => ClearInternalAsync()).Unwrap();
         }
 
         public Task RenameAsync(DocumentRef documentRef, string newName)
@@ -65,7 +70,9 @@ namespace Hercules.Model.Storing.Json
             Guard.NotNull(document, nameof(document));
             Guard.ValidFileName(name, nameof(name));
 
-            return taskFactory.StartNew(() => CreateInternalAsync(name, document)).Unwrap();
+            JsonHistory history = new JsonHistory(document);
+
+            return taskFactory.StartNew(() => CreateInternalAsync(name, history)).Unwrap();
         }
 
         public Task<Document> LoadAsync(DocumentRef documentRef)
@@ -82,20 +89,13 @@ namespace Hercules.Model.Storing.Json
             return taskFactory.StartNew(() => DeleteInternalAsync(documentRef)).Unwrap();
         }
 
-        public Task ClearAsync()
-        {
-            return taskFactory.StartNew(ClearInternalAsync).Unwrap();
-        }
-
         private async Task<IList<DocumentRef>> LoadAllInternalAsync()
         {
             await EnsureFolderAsync();
 
             List<DocumentRef> documentReferences = new List<DocumentRef>();
 
-            IEnumerable<StorageFile> files = await localFolder.GetFilesAsync();
-
-            foreach (StorageFile file in files.Where(file => file.FileType.Equals(JsonDocumentSerializer.FileExtension.Extension, StringComparison.OrdinalIgnoreCase)))
+            foreach (StorageFile file in await localFolder.GetFilesAsync(JsonDocumentSerializer.FileExtension))
             {
                 BasicProperties properties = await file.GetBasicPropertiesAsync();
 
@@ -112,13 +112,13 @@ namespace Hercules.Model.Storing.Json
             return await JsonDocumentSerializer.DeserializeFromFileAsync(file);
         }
 
-        private async Task<DocumentRef> CreateInternalAsync(string name, Document document)
+        private async Task<DocumentRef> CreateInternalAsync(string name, JsonHistory history)
         {
             DocumentRef documentRef = new DocumentRef(name, DateTimeOffset.Now);
 
             StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.GenerateUniqueName);
 
-            await JsonDocumentSerializer.SerializeToFileAsync(file, document);
+            await JsonDocumentSerializer.SerializeToFileAsync(file, history);
 
             return documentRef.Rename(file.DisplayName);
         }

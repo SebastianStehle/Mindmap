@@ -192,7 +192,7 @@
     <Compile Include="Storing\Json\JsonHistoryStepsCommand.cs" />
     <Compile Include="Storing\Json\PropertiesBagConverter.cs" />
     <Compile Include="Storing\Utils\FileExtensions.cs" />
-    <Compile Include="Storing\Utils\JsonExtensions.cs" />
+    <Compile Include="Storing\Utils\JsonStreamConvert.cs" />
     <Compile Include="ToggleCollapseCommand.cs" />
     <Compile Include="UndoRedoManager.cs" />
     <Compile Include="Utils\LimitedThreadsScheduler.cs" />

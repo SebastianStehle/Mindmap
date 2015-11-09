@@ -18,45 +18,44 @@ using GP.Windows.Mvvm;
 using Hercules.Model;
 using Hercules.Model.Storing;
 using Hercules.Model.Utils;
+using PropertyChanged;
 
 // ReSharper disable ImplicitlyCapturedClosure
 
 namespace Hercules.App.Components.Implementations
 {
+    [ImplementPropertyChanged]
     public sealed class MindmapStore : ViewModelBase, IMindmapStore
     {
-        private readonly ObservableCollection<IMindmapRef> allMindmaps = new ObservableCollection<IMindmapRef>();
+        private readonly ObservableCollection<MindmapRef> allMindmaps = new ObservableCollection<MindmapRef>();
         private readonly DispatcherTimer autosaveTimer = new DispatcherTimer();
         private readonly IDocumentStore documentStore;
         private readonly IProcessManager processManager;
         private readonly ISettingsProvider settingsProvider;
-        private Document loadedDocument;
-        private IMindmapRef loadedMindmapRef;
+        private readonly IMessageDialogService dialogService;
         private bool isLoaded;
 
         public event EventHandler<DocumentLoadedEventArgs> DocumentLoaded;
 
-        public ObservableCollection<IMindmapRef> AllMindmaps
+        public ObservableCollection<MindmapRef> AllMindmaps
         {
             get { return allMindmaps; }
         }
 
-        public Document LoadedDocument
-        {
-            get { return loadedDocument; }
-        }
+        [NotifyUI]
+        public Document LoadedDocument { get; private set; }
 
-        public IMindmapRef LoadedMindmap
-        {
-            get { return loadedMindmapRef; }
-        }
+        [NotifyUI]
+        public MindmapRef LoadedMindmap { get; private set; }
 
-        public MindmapStore(IDocumentStore documentStore, IProcessManager processManager, ISettingsProvider settingsProvider)
+        public MindmapStore(IDocumentStore documentStore, IProcessManager processManager, ISettingsProvider settingsProvider, IMessageDialogService dialogService)
         {
             Guard.NotNull(documentStore, nameof(documentStore));
+            Guard.NotNull(dialogService, nameof(dialogService));
             Guard.NotNull(processManager, nameof(processManager));
             Guard.NotNull(settingsProvider, nameof(settingsProvider));
 
+            this.dialogService = dialogService;
             this.documentStore = documentStore;
             this.processManager = processManager;
             this.settingsProvider = settingsProvider;
@@ -88,7 +87,7 @@ namespace Hercules.App.Components.Implementations
                     {
                         IEnumerable<DocumentRef> documents = await documentStore.LoadAllAsync();
 
-                        foreach (MindmapRef mindmapRef in documents.Select(documentRef => new MindmapRef(documentRef, documentStore)))
+                        foreach (MindmapRef mindmapRef in documents.Select(documentRef => new MindmapRef(documentRef, this)))
                         {
                             allMindmaps.Add(mindmapRef);
                         }
@@ -120,90 +119,131 @@ namespace Hercules.App.Components.Implementations
         public Task AddAsync(string name, Document document)
         {
             Guard.NotNullOrEmpty(name, nameof(name));
-            Guard.NotNullOrEmpty(name, nameof(name));
+            Guard.NotNull(document, nameof(document));
 
-            return DoAsync(async () =>
+            return DoAsync(async() =>
             {
                 DocumentRef documentRef = await documentStore.CreateAsync(name, document);
 
-                allMindmaps.Insert(0, new MindmapRef(documentRef, documentStore));
+                allMindmaps.Insert(0, new MindmapRef(documentRef, this));
             });
         }
 
         public Task SaveAsync()
         {
-            return DoAsync(x => x != null, async () =>
+            return DoAsync(LoadedMindmap, async () =>
             {
-                MindmapRef loadedRef = ValidateMindmap(loadedMindmapRef);
-
-                await loadedRef.SaveAsync(loadedDocument);
+                await documentStore.StoreAsync(LoadedMindmap.DocumentRef, LoadedDocument);
             });
         }
 
-        public Task LoadAsync(IMindmapRef mindmap)
-        {
-            MindmapRef mindmapRef = ValidateMindmap(mindmap);
-
-            return DoAsync(x => x != mindmap, async () =>
-            {
-                MindmapRef loadedRef = loadedMindmapRef as MindmapRef;
-
-                if (loadedRef != null)
-                {
-                    await loadedRef.SaveAsync(loadedDocument);
-                }
-
-                loadedMindmapRef = mindmap;
-                loadedDocument = await documentStore.LoadAsync(mindmapRef.DocumentRef);
-
-                RaisePropertyChanged(nameof(LoadedDocument));
-                RaisePropertyChanged(nameof(LoadedMindmap));
-
-                OnDocumentLoaded(loadedDocument);
-            });
-        }
-
-        public Task DeleteAsync(IMindmapRef mindmap)
-        {
-            MindmapRef mindmapRef = ValidateMindmap(mindmap);
-
-            return DoAsync(async () =>
-            {
-                await mindmapRef.DeleteAsync();
-
-                allMindmaps.Remove(mindmap);
-
-                if (loadedMindmapRef == mindmap)
-                {
-                    loadedMindmapRef = null;
-                    loadedDocument = null;
-
-                    RaisePropertyChanged(nameof(LoadedDocument));
-                    RaisePropertyChanged(nameof(LoadedMindmap));
-
-                    OnDocumentLoaded(null);
-                }
-            });
-        }
-
-        private MindmapRef ValidateMindmap(IMindmapRef mindmap)
+        public Task RenameAsync(MindmapRef mindmap, string newName)
         {
             Guard.NotNull(mindmap, nameof(mindmap));
-            Guard.IsType<MindmapRef>(mindmap, nameof(mindmap));
 
-            return mindmap as MindmapRef;
-        }
-
-        private Task DoAsync(Func<Task> action)
-        {
-            return DoAsync(x => true, action);
-        }
-
-        private async Task DoAsync(Predicate<IMindmapRef> predicate, Func<Task> action)
-        {
-            if (isLoaded && predicate(loadedMindmapRef))
+            return DoAsync(mindmap, async () =>
             {
-                await processManager.RunMainProcessAsync(this, action);
+                await documentStore.RenameAsync(mindmap.DocumentRef, newName);
+            });
+        }
+
+        public Task SaveAsync(MindmapRef mindmap, Document document)
+        {
+            Guard.NotNull(mindmap, nameof(mindmap));
+
+            return DoAsync(mindmap, async () =>
+            {
+                await documentStore.StoreAsync(mindmap.DocumentRef, document);
+            });
+        }
+
+        public Task LoadAsync(MindmapRef mindmap)
+        {
+            Guard.NotNull(mindmap, nameof(mindmap));
+
+            return DoAsync(mindmap, async () =>
+            {
+                LoadedMindmap = mindmap;
+                LoadedDocument = await documentStore.LoadAsync(mindmap.DocumentRef);
+
+                OnDocumentLoaded(LoadedDocument);
+            });
+        }
+
+        public Task DeleteAsync(MindmapRef mindmap)
+        {
+            Guard.NotNull(mindmap, nameof(mindmap));
+
+            return DoAsync(mindmap, async () =>
+            {
+                if (mindmap.DocumentRef != null)
+                {
+                    await documentStore.DeleteAsync(mindmap.DocumentRef);
+                }
+
+                UnloadMindmap(mindmap);
+            });
+        }
+
+        private Task DoAsync(MindmapRef mindmap, Func<Task> action)
+        {
+            return DoAsync(mindmap, x => true, action);
+        }
+
+        private async Task DoAsync(Func<Task> action)
+        {
+            if (isLoaded)
+            {
+                try
+                {
+                    await processManager.RunMainProcessAsync(this, action);
+                }
+                catch (DocumentNotFoundException)
+                {
+                    ShowErrorDialog();
+                }
+            }
+        }
+
+        private async Task DoAsync(MindmapRef mindmap, Predicate<MindmapRef> predicate, Func<Task> action)
+        {
+            if (isLoaded && mindmap != null && predicate(mindmap))
+            {
+                try
+                {
+                    await processManager.RunMainProcessAsync(this, action);
+                }
+                catch (DocumentNotFoundException)
+                {
+                    ShowErrorDialog();
+
+                    UnloadMindmap(mindmap);
+                }
+                finally
+                {
+                    mindmap.RefreshProperties();
+                }
+            }
+        }
+
+        private void ShowErrorDialog()
+        {
+            string content = ResourceManager.GetString("MindmapDeleted_Content");
+            string heading = ResourceManager.GetString("MindmapDeleted_Heading");
+
+            dialogService.AlertAsync(content, heading).Forget();
+        }
+
+        private void UnloadMindmap(MindmapRef mindmap)
+        {
+            allMindmaps.Remove(mindmap);
+
+            if (LoadedMindmap == mindmap)
+            {
+                LoadedMindmap = null;
+                LoadedDocument = null;
+
+                OnDocumentLoaded(null);
             }
         }
 

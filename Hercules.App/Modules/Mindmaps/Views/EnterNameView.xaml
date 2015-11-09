@@ -18,9 +18,9 @@
         </Grid.RowDefinitions>
 
         <StackPanel>
-            <TextBlock x:Uid="Naming_TitleError" Text="You cannot leave the name blank!" Foreground="{StaticResource ErrorBrush}" Opacity="0" x:Name="ErrorTextBlock" />
-            <TextBlock x:Uid="Naming_TitleLabel" Text="Enter Title:" Margin="0,0,0,4" />
-            <TextBox x:Name="TitleTextBox" />
+            <TextBlock x:Uid="Naming_NameError" Text="You cannot leave the name blank!" Foreground="{StaticResource ErrorBrush}" Opacity="0" x:Name="ErrorTextBlock" />
+            <TextBlock x:Uid="Naming_NameLabel" Text="Enter Name:" Margin="0,0,0,4" />
+            <TextBox x:Name="NameTextBox" />
         </StackPanel>
 
         <Button x:Uid="Naming_CreateButton" Grid.Row="2" Content="Create" Click="CreateButton_Click" />

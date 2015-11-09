@@ -153,7 +153,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return exportCommand ?? (exportCommand = new RelayCommand<ExportModel>(async x =>
                 {
-                    await ProcessManager.RunMainProcessAsync(this, () => x.Target.ExportAsync(mindmapStore.LoadedMindmap.Title, Document, x.Exporter, RendererProvider.Current));
+                    await ProcessManager.RunMainProcessAsync(this, () => x.Target.ExportAsync(mindmapStore.LoadedMindmap.Name, Document, x.Exporter, RendererProvider.Current));
                 }, x => Document != null));
             }
         }

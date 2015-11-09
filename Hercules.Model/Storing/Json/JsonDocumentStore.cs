@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -39,20 +40,39 @@ namespace Hercules.Model.Storing.Json
 
         public Task<IList<DocumentRef>> LoadAllAsync()
         {
-            return taskFactory.StartNew(() => LoadAllInternalAsync()).Unwrap();
+            return taskFactory.StartNew(LoadAllInternalAsync).Unwrap();
         }
 
-        public Task ClearAsync()
+        private async Task<IList<DocumentRef>> LoadAllInternalAsync()
         {
-            return taskFactory.StartNew(() => ClearInternalAsync()).Unwrap();
+            await EnsureFolderAsync();
+
+            List<StorageFile> files = await localFolder.GetFilesAsync(JsonDocumentSerializer.FileExtension);
+
+            List<Task<BasicProperties>> propertiesTasks = files.Select(file => file.GetBasicPropertiesAsync().AsTask()).ToList();
+
+            await Task.WhenAll(propertiesTasks);
+
+            return propertiesTasks.Select((t, i) => new DocumentRef(files[i].DisplayName, t.Result.DateModified)).OrderByDescending(x => x.LastUpdate).ToList();
         }
 
-        public Task RenameAsync(DocumentRef documentRef, string newName)
+        public Task<Document> LoadAsync(DocumentRef documentRef)
         {
             Guard.NotNull(documentRef, nameof(documentRef));
-            Guard.ValidFileName(newName, nameof(newName));
 
-            return taskFactory.StartNew(() => RenameInternalAsync(documentRef, newName)).Unwrap();
+            return taskFactory.StartNew(async () =>
+            {
+                try
+                {
+                    StorageFile file = await GetFileAsync(documentRef);
+
+                    return await JsonDocumentSerializer.DeserializeFromFileAsync(file);
+                }
+                catch (FileNotFoundException e)
+                {
+                    throw new DocumentNotFoundException($"Cannot find the document '{documentRef.DocumentName}'", e);
+                }
+            }).Unwrap();
         }
 
         public Task StoreAsync(DocumentRef documentRef, Document document)
@@ -62,7 +82,62 @@ namespace Hercules.Model.Storing.Json
 
             JsonHistory history = new JsonHistory(document);
 
-            return taskFactory.StartNew(() => StoreInternalAsync(documentRef, history)).Unwrap();
+            return taskFactory.StartNew(async () =>
+            {
+                try
+                {
+                    StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.ReplaceExisting);
+
+                    await JsonDocumentSerializer.SerializeToFileAsync(file, history);
+                }
+                catch (FileNotFoundException e)
+                {
+                    throw new DocumentNotFoundException($"Cannot find the document '{documentRef.DocumentName}'", e);
+                }
+            }).Unwrap();
+        }
+
+        public Task RenameAsync(DocumentRef documentRef, string newName)
+        {
+            Guard.NotNull(documentRef, nameof(documentRef));
+            Guard.ValidFileName(newName, nameof(newName));
+
+            return taskFactory.StartNew(async () =>
+            {
+                try
+                {
+                    StorageFile file = await GetFileAsync(documentRef);
+
+                    await file.RenameAsync($"{newName}{JsonDocumentSerializer.FileExtension.Extension}", NameCollisionOption.GenerateUniqueName);
+
+                    documentRef.Updated().Rename(file.DisplayName);
+                }
+                catch (FileNotFoundException e)
+                {
+                    throw new DocumentNotFoundException($"Cannot find the document '{documentRef.DocumentName}'", e);
+                }
+            }).Unwrap();
+        }
+
+        public Task<bool> DeleteAsync(DocumentRef documentRef)
+        {
+            Guard.NotNull(documentRef, nameof(documentRef));
+
+            return taskFactory.StartNew(async () =>
+            {
+                try
+                {
+                    StorageFile file = await GetFileAsync(documentRef);
+
+                    await file.DeleteAsync();
+
+                    return true;
+                }
+                catch (FileNotFoundException)
+                {
+                    return false;
+                }
+            }).Unwrap();
         }
 
         public Task<DocumentRef> CreateAsync(string name, Document document)
@@ -72,81 +147,31 @@ namespace Hercules.Model.Storing.Json
 
             JsonHistory history = new JsonHistory(document);
 
-            return taskFactory.StartNew(() => CreateInternalAsync(name, history)).Unwrap();
-        }
-
-        public Task<Document> LoadAsync(DocumentRef documentRef)
-        {
-            Guard.NotNull(documentRef, nameof(documentRef));
-
-            return taskFactory.StartNew(() => LoadInternalAsync(documentRef)).Unwrap();
-        }
-
-        public Task DeleteAsync(DocumentRef documentRef)
-        {
-            Guard.NotNull(documentRef, nameof(documentRef));
-
-            return taskFactory.StartNew(() => DeleteInternalAsync(documentRef)).Unwrap();
-        }
-
-        private async Task<IList<DocumentRef>> LoadAllInternalAsync()
-        {
-            await EnsureFolderAsync();
-
-            List<DocumentRef> documentReferences = new List<DocumentRef>();
-
-            foreach (StorageFile file in await localFolder.GetFilesAsync(JsonDocumentSerializer.FileExtension))
+            return taskFactory.StartNew(async () =>
             {
-                BasicProperties properties = await file.GetBasicPropertiesAsync();
+                DocumentRef documentRef = new DocumentRef(name, DateTimeOffset.Now);
 
-                documentReferences.Add(new DocumentRef(file.DisplayName, properties.DateModified));
+                try
+                {
+                    StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.GenerateUniqueName);
+
+                    await JsonDocumentSerializer.SerializeToFileAsync(file, history);
+
+                    return documentRef;
+                }
+                catch (FileNotFoundException e)
+                {
+                    throw new DocumentNotFoundException($"Cannot find the document '{documentRef.DocumentName}'", e);
+                }
+            }).Unwrap();
+        }
+
+        private async Task EnsureFolderAsync()
+        {
+            if (localFolder == null)
+            {
+                localFolder = await ApplicationData.Current.LocalFolder.GetOrCreateFolderAsync(subfolderName);
             }
-
-            return documentReferences.OrderByDescending(x => x.LastUpdate).ToList();
-        }
-
-        private async Task<Document> LoadInternalAsync(DocumentRef documentRef)
-        {
-            StorageFile file = await GetFileAsync(documentRef);
-
-            return await JsonDocumentSerializer.DeserializeFromFileAsync(file);
-        }
-
-        private async Task<DocumentRef> CreateInternalAsync(string name, JsonHistory history)
-        {
-            DocumentRef documentRef = new DocumentRef(name, DateTimeOffset.Now);
-
-            StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.GenerateUniqueName);
-
-            await JsonDocumentSerializer.SerializeToFileAsync(file, history);
-
-            return documentRef.Rename(file.DisplayName);
-        }
-
-        private async Task RenameInternalAsync(DocumentRef documentRef, string newName)
-        {
-            StorageFile file = await GetFileAsync(documentRef);
-
-            await file.RenameAsync($"{newName}{JsonDocumentSerializer.FileExtension.Extension}", NameCollisionOption.GenerateUniqueName);
-            await file.GetBasicPropertiesAsync();
-
-            documentRef.Updated().Rename(file.DisplayName);
-        }
-
-        private async Task StoreInternalAsync(DocumentRef documentRef, JsonHistory history)
-        {
-            StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.ReplaceExisting);
-
-            await JsonDocumentSerializer.SerializeToFileAsync(file, history);
-
-            documentRef.Updated();
-        }
-
-        private async Task DeleteInternalAsync(DocumentRef documentRef)
-        {
-            StorageFile file = await GetFileAsync(documentRef);
-
-            await file.DeleteAsync();
         }
 
         private async Task<StorageFile> CreateFileAsync(DocumentRef documentRef, CreationCollisionOption options)
@@ -165,21 +190,6 @@ namespace Hercules.Model.Storing.Json
             string fileName = $"{documentRef.DocumentName}{JsonDocumentSerializer.FileExtension.Extension}";
 
             return await localFolder.GetFileAsync(fileName);
-        }
-
-        private async Task ClearInternalAsync()
-        {
-            await EnsureFolderAsync();
-
-            await localFolder.DeleteAsync();
-        }
-
-        private async Task EnsureFolderAsync()
-        {
-            if (localFolder == null)
-            {
-                localFolder = await ApplicationData.Current.LocalFolder.GetOrCreateFolderAsync(subfolderName);
-            }
         }
     }
 }

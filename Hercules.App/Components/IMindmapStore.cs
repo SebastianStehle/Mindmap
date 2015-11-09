@@ -17,21 +17,25 @@ namespace Hercules.App.Components
     {
         event EventHandler<DocumentLoadedEventArgs> DocumentLoaded;
 
-        ObservableCollection<IMindmapRef> AllMindmaps { get; }
+        ObservableCollection<MindmapRef> AllMindmaps { get; }
 
         Document LoadedDocument { get; }
 
-        IMindmapRef LoadedMindmap { get; }
+        MindmapRef LoadedMindmap { get; }
+
+        Task CreateAsync(string name);
 
         Task SaveAsync();
 
-        Task LoadAsync(IMindmapRef mindmap);
+        Task SaveAsync(MindmapRef mindmap, Document document);
+
+        Task LoadAsync(MindmapRef mindmap);
 
         Task LoadAllAsync();
 
-        Task DeleteAsync(IMindmapRef mindmap);
+        Task RenameAsync(MindmapRef mindmap, string newName);
 
-        Task CreateAsync(string name);
+        Task DeleteAsync(MindmapRef mindmap);
 
         Task AddAsync(string name, Document document);
     }

@@ -98,7 +98,6 @@ namespace Hercules.App.Controls
                         targetNode.MoveTransactional(target.Parent, target.Index, target.NodeSide);
                     }
                 }
-
             }
             finally
             {

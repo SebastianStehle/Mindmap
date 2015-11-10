@@ -89,7 +89,7 @@ namespace Hercules.App.Controls
         {
             try
             {
-                if ((initialPosition - movingNode.Position).LengthSquared() > 100)
+                if (movingNode != null && (initialPosition - movingNode.Position).LengthSquared() > 100)
                 {
                     AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.Bounds);
 

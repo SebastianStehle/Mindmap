@@ -20,7 +20,7 @@ namespace Hercules.Model
         {
             side = (NodeSide)properties["NodeSide"].ToInt32(CultureInfo.InvariantCulture);
 
-            index = properties["Index"].ToNullableInt32(CultureInfo.InvariantCulture);
+            index = properties["key"].ToNullableInt32(CultureInfo.InvariantCulture);
         }
 
         public InsertChildCommand(NodeBase parent, int? index, NodeSide side)
@@ -38,7 +38,7 @@ namespace Hercules.Model
 
         public override void Save(PropertiesBag properties)
         {
-            properties.Set("Index", index);
+            properties.Set("key", index);
             properties.Set("NodeSide", (int)side);
 
             base.Save(properties);

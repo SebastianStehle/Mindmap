@@ -14,9 +14,9 @@ using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
 
-namespace Hercules.Win2D.Rendering.Themes.ModernPastel
+namespace Hercules.Win2D.Rendering.Geometries
 {
-    public abstract class ModernPastelRenderNode : Win2DRenderNode
+    public abstract class RenderNodeBase : Win2DRenderNode
     {
         protected static readonly Color PathColor = Color.FromArgb(255, 50, 50, 50);
         protected static readonly Vector2 ImageSizeLarge = new Vector2(64, 64);
@@ -31,7 +31,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             get { return button; }
         }
 
-        protected ModernPastelRenderNode(NodeBase node, Win2DRenderer renderer)
+        protected RenderNodeBase(NodeBase node, Win2DRenderer renderer)
             : base(node, renderer)
         {
             button = new ExpandButton(node);
@@ -92,6 +92,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             if (hullGeometry != null)
             {
                 session.DrawGeometry(hullGeometry, Resources.Brush(color.Normal, 1.0f), 1f);
+
                 session.FillGeometry(hullGeometry, Resources.Brush(color.Lighter, 0.5f));
             }
         }

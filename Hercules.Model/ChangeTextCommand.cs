@@ -11,6 +11,7 @@ namespace Hercules.Model
     {
         private readonly string newText;
         private readonly bool disableSelection;
+
         private string oldText;
 
         public ChangeTextCommand(PropertiesBag properties, Document document)

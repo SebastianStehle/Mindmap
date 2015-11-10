@@ -29,13 +29,15 @@ namespace Hercules.App.Modules.Editor.Views
 
             if (selectedNode != null)
             {
-                if (selectedNode.IconKey == null)
+                if (selectedNode.Icon == null)
                 {
                     IconsGrid.SelectedIndex = -1;
                 }
                 else
                 {
-                    IconsGrid.SelectedItem = selectedNode.IconKey;
+                    KeyIcon integratedIcon = (KeyIcon)selectedNode.Icon;
+
+                    IconsGrid.SelectedItem = integratedIcon.Key;
                 }
             }
 
@@ -46,7 +48,7 @@ namespace Hercules.App.Modules.Editor.Views
         {
             string selected = IconsGrid.SelectedItem as string;
 
-            Change(selected);
+            Change(new KeyIcon(selected));
         }
 
         private void RemoveIconButton_Click(object sender, RoutedEventArgs e)
@@ -54,20 +56,20 @@ namespace Hercules.App.Modules.Editor.Views
             Change(null);
         }
 
-        private void Change(string selected)
+        private void Change(INodeIcon selected)
         {
             NodeBase selectedNode = Document?.SelectedNode;
 
             if (selectedNode != null)
             {
-                if (selected != selectedNode.IconKey)
+                if (!ReferenceEquals(selected, selectedNode.Icon) || (selected != null && selectedNode.Icon != null && !selected.Equals(selectedNode.Icon)))
                 {
-                    if (hasChange && Document.UndoRedoManager.IsLastCommand<ChangeIconKeyCommand>(x => x.Node.Id == selectedNode.Id))
+                    if (hasChange && Document.UndoRedoManager.IsLastCommand<ChangeIconCommand>(x => x.Node.Id == selectedNode.Id))
                     {
                         Document.UndoRedoManager.Revert();
                     }
 
-                    if (selected != selectedNode.IconKey)
+                    if (!ReferenceEquals(selected, selectedNode.Icon) || (selected != null && selectedNode.Icon != null && !selected.Equals(selectedNode.Icon)))
                     {
                         selectedNode.ChangeIconKeyTransactional(selected);
 

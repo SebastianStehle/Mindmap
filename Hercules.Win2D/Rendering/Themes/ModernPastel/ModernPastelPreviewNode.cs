@@ -10,6 +10,7 @@ using System;
 using System.Numerics;
 using Hercules.Model;
 using Hercules.Model.Rendering;
+using Hercules.Win2D.Rendering.Geometries;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
@@ -17,7 +18,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 {
-    public sealed class ModernPastelPreviewNode : ModernPastelRenderNode
+    public sealed class ModernPastelPreviewNode : RenderNodeBase
     {
         private static readonly Vector2 Size = new Vector2(100, 16);
         private CanvasGeometry pathGeometry;

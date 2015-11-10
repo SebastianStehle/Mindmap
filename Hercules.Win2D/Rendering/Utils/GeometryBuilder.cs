@@ -36,7 +36,7 @@ namespace Hercules.Win2D.Rendering.Utils
             {
                 IList<Rect2> childBounds =
                     node.AllChildren()
-                        .Select(x => (Win2DRenderNode)scene.FindRenderNode(x)).Union(new Win2DRenderNode[] { renderNode }).Where(x => x.IsVisible)
+                        .Select(x => (Win2DRenderNode)scene.FindRenderNode(x)).Union(new[] { renderNode }).Where(x => x.IsVisible)
                         .Select(x => Rect2.Inflate(new Rect2(x.TargetPosition, x.RenderSize), new Vector2(Padding, Padding)))
                         .ToList();
 

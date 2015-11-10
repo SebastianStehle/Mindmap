@@ -1,17 +1,15 @@
 ﻿// ==========================================================================
-// IColor.cs
+// LegacyNames.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
-using System;
-
-namespace Hercules.Model
+namespace Hercules.Model.Storing.Json
 {
-    public interface IColor : IEquatable<IColor>
+    public static class LegacyNames
     {
-        void Save(PropertiesBag properties);
+        public const string ChangeIcon = "Hercules.Model.ChangeIconKeyCommand, Hercules.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null";
     }
 }

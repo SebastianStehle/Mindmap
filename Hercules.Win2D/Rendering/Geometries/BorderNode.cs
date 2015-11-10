@@ -15,9 +15,9 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
-namespace Hercules.Win2D.Rendering.Themes.ModernPastel
+namespace Hercules.Win2D.Rendering.Geometries
 {
-    public sealed class ModernPastelLevel2Node : ModernPastelRenderNode
+    public sealed class BorderNode : RenderNodeBase
     {
         private const float MinHeight = 40;
         private const float VerticalOffset = 15;
@@ -42,7 +42,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             get { return new Vector2(0, -VerticalOffset); }
         }
 
-        public ModernPastelLevel2Node(NodeBase node, Win2DRenderer renderer)
+        public BorderNode(NodeBase node, Win2DRenderer renderer)
             : base(node, renderer)
         {
             textRenderer = new Win2DTextRenderer(node) { FontSize = 14, MinWidth = 60 };
@@ -67,7 +67,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 
             Vector2 size = textRenderer.RenderSize + (2 * ContentPadding);
 
-            if (!string.IsNullOrWhiteSpace(Node.IconKey))
+            if (Node.Icon != null)
             {
                 if (Node.IconSize == IconSize.Small)
                 {
@@ -128,9 +128,9 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 
             session.DrawLine(left, right, lineBrush, 2, StrokeStyle);
 
-            if (!string.IsNullOrWhiteSpace(Node.IconKey))
+            if (Node.Icon != null)
             {
-                ICanvasImage image = Resources.Image(Node.IconKey);
+                ICanvasImage image = Resources.Image(Node.Icon);
 
                 if (image != null)
                 {
@@ -171,7 +171,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 
         protected override Win2DRenderNode CloneInternal()
         {
-            return new ModernPastelLevel2Node(Node, (ModernPastelRenderer)Renderer);
+            return new BorderNode(Node, Renderer);
         }
     }
 }

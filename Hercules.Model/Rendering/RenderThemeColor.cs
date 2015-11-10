@@ -42,7 +42,7 @@ namespace Hercules.Model.Rendering
             this.lighter = lighter;
         }
 
-        public LayoutThemeColor(CustomColor color)
+        public LayoutThemeColor(ValueColor color)
             : this(color.Color)
         {
         }

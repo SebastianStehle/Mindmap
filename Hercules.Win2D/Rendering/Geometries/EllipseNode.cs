@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// ModernPastelLevel1Node.cs
+// ModernPastelRootNode.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -10,32 +10,28 @@ using System;
 using System.Numerics;
 using Hercules.Model;
 using Hercules.Model.Rendering;
-using Hercules.Model.Utils;
-using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
-using Microsoft.Graphics.Canvas.Geometry;
 
-namespace Hercules.Win2D.Rendering.Themes.ModernPastel
+namespace Hercules.Win2D.Rendering.Geometries
 {
-    public sealed class ModernPastelLevel1Node : ModernPastelRenderNode
+    public class EllipseNode : RenderNodeBase
     {
-        private const float MinHeight = 40;
+        private const float MinHeight = 50;
         private static readonly Vector2 ContentPadding = new Vector2(15, 5);
         private static readonly Vector2 SelectionMargin = new Vector2(-5, -5);
         private readonly Win2DTextRenderer textRenderer;
         private float textOffset;
-        private CanvasGeometry pathGeometry;
 
         public override Win2DTextRenderer TextRenderer
         {
             get { return textRenderer; }
         }
 
-        public ModernPastelLevel1Node(NodeBase node, Win2DRenderer renderer)
+        public EllipseNode(NodeBase node, Win2DRenderer renderer)
             : base(node, renderer)
         {
-            textRenderer = new Win2DTextRenderer(node) { FontSize = 16, MinWidth = 50 };
+            textRenderer = new Win2DTextRenderer(node) { FontSize = 20, MinWidth = 80 };
         }
 
         protected override void ArrangeInternal(CanvasDrawingSession session)
@@ -57,15 +53,15 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 
             Vector2 size = textRenderer.RenderSize + (2 * ContentPadding);
 
-            if (!string.IsNullOrWhiteSpace(Node.IconKey))
+            if (Node.Icon != null)
             {
                 if (Node.IconSize == IconSize.Small)
                 {
-                    textOffset = ImageSizeSmall.X + ImageMargin;
+                    textOffset = ImageSizeSmall.X + (ImageMargin * 2);
                 }
                 else
                 {
-                    textOffset = ImageSizeLarge.X + ImageMargin;
+                    textOffset = ImageSizeLarge.X + (ImageMargin * 2);
                 }
             }
             else
@@ -74,32 +70,9 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             }
 
             size.X += textOffset;
-            size.Y = Math.Max(size.Y, MinHeight);
+            size.Y = Math.Max(Math.Max(size.Y, size.X / 3f), MinHeight);
 
             return size;
-        }
-
-        public override void ClearResources()
-        {
-            base.ClearResources();
-
-            ClearPath();
-        }
-
-        private void ClearPath()
-        {
-            if (pathGeometry != null)
-            {
-                pathGeometry.Dispose();
-                pathGeometry = null;
-            }
-        }
-
-        public override void ComputePath(CanvasDrawingSession session)
-        {
-            ClearPath();
-
-            pathGeometry = GeometryBuilder.ComputeFilledPath(this, Parent, session);
         }
 
         protected override void RenderInternal(CanvasDrawingSession session, LayoutThemeColor color, bool renderControls)
@@ -111,18 +84,30 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
                     Resources.ThemeLightBrush(color) :
                     Resources.ThemeNormalBrush(color);
 
-            session.FillRoundedRectangle(Bounds, 10, 10, backgroundBrush);
-            session.DrawRoundedRectangle(Bounds, 10, 10, borderBrush);
+            float radiusX = 0.5f * RenderSize.X;
+            float radiusY = 0.5f * RenderSize.Y;
 
-            if (!string.IsNullOrWhiteSpace(Node.IconKey))
+            session.FillEllipse(
+                Bounds.Center,
+                radiusX,
+                radiusY,
+                backgroundBrush);
+
+            session.DrawEllipse(
+                Bounds.Center,
+                radiusX,
+                radiusY,
+                borderBrush);
+
+            if (Node.Icon != null)
             {
-                ICanvasImage image = Resources.Image(Node.IconKey);
+                ICanvasImage image = Resources.Image(Node.Icon);
 
                 if (image != null)
                 {
                     Vector2 size = Node.IconSize == IconSize.Large ? ImageSizeLarge : ImageSizeSmall;
 
-                    float x = textRenderer.RenderPosition.X - textOffset;
+                    float x = textRenderer.RenderPosition.X - textOffset + ImageMargin;
                     float y = textRenderer.RenderPosition.Y + ((textRenderer.RenderSize.Y - size.Y) * 0.5f);
 
                     session.DrawImage(image, x, y);
@@ -135,31 +120,23 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             {
                 if (Node.IsSelected)
                 {
-                    Rect2 rect = Rect2.Deflate(Bounds, SelectionMargin);
+                    radiusX -= SelectionMargin.X;
+                    radiusY -= SelectionMargin.Y;
 
-                    session.DrawRoundedRectangle(rect, 14, 14, borderBrush, 2f, SelectionStrokeStyle);
+                    session.DrawEllipse(
+                        Bounds.Center,
+                        radiusX,
+                        radiusY,
+                        borderBrush, 2f, SelectionStrokeStyle);
                 }
 
-                if (Node.HasChildren)
-                {
-                    Button.Render(session);
-                }
-            }
-        }
-
-        protected override void RenderPathInternal(CanvasDrawingSession session)
-        {
-            if (pathGeometry != null)
-            {
-                ICanvasBrush brush = Resources.Brush(PathColor, 1);
-
-                session.FillGeometry(pathGeometry, brush);
+                Button.Render(session);
             }
         }
 
         protected override Win2DRenderNode CloneInternal()
         {
-            return new ModernPastelLevel1Node(Node, (ModernPastelRenderer)Renderer);
+            return new EllipseNode(Node, Renderer);
         }
     }
 }

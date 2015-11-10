@@ -123,7 +123,7 @@ namespace Hercules.Model
             }
         }
 
-        public static void ChangeColorTransactional(this NodeBase node, IColor color)
+        public static void ChangeColorTransactional(this NodeBase node, INodeColor color)
         {
             if (node?.Document != null)
             {
@@ -136,7 +136,7 @@ namespace Hercules.Model
             }
         }
 
-        public static void ChangeIconKeyTransactional(this NodeBase node, string icon)
+        public static void ChangeIconKeyTransactional(this NodeBase node, INodeIcon icon)
         {
             if (node?.Document != null)
             {
@@ -144,7 +144,7 @@ namespace Hercules.Model
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
-                    commands.Apply(new ChangeIconKeyCommand(node, icon));
+                    commands.Apply(new ChangeIconCommand(node, icon));
                 });
             }
         }

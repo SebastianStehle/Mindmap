@@ -163,6 +163,11 @@ namespace Hercules.App.Components.Implementations
 
             return DoAsync(mindmap, async () =>
             {
+                if (LoadedMindmap != null && LoadedDocument != null)
+                {
+                    await LoadedMindmap.SaveAsync(LoadedDocument);
+                }
+
                 LoadedMindmap = mindmap;
                 LoadedDocument = await documentStore.LoadAsync(mindmap.DocumentRef);
 

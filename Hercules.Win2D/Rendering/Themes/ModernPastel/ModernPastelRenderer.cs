@@ -9,6 +9,7 @@
 using System;
 using GP.Windows.UI.Controls;
 using Hercules.Model;
+using Hercules.Win2D.Rendering.Geometries;
 
 namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 {
@@ -59,15 +60,15 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
         {
             if (node is RootNode)
             {
-                return new ModernPastelRootNode(node, this);
+                return new EllipseNode(node, this);
             }
             else if (node.Parent is RootNode)
             {
-                return new ModernPastelLevel1Node(node, this);
+                return new RoundedRectangleNode(node, this);
             }
             else
             {
-                return new ModernPastelLevel2Node(node, this);
+                return new RectangleNode(node, this);
             }
         }
     }

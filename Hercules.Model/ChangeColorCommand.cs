@@ -9,16 +9,17 @@ namespace Hercules.Model
 {
     public sealed class ChangeColorCommand : CommandBase
     {
-        private readonly IColor newColor;
-        private IColor oldColor;
+        private readonly INodeColor newColor;
+
+        private INodeColor oldColor;
 
         public ChangeColorCommand(PropertiesBag properties, Document document)
             : base(properties, document)
         {
-            newColor = ThemeColor.TryParse(properties) ?? CustomColor.TryParse(properties);
+            newColor = ThemeColor.TryParse(properties) ?? ValueColor.TryParse(properties);
         }
 
-        public ChangeColorCommand(NodeBase node, IColor newColor)
+        public ChangeColorCommand(NodeBase node, INodeColor newColor)
             : base(node)
         {
             this.newColor = newColor;

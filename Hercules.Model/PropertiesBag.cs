@@ -61,5 +61,19 @@ namespace Hercules.Model
 
             return internalDictionary.Remove(propertyName);
         }
+
+        public void Rename(string oldPropertyName, string newPropertyName)
+        {
+            Guard.NotNullOrEmpty(oldPropertyName, nameof(oldPropertyName));
+            Guard.NotNullOrEmpty(newPropertyName, nameof(newPropertyName));
+
+            PropertyValue property;
+
+            if (internalDictionary.TryGetValue(oldPropertyName, out property))
+            {
+                internalDictionary[newPropertyName] = property;
+                internalDictionary.Remove(oldPropertyName);
+            }
+        }
     }
 }

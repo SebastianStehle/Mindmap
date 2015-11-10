@@ -107,14 +107,16 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Rendering\Geometries\RenderNodeBase.cs" />
+    <Compile Include="Rendering\Geometries\RoundedRectangleNode.cs" />
+    <Compile Include="Rendering\Geometries\RectangleNode.cs" />
+    <Compile Include="Rendering\Geometries\RectangleNodeBase.cs" />
+    <Compile Include="Rendering\Geometries\BorderNode.cs" />
+    <Compile Include="Rendering\Geometries\EllipseNode.cs" />
     <Compile Include="Rendering\IWin2DRendererProvider.cs" />
-    <Compile Include="Rendering\Themes\ModernPastel\ModernPastelLevel1Node.cs" />
-    <Compile Include="Rendering\Themes\ModernPastel\ModernPastelLevel2Node.cs" />
     <Compile Include="Rendering\Themes\ModernPastel\ModernPastelPreviewNode.cs" />
     <Compile Include="Rendering\Themes\ModernPastel\ModernPastelRenderer.cs" />
     <Compile Include="Rendering\Themes\ModernPastel\ModernPastelRendererProvider.cs" />
-    <Compile Include="Rendering\Themes\ModernPastel\ModernPastelRenderNode.cs" />
-    <Compile Include="Rendering\Themes\ModernPastel\ModernPastelRootNode.cs" />
     <Compile Include="Rendering\Utils\ExpandButton.cs" />
     <Compile Include="Rendering\Utils\GeometryBuilder.cs" />
     <Compile Include="Rendering\Utils\Printer.cs" />

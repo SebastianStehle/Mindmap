@@ -38,22 +38,25 @@ namespace Hercules.Model.Storing.Json
             this.subfolderName = subfolderName;
         }
 
-        public Task<IList<DocumentRef>> LoadAllAsync()
+        public Task<List<DocumentRef>> LoadAllAsync()
         {
-            return taskFactory.StartNew(LoadAllInternalAsync).Unwrap();
-        }
+            return taskFactory.StartNew(async () =>
+            {
+                await EnsureFolderAsync();
 
-        private async Task<IList<DocumentRef>> LoadAllInternalAsync()
-        {
-            await EnsureFolderAsync();
+                List<StorageFile> files = await localFolder.GetFilesAsync(JsonDocumentSerializer.FileExtension);
 
-            List<StorageFile> files = await localFolder.GetFilesAsync(JsonDocumentSerializer.FileExtension);
+                List<DocumentRef> result = new List<DocumentRef>();
 
-            List<Task<BasicProperties>> propertiesTasks = files.Select(file => file.GetBasicPropertiesAsync().AsTask()).ToList();
+                foreach (StorageFile file in files)
+                {
+                    BasicProperties properties = await file.GetBasicPropertiesAsync();
 
-            await Task.WhenAll(propertiesTasks);
+                    result.Add(new DocumentRef(file.DisplayName, properties.DateModified));
+                }
 
-            return propertiesTasks.Select((t, i) => new DocumentRef(files[i].DisplayName, t.Result.DateModified)).OrderByDescending(x => x.LastUpdate).ToList();
+                return result.OrderByDescending(x => x.LastUpdate).ToList();
+            }).Unwrap();
         }
 
         public Task<Document> LoadAsync(DocumentRef documentRef)
@@ -119,7 +122,7 @@ namespace Hercules.Model.Storing.Json
             }).Unwrap();
         }
 
-        public Task<bool> DeleteAsync(DocumentRef documentRef)
+        public Task DeleteAsync(DocumentRef documentRef)
         {
             Guard.NotNull(documentRef, nameof(documentRef));
 

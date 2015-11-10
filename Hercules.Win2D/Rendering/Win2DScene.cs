@@ -49,12 +49,12 @@ namespace Hercules.Win2D.Rendering
 
         public ICollection<Win2DRenderNode> NonDiagramNodes
         {
-            get { return new Win2DRenderNode[] { previewNode }.Union(customNodes).ToList(); }
+            get { return new[] { previewNode }.Union(customNodes).ToList(); }
         }
 
         public ICollection<Win2DRenderNode> AllNodes
         {
-            get { return new Win2DRenderNode[] { previewNode }.Union(renderNodes.Values).Union(customNodes).ToList(); }
+            get { return new[] { previewNode }.Union(renderNodes.Values).Union(customNodes).ToList(); }
         }
 
         internal Win2DScene(Document document, Win2DRenderNode previewNode, Func<NodeBase, Win2DRenderNode> nodeFactory)

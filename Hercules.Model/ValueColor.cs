@@ -12,9 +12,9 @@ using GP.Windows;
 
 namespace Hercules.Model
 {
-    public sealed class CustomColor : IColor, IEquatable<CustomColor>
+    public sealed class ValueColor : INodeColor, IEquatable<ValueColor>
     {
-        private const string PropertyKey = "ColorValue";
+        private const string PropertyKey = "Value";
         private readonly int color;
 
         public int Color
@@ -22,7 +22,7 @@ namespace Hercules.Model
             get { return color; }
         }
 
-        public CustomColor(int color)
+        public ValueColor(int color)
         {
             Guard.GreaterEquals(color, 0, nameof(color));
 
@@ -36,24 +36,24 @@ namespace Hercules.Model
             properties.Set(PropertyKey, color);
         }
 
-        public static IColor TryParse(PropertiesBag properties)
+        public static INodeColor TryParse(PropertiesBag properties)
         {
             Guard.NotNull(properties, nameof(properties));
 
-            return properties.Contains(PropertyKey) ? new CustomColor(properties[PropertyKey].ToInt32(CultureInfo.CurrentCulture)) : null;
+            return properties.Contains(PropertyKey) ? new ValueColor(properties[PropertyKey].ToInt32(CultureInfo.CurrentCulture)) : null;
         }
 
         public override bool Equals(object obj)
         {
-            return Equals(obj as CustomColor);
+            return Equals(obj as ValueColor);
         }
 
-        public bool Equals(IColor other)
+        public bool Equals(INodeColor other)
         {
-            return Equals(other as CustomColor);
+            return Equals(other as ValueColor);
         }
 
-        public bool Equals(CustomColor other)
+        public bool Equals(ValueColor other)
         {
             return other != null && other.color == color;
         }

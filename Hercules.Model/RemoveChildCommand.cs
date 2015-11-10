@@ -10,6 +10,7 @@ namespace Hercules.Model
     public sealed class RemoveChildCommand : ChildNodeCommandBase
     {
         private NodeSide oldSide;
+
         private int oldIndex;
 
         public RemoveChildCommand(NodeBase node, Node child)

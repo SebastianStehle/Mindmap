@@ -13,15 +13,15 @@ namespace Hercules.Model.Storing
 {
     public interface IDocumentStore
     {
-        Task<IList<DocumentRef>> LoadAllAsync();
+        Task<List<DocumentRef>> LoadAllAsync();
 
-        Task<Document> LoadAsync(DocumentRef documentRef);
-
-        Task<bool> DeleteAsync(DocumentRef documentRef);
+        Task DeleteAsync(DocumentRef documentRef);
 
         Task RenameAsync(DocumentRef documentRef, string newName);
 
         Task StoreAsync(DocumentRef documentRef, Document document);
+
+        Task<Document> LoadAsync(DocumentRef documentRef);
 
         Task<DocumentRef> CreateAsync(string name, Document document);
     }

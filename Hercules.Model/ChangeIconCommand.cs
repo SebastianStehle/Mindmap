@@ -7,41 +7,42 @@
 // ==========================================================================
 namespace Hercules.Model
 {
-    public sealed class ChangeIconKeyCommand : CommandBase
+    public sealed class ChangeIconCommand : CommandBase
     {
-        private readonly string newIconKey;
-        private string oldIconKey;
+        private readonly INodeIcon newIcon;
 
-        public ChangeIconKeyCommand(PropertiesBag properties, Document document)
+        private INodeIcon oldIcon;
+
+        public ChangeIconCommand(PropertiesBag properties, Document document)
             : base(properties, document)
         {
-            newIconKey = properties["IconKey"].ToString();
+            newIcon = KeyIcon.TryParse(properties) ?? AttachmentIcon.TryParse(properties);
         }
 
-        public ChangeIconKeyCommand(NodeBase nodeId, string newIconKey)
+        public ChangeIconCommand(NodeBase nodeId, INodeIcon newIcon)
             : base(nodeId)
         {
-            this.newIconKey = newIconKey;
+            this.newIcon = newIcon;
         }
 
         public override void Save(PropertiesBag properties)
         {
-            properties.Set("IconKey", newIconKey);
+            newIcon.Save(properties);
 
             base.Save(properties);
         }
 
         protected override void Execute(bool isRedo)
         {
-            oldIconKey = Node.IconKey;
+            oldIcon = Node.Icon;
 
-            Node.ChangeIconKey(newIconKey);
+            Node.ChangeIcon(newIcon);
             Node.Select();
         }
 
         protected override void Revert()
         {
-            Node.ChangeIconKey(oldIconKey);
+            Node.ChangeIcon(oldIcon);
             Node.Select();
         }
     }

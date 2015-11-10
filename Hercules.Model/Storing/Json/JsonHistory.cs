@@ -48,7 +48,7 @@ namespace Hercules.Model.Storing.Json
 
             foreach (CommandBase command in transaction.Commands)
             {
-                JsonHistoryStepCommand jsonCommand = new JsonHistoryStepCommand { CommandType = command.GetType().AssemblyQualifiedName };
+                JsonHistoryStepCommand jsonCommand = new JsonHistoryStepCommand { CommandType = CommandFactory.ToTypeName(command) };
 
                 command.Save(jsonCommand.Properties);
 
@@ -68,9 +68,7 @@ namespace Hercules.Model.Storing.Json
 
                 foreach (JsonHistoryStepCommand jsonCommand in step.Commands)
                 {
-                    Type commandType = Type.GetType(jsonCommand.CommandType);
-
-                    CommandBase command = (CommandBase)Activator.CreateInstance(commandType, jsonCommand.Properties, document);
+                    CommandBase command = CommandFactory.CreateCommand(jsonCommand.CommandType, jsonCommand.Properties, document);
 
                     document.Apply(command);
                 }

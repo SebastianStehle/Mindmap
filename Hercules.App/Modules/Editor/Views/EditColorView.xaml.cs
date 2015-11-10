@@ -44,7 +44,7 @@ namespace Hercules.App.Modules.Editor.Views
                 }
                 else
                 {
-                    ColorsPicker.SelectedColor = ColorsHelper.ConvertToColor(((CustomColor)selectedNode.Color).Color);
+                    ColorsPicker.SelectedColor = ColorsHelper.ConvertToColor(((ValueColor)selectedNode.Color).Color);
 
                     ColorsPivot.SelectedIndex = 1;
                 }
@@ -80,11 +80,11 @@ namespace Hercules.App.Modules.Editor.Views
             {
                 Color selected = ColorsPicker.SelectedColor;
 
-                Change(new CustomColor(ColorsHelper.ConvertToInt(selected)));
+                Change(new ValueColor(ColorsHelper.ConvertToInt(selected)));
             }
         }
 
-        private void Change(IColor newColor)
+        private void Change(INodeColor newColor)
         {
             NodeBase selectedNode = Document?.SelectedNode;
 

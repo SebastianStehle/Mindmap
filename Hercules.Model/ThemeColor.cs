@@ -12,9 +12,9 @@ using GP.Windows;
 
 namespace Hercules.Model
 {
-    public sealed class ThemeColor : IColor, IEquatable<ThemeColor>
+    public sealed class ThemeColor : INodeColor, IEquatable<ThemeColor>
     {
-        private const string PropertyKey = "Color";
+        private const string PropertyKey = "Index";
         private readonly int index;
 
         public int Index
@@ -36,7 +36,7 @@ namespace Hercules.Model
             properties.Set(PropertyKey, index);
         }
 
-        public static IColor TryParse(PropertiesBag properties)
+        public static INodeColor TryParse(PropertiesBag properties)
         {
             Guard.NotNull(properties, nameof(properties));
 
@@ -48,7 +48,7 @@ namespace Hercules.Model
             return Equals(obj as ThemeColor);
         }
 
-        public bool Equals(IColor other)
+        public bool Equals(INodeColor other)
         {
             return Equals(other as ThemeColor);
         }

@@ -17,9 +17,9 @@ namespace Hercules.Model
         private NodeBase parent;
         private IconSize iconSize;
         private NodeSide nodeSide;
-        private IColor color = new ThemeColor(0);
+        private INodeColor color = new ThemeColor(0);
+        private INodeIcon icon;
         private string text;
-        private string iconKey;
         private bool isShowingHull;
         private bool isCollapsed;
         private bool isSelected;
@@ -51,12 +51,12 @@ namespace Hercules.Model
                 if (text != value)
                 {
                     text = value;
-                    OnPropertyChanged("Text");
+                    OnPropertyChanged(nameof(Text));
                 }
             }
         }
 
-        public IColor Color
+        public INodeColor Color
         {
             get
             {
@@ -67,7 +67,7 @@ namespace Hercules.Model
                 if (!Equals(color, value))
                 {
                     color = value;
-                    OnPropertyChanged("Color");
+                    OnPropertyChanged(nameof(Color));
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace Hercules.Model
                 if (iconSize != value)
                 {
                     iconSize = value;
-                    OnPropertyChanged("IconSize");
+                    OnPropertyChanged(nameof(iconSize));
                 }
             }
         }
@@ -99,23 +99,23 @@ namespace Hercules.Model
                 if (nodeSide != value)
                 {
                     nodeSide = value;
-                    OnPropertyChanged("NodeSide");
+                    OnPropertyChanged(nameof(NodeSide));
                 }
             }
         }
 
-        public string IconKey
+        public INodeIcon Icon
         {
             get
             {
-                return iconKey;
+                return icon;
             }
             protected set
             {
-                if (iconKey != value)
+                if (icon != value)
                 {
-                    iconKey = value;
-                    OnPropertyChanged("IconKey");
+                    icon = value;
+                    OnPropertyChanged(nameof(Icon));
                 }
             }
         }
@@ -131,7 +131,7 @@ namespace Hercules.Model
                 if (isCollapsed != value)
                 {
                     isCollapsed = value;
-                    OnPropertyChanged("IsCollapsed");
+                    OnPropertyChanged(nameof(IsCollapsed));
                 }
             }
         }
@@ -147,7 +147,7 @@ namespace Hercules.Model
                 if (isSelected != value)
                 {
                     isSelected = value;
-                    OnPropertyChanged("IsSelected");
+                    OnPropertyChanged(nameof(isSelected));
                 }
             }
         }
@@ -163,7 +163,7 @@ namespace Hercules.Model
                 if (isShowingHull != value)
                 {
                     isShowingHull = value;
-                    OnPropertyChanged("IsShowingHull");
+                    OnPropertyChanged(nameof(IsShowingHull));
                 }
             }
         }
@@ -188,14 +188,14 @@ namespace Hercules.Model
             IsShowingHull = newIsShowingHull;
         }
 
-        internal void ChangeColor(IColor newColor)
+        internal void ChangeColor(INodeColor newColor)
         {
             Color = newColor;
         }
 
-        internal void ChangeIconKey(string newIconKey)
+        internal void ChangeIcon(INodeIcon newIcon)
         {
-            IconKey = newIconKey;
+            Icon = newIcon;
         }
 
         internal void ChangeIconSize(IconSize newIconSize)

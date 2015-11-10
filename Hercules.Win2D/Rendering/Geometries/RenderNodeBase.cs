@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// ModernPastelRenderNode.cs
+// RenderNodeBase.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle

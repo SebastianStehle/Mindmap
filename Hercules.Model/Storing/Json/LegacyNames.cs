@@ -5,7 +5,6 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
 namespace Hercules.Model.Storing.Json
 {
     public static class LegacyNames

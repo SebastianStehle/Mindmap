@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// ChangeIconKeyCommand.cs
+// ChangeIconCommand.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle

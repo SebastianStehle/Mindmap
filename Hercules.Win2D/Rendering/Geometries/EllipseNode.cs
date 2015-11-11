@@ -8,6 +8,7 @@
 
 using System;
 using System.Numerics;
+using Windows.Foundation;
 using Hercules.Model;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
@@ -109,7 +110,7 @@ namespace Hercules.Win2D.Rendering.Geometries
                     float x = textRenderer.RenderPosition.X - textOffset + ImageMargin;
                     float y = textRenderer.RenderPosition.Y + ((textRenderer.RenderSize.Y - size.Y) * 0.5f);
 
-                    session.DrawImage(image, x, y);
+                    session.DrawImage(image, new Rect(x, y, 32, 32), image.GetBounds(session));
                 }
             }
 

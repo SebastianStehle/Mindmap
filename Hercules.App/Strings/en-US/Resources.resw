@@ -425,4 +425,19 @@ I want to share my mindmap for you. You can download it here: {0}. The download 
   <data name="MindmapDeleted_Heading" xml:space="preserve">
     <value>Mindmap has been deleted.</value>
   </data>
+  <data name="Editor_Icons" xml:space="preserve">
+    <value>Icons</value>
+  </data>
+  <data name="Editor_IconsHint.Text" xml:space="preserve">
+    <value>Select a PNG or JPEG image. The maximum allowed size is 80x80 pixels).</value>
+  </data>
+  <data name="Editor_Image" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="LoadingIconFailed_Content" xml:space="preserve">
+    <value>The image is not valid or is too large (the maximum size is 80x80 pixels).</value>
+  </data>
+  <data name="LoadingIconFailed_Heading" xml:space="preserve">
+    <value>Invalid Image</value>
+  </data>
 </root>

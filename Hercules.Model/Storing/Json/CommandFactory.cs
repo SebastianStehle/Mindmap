@@ -60,7 +60,7 @@ namespace Hercules.Model.Storing.Json
 
             typeByName[name] = type;
 
-            if (nameByType.ContainsKey(type) || isDefaultName)
+            if (!nameByType.ContainsKey(type) || isDefaultName)
             {
                 nameByType[type] = name;
             }

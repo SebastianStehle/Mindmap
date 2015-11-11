@@ -29,6 +29,8 @@ namespace Hercules.App.Modules
 {
     public class ViewModelLocator
     {
+        public static IUnityContainer Container { get; set; }
+
         [Dependency]
         public EditorViewModel Editor { get; set; }
 
@@ -86,6 +88,8 @@ namespace Hercules.App.Modules
                     new PerResolveLifetimeManager());
 
                 unityContainer.BuildUp(this);
+
+                Container = unityContainer;
             }
         }
     }

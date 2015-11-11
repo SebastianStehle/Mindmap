@@ -20,7 +20,7 @@ namespace Hercules.Model.ExImport.Formats.XMind
 
             foreach (NodeBase node in document.Nodes)
             {
-                LayoutThemeColor color = renderer.FindColor(node);
+                IRenderColor color = renderer.FindColor(node);
 
                 if (color != null)
                 {

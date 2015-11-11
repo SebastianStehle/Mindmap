@@ -8,13 +8,8 @@
 
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
-using System.Threading.Tasks;
-using Windows.Storage;
-using Windows.Storage.Streams;
 using Windows.UI;
-using Windows.UI.Core;
 using GP.Windows;
 using GP.Windows.UI.Controls;
 using Hercules.Model;
@@ -27,38 +22,11 @@ namespace Hercules.Win2D.Rendering
     public sealed class Win2DResourceManager
     {
         private readonly Dictionary<Tuple<Color, float>, ICanvasBrush> cachedColors = new Dictionary<Tuple<Color, float>, ICanvasBrush>();
-        private readonly Dictionary<INodeIcon, ImageContainer> cachedImages = new Dictionary<INodeIcon, ImageContainer>();
-        private readonly List<LayoutThemeColor> colors = new List<LayoutThemeColor>();
+        private readonly Dictionary<INodeIcon, Win2DIcon> cachedIcons = new Dictionary<INodeIcon, Win2DIcon>();
+        private readonly List<Win2DColor> colors = new List<Win2DColor>();
         private readonly ICanvasControl canvas;
 
-        private sealed class ImageContainer
-        {
-            public CanvasBitmap Bitmap { get; private set; }
-
-            public ImageContainer(KeyIcon icon, ICanvasControl canvasControl)
-            {
-                LoadFile(icon, canvasControl.Device).ContinueWith(bitmap =>
-                {
-                    canvasControl.Dispatcher.RunAsync(CoreDispatcherPriority.High, canvasControl.Invalidate).AsTask();
-
-                    Bitmap = bitmap.Result;
-                });
-            }
-
-            private static async Task<CanvasBitmap> LoadFile(KeyIcon icon, ICanvasResourceCreator device)
-            {
-                string uri = string.Format(CultureInfo.InvariantCulture, "ms-appx://{0}", icon.Key);
-
-                StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
-
-                using (IRandomAccessStream stream = await file.OpenReadAsync())
-                {
-                    return await CanvasBitmap.LoadAsync(device, stream).AsTask();
-                }
-            }
-        }
-
-        public IReadOnlyList<LayoutThemeColor> Colors
+        public IReadOnlyList<IRenderColor> Colors
         {
             get
             {
@@ -75,7 +43,7 @@ namespace Hercules.Win2D.Rendering
 
         public void AddThemeColors(params int[] newColors)
         {
-            colors.AddRange(newColors.Select(x => new LayoutThemeColor(x)));
+            colors.AddRange(newColors.Select(x => new Win2DColor(x)));
         }
 
         public void ClearResources()
@@ -87,31 +55,22 @@ namespace Hercules.Win2D.Rendering
 
             cachedColors.Clear();
 
-            foreach (ImageContainer image in cachedImages.Values)
+            foreach (Win2DIcon icon in cachedIcons.Values)
             {
-                image.Bitmap?.Dispose();
+                icon.Dispose();
             }
 
-            cachedImages.Clear();
-        }
-
-        public LayoutThemeColor FindColor(NodeBase node)
-        {
-            Guard.NotNull(node, nameof(node));
-
-            ThemeColor themeColor = node.Color as ThemeColor;
-
-            return themeColor != null ? colors[themeColor.Index] : new LayoutThemeColor((ValueColor)node.Color);
+            cachedIcons.Clear();
         }
 
         public ICanvasBrush ThemeNormalBrush(int colorIndex)
         {
-            LayoutThemeColor color = colors[colorIndex];
+            IRenderColor color = colors[colorIndex];
 
             return ThemeNormalBrush(color);
         }
 
-        public ICanvasBrush ThemeNormalBrush(LayoutThemeColor color)
+        public ICanvasBrush ThemeNormalBrush(IRenderColor color)
         {
             Guard.NotNull(color, nameof(color));
 
@@ -120,12 +79,12 @@ namespace Hercules.Win2D.Rendering
 
         public ICanvasBrush ThemeDarkBrush(int colorIndex)
         {
-            LayoutThemeColor color = colors[colorIndex];
+            IRenderColor color = colors[colorIndex];
 
             return Brush(color.Darker, 1);
         }
 
-        public ICanvasBrush ThemeDarkBrush(LayoutThemeColor color)
+        public ICanvasBrush ThemeDarkBrush(IRenderColor color)
         {
             Guard.NotNull(color, nameof(color));
 
@@ -134,12 +93,12 @@ namespace Hercules.Win2D.Rendering
 
         public ICanvasBrush ThemeLightBrush(int colorIndex)
         {
-            LayoutThemeColor color = colors[colorIndex];
+            IRenderColor color = colors[colorIndex];
 
             return Brush(color.Lighter, 1);
         }
 
-        public ICanvasBrush ThemeLightBrush(LayoutThemeColor color)
+        public ICanvasBrush ThemeLightBrush(IRenderColor color)
         {
             Guard.NotNull(color, nameof(color));
 
@@ -156,9 +115,25 @@ namespace Hercules.Win2D.Rendering
             });
         }
 
-        public ICanvasImage Image(INodeIcon icon)
+        public ICanvasImage Image(NodeBase node)
         {
-            return cachedImages.GetOrCreateDefault(icon, () => new ImageContainer((KeyIcon)icon, canvas)).Bitmap;
+            Guard.NotNull(node, nameof(node));
+
+            return cachedIcons.GetOrCreateDefault(node.Icon, () => Win2DIcon.Create(node.Icon, canvas))?.Bitmap;
+        }
+
+        public Win2DIcon FindIcon(NodeBase node)
+        {
+            return cachedIcons.GetOrCreateDefault(node.Icon, () => Win2DIcon.Create(node.Icon, canvas));
+        }
+
+        public Win2DColor FindColor(NodeBase node)
+        {
+            Guard.NotNull(node, nameof(node));
+
+            ThemeColor themeColor = node.Color as ThemeColor;
+
+            return themeColor != null ? colors[themeColor.Index] : new Win2DColor((ValueColor)node.Color);
         }
     }
 }

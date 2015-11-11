@@ -258,9 +258,14 @@ namespace Hercules.Win2D.Rendering
             Invalidate();
         }
 
-        public LayoutThemeColor FindColor(NodeBase node)
+        public IRenderColor FindColor(NodeBase node)
         {
             return resources.FindColor(node);
+        }
+
+        public IRenderIcon FindIcon(NodeBase node)
+        {
+            return resources.FindIcon(node);
         }
 
         protected abstract Win2DRenderNode CreatePreviewNode();

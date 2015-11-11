@@ -154,6 +154,8 @@
     <Compile Include="INodeIcon.cs" />
     <Compile Include="KeyIcon.cs" />
     <Compile Include="IWritable.cs" />
+    <Compile Include="Rendering\IRenderColor.cs" />
+    <Compile Include="Rendering\IRenderIcon.cs" />
     <Compile Include="Storing\CommandNameAttribute.cs" />
     <Compile Include="Storing\DocumentNotFoundException.cs" />
     <Compile Include="Storing\Json\CommandFactory.cs" />
@@ -190,7 +192,6 @@
     <Compile Include="UndoRedoExtensions.cs" />
     <Compile Include="Utils\ConvexHull.cs" />
     <Compile Include="Utils\ResourceManager.cs" />
-    <Compile Include="Rendering\RenderThemeColor.cs" />
     <Compile Include="RootNode.cs" />
     <Compile Include="Storing\DocumentRef.cs" />
     <Compile Include="Storing\IDocumentStore.cs" />

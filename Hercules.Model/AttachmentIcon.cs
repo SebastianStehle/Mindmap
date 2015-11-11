@@ -14,24 +14,37 @@ namespace Hercules.Model
 {
     public sealed class AttachmentIcon : INodeIcon
     {
-        private const string PropertyKey = "Attachment";
+        private const string AttachmentKey = "Attachment";
+        private const string NameKey = "Attachment";
         private readonly string base64Content;
+        private readonly string name;
 
         public string Base64Content
         {
             get { return base64Content; }
         }
 
-        public AttachmentIcon(string base64Content)
+        public string Name
         {
+            get { return name; }
+        }
+
+        public AttachmentIcon(string base64Content, string name)
+        {
+            Guard.NotNullOrEmpty(name, nameof(name));
             Guard.NotNullOrEmpty(base64Content, nameof(base64Content));
 
             this.base64Content = base64Content;
+
+            this.name = name;
         }
 
-        public AttachmentIcon(Stream stream)
+        public AttachmentIcon(Stream stream, string name)
         {
+            Guard.NotNullOrEmpty(name, nameof(name));
             Guard.NotNull(stream, nameof(stream));
+
+            this.name = name;
 
             byte[] buffer = stream.ReadToEnd();
 
@@ -42,14 +55,14 @@ namespace Hercules.Model
         {
             Guard.NotNull(properties, nameof(properties));
 
-            properties.Set(PropertyKey, base64Content);
+            properties.Set(AttachmentKey, base64Content);
         }
 
         public static INodeIcon TryParse(PropertiesBag properties)
         {
             Guard.NotNull(properties, nameof(properties));
 
-            return properties.Contains(PropertyKey) ? new AttachmentIcon(properties[PropertyKey].ToString()) : null;
+            return properties.Contains(AttachmentKey) ? new AttachmentIcon(properties[AttachmentKey].ToString(), properties[NameKey].ToString()) : null;
         }
 
         public override bool Equals(object obj)

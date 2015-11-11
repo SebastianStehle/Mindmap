@@ -88,7 +88,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             }
         }
 
-        protected override void RenderInternal(CanvasDrawingSession session, LayoutThemeColor color, bool renderControls)
+        protected override void RenderInternal(CanvasDrawingSession session, Win2DColor color, bool renderControls)
         {
             if (Parent != null)
             {

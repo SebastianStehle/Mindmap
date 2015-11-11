@@ -87,7 +87,7 @@ namespace Hercules.Win2D.Rendering.Geometries
             hullGeometry = GeometryBuilder.ComputeHullGeometry(session, Scene, this);
         }
 
-        protected override void RenderHullInternal(CanvasDrawingSession session, LayoutThemeColor color)
+        protected override void RenderHullInternal(CanvasDrawingSession session, Win2DColor color)
         {
             if (hullGeometry != null)
             {

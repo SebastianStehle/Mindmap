@@ -48,7 +48,7 @@ namespace Hercules.App.Modules.Editor.Views
         {
             string selected = IconsGrid.SelectedItem as string;
 
-            Change(new KeyIcon(selected));
+            Change(selected != null ? new KeyIcon(selected) : null);
         }
 
         private void RemoveIconButton_Click(object sender, RoutedEventArgs e)

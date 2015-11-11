@@ -112,7 +112,7 @@ namespace Hercules.Win2D.Rendering.Geometries
             pathGeometry = GeometryBuilder.ComputeLinePath(this, Parent, session);
         }
 
-        protected override void RenderInternal(CanvasDrawingSession session, LayoutThemeColor color, bool renderControls)
+        protected override void RenderInternal(CanvasDrawingSession session, Win2DColor color, bool renderControls)
         {
             ICanvasBrush borderBrush = Resources.ThemeDarkBrush(color);
 
@@ -130,7 +130,7 @@ namespace Hercules.Win2D.Rendering.Geometries
 
             if (Node.Icon != null)
             {
-                ICanvasImage image = Resources.Image(Node.Icon);
+                ICanvasImage image = Resources.Image(Node);
 
                 if (image != null)
                 {

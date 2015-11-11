@@ -314,11 +314,11 @@ namespace Hercules.Win2D.Rendering
         {
         }
 
-        protected virtual void RenderHullInternal(CanvasDrawingSession session, LayoutThemeColor color)
+        protected virtual void RenderHullInternal(CanvasDrawingSession session, Win2DColor color)
         {
         }
 
-        protected abstract void RenderInternal(CanvasDrawingSession session, LayoutThemeColor color, bool renderControls);
+        protected abstract void RenderInternal(CanvasDrawingSession session, Win2DColor color, bool renderControls);
 
         protected abstract Win2DRenderNode CloneInternal();
 

@@ -120,7 +120,7 @@ namespace Hercules.Model.ExImport.Formats.Html
 
             if (useColors)
             {
-                LayoutThemeColor themeColor = renderer.FindColor(nodeBase);
+                IRenderColor themeColor = renderer.FindColor(nodeBase);
 
                 color = ColorsHelper.ConvertToRGBString(themeColor.Darker);
             }

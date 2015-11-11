@@ -62,14 +62,14 @@ namespace Hercules.App.Modules.Editor.Views
 
             if (selectedNode != null)
             {
-                if (!ReferenceEquals(selected, selectedNode.Icon) || (selected != null && selectedNode.Icon != null && !selected.Equals(selectedNode.Icon)))
+                if (!Equals(selected, selectedNode.Icon))
                 {
                     if (hasChange && Document.UndoRedoManager.IsLastCommand<ChangeIconCommand>(x => x.Node.Id == selectedNode.Id))
                     {
                         Document.UndoRedoManager.Revert();
                     }
 
-                    if (!ReferenceEquals(selected, selectedNode.Icon) || (selected != null && selectedNode.Icon != null && !selected.Equals(selectedNode.Icon)))
+                    if (!Equals(selected, selectedNode.Icon))
                     {
                         selectedNode.ChangeIconKeyTransactional(selected);
 

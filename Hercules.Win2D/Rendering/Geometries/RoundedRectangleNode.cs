@@ -12,7 +12,7 @@ namespace Hercules.Win2D.Rendering.Geometries
 {
     public sealed class RoundedRectangleNode : RectangleNodeBase
     {
-        public RoundedRectangleNode(NodeBase node, Win2DRenderer renderer) 
+        public RoundedRectangleNode(NodeBase node, Win2DRenderer renderer)
             : base(node, renderer, 10)
         {
         }

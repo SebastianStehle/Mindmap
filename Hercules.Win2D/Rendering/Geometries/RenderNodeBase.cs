@@ -20,7 +20,7 @@ namespace Hercules.Win2D.Rendering.Geometries
         protected static readonly Color PathColor = Color.FromArgb(255, 50, 50, 50);
         protected static readonly Vector2 ImageSizeLarge = new Vector2(64, 64);
         protected static readonly Vector2 ImageSizeSmall = new Vector2(32, 32);
-        protected static readonly float ImageMargin = 10;
+        protected static readonly float ImageMargin = 6;
         protected static readonly CanvasStrokeStyle SelectionStrokeStyle = new CanvasStrokeStyle { DashStyle = CanvasDashStyle.Dash };
         private readonly ExpandButton button;
         private CanvasGeometry hullGeometry;

@@ -8,6 +8,7 @@
 
 using System;
 using System.Numerics;
+using Windows.Foundation;
 using GP.Windows;
 using Hercules.Model;
 using Hercules.Model.Utils;
@@ -40,7 +41,7 @@ namespace Hercules.Win2D.Rendering.Geometries
 
             this.borderRadius = borderRadius;
 
-            textRenderer = new Win2DTextRenderer(node) { FontSize = 16, MinWidth = 50 };
+            textRenderer = new Win2DTextRenderer(node) { FontSize = 16 };
         }
 
         protected override void ArrangeInternal(CanvasDrawingSession session)
@@ -140,7 +141,7 @@ namespace Hercules.Win2D.Rendering.Geometries
                     float x = textRenderer.RenderPosition.X - textOffset;
                     float y = textRenderer.RenderPosition.Y + ((textRenderer.RenderSize.Y - size.Y) * 0.5f);
 
-                    session.DrawImage(image, x, y);
+                    session.DrawImage(image, new Rect(x, y, 32, 32), image.GetBounds(session));
                 }
             }
 
@@ -152,7 +153,14 @@ namespace Hercules.Win2D.Rendering.Geometries
                 {
                     Rect2 rect = Rect2.Deflate(Bounds, SelectionMargin);
 
-                    session.DrawRoundedRectangle(rect, 14, 14, borderBrush, 2f, SelectionStrokeStyle);
+                    if (borderRadius > 0)
+                    {
+                        session.DrawRoundedRectangle(rect, borderRadius * 1.4f, borderRadius * 1.4f, borderBrush, 2f, SelectionStrokeStyle);
+                    }
+                    else
+                    {
+                        session.DrawRectangle(rect, borderBrush, 2f, SelectionStrokeStyle);
+                    }
                 }
 
                 if (Node.HasChildren)

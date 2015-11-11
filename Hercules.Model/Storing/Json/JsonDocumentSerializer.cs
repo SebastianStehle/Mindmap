@@ -96,7 +96,7 @@ namespace Hercules.Model.Storing.Json
             }
         }
 
-        private static async Task SerializeToFileAsync(object value, StorageFile file)
+        private static async Task SerializeToFileAsync(object value, IStorageFile2 file)
         {
             using (StorageStreamTransaction transaction = await file.OpenTransactedWriteAsync(StorageOpenOptions.None))
             {

@@ -6,9 +6,18 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
+using System.IO;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using GP.Windows;
+using GP.Windows.Mvvm;
 using Hercules.Model;
+using Hercules.Model.Utils;
+using Microsoft.Practices.Unity;
 
 namespace Hercules.App.Modules.Editor.Views
 {
@@ -35,9 +44,12 @@ namespace Hercules.App.Modules.Editor.Views
                 }
                 else
                 {
-                    KeyIcon integratedIcon = (KeyIcon)selectedNode.Icon;
+                    KeyIcon keyIcon = selectedNode.Icon as KeyIcon;
 
-                    IconsGrid.SelectedItem = integratedIcon.Key;
+                    if (keyIcon != null)
+                    {
+                        IconsGrid.SelectedItem = keyIcon.Key;
+                    }
                 }
             }
 
@@ -76,6 +88,42 @@ namespace Hercules.App.Modules.Editor.Views
                         hasChange = true;
                     }
                 }
+            }
+        }
+
+        private async void OpenFileButton_Click(object sender, RoutedEventArgs e)
+        {
+            IProcessManager progressManager = ViewModelLocator.Container.Resolve<IProcessManager>();
+
+            FileOpenPicker filePicker = new FileOpenPicker();
+
+            filePicker.FileTypeFilter.Add(".png");
+            filePicker.FileTypeFilter.Add(".jpg");
+            filePicker.FileTypeFilter.Add(".jpeg");
+
+            StorageFile file = await filePicker.PickSingleFileAsync();
+
+            if (file != null)
+            {
+                progressManager.RunMainProcessAsync(this, async () =>
+                {
+                    using (IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))
+                    {
+                        if (await AttachmentIcon.ValidateAsync(fileStream))
+                        {
+                            AttachmentIcon attachmentIcon = new AttachmentIcon(fileStream.AsStreamForRead(), file.DisplayName);
+
+                            Change(attachmentIcon);
+                        }
+                        else
+                        {
+                            string content = ResourceManager.GetString("LoadingIconFailed_Content");
+                            string heading = ResourceManager.GetString("LoadingIconFailed_Heading");
+
+                            await ViewModelLocator.Container.Resolve<IMessageDialogService>().AlertAsync(content, heading);
+                        }
+                    }
+                }).Forget();
             }
         }
     }

@@ -10,7 +10,6 @@ using System;
 using System.Numerics;
 using GP.Windows;
 using Hercules.Model;
-using Hercules.Model.Rendering;
 using Hercules.Model.Utils;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;

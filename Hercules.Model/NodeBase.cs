@@ -72,6 +72,22 @@ namespace Hercules.Model
             }
         }
 
+        public INodeIcon Icon
+        {
+            get
+            {
+                return icon;
+            }
+            protected set
+            {
+                if (!Equals(icon, value))
+                {
+                    icon = value;
+                    OnPropertyChanged(nameof(Icon));
+                }
+            }
+        }
+
         public IconSize IconSize
         {
             get
@@ -100,22 +116,6 @@ namespace Hercules.Model
                 {
                     nodeSide = value;
                     OnPropertyChanged(nameof(NodeSide));
-                }
-            }
-        }
-
-        public INodeIcon Icon
-        {
-            get
-            {
-                return icon;
-            }
-            protected set
-            {
-                if (icon != value)
-                {
-                    icon = value;
-                    OnPropertyChanged(nameof(Icon));
                 }
             }
         }

@@ -9,7 +9,6 @@
 using System;
 using System.Numerics;
 using Hercules.Model;
-using Hercules.Model.Rendering;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;

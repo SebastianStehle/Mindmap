@@ -50,7 +50,7 @@ namespace Hercules.App.Components
 
         public MindmapRef(DocumentRef documentRef, IMindmapStore mindmapStore)
         {
-            Guard.NotNull(documentRef, nameof(documentRef));;
+            Guard.NotNull(documentRef, nameof(documentRef));
             Guard.NotNull(mindmapStore, nameof(mindmapStore));
 
             this.documentRef = documentRef;

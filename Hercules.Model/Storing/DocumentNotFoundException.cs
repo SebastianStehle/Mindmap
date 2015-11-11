@@ -21,7 +21,7 @@ namespace Hercules.Model.Storing
         {
         }
 
-        public DocumentNotFoundException(string message, Exception inner) 
+        public DocumentNotFoundException(string message, Exception inner)
             : base(message, inner)
         {
         }

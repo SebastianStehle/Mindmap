@@ -428,12 +428,18 @@ I want to share my mindmap for you. You can download it here: {0}. The download 
   <data name="Editor_Icons" xml:space="preserve">
     <value>Icons</value>
   </data>
-  <data name="Editor_IconsHint.Text" xml:space="preserve">
+  <data name="Editor_Image" xml:space="preserve">
+    <value>Image</value>
+  </data>
+  <data name="Editor_OpenFileButton.Content" xml:space="preserve">
+    <value>Open File</value>
+  </data>
+  <data name="Editor_OpenFileButtonHint.Text" xml:space="preserve">
     <value>Select a png or jpeg image from your device.
 The maximum allowed size is a 80x80 pixels.</value>
   </data>
-  <data name="Editor_Image" xml:space="preserve">
-    <value>Image</value>
+  <data name="Editor_RecentImages.Text" xml:space="preserve">
+    <value>Recent images</value>
   </data>
   <data name="LoadingIconFailed_Content" xml:space="preserve">
     <value>The image is not valid or is too large (the maximum size is 80x80 pixels).</value>

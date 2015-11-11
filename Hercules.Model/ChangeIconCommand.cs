@@ -13,6 +13,11 @@ namespace Hercules.Model
 
         private INodeIcon oldIcon;
 
+        public INodeIcon NewIcon
+        {
+            get { return newIcon; }
+        }
+
         public ChangeIconCommand(PropertiesBag properties, Document document)
             : base(properties, document)
         {
@@ -27,7 +32,10 @@ namespace Hercules.Model
 
         public override void Save(PropertiesBag properties)
         {
-            newIcon.Save(properties);
+            if (newIcon != null)
+            {
+                newIcon.Save(properties);
+            }
 
             base.Save(properties);
         }

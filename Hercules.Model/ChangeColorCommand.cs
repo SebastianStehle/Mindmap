@@ -13,6 +13,11 @@ namespace Hercules.Model
 
         private INodeColor oldColor;
 
+        public INodeColor NewColor
+        {
+            get { return newColor; }
+        }
+
         public ChangeColorCommand(PropertiesBag properties, Document document)
             : base(properties, document)
         {

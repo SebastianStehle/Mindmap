@@ -89,6 +89,11 @@ namespace Hercules.Model
             properties.Set(AttachmentKey, base64Content);
         }
 
+        public Stream ToStream()
+        {
+            return new MemoryStream(Convert.FromBase64String(base64Content));
+        }
+
         public static INodeIcon TryParse(PropertiesBag properties)
         {
             Guard.NotNull(properties, nameof(properties));

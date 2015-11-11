@@ -11,7 +11,7 @@
     Width="310">
 
     <controls:MindmapFlyoutView.Resources>
-        <controls:ThemeBrushConverter x:Key="ThemeBrushConverter" />
+        <controls:RenderColorBrushConverter x:Key="RenderColorBrushConverter" />
     </controls:MindmapFlyoutView.Resources>
 
     <Grid>
@@ -30,7 +30,7 @@
                         </GridView.ItemContainerTransitions>
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="{Binding Converter={StaticResource ThemeBrushConverter}}" Width="32" Height="32" />
+                                <Border Background="{Binding Converter={StaticResource RenderColorBrushConverter}}" Width="32" Height="32" />
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>

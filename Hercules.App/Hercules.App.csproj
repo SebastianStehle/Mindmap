@@ -114,6 +114,7 @@
     <Compile Include="Components\Implementations\PrintService.cs" />
     <Compile Include="Components\IPrintService.cs" />
     <Compile Include="Components\ISettingsProvider.cs" />
+    <Compile Include="Controls\AttachmentIconBitmapConverter.cs" />
     <Compile Include="Controls\CanvasControlWrapper.cs" />
     <Compile Include="Controls\ImportGeneratorBehavior.cs" />
     <Compile Include="Controls\ExportGeneratorBehavior.cs" />
@@ -125,7 +126,7 @@
     <Compile Include="Controls\NotRootToBooleanConverter.cs" />
     <Compile Include="Controls\NotRootToVisibilityConverter.cs" />
     <Compile Include="Controls\TextEditor.cs" />
-    <Compile Include="Controls\ThemeBrushConverter.cs" />
+    <Compile Include="Controls\RenderColorBrushConverter.cs" />
     <Compile Include="Messages\ImportMessage.cs" />
     <Compile Include="Messages\SaveMindmapMessage.cs" />
     <Compile Include="Modules\Editor\Views\EditColorView.xaml.cs">

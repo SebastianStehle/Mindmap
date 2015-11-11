@@ -14,6 +14,11 @@ namespace Hercules.Model
 
         private string oldText;
 
+        public string NewText
+        {
+            get { return newText; }
+        }
+
         public ChangeTextCommand(PropertiesBag properties, Document document)
             : base(properties, document)
         {

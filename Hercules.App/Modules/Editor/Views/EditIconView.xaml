@@ -12,6 +12,8 @@
 
     <controls:MindmapFlyoutView.Resources>
         <assets:AssetProvider x:Key="AssetProvider" />
+
+        <controls:AttachmentIconBitmapConverter x:Key="AttachmentIconBitmapConverter" />
     </controls:MindmapFlyoutView.Resources>
 
     <Grid>
@@ -43,7 +45,24 @@
                     <StackPanel Margin="0,20,0,0">
                         <Button x:Uid="Editor_IconsOpenFileButton" Name="OpenFileButton" Click="OpenFileButton_Click" Content="Open File" />
 
-                        <TextBlock Foreground="Gray" TextWrapping="Wrap" Margin="0,10,0,0" x:Uid="Editor_IconsHint" Text="Icons Hint" LineHeight="24" />
+                        <TextBlock Foreground="Gray" TextWrapping="Wrap" Margin="0,10,0,0" x:Uid="Editor_OpenFileButtonHint" Text="Icons Hint" LineHeight="24" />
+
+                        <TextBlock x:Uid="Editor_ImagesRececnt" Text="Recent Images" Margin="0,20,0,0" />
+
+                        <GridView VerticalAlignment="Top" x:Name="IconsRecentGrid" SelectionChanged="IconsRecentGrid_SelectionChanged" Padding="0">
+                            <GridView.ItemContainerTransitions>
+                                <TransitionCollection />
+                            </GridView.ItemContainerTransitions>
+                            <GridView.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid Background="Transparent">
+                                        <Grid Width="32" Height="32">
+                                            <Image Source="{Binding Converter={StaticResource AttachmentIconBitmapConverter}}" Width="24" Height="24" />
+                                        </Grid>
+                                    </Grid>
+                                </DataTemplate>
+                            </GridView.ItemTemplate>
+                        </GridView>
                     </StackPanel>
                 </PivotItem>
             </Pivot.Items>

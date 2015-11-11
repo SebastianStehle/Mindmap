@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Hercules.Model
@@ -33,6 +34,31 @@ namespace Hercules.Model
             }
 
             return command != null && predicate(command);
+        }
+
+        public static IEnumerable<CommandBase> Commands(this IUndoRedoManager manager)
+        {
+            foreach (IUndoRedoAction action in manager.History)
+            {
+                CommandBase command = action as CommandBase;
+
+                if (command == null)
+                {
+                    CompositeUndoRedoAction composite = action as CompositeUndoRedoAction;
+
+                    if (composite != null)
+                    {
+                        foreach (CommandBase nested in composite.Commands)
+                        {
+                            yield return nested;
+                        }
+                    }
+                }
+                else
+                {
+                    yield return command;
+                }
+            }
         }
     }
 }

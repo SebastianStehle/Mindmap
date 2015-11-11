@@ -16,6 +16,11 @@ namespace Hercules.Model
 
         private IconSize oldIconSize;
 
+        public IconSize NewIconSize
+        {
+            get { return newIconSize; }
+        }
+
         public ChangeIconSizeCommand(PropertiesBag properties, Document document)
             : base(properties, document)
         {

@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// ThemeBrushConverter.cs
+// RenderColorBrushConverter.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -13,7 +13,7 @@ using Hercules.Model.Rendering;
 
 namespace Hercules.App.Controls
 {
-    public sealed class ThemeBrushConverter : IValueConverter
+    public sealed class RenderColorBrushConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {

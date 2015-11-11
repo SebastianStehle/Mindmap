@@ -44,7 +44,7 @@ namespace Hercules.Model.ExImport.Formats.XMind
             ZipArchiveEntry contentEntry = archive.CreateEntry(path);
 
             using (Stream stream = contentEntry.Open())
-            { 
+            {
                 XDocument content = new XDocument();
 
                 xmlWriter(content);

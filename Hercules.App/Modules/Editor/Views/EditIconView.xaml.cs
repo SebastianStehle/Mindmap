@@ -7,7 +7,9 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
@@ -38,34 +40,81 @@ namespace Hercules.App.Modules.Editor.Views
 
             if (selectedNode != null)
             {
-                if (selectedNode.Icon == null)
+                HashSet<AttachmentIcon> recentIcons = new HashSet<AttachmentIcon>(
+                    selectedNode.Document.UndoRedoManager.Commands()
+                        .OfType<ChangeIconCommand>().Select(x => x.NewIcon)
+                        .OfType<AttachmentIcon>()
+                        .Distinct()
+                        .Take(6));
+
+                IconsRecentGrid.ItemsSource = recentIcons;
+
+                KeyIcon keyIcon = selectedNode.Icon as KeyIcon;
+
+                if (keyIcon != null)
                 {
-                    IconsGrid.SelectedIndex = -1;
+                    IconsGrid.SelectedItem = keyIcon.Key;
                 }
                 else
                 {
-                    KeyIcon keyIcon = selectedNode.Icon as KeyIcon;
+                    ResetIconSelection();
+                }
 
-                    if (keyIcon != null)
-                    {
-                        IconsGrid.SelectedItem = keyIcon.Key;
-                    }
+                AttachmentIcon attachmentIcon = selectedNode.Icon as AttachmentIcon;
+
+                if (attachmentIcon != null)
+                {
+                    IconsRecentGrid.SelectedIndex = 0;
+                }
+                else
+                {
+                    RecentRecentSelection();
                 }
             }
 
             hasChange = false;
         }
 
+        private void IconsRecentGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            AttachmentIcon selected = IconsRecentGrid.SelectedItem as AttachmentIcon;
+
+            if (selected != null)
+            {
+                ResetIconSelection();
+
+                Change(selected);
+            }
+        }
+
         private void IconsGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             string selected = IconsGrid.SelectedItem as string;
 
-            Change(selected != null ? new KeyIcon(selected) : null);
+            if (selected != null)
+            {
+                RecentRecentSelection();
+
+                Change(new KeyIcon(selected));
+            }
         }
 
         private void RemoveIconButton_Click(object sender, RoutedEventArgs e)
         {
+            RecentRecentSelection();
+            ResetIconSelection();
+
             Change(null);
+        }
+
+        private void RecentRecentSelection()
+        {
+            IconsRecentGrid.SelectedIndex = -1;
+        }
+
+        private void ResetIconSelection()
+        {
+            IconsGrid.SelectedIndex = -1;
         }
 
         private void Change(INodeIcon selected)

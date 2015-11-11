@@ -20,6 +20,8 @@ namespace Hercules.Model.ExImport.Formats.XMind
         {
             string timestamp = ((int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds).ToString(CultureInfo.InvariantCulture);
 
+            var allChildren = document.Root.RightChildren.Union(document.Root.LeftChildren).ToList();
+
             XElement root =
                 new XElement(Namespaces.Content("xmap-content"),
                     new XAttribute("version", "2.0"),
@@ -28,8 +30,7 @@ namespace Hercules.Model.ExImport.Formats.XMind
                         new XAttribute("id", Guid.NewGuid()),
                         new XAttribute("timestamp", timestamp),
                         new XElement(Namespaces.Content("title"), document.Root.Text),
-                        CreateTopic(timestamp, document.Root,
-                            document.Root.RightChildren.Union(document.Root.LeftChildren).ToList())));
+                        CreateTopic(timestamp, document.Root, allChildren)));
 
             content.Add(root);
         }

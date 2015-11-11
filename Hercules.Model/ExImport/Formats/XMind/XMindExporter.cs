@@ -61,7 +61,7 @@ namespace Hercules.Model.ExImport.Formats.XMind
                         new XAttribute("media-type", "text/xml")),
                     new XElement(Namespaces.Manifest("file-entry"),
                         new XAttribute("full-path", "META-INF"),
-                        new XAttribute("media-type", "")),
+                        new XAttribute("media-type", string.Empty)),
                     new XElement(Namespaces.Manifest("file-entry"),
                         new XAttribute("full-path", "META-INF/manifest.xml"),
                         new XAttribute("media-type", "text/xml"))));

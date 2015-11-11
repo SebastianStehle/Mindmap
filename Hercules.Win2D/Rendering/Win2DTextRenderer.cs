@@ -44,8 +44,6 @@ namespace Hercules.Win2D.Rendering
             get { return renderSize; }
         }
 
-        public float MinWidth { get; set; }
-
         public float FontSize
         {
             get
@@ -105,8 +103,6 @@ namespace Hercules.Win2D.Rendering
                 renderSize = Vector2.Zero;
             }
 
-            renderSize.X = Math.Max(renderSize.X, minSize);
-            renderSize.X = Math.Max(renderSize.X, MinWidth);
             renderSize.Y = Math.Max(renderSize.Y, minSize);
 
             MathHelper.Round(ref renderSize);

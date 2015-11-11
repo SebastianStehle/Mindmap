@@ -21,7 +21,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Pivot x:Name="IconsPivot">
+        <Pivot x:Name="IconsPivot" Height="250">
             <Pivot.Items>
                 <PivotItem x:Uid="Editor_Icons" Header="Icons">
                     <GridView VerticalAlignment="Top" x:Name="IconsGrid" ItemsSource="{Binding Source={StaticResource AssetProvider}, Path=Images}" Padding="0">
@@ -40,10 +40,10 @@
                     </GridView>
                 </PivotItem>
                 <PivotItem x:Uid="Editor_Image" Header="Image">
-                    <StackPanel>
+                    <StackPanel Margin="0,20,0,0">
                         <Button x:Uid="Editor_IconsOpenFileButton" Name="OpenFileButton" Click="OpenFileButton_Click" Content="Open File" />
 
-                        <TextBlock FontSize="12" TextWrapping="Wrap" Margin="0,5,0,0" x:Uid="Editor_IconsHint" Text="Icons Hint" />
+                        <TextBlock Foreground="Gray" TextWrapping="Wrap" Margin="0,10,0,0" x:Uid="Editor_IconsHint" Text="Icons Hint" LineHeight="24" />
                     </StackPanel>
                 </PivotItem>
             </Pivot.Items>

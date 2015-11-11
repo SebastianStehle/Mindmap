@@ -13,7 +13,6 @@ using Windows.Storage.Pickers;
 using Windows.Storage.Streams;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Media.Imaging;
 using GP.Windows;
 using GP.Windows.Mvvm;
 using Hercules.Model;

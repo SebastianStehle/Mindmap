@@ -121,7 +121,7 @@ namespace Hercules.App.Components.Implementations
             Guard.NotNullOrEmpty(name, nameof(name));
             Guard.NotNull(document, nameof(document));
 
-            return DoAsync(async() =>
+            return DoAsync(async () =>
             {
                 DocumentRef documentRef = await documentStore.CreateAsync(name, document);
 

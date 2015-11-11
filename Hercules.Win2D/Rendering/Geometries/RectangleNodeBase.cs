@@ -41,7 +41,7 @@ namespace Hercules.Win2D.Rendering.Geometries
 
             this.borderRadius = borderRadius;
 
-            textRenderer = new Win2DTextRenderer(node) { FontSize = 16, MinWidth = 50 };
+            textRenderer = new Win2DTextRenderer(node) { FontSize = 16 };
         }
 
         protected override void ArrangeInternal(CanvasDrawingSession session)
@@ -153,7 +153,14 @@ namespace Hercules.Win2D.Rendering.Geometries
                 {
                     Rect2 rect = Rect2.Deflate(Bounds, SelectionMargin);
 
-                    session.DrawRoundedRectangle(rect, 14, 14, borderBrush, 2f, SelectionStrokeStyle);
+                    if (borderRadius > 0)
+                    {
+                        session.DrawRoundedRectangle(rect, borderRadius * 1.4f, borderRadius * 1.4f, borderBrush, 2f, SelectionStrokeStyle);
+                    }
+                    else
+                    {
+                        session.DrawRectangle(rect, borderBrush, 2f, SelectionStrokeStyle);
+                    }
                 }
 
                 if (Node.HasChildren)

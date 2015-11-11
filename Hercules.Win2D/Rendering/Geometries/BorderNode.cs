@@ -20,7 +20,7 @@ namespace Hercules.Win2D.Rendering.Geometries
     public sealed class BorderNode : RenderNodeBase
     {
         private const float MinHeight = 40;
-        private const float VerticalOffset = 15;
+        private const float VerticalOffset = 16;
         private static readonly Vector2 ContentPadding = new Vector2(15, 10);
         private static readonly CanvasStrokeStyle StrokeStyle = new CanvasStrokeStyle { StartCap = CanvasCapStyle.Round, EndCap = CanvasCapStyle.Round };
         private readonly Win2DTextRenderer textRenderer;
@@ -45,7 +45,7 @@ namespace Hercules.Win2D.Rendering.Geometries
         public BorderNode(NodeBase node, Win2DRenderer renderer)
             : base(node, renderer)
         {
-            textRenderer = new Win2DTextRenderer(node) { FontSize = 14, MinWidth = 60 };
+            textRenderer = new Win2DTextRenderer(node) { FontSize = 14 };
         }
 
         protected override void ArrangeInternal(CanvasDrawingSession session)

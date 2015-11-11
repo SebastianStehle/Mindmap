@@ -16,9 +16,9 @@ namespace Hercules.Model.Storing.Json
     {
         private const string Suffix = "Command";
 
-        private static readonly Dictionary<string, Type> typeByName = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
-        private static readonly Dictionary<Type, string> nameByType = new Dictionary<Type, string>();
-        private static readonly MultiValueDictionary<Type, LegacyName> legacyNameMappings = new MultiValueDictionary<Type, LegacyName>();
+        private static readonly Dictionary<string, Type> TypesByName = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
+        private static readonly Dictionary<Type, string> NamesByType = new Dictionary<Type, string>();
+        private static readonly MultiValueDictionary<Type, LegacyName> LegacyNameMappings = new MultiValueDictionary<Type, LegacyName>();
 
         static CommandFactory()
         {
@@ -41,12 +41,12 @@ namespace Hercules.Model.Storing.Json
 
         public static string ToTypeName(CommandBase command)
         {
-            return nameByType[command.GetType()];
+            return NamesByType[command.GetType()];
         }
 
         private static void AddLegacyName<T>(string oldName, string newName) where T : CommandBase
         {
-            legacyNameMappings.Add(typeof (T), new LegacyName { OldName = oldName, NewName = newName });
+            LegacyNameMappings.Add(typeof(T), new LegacyName { OldName = oldName, NewName = newName });
         }
 
         private static void AddCommand<T>(string name = null, bool isDefaultName = false) where T : CommandBase
@@ -58,11 +58,11 @@ namespace Hercules.Model.Storing.Json
         {
             name = name ?? ResolveTypeName(type);
 
-            typeByName[name] = type;
+            TypesByName[name] = type;
 
-            if (!nameByType.ContainsKey(type) || isDefaultName)
+            if (!NamesByType.ContainsKey(type) || isDefaultName)
             {
-                nameByType[type] = name;
+                NamesByType[type] = name;
             }
         }
 
@@ -96,7 +96,7 @@ namespace Hercules.Model.Storing.Json
         {
             IReadOnlyCollection<LegacyName> mappings;
 
-            if (legacyNameMappings.TryGetValue(type, out mappings))
+            if (LegacyNameMappings.TryGetValue(type, out mappings))
             {
                 foreach (var mapping in mappings)
                 {
@@ -109,7 +109,7 @@ namespace Hercules.Model.Storing.Json
         {
             Type type;
 
-            if (!typeByName.TryGetValue(typeName, out type))
+            if (!TypesByName.TryGetValue(typeName, out type))
             {
                 type = Type.GetType(typeName);
             }

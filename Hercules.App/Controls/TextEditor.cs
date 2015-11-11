@@ -166,7 +166,7 @@ namespace Hercules.App.Controls
 
                 Size actualSize = base.MeasureOverride(availableSize);
 
-                double minSizeX = renderSize.X + Padding.Left + Padding.Right + BorderThickness.Left + BorderThickness.Right;
+                double minSizeX = Math.Max(MinWidth, renderSize.X + Padding.Left + Padding.Right + BorderThickness.Left + BorderThickness.Right);
 
                 if (actualSize.Width < minSizeX)
                 {

@@ -8,6 +8,7 @@
 
 using System;
 using System.Numerics;
+using Windows.UI;
 using GP.Windows;
 using GP.Windows.UI;
 using Hercules.Model;

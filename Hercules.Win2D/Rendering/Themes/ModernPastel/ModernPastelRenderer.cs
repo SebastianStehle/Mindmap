@@ -68,7 +68,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             }
             else
             {
-                return new RectangleNode(node, this);
+                return new BorderNode(node, this);
             }
         }
     }

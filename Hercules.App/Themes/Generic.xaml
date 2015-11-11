@@ -34,7 +34,7 @@
 
                         <controls:TextEditor x:Name="PART_TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="5,0"
                             MinHeight="0"
-                            MinWidth="0"
+                            MinWidth="80"
                             TextAlignment="Left" 
                             Visibility="Visible" 
                             VerticalContentAlignment="Center"

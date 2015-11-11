@@ -13,7 +13,7 @@ using Hercules.Model.Rendering;
 
 namespace Hercules.Win2D.Rendering
 {
-    public sealed class Win2DColor :  IRenderColor
+    public sealed class Win2DColor : IRenderColor
     {
         private readonly Color normal;
         private readonly Color darker;

@@ -429,7 +429,8 @@ I want to share my mindmap for you. You can download it here: {0}. The download 
     <value>Icons</value>
   </data>
   <data name="Editor_IconsHint.Text" xml:space="preserve">
-    <value>Select a PNG or JPEG image. The maximum allowed size is 80x80 pixels).</value>
+    <value>Select a png or jpeg image from your device.
+The maximum allowed size is a 80x80 pixels.</value>
   </data>
   <data name="Editor_Image" xml:space="preserve">
     <value>Image</value>

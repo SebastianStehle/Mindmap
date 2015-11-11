@@ -279,16 +279,32 @@ namespace Hercules.App.Controls
 
         protected override void OnPointerPressed(PointerRoutedEventArgs e)
         {
-            Focus(FocusState.Programmatic);
-
-            e.Handled = true;
+            FocusWhenNotTextEditing(e);
         }
 
         protected override void OnPointerReleased(PointerRoutedEventArgs e)
         {
-            Focus(FocusState.Programmatic);
+            FocusWhenNotTextEditing(e);
+        }
 
-            e.Handled = true;
+        private void FocusWhenNotTextEditing(PointerRoutedEventArgs e)
+        {
+            WithRenderer(r =>
+            {
+                Vector2 position = r.GetMindmapPosition(e.GetCurrentPoint(this).Position.ToVector2());
+
+                foreach (Win2DRenderNode renderNode in r.Scene.DiagramNodes)
+                {
+                    if (renderNode.HitTest(position) && textEditor.EditingNode == renderNode)
+                    {
+                        return;
+                    }
+                }
+
+                Focus(FocusState.Programmatic);
+
+                e.Handled = true;
+            });
         }
 
         public void EditText()

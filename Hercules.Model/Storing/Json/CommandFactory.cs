@@ -13,21 +13,21 @@ using GP.Windows;
 
 namespace Hercules.Model.Storing.Json
 {
-    public static class CommandFactory
+    internal static class CommandFactory
     {
         private const string Suffix = "Command";
 
         private static readonly Dictionary<string, Type> typeByName = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
         private static readonly Dictionary<Type, string> nameByType = new Dictionary<Type, string>();
-        private static readonly Dictionary<Type, List<Tuple<string, string>>> legacyNameMappings = new Dictionary<Type, List<Tuple<string, string>>>();
+        private static readonly MultiValueDictionary<Type, LegacyName> legacyNameMappings = new MultiValueDictionary<Type, LegacyName>();
 
         static CommandFactory()
         {
             AddCommand<InsertChildCommand>();
 
             AddCommand<ChangeColorCommand>();
-            AddCommand<ChangeIconCommand>(LegacyNames.ChangeIcon);
             AddCommand<ChangeIconCommand>();
+            AddCommand<ChangeIconCommand>(LegacyNames.ChangeIcon);
             AddCommand<ChangeTextCommand>();
 
             AddCommand<RemoveChildCommand>();
@@ -40,70 +40,68 @@ namespace Hercules.Model.Storing.Json
             AddLegacyName<ChangeColorCommand>("ColorValue", "Value");
         }
 
-        private static void AddLegacyName<T>(string oldName, string newName) where T : CommandBase
+        public static string ToTypeName(CommandBase command)
         {
-            List<Tuple<string, string>> mappings = legacyNameMappings.GetOrCreateDefault(typeof (T), () => new List<Tuple<string, string>>());
-
-            mappings.Add(new Tuple<string, string>(oldName, newName));
+            return nameByType[command.GetType()];
         }
 
-        private static void AddCommand<T>(string name = null) where T : CommandBase
+        private static void AddLegacyName<T>(string oldName, string newName) where T : CommandBase
         {
-            Type type = typeof(T);
+            legacyNameMappings.Add(typeof (T), new LegacyName { OldName = oldName, NewName = newName });
+        }
 
-            name = ResolveTypeName(name, type);
+        private static void AddCommand<T>(string name = null, bool isDefaultName = false) where T : CommandBase
+        {
+            AddCommand(typeof(T), name, isDefaultName);
+        }
+
+        private static void AddCommand(Type type, string name = null, bool isDefaultName = false)
+        {
+            name = name ?? ResolveTypeName(type);
 
             typeByName[name] = type;
 
-            nameByType[type] = name;
+            if (nameByType.ContainsKey(type) || isDefaultName)
+            {
+                nameByType[type] = name;
+            }
         }
 
-        private static string ResolveTypeName(string typeName, Type type)
+        private static string ResolveTypeName(Type type)
         {
-            if (typeName == null)
-            {
-                typeName = type.Name;
+            string result = type.Name;
 
-                if (typeName.EndsWith(Suffix, StringComparison.OrdinalIgnoreCase))
-                {
-                    typeName = typeName.Substring(0, typeName.Length - Suffix.Length);
-                }
+            if (result.EndsWith(Suffix, StringComparison.OrdinalIgnoreCase))
+            {
+                result = result.Substring(0, result.Length - Suffix.Length);
             }
 
-            return typeName;
-        }
-
-        public static string ToTypeName(CommandBase command)
-        {
-            Guard.NotNull(command, nameof(command));
-
-            return nameByType[command.GetType()];
+            return result;
         }
 
         public static CommandBase CreateCommand(string typeName, PropertiesBag properties, Document document)
         {
-            Guard.NotNull(typeName, nameof(typeName));
-            Guard.NotNull(document, nameof(document));
-            Guard.NotNull(properties, nameof(properties));
-
             Type type = ResolveType(typeName);
 
             MapProperties(properties, type);
 
-            CommandBase command = (CommandBase)Activator.CreateInstance(type, properties, document);
+            return CreateCommand(properties, document, type);
+        }
 
-            return command;
+        private static CommandBase CreateCommand(PropertiesBag properties, Document document, Type type)
+        {
+            return (CommandBase)Activator.CreateInstance(type, properties, document);
         }
 
         private static void MapProperties(PropertiesBag properties, Type type)
         {
-            List<Tuple<string, string>> mappings;
+            IReadOnlyCollection<LegacyName> mappings;
 
             if (legacyNameMappings.TryGetValue(type, out mappings))
             {
                 foreach (var mapping in mappings)
                 {
-                    properties.Rename(mapping.Item1, mapping.Item2);
+                    properties.Rename(mapping.OldName, mapping.NewName);
                 }
             }
         }

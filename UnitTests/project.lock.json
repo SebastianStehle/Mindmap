@@ -53,6 +53,14 @@
           "lib/netcore50/Microsoft.CSharp.dll": {}
         }
       },
+      "Microsoft.Experimental.Collections/1.0.3-alpha": {
+        "compile": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
+        }
+      },
       "Microsoft.Net.Http/2.2.22": {
         "dependencies": {
           "Microsoft.Bcl": "[1.1.9, )",
@@ -1642,6 +1650,14 @@
         },
         "runtime": {
           "lib/netcore50/Microsoft.CSharp.dll": {}
+        }
+      },
+      "Microsoft.Experimental.Collections/1.0.3-alpha": {
+        "compile": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
         }
       },
       "Microsoft.Net.Http/2.2.22": {
@@ -3328,6 +3344,14 @@
           "lib/netcore50/Microsoft.CSharp.dll": {}
         }
       },
+      "Microsoft.Experimental.Collections/1.0.3-alpha": {
+        "compile": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
+        }
+      },
       "Microsoft.Net.Http/2.2.22": {
         "dependencies": {
           "Microsoft.Bcl": "[1.1.9, )",
@@ -4982,6 +5006,14 @@
         },
         "runtime": {
           "lib/netcore50/Microsoft.CSharp.dll": {}
+        }
+      },
+      "Microsoft.Experimental.Collections/1.0.3-alpha": {
+        "compile": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
         }
       },
       "Microsoft.Net.Http/2.2.22": {
@@ -6673,6 +6705,14 @@
           "lib/netcore50/Microsoft.CSharp.dll": {}
         }
       },
+      "Microsoft.Experimental.Collections/1.0.3-alpha": {
+        "compile": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
+        }
+      },
       "Microsoft.Net.Http/2.2.22": {
         "dependencies": {
           "Microsoft.Bcl": "[1.1.9, )",
@@ -8327,6 +8367,14 @@
         },
         "runtime": {
           "lib/netcore50/Microsoft.CSharp.dll": {}
+        }
+      },
+      "Microsoft.Experimental.Collections/1.0.3-alpha": {
+        "compile": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
         }
       },
       "Microsoft.Net.Http/2.2.22": {
@@ -10016,6 +10064,14 @@
         },
         "runtime": {
           "lib/netcore50/Microsoft.CSharp.dll": {}
+        }
+      },
+      "Microsoft.Experimental.Collections/1.0.3-alpha": {
+        "compile": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
+        },
+        "runtime": {
+          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
         }
       },
       "Microsoft.Net.Http/2.2.22": {
@@ -11801,6 +11857,19 @@
         "ref/wpa81/_._",
         "ref/xamarinios10/_._",
         "ref/xamarinmac20/_._"
+      ]
+    },
+    "Microsoft.Experimental.Collections/1.0.3-alpha": {
+      "sha512": "op6XTwDeq9oYZ7tZXnTucytwfhX6fw5S055LNAlPj501khnAPwnhQN6Pj5ZjDxwxESWqhtk9kbv6qhBZWMHr5Q==",
+      "type": "Package",
+      "files": [
+        "[Content_Types].xml",
+        "_rels/.rels",
+        "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll",
+        "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.xml",
+        "License-Stable.rtf",
+        "Microsoft.Experimental.Collections.nuspec",
+        "package/services/metadata/core-properties/50c06840f0eb438caeac33bf707354df.psmdcp"
       ]
     },
     "Microsoft.Net.Http/2.2.22": {

@@ -58,8 +58,8 @@ namespace Hercules.App.Controls
 
                             MenuFlyoutItem importButton = new MenuFlyoutItem();
                             importButton.Text = text;
-                            importButton.CommandParameter = new ImportModel { Source = source, Importer = importer };
                             importButton.Command = viewModel.ImportCommand;
+                            importButton.CommandParameter = new ImportModel { Source = source, Importer = importer };
 
                             targetItem.Items?.Add(importButton);
                         }

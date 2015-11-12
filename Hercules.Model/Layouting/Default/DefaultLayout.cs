@@ -29,7 +29,7 @@ namespace Hercules.Model.Layouting.Default
 
         public AttachTarget CalculateAttachTarget(Document document, IRenderScene scene, Node movingNode, Rect2 movementBounds)
         {
-            return new DefaultPreviewCalculationProcess(this, scene, document, movingNode, movementBounds).CalculateAttachTarget();
+            return new DefaultAttachTargetProcess(this, scene, document, movingNode, movementBounds).CalculateAttachTarget();
         }
     }
 }

@@ -14,6 +14,7 @@ using Windows.Storage.Streams;
 using GP.Windows;
 using Hercules.Model.Storing.Utils;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 namespace Hercules.Model.Storing.Json
 {
@@ -32,6 +33,8 @@ namespace Hercules.Model.Storing.Json
         static JsonDocumentSerializer()
         {
             HistorySerializerSettings.Converters.Add(new PropertiesBagConverter());
+            HistorySerializerSettings.ContractResolver = new CamelCasePropertyNamesContractResolver();
+            HistorySerializerSettings.Formatting = Formatting.Indented;
         }
 
         public static void SerializeToStream(Stream stream, Document document)

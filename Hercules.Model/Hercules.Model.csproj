@@ -171,7 +171,7 @@
     <Compile Include="Layouting\Default\DefaultLayout.cs" />
     <Compile Include="Layouting\Default\DefaultLayoutNode.cs" />
     <Compile Include="Layouting\Default\DefaultLayoutProcess.cs" />
-    <Compile Include="Layouting\Default\DefaultPreviewCalculationProcess.cs" />
+    <Compile Include="Layouting\Default\DefaultAttachTargetProcess.cs" />
     <Compile Include="Layouting\ILayout.cs" />
     <Compile Include="Rendering\IRenderer.cs" />
     <Compile Include="Rendering\IRenderNode.cs" />

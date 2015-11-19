@@ -270,7 +270,7 @@
   <data name="Editor_IconsClear.Content" xml:space="preserve">
     <value>Remove Icon</value>
   </data>
-  <data name="Editor_IconsHeader.Text" xml:space="preserve">
+  <data name="Editor_IconsHeader.Header" xml:space="preserve">
     <value>Icons</value>
   </data>
   <data name="Editor_ShowHullButton.Content" xml:space="preserve">
@@ -425,11 +425,8 @@ I want to share my mindmap for you. You can download it here: {0}. The download 
   <data name="MindmapDeleted_Heading" xml:space="preserve">
     <value>Mindmap has been deleted.</value>
   </data>
-  <data name="Editor_Icons" xml:space="preserve">
-    <value>Icons</value>
-  </data>
-  <data name="Editor_Image" xml:space="preserve">
-    <value>Image</value>
+  <data name="Editor_IconsFileHeader.Header" xml:space="preserve">
+    <value>From File</value>
   </data>
   <data name="Editor_OpenFileButton.Content" xml:space="preserve">
     <value>Open File</value>

@@ -73,6 +73,10 @@ namespace Hercules.Model
                         isValid = true;
                     }
                 }
+                catch
+                {
+                    isValid = false;
+                }
                 finally
                 {
                     stream.Seek(0);

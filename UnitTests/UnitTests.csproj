@@ -92,6 +92,7 @@
   </PropertyGroup>
   <ItemGroup>
     <!--A reference to the entire .Net Framework and Windows SDK are automatically included-->
+    <Content Include="Files\Format0.mmd" />
     <None Include="project.json" />
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
       <Name>Behaviors SDK %28XAML%29</Name>
@@ -106,6 +107,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\ColorsHelperTest.cs" />
     <Compile Include="Tests\DocumentTest.cs" />
+    <Compile Include="Tests\JsonStoreTests.cs" />
     <Compile Include="Tests\LimitedThreadsSchedulerTest.cs" />
     <Compile Include="Tests\UndoRedoManagerTests.cs" />
     <Compile Include="UnitTestApp.xaml.cs">

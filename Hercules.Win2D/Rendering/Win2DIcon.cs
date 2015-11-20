@@ -7,7 +7,6 @@
 // ==========================================================================
 
 using System;
-using System.Globalization;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
@@ -95,7 +94,7 @@ namespace Hercules.Win2D.Rendering
 
         private static async Task<CanvasBitmap> LoadFile(KeyIcon icon, ICanvasResourceCreator device)
         {
-            string uri = string.Format(CultureInfo.InvariantCulture, "ms-appx://{0}", icon.Key);
+            string uri = $"ms-appx://{icon.Key}";
 
             StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
 

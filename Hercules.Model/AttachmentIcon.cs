@@ -17,10 +17,9 @@ namespace Hercules.Model
 {
     public sealed class AttachmentIcon : INodeIcon
     {
-        public const double MaxSize = 80;
-
-        private const string AttachmentKey = "Attachment";
-        private const string NameKey = "Attachment";
+        private const double MaxSize = 80;
+        private const string PropertyKey_Attachment = "Attachment";
+        private const string PropertyKey_Name = "Name";
         private readonly string base64Content;
         private readonly string name;
 
@@ -90,7 +89,7 @@ namespace Hercules.Model
         {
             Guard.NotNull(properties, nameof(properties));
 
-            properties.Set(AttachmentKey, base64Content);
+            properties.Set(PropertyKey_Attachment, base64Content);
         }
 
         public Stream ToStream()
@@ -102,7 +101,14 @@ namespace Hercules.Model
         {
             Guard.NotNull(properties, nameof(properties));
 
-            return properties.Contains(AttachmentKey) ? new AttachmentIcon(properties[AttachmentKey].ToString(), properties[NameKey].ToString()) : null;
+            INodeIcon result = null;
+
+            if (properties.Contains(PropertyKey_Attachment) && properties.Contains(PropertyKey_Name))
+            {
+                result = new AttachmentIcon(properties[PropertyKey_Attachment].ToString(), properties[PropertyKey_Name].ToString());
+            }
+
+            return result;
         }
 
         public override bool Equals(object obj)

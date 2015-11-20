@@ -14,7 +14,7 @@ namespace Hercules.Model
 {
     public sealed class ValueColor : INodeColor, IEquatable<ValueColor>
     {
-        private const string PropertyKey = "Value";
+        private const string PropertyKey_Value = "Value";
         private readonly int color;
 
         public int Color
@@ -33,14 +33,14 @@ namespace Hercules.Model
         {
             Guard.NotNull(properties, nameof(properties));
 
-            properties.Set(PropertyKey, color);
+            properties.Set(PropertyKey_Value, color);
         }
 
         public static INodeColor TryParse(PropertiesBag properties)
         {
             Guard.NotNull(properties, nameof(properties));
 
-            return properties.Contains(PropertyKey) ? new ValueColor(properties[PropertyKey].ToInt32(CultureInfo.CurrentCulture)) : null;
+            return properties.Contains(PropertyKey_Value) ? new ValueColor(properties[PropertyKey_Value].ToInt32(CultureInfo.CurrentCulture)) : null;
         }
 
         public override bool Equals(object obj)

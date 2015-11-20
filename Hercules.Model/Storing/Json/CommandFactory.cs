@@ -34,6 +34,7 @@ namespace Hercules.Model.Storing.Json
             AddCommand<ToggleCollapseCommand>();
             AddCommand<ToggleHullCommand>();
 
+            AddLegacyName<InsertChildCommand>("key", "Index");
             AddLegacyName<ChangeIconCommand>("IconKey", "Key");
             AddLegacyName<ChangeColorCommand>("Color", "Index");
             AddLegacyName<ChangeColorCommand>("ColorValue", "Value");

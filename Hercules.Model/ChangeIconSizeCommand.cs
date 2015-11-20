@@ -12,6 +12,7 @@ namespace Hercules.Model
 {
     public sealed class ChangeIconSizeCommand : CommandBase
     {
+        private const string PropertyKey_IconSize = "IconSize";
         private readonly IconSize newIconSize;
 
         private IconSize oldIconSize;
@@ -24,7 +25,10 @@ namespace Hercules.Model
         public ChangeIconSizeCommand(PropertiesBag properties, Document document)
             : base(properties, document)
         {
-            newIconSize = (IconSize)properties["IconSize"].ToInt32(CultureInfo.InvariantCulture);
+            if (properties.Contains(PropertyKey_IconSize))
+            {
+                newIconSize = (IconSize)properties[PropertyKey_IconSize].ToInt32(CultureInfo.InvariantCulture);
+            }
         }
 
         public ChangeIconSizeCommand(NodeBase node, IconSize newIconSize)
@@ -35,7 +39,7 @@ namespace Hercules.Model
 
         public override void Save(PropertiesBag properties)
         {
-            properties.Set("IconSize", (int)newIconSize);
+            properties.Set(PropertyKey_IconSize, (int)newIconSize);
 
             base.Save(properties);
         }

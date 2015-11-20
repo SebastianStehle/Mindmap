@@ -12,15 +12,23 @@ namespace Hercules.Model
 {
     public sealed class InsertChildCommand : ChildNodeCommandBase
     {
+        private const string PropertyKey_NodeSide = "NodeSide";
+        private const string PropertyKey_Index = "Index";
         private readonly NodeSide side;
         private readonly int? index;
 
         public InsertChildCommand(PropertiesBag properties, Document document)
             : base(properties, document)
         {
-            side = (NodeSide)properties["NodeSide"].ToInt32(CultureInfo.InvariantCulture);
+            if (properties.Contains(PropertyKey_NodeSide))
+            {
+                side = (NodeSide)properties[PropertyKey_NodeSide].ToInt32(CultureInfo.InvariantCulture);
+            }
 
-            index = properties["key"].ToNullableInt32(CultureInfo.InvariantCulture);
+            if (properties.Contains(PropertyKey_Index))
+            {
+                index = properties[PropertyKey_Index].ToNullableInt32(CultureInfo.InvariantCulture);
+            }
         }
 
         public InsertChildCommand(NodeBase parent, int? index, NodeSide side)
@@ -38,8 +46,8 @@ namespace Hercules.Model
 
         public override void Save(PropertiesBag properties)
         {
-            properties.Set("key", index);
-            properties.Set("NodeSide", (int)side);
+            properties.Set(PropertyKey_Index, index);
+            properties.Set(PropertyKey_NodeSide, (int)side);
 
             base.Save(properties);
         }

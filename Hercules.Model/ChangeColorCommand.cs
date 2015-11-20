@@ -10,7 +10,6 @@ namespace Hercules.Model
     public sealed class ChangeColorCommand : CommandBase
     {
         private readonly INodeColor newColor;
-
         private INodeColor oldColor;
 
         public INodeColor NewColor

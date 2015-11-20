@@ -13,7 +13,7 @@ namespace Hercules.Model
 {
     public sealed class KeyIcon : INodeIcon, IEquatable<KeyIcon>
     {
-        private const string PropertyKey = "Key";
+        private const string PropertyKey_Key = "Key";
         private readonly string key;
 
         public string Key
@@ -32,14 +32,26 @@ namespace Hercules.Model
         {
             Guard.NotNull(properties, nameof(properties));
 
-            properties.Set(PropertyKey, key);
+            properties.Set(PropertyKey_Key, key);
         }
 
         public static INodeIcon TryParse(PropertiesBag properties)
         {
             Guard.NotNull(properties, nameof(properties));
 
-            return properties.Contains(PropertyKey) ? new KeyIcon(properties[PropertyKey].ToString()) : null;
+            INodeIcon result = null;
+
+            if (properties.Contains(PropertyKey_Key))
+            {
+                string key = properties[PropertyKey_Key].ToString();
+
+                if (!string.IsNullOrWhiteSpace(key))
+                {
+                    result = new KeyIcon(properties[PropertyKey_Key].ToString());
+                }
+            }
+
+            return result;
         }
 
         public override bool Equals(object obj)

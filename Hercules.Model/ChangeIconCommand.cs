@@ -10,7 +10,6 @@ namespace Hercules.Model
     public sealed class ChangeIconCommand : CommandBase
     {
         private readonly INodeIcon newIcon;
-
         private INodeIcon oldIcon;
 
         public INodeIcon NewIcon

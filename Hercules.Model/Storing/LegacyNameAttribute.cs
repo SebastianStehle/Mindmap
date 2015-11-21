@@ -8,7 +8,7 @@
 
 using System;
 
-namespace Hercules.Model
+namespace Hercules.Model.Storing
 {
     [AttributeUsage(AttributeTargets.Class)]
     public sealed class LegacyNameAttribute : Attribute

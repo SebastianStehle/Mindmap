@@ -18,7 +18,6 @@ namespace Hercules.Model.Storing
         private const string Suffix = "Command";
         private static readonly Dictionary<string, Type> TypesByName = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
         private static readonly Dictionary<Type, string> NamesByType = new Dictionary<Type, string>();
-        private static readonly MultiValueDictionary<Type, LegacyPropertyAttribute> LegacyProperties = new MultiValueDictionary<Type, LegacyPropertyAttribute>();
 
         static CommandFactory()
         {
@@ -42,16 +41,6 @@ namespace Hercules.Model.Storing
                 if (!string.IsNullOrWhiteSpace(legacyName?.OldName))
                 {
                     AddCommand(type, legacyName.OldName);
-                }
-
-                IEnumerable<LegacyPropertyAttribute> legacyProperties = typeInfo.GetCustomAttributes<LegacyPropertyAttribute>();
-
-                foreach (LegacyPropertyAttribute legacyProperty in legacyProperties)
-                {
-                    if (!string.IsNullOrWhiteSpace(legacyProperty.OldName) && !string.IsNullOrWhiteSpace(legacyProperty.NewName))
-                    {
-                        LegacyProperties.Add(typeInfo.AsType(), legacyProperty);
-                    }
                 }
             }
         }
@@ -87,27 +76,12 @@ namespace Hercules.Model.Storing
         {
             Type type = ResolveType(typeName);
 
-            MapProperties(properties, type);
-
             return CreateCommand(properties, document, type);
         }
 
         private static CommandBase CreateCommand(PropertiesBag properties, Document document, Type type)
         {
             return (CommandBase)Activator.CreateInstance(type, properties, document);
-        }
-
-        private static void MapProperties(PropertiesBag properties, Type type)
-        {
-            IReadOnlyCollection<LegacyPropertyAttribute> mappings;
-
-            if (LegacyProperties.TryGetValue(type, out mappings))
-            {
-                foreach (var mapping in mappings)
-                {
-                    properties.Rename(mapping.OldName, mapping.NewName);
-                }
-            }
         }
 
         private static Type ResolveType(string typeName)

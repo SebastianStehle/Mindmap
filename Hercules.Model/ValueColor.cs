@@ -7,14 +7,14 @@
 // ==========================================================================
 
 using System;
-using System.Globalization;
 using GP.Windows;
 
 namespace Hercules.Model
 {
     public sealed class ValueColor : INodeColor, IEquatable<ValueColor>
     {
-        private const string PropertyKeyForValue = "Value";
+        private const string PropertyValue = "Value";
+        private const string PropertyValueOld = "ColorValue";
         private readonly int color;
 
         public int Color
@@ -33,28 +33,22 @@ namespace Hercules.Model
         {
             Guard.NotNull(properties, nameof(properties));
 
-            properties.Set(PropertyKeyForValue, color);
+            properties.Set(PropertyValue, color);
         }
 
         public static INodeColor TryParse(PropertiesBag properties)
         {
             Guard.NotNull(properties, nameof(properties));
 
-            INodeColor color = null;
+            int value;
 
-            if (properties.Contains(PropertyKeyForValue))
+            if (properties.TryParseInt32(PropertyValue, out value) ||
+                properties.TryParseInt32(PropertyValueOld, out value))
             {
-                try
-                {
-                    color = new ValueColor(properties[PropertyKeyForValue].ToInt32(CultureInfo.CurrentCulture));
-                }
-                catch (InvalidCastException)
-                {
-                    color = null;
-                }
+                return new ValueColor(value);
             }
 
-            return color;
+            return null;
         }
 
         public override bool Equals(object obj)

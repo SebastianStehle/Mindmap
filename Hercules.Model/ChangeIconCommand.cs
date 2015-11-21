@@ -5,10 +5,12 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
+using Hercules.Model.Storing;
+
 namespace Hercules.Model
 {
     [LegacyName("Hercules.Model.ChangeIconKeyCommand, Hercules.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
-    [LegacyProperty("IconKey", "Key")]
     public sealed class ChangeIconCommand : CommandBase
     {
         private readonly INodeIcon newIcon;

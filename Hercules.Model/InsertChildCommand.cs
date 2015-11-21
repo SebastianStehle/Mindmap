@@ -5,45 +5,37 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
-using System;
-using System.Globalization;
-
 namespace Hercules.Model
 {
-    [LegacyProperty("Key", "Index")]
     public sealed class InsertChildCommand : ChildNodeCommandBase
     {
-        private const string PropertyKeyForNodeSide = "NodeSide";
-        private const string PropertyKeyForIndex = "Index";
+        private const string PropertyNodeSide = "NodeSide";
+        private const string PropertyIndex = "Index";
+        private const string PropertyIndexOld = "Key";
         private readonly NodeSide side;
         private readonly int? index;
 
         public InsertChildCommand(PropertiesBag properties, Document document)
             : base(properties, document)
         {
-            if (properties.Contains(PropertyKeyForNodeSide))
+            int value;
+
+            if (properties.TryParseInt32(PropertyNodeSide, out value))
             {
-                try
-                {
-                    side = (NodeSide)properties[PropertyKeyForNodeSide].ToInt32(CultureInfo.InvariantCulture);
-                }
-                catch (InvalidCastException)
-                {
-                    side = NodeSide.Right;
-                }
+                side = (NodeSide)value;
+            }
+            else
+            {
+                side = NodeSide.Right;
             }
 
-            if (properties.Contains(PropertyKeyForIndex))
+            bool isIndexParsed =
+                properties.TryParseNullableInt32(PropertyIndex, out index) ||
+                properties.TryParseNullableInt32(PropertyIndexOld, out index);
+
+            if (!isIndexParsed)
             {
-                try
-                {
-                    index = properties[PropertyKeyForIndex].ToNullableInt32(CultureInfo.InvariantCulture);
-                }
-                catch (InvalidCastException)
-                {
-                    index = null;
-                }
+                index = null;
             }
         }
 
@@ -64,10 +56,10 @@ namespace Hercules.Model
         {
             if (index.HasValue)
             {
-                properties.Set(PropertyKeyForIndex, index);
+                properties.Set(PropertyIndex, index);
             }
 
-            properties.Set(PropertyKeyForNodeSide, (int)side);
+            properties.Set(PropertyNodeSide, (int)side);
 
             base.Save(properties);
         }

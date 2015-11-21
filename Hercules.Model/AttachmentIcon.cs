@@ -19,8 +19,8 @@ namespace Hercules.Model
     {
         private const double MaxSize = 80;
         private const string NameFallback = "Attachment.png";
-        private const string PropertyKeyForAttachment = "Attachment";
-        private const string PropertyKeyForName = "Name";
+        private const string PropertyAttachment = "Attachment";
+        private const string PropertyName = "Name";
         private readonly string base64Content;
         private readonly string name;
 
@@ -90,7 +90,7 @@ namespace Hercules.Model
         {
             Guard.NotNull(properties, nameof(properties));
 
-            properties.Set(PropertyKeyForAttachment, base64Content);
+            properties.Set(PropertyAttachment, base64Content);
         }
 
         public Stream ToStream()
@@ -102,26 +102,21 @@ namespace Hercules.Model
         {
             Guard.NotNull(properties, nameof(properties));
 
-            INodeIcon result = null;
+            string attachment;
 
-            if (properties.Contains(PropertyKeyForAttachment) && properties.Contains(PropertyKeyForName))
+            if (properties.TryParseString(PropertyAttachment, out attachment) && string.IsNullOrWhiteSpace(attachment) && attachment.IsBase64Encoded())
             {
-                string attachment = properties[PropertyKeyForAttachment].ToString();
+                string name;
 
-                if (string.IsNullOrWhiteSpace(attachment) && attachment.IsBase64Encoded())
+                if (!properties.TryParseString(PropertyName, out name) || string.IsNullOrWhiteSpace(name))
                 {
-                    string name = properties[PropertyKeyForName].ToString();
-
-                    if (string.IsNullOrWhiteSpace(name))
-                    {
-                        name = NameFallback;
-                    }
-
-                    result = new AttachmentIcon(attachment, name);
+                    name = NameFallback;
                 }
+
+                return new AttachmentIcon(attachment, name);
             }
 
-            return result;
+            return null;
         }
 
         public override bool Equals(object obj)

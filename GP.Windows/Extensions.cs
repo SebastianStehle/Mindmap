@@ -42,8 +42,8 @@ namespace GP.Windows
         /// </exception>
         public static void Register(this INotifyCollectionChanged eventSource, NotifyCollectionChangedEventHandler eventHandler)
         {
-            Guard.NotNull(eventSource, "eventSource");
-            Guard.NotNull(eventHandler, "eventHandler");
+            Guard.NotNull(eventSource, nameof(eventSource));
+            Guard.NotNull(eventHandler, nameof(eventHandler));
 
             eventSource.CollectionChanged += eventHandler;
         }
@@ -88,8 +88,8 @@ namespace GP.Windows
         /// </exception>
         public static void Unregister(this INotifyCollectionChanged eventSource, NotifyCollectionChangedEventHandler eventHandler)
         {
-            Guard.NotNull(eventSource, "eventSource");
-            Guard.NotNull(eventHandler, "eventHandler");
+            Guard.NotNull(eventSource, nameof(eventSource));
+            Guard.NotNull(eventHandler, nameof(eventHandler));
 
             eventSource.CollectionChanged -= eventHandler;
         }
@@ -106,8 +106,8 @@ namespace GP.Windows
         /// </exception>
         public static void Write(this Stream target, Stream source)
         {
-            Guard.NotNull(source, "source");
-            Guard.NotNull(target, "target");
+            Guard.NotNull(source, nameof(source));
+            Guard.NotNull(target, nameof(target));
 
             byte[] buffer = new byte[32768];
 
@@ -154,8 +154,8 @@ namespace GP.Windows
         /// </exception>
         public static void Foreach<T>(this IEnumerable<T> items, Action<T> action)
         {
-            Guard.NotNull(items, "items");
-            Guard.NotNull(action, "action");
+            Guard.NotNull(items, nameof(items));
+            Guard.NotNull(action, nameof(action));
 
             foreach (T item in items.Where(item => item != null))
             {
@@ -176,8 +176,8 @@ namespace GP.Windows
         /// </exception>
         public static void AddRange<TItem>(this Collection<TItem> target, IEnumerable<TItem> elements)
         {
-            Guard.NotNull(target, "target");
-            Guard.NotNull(elements, "elements");
+            Guard.NotNull(target, nameof(target));
+            Guard.NotNull(elements, nameof(elements));
 
             foreach (TItem item in elements)
             {
@@ -199,7 +199,7 @@ namespace GP.Windows
         /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is null.</exception>
         public static TValue GetOrCreateDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key)
         {
-            Guard.NotNull(dictionary, "dictionary");
+            Guard.NotNull(dictionary, nameof(dictionary));
 
             return GetOrCreateDefault(dictionary, key, () => default(TValue));
         }
@@ -223,8 +223,8 @@ namespace GP.Windows
         /// </exception>
         public static TValue GetOrCreateDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TValue> function)
         {
-            Guard.NotNull(dictionary, "dictionary");
-            Guard.NotNull(function, "function");
+            Guard.NotNull(dictionary, nameof(dictionary));
+            Guard.NotNull(function, nameof(function));
 
             TValue value;
 
@@ -234,6 +234,28 @@ namespace GP.Windows
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// Determines whether the value is a valid base64 encoded string.
+        /// </summary>
+        /// <param name="value">The string value to check.</param>
+        /// <returns>
+        /// The result of the comparison.
+        /// </returns>
+        public static bool IsBase64Encoded(this string value)
+        {
+            try
+            {
+                // ReSharper disable once ReturnValueOfPureMethodIsNotUsed
+                Convert.FromBase64String(value);
+
+                return value.Replace(" ", string.Empty).Length % 4 == 0;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         /// <summary>

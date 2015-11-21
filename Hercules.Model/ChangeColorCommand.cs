@@ -7,6 +7,8 @@
 // ==========================================================================
 namespace Hercules.Model
 {
+    [LegacyProperty("Color", "Index")]
+    [LegacyProperty("ColorValue", "Value")]
     public sealed class ChangeColorCommand : CommandBase
     {
         private readonly INodeColor newColor;

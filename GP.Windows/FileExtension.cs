@@ -157,7 +157,7 @@ namespace GP.Windows
         /// <exception cref="ArgumentNullException"><paramref name="extension"/> is null.</exception>
         public static FileExtension GetFileExtension(string extension)
         {
-            Guard.NotNull(extension, "extension");
+            Guard.NotNull(extension, nameof(extension));
 
             return extensionMappings[extension];
         }

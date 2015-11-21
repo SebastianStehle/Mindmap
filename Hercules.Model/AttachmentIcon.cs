@@ -18,8 +18,9 @@ namespace Hercules.Model
     public sealed class AttachmentIcon : INodeIcon
     {
         private const double MaxSize = 80;
-        private const string PropertyKey_Attachment = "Attachment";
-        private const string PropertyKey_Name = "Name";
+        private const string NameFallback = "Attachment.png";
+        private const string PropertyKeyForAttachment = "Attachment";
+        private const string PropertyKeyForName = "Name";
         private readonly string base64Content;
         private readonly string name;
 
@@ -89,7 +90,7 @@ namespace Hercules.Model
         {
             Guard.NotNull(properties, nameof(properties));
 
-            properties.Set(PropertyKey_Attachment, base64Content);
+            properties.Set(PropertyKeyForAttachment, base64Content);
         }
 
         public Stream ToStream()
@@ -103,9 +104,21 @@ namespace Hercules.Model
 
             INodeIcon result = null;
 
-            if (properties.Contains(PropertyKey_Attachment) && properties.Contains(PropertyKey_Name))
+            if (properties.Contains(PropertyKeyForAttachment) && properties.Contains(PropertyKeyForName))
             {
-                result = new AttachmentIcon(properties[PropertyKey_Attachment].ToString(), properties[PropertyKey_Name].ToString());
+                string attachment = properties[PropertyKeyForAttachment].ToString();
+
+                if (string.IsNullOrWhiteSpace(attachment) && attachment.IsBase64Encoded())
+                {
+                    string name = properties[PropertyKeyForName].ToString();
+
+                    if (string.IsNullOrWhiteSpace(name))
+                    {
+                        name = NameFallback;
+                    }
+
+                    result = new AttachmentIcon(attachment, name);
+                }
             }
 
             return result;

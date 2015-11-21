@@ -93,6 +93,8 @@
   <ItemGroup>
     <!--A reference to the entire .Net Framework and Windows SDK are automatically included-->
     <Content Include="Files\Format0.mmd" />
+    <Content Include="Files\Format1.mmd" />
+    <Content Include="Files\Format2.mmd" />
     <None Include="project.json" />
     <SDKReference Include="BehaviorsXamlSDKManaged, Version=12.0">
       <Name>Behaviors SDK %28XAML%29</Name>

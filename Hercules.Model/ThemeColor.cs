@@ -14,7 +14,7 @@ namespace Hercules.Model
 {
     public sealed class ThemeColor : INodeColor, IEquatable<ThemeColor>
     {
-        private const string PropertyKey_Index = "Index";
+        private const string PropertyKeyForIndex = "Index";
         private readonly int index;
 
         public int Index
@@ -33,14 +33,28 @@ namespace Hercules.Model
         {
             Guard.NotNull(properties, nameof(properties));
 
-            properties.Set(PropertyKey_Index, index);
+            properties.Set(PropertyKeyForIndex, index);
         }
 
         public static INodeColor TryParse(PropertiesBag properties)
         {
             Guard.NotNull(properties, nameof(properties));
 
-            return properties.Contains(PropertyKey_Index) ? new ThemeColor(properties[PropertyKey_Index].ToInt32(CultureInfo.CurrentCulture)) : null;
+            INodeColor color = null;
+
+            if (properties.Contains(PropertyKeyForIndex))
+            {
+                try
+                {
+                    color = new ThemeColor(properties[PropertyKeyForIndex].ToInt32(CultureInfo.CurrentCulture));
+                }
+                catch (InvalidCastException)
+                {
+                    color = null;
+                }
+            }
+
+            return color;
         }
 
         public override bool Equals(object obj)

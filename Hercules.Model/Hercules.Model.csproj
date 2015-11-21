@@ -154,14 +154,14 @@
     <Compile Include="INodeIcon.cs" />
     <Compile Include="KeyIcon.cs" />
     <Compile Include="IWritable.cs" />
+    <Compile Include="LegacyPropertyAttribute.cs" />
     <Compile Include="Rendering\IRenderColor.cs" />
     <Compile Include="Rendering\IRenderIcon.cs" />
     <Compile Include="Storing\CommandNameAttribute.cs" />
     <Compile Include="Storing\DocumentNotFoundException.cs" />
-    <Compile Include="Storing\Json\CommandFactory.cs" />
+    <Compile Include="Storing\CommandFactory.cs" />
     <Compile Include="Storing\Json\JsonDocumentSerializer.cs" />
-    <Compile Include="Storing\Json\LegacyName.cs" />
-    <Compile Include="Storing\Json\LegacyNames.cs" />
+    <Compile Include="LegacyNameAttribute.cs" />
     <Compile Include="ThemeColor.cs" />
     <Compile Include="InsertChildCommand.cs" />
     <Compile Include="IUndoRedoAction.cs" />

@@ -13,7 +13,7 @@ namespace Hercules.Model
 {
     public abstract class ChildNodeCommandBase : CommandBase
     {
-        private const string PropertyKey_ChildId = "ChildId";
+        private const string PropertyKeyForChildId = "ChildId";
         private readonly Node child;
 
         public Node Child
@@ -35,14 +35,14 @@ namespace Hercules.Model
         protected ChildNodeCommandBase(PropertiesBag properties, Document document)
             : base(properties, document)
         {
-            Guid childId = properties[PropertyKey_ChildId].ToGuid(CultureInfo.InvariantCulture);
+            Guid childId = properties[PropertyKeyForChildId].ToGuid(CultureInfo.InvariantCulture);
 
             child = (Node)document.GetOrCreateNode(childId, i => new Node(i));
         }
 
         public override void Save(PropertiesBag properties)
         {
-            properties.Set(PropertyKey_ChildId, child.Id);
+            properties.Set(PropertyKeyForChildId, child.Id);
 
             base.Save(properties);
         }

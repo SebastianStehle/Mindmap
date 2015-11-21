@@ -168,10 +168,24 @@ namespace Hercules.App.Components.Implementations
                     await LoadedMindmap.SaveAsync(LoadedDocument);
                 }
 
-                LoadedMindmap = mindmap;
-                LoadedDocument = await documentStore.LoadAsync(mindmap.DocumentRef);
+                try
+                {
+                    LoadedMindmap = mindmap;
+                    LoadedDocument = await documentStore.LoadAsync(mindmap.DocumentRef);
 
-                OnDocumentLoaded(LoadedDocument);
+                    OnDocumentLoaded(LoadedDocument);
+                }
+                catch
+                {
+                    LoadedMindmap = null;
+
+                    OnDocumentLoaded(null);
+
+                    string content = ResourceManager.GetString("MindmapLoadingFailed_Content");
+                    string heading = ResourceManager.GetString("MindmapLoadingFailed_Heading");
+
+                    await dialogService.AlertAsync(content, heading);
+                }
             });
         }
 

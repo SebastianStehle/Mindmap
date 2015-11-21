@@ -65,7 +65,7 @@ namespace Hercules.Win2D.Rendering
 
         public ICanvasBrush ThemeNormalBrush(int colorIndex)
         {
-            IRenderColor color = colors[colorIndex];
+            IRenderColor color = ResolveColor(colorIndex);
 
             return ThemeNormalBrush(color);
         }
@@ -79,7 +79,7 @@ namespace Hercules.Win2D.Rendering
 
         public ICanvasBrush ThemeDarkBrush(int colorIndex)
         {
-            IRenderColor color = colors[colorIndex];
+            IRenderColor color = ResolveColor(colorIndex);
 
             return Brush(color.Darker, 1);
         }
@@ -93,7 +93,7 @@ namespace Hercules.Win2D.Rendering
 
         public ICanvasBrush ThemeLightBrush(int colorIndex)
         {
-            IRenderColor color = colors[colorIndex];
+            IRenderColor color = ResolveColor(colorIndex);
 
             return Brush(color.Lighter, 1);
         }
@@ -103,6 +103,16 @@ namespace Hercules.Win2D.Rendering
             Guard.NotNull(color, nameof(color));
 
             return Brush(color.Lighter, 1);
+        }
+
+        private IRenderColor ResolveColor(int colorIndex)
+        {
+            if (colorIndex > 0 && colorIndex < colors.Count - 1)
+            {
+                return colors[colorIndex];
+            }
+
+            return colors[0];
         }
 
         public ICanvasBrush Brush(Color color, float opacity)

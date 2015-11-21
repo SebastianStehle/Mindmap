@@ -26,13 +26,14 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
     [ImplementPropertyChanged]
     public sealed class MindmapsViewModel : ViewModelBase
     {
+        private readonly IMindmapStore mindmapStore;
         private RelayCommand<MindmapRef> deleteCommand;
 
         public ObservableCollection<MindmapRef> Mindmaps
         {
             get
             {
-                return MindmapStore.AllMindmaps;
+                return mindmapStore.AllMindmaps;
             }
         }
 
@@ -41,9 +42,6 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
         [NotifyUI]
         public MindmapRef SelectedMindmap { get; set; }
-
-        [Dependency]
-        public IMindmapStore MindmapStore { get; set; }
 
         [Dependency]
         public IProcessManager ProcessManager { get; set; }
@@ -62,7 +60,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
                     if (await MessageDialogService.ConfirmAsync(content, message))
                     {
-                        await MindmapStore.DeleteAsync(item);
+                        await mindmapStore.DeleteAsync(item);
                     }
                 }));
             }
@@ -73,6 +71,14 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             MessengerInstance.Register<ImportMessage>(this, OnImport);
         }
 
+        public MindmapsViewModel(IMindmapStore mindmapStore)
+            : this()
+        {
+            this.mindmapStore = mindmapStore;
+
+            mindmapStore.DocumentLoaded += MindmapStore_DocumentLoaded;
+        }
+
         public void OnImport(ImportMessage message)
         {
             ImportAsync(message.Content);
@@ -80,7 +86,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
         private void ImportAsync(ImportModel model)
         {
-            ProcessManager.RunMainProcessAsync(MindmapStore, async () =>
+            ProcessManager.RunMainProcessAsync(mindmapStore, async () =>
             {
                 try
                 {
@@ -90,12 +96,12 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                     {
                         foreach (var result in results)
                         {
-                            await MindmapStore.AddAsync(result.Name, result.Document);
+                            await mindmapStore.AddAsync(result.Name, result.Document);
                         }
 
-                        await MindmapStore.LoadAsync(MindmapStore.AllMindmaps[0]);
+                        await mindmapStore.LoadAsync(mindmapStore.AllMindmaps[0]);
 
-                        SelectedMindmap = MindmapStore.AllMindmaps[0];
+                        SelectedMindmap = mindmapStore.AllMindmaps[0];
                     }
                 }
                 catch
@@ -108,26 +114,34 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             }).Forget();
         }
 
+        private void MindmapStore_DocumentLoaded(object sender, DocumentLoadedEventArgs e)
+        {
+            if (e.Document == null)
+            {
+                SelectedMindmap = null;
+            }
+        }
+
         public async void OnSelectedMindmapChanged()
         {
             if (SelectedMindmap != null)
             {
-                await MindmapStore.LoadAsync(SelectedMindmap);
+                await mindmapStore.LoadAsync(SelectedMindmap);
             }
         }
 
         public async Task CreateNewMindmapAsync(string name)
         {
-            await MindmapStore.CreateAsync(name);
+            await mindmapStore.CreateAsync(name);
 
-            SelectedMindmap = MindmapStore.AllMindmaps.FirstOrDefault();
+            SelectedMindmap = mindmapStore.AllMindmaps.FirstOrDefault();
         }
 
         public async Task LoadAsync()
         {
-            await MindmapStore.LoadAllAsync();
+            await mindmapStore.LoadAllAsync();
 
-            SelectedMindmap = MindmapStore.AllMindmaps.FirstOrDefault();
+            SelectedMindmap = mindmapStore.AllMindmaps.FirstOrDefault();
         }
     }
 }

@@ -159,7 +159,7 @@ namespace GP.Windows.UI
 
         private static void ShowPopup<TView>(TView view, Point? offset, PopupMode mode) where TView : FrameworkElement
         {
-            Guard.NotNull(view, "view");
+            Guard.NotNull(view, nameof(view));
 
             popupOffset = offset;
             popupMode = mode;

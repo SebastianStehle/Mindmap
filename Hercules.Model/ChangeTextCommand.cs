@@ -9,10 +9,9 @@ namespace Hercules.Model
 {
     public sealed class ChangeTextCommand : CommandBase
     {
-        private const string PropertyKey_Text = "Text";
+        private const string PropertyKeyForText = "Text";
         private readonly string newText;
         private readonly bool disableSelection;
-
         private string oldText;
 
         public string NewText
@@ -23,7 +22,7 @@ namespace Hercules.Model
         public ChangeTextCommand(PropertiesBag properties, Document document)
             : base(properties, document)
         {
-            newText = properties.Contains(PropertyKey_Text) ? properties[PropertyKey_Text].ToString() : string.Empty;
+            newText = properties.Contains(PropertyKeyForText) ? properties[PropertyKeyForText].ToString() : string.Empty;
         }
 
         public ChangeTextCommand(NodeBase nodeId, string newText, bool disableSelection)
@@ -36,7 +35,7 @@ namespace Hercules.Model
 
         public override void Save(PropertiesBag properties)
         {
-            properties.Set(PropertyKey_Text, newText);
+            properties.Set(PropertyKeyForText, newText);
 
             base.Save(properties);
         }

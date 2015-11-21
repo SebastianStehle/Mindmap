@@ -444,4 +444,10 @@ The maximum allowed size is a 80x80 pixels.</value>
   <data name="LoadingIconFailed_Heading" xml:space="preserve">
     <value>Invalid Image</value>
   </data>
+  <data name="MindmapLoadingFailed_Content" xml:space="preserve">
+    <value>Sorry, the app cannot load the mindmap. There might be compatibility issues. Please write me a mail to mail2stehle@gmail.com, if you want to restore the mindmap.</value>
+  </data>
+  <data name="MindmapLoadingFailed_Heading" xml:space="preserve">
+    <value>Loading the mindmap failed</value>
+  </data>
 </root>

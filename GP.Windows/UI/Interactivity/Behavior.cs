@@ -52,7 +52,7 @@ namespace GP.Windows.UI.Interactivity
         /// <param name="associatedObject">The <see cref="T:Windows.UI.Xaml.DependencyObject" /> to which the <seealso cref="T:Microsoft.Xaml.Interactivity.IBehavior" /> will be attached.</param>
         public void Attach(DependencyObject associatedObject)
         {
-            Guard.NotNull(associatedObject, "associatedObject");
+            Guard.NotNull(associatedObject, nameof(associatedObject));
 
             element = associatedObject as T;
 

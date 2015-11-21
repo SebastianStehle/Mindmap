@@ -14,6 +14,7 @@ namespace Hercules.Model
 {
     public abstract class CommandBase : IUndoRedoAction
     {
+        private const string PropertyKeyForNodeId = "NodeId";
         private readonly NodeBase node;
 
         public NodeBase Node
@@ -33,7 +34,7 @@ namespace Hercules.Model
             Guard.NotNull(properties, nameof(properties));
             Guard.NotNull(document, nameof(document));
 
-            Guid nodeId = properties["NodeId"].ToGuid(CultureInfo.InvariantCulture);
+            Guid nodeId = properties[PropertyKeyForNodeId].ToGuid(CultureInfo.InvariantCulture);
 
             node = document.GetOrCreateNode(nodeId, i => new Node(i));
         }
@@ -42,7 +43,7 @@ namespace Hercules.Model
         {
             Guard.NotNull(properties, nameof(properties));
 
-            properties.Set("NodeId", node.Id);
+            properties.Set(PropertyKeyForNodeId, node.Id);
         }
 
         protected abstract void Execute(bool isRedo);

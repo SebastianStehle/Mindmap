@@ -40,7 +40,7 @@ namespace GP.Windows.UI
         /// <exception cref="System.ArgumentNullException"><paramref name="scrollViewer"/> is null.</exception>
         public static void CenterViewport(this ScrollViewer scrollViewer)
         {
-            Guard.NotNull(scrollViewer, "scrollViewer");
+            Guard.NotNull(scrollViewer, nameof(scrollViewer));
 
             double x = 0.5 * (scrollViewer.ExtentWidth  - scrollViewer.ViewportWidth);
             double y = 0.5 * (scrollViewer.ExtentHeight - scrollViewer.ActualHeight);
@@ -71,8 +71,8 @@ namespace GP.Windows.UI
         /// </exception>
         public static bool BringChildElementIntoView(this ScrollViewer scrollViewer, InputPaneVisibilityEventArgs eventArgs)
         {
-            Guard.NotNull(scrollViewer, "scrollViewer");
-            Guard.NotNull(eventArgs, "eventArgs");
+            Guard.NotNull(scrollViewer, nameof(scrollViewer));
+            Guard.NotNull(eventArgs, nameof(eventArgs));
 
             UIElement focusedElement = FocusManager.GetFocusedElement() as UIElement;
 
@@ -138,8 +138,8 @@ namespace GP.Windows.UI
         {
             while (true)
             {
-                Guard.NotNull(target, "target");
-                Guard.NotNull(child, "child");
+                Guard.NotNull(target, nameof(target));
+                Guard.NotNull(child, nameof(child));
 
                 DependencyObject parent = VisualTreeHelper.GetParent(child);
 
@@ -167,7 +167,7 @@ namespace GP.Windows.UI
         /// <exception cref="ArgumentNullException"><paramref name="target"/> is null.</exception>
         public static T FindParent<T>(this DependencyObject target) where T : class
         {
-            Guard.NotNull(target, "target");
+            Guard.NotNull(target, nameof(target));
 
             for (var temp = VisualTreeHelper.GetParent(target); temp != null; temp = VisualTreeHelper.GetParent(temp))
             {
@@ -196,8 +196,8 @@ namespace GP.Windows.UI
         /// </exception>
         public static T FindParent<T>(this DependencyObject target, Predicate<T> predicate) where T : class
         {
-            Guard.NotNull(target, "target");
-            Guard.NotNull(predicate, "predicate");
+            Guard.NotNull(target, nameof(target));
+            Guard.NotNull(predicate, nameof(predicate));
 
             for (var temp = VisualTreeHelper.GetParent(target); temp != null; temp = VisualTreeHelper.GetParent(temp))
             {

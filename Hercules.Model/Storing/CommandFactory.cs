@@ -9,35 +9,51 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Reflection;
 
-namespace Hercules.Model.Storing.Json
+namespace Hercules.Model.Storing
 {
     internal static class CommandFactory
     {
         private const string Suffix = "Command";
-
         private static readonly Dictionary<string, Type> TypesByName = new Dictionary<string, Type>(StringComparer.OrdinalIgnoreCase);
         private static readonly Dictionary<Type, string> NamesByType = new Dictionary<Type, string>();
-        private static readonly MultiValueDictionary<Type, LegacyName> LegacyNameMappings = new MultiValueDictionary<Type, LegacyName>();
+        private static readonly MultiValueDictionary<Type, LegacyPropertyAttribute> LegacyProperties = new MultiValueDictionary<Type, LegacyPropertyAttribute>();
 
         static CommandFactory()
         {
-            AddCommand<InsertChildCommand>();
+            Type commandBaseType = typeof(CommandBase);
 
-            AddCommand<ChangeColorCommand>();
-            AddCommand<ChangeIconCommand>();
-            AddCommand<ChangeIconCommand>(LegacyNames.ChangeIcon);
-            AddCommand<ChangeTextCommand>();
+            Assembly assembly = typeof(CommandFactory).GetTypeInfo().Assembly;
 
-            AddCommand<RemoveChildCommand>();
+            foreach (Type type in assembly.GetTypes())
+            {
+                TypeInfo typeInfo = type.GetTypeInfo();
 
-            AddCommand<ToggleCollapseCommand>();
-            AddCommand<ToggleHullCommand>();
+                if (typeInfo.IsSubclassOf(commandBaseType))
+                {
+                    string typeName = ResolveTypeName(type);
 
-            AddLegacyName<InsertChildCommand>("key", "Index");
-            AddLegacyName<ChangeIconCommand>("IconKey", "Key");
-            AddLegacyName<ChangeColorCommand>("Color", "Index");
-            AddLegacyName<ChangeColorCommand>("ColorValue", "Value");
+                    AddCommand(type, typeName);
+                }
+
+                LegacyNameAttribute legacyName = typeInfo.GetCustomAttribute<LegacyNameAttribute>();
+
+                if (!string.IsNullOrWhiteSpace(legacyName?.OldName))
+                {
+                    AddCommand(type, legacyName.OldName);
+                }
+
+                IEnumerable<LegacyPropertyAttribute> legacyProperties = typeInfo.GetCustomAttributes<LegacyPropertyAttribute>();
+
+                foreach (LegacyPropertyAttribute legacyProperty in legacyProperties)
+                {
+                    if (!string.IsNullOrWhiteSpace(legacyProperty.OldName) && !string.IsNullOrWhiteSpace(legacyProperty.NewName))
+                    {
+                        LegacyProperties.Add(typeInfo.AsType(), legacyProperty);
+                    }
+                }
+            }
         }
 
         public static string ToTypeName(CommandBase command)
@@ -45,23 +61,11 @@ namespace Hercules.Model.Storing.Json
             return NamesByType[command.GetType()];
         }
 
-        private static void AddLegacyName<T>(string oldName, string newName) where T : CommandBase
+        private static void AddCommand(Type type, string name)
         {
-            LegacyNameMappings.Add(typeof(T), new LegacyName { OldName = oldName, NewName = newName });
-        }
-
-        private static void AddCommand<T>(string name = null, bool isDefaultName = false) where T : CommandBase
-        {
-            AddCommand(typeof(T), name, isDefaultName);
-        }
-
-        private static void AddCommand(Type type, string name = null, bool isDefaultName = false)
-        {
-            name = name ?? ResolveTypeName(type);
-
             TypesByName[name] = type;
 
-            if (!NamesByType.ContainsKey(type) || isDefaultName)
+            if (!NamesByType.ContainsKey(type))
             {
                 NamesByType[type] = name;
             }
@@ -95,9 +99,9 @@ namespace Hercules.Model.Storing.Json
 
         private static void MapProperties(PropertiesBag properties, Type type)
         {
-            IReadOnlyCollection<LegacyName> mappings;
+            IReadOnlyCollection<LegacyPropertyAttribute> mappings;
 
-            if (LegacyNameMappings.TryGetValue(type, out mappings))
+            if (LegacyProperties.TryGetValue(type, out mappings))
             {
                 foreach (var mapping in mappings)
                 {

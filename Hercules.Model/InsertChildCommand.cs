@@ -6,28 +6,44 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
 using System.Globalization;
 
 namespace Hercules.Model
 {
+    [LegacyProperty("Key", "Index")]
     public sealed class InsertChildCommand : ChildNodeCommandBase
     {
-        private const string PropertyKey_NodeSide = "NodeSide";
-        private const string PropertyKey_Index = "Index";
+        private const string PropertyKeyForNodeSide = "NodeSide";
+        private const string PropertyKeyForIndex = "Index";
         private readonly NodeSide side;
         private readonly int? index;
 
         public InsertChildCommand(PropertiesBag properties, Document document)
             : base(properties, document)
         {
-            if (properties.Contains(PropertyKey_NodeSide))
+            if (properties.Contains(PropertyKeyForNodeSide))
             {
-                side = (NodeSide)properties[PropertyKey_NodeSide].ToInt32(CultureInfo.InvariantCulture);
+                try
+                {
+                    side = (NodeSide)properties[PropertyKeyForNodeSide].ToInt32(CultureInfo.InvariantCulture);
+                }
+                catch (InvalidCastException)
+                {
+                    side = NodeSide.Right;
+                }
             }
 
-            if (properties.Contains(PropertyKey_Index))
+            if (properties.Contains(PropertyKeyForIndex))
             {
-                index = properties[PropertyKey_Index].ToNullableInt32(CultureInfo.InvariantCulture);
+                try
+                {
+                    index = properties[PropertyKeyForIndex].ToNullableInt32(CultureInfo.InvariantCulture);
+                }
+                catch (InvalidCastException)
+                {
+                    index = null;
+                }
             }
         }
 
@@ -46,8 +62,12 @@ namespace Hercules.Model
 
         public override void Save(PropertiesBag properties)
         {
-            properties.Set(PropertyKey_Index, index);
-            properties.Set(PropertyKey_NodeSide, (int)side);
+            if (index.HasValue)
+            {
+                properties.Set(PropertyKeyForIndex, index);
+            }
+
+            properties.Set(PropertyKeyForNodeSide, (int)side);
 
             base.Save(properties);
         }

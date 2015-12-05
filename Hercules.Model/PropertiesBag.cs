@@ -67,6 +67,16 @@ namespace Hercules.Model
             Guard.NotNullOrEmpty(oldPropertyName, nameof(oldPropertyName));
             Guard.NotNullOrEmpty(newPropertyName, nameof(newPropertyName));
 
+            if (internalDictionary.ContainsKey(newPropertyName))
+            {
+                throw new ArgumentException($"An property with the key '{newPropertyName}' already exists.", newPropertyName);
+            }
+
+            if (string.Equals(oldPropertyName, newPropertyName, StringComparison.OrdinalIgnoreCase))
+            {
+                throw new ArgumentException($"The property names are equal.", newPropertyName);
+            }
+
             PropertyValue property;
 
             if (internalDictionary.TryGetValue(oldPropertyName, out property))

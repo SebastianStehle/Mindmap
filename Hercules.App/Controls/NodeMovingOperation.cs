@@ -64,24 +64,27 @@ namespace Hercules.App.Controls
         {
             if (movingNode == null)
             {
-                movingNode = renderer.AddCustomNode(renderNode.CloneUnlinked());
+              //  movingNode = renderer.AddCustomNode(renderNode.CloneUnlinked());
             }
 
-            movingNode.MoveBy(translation);
+            // movingNode.MoveBy(translation);
 
-            renderer.Invalidate();
-
-            if (movingNode.Bounds.Width > 0 && movingNode.Bounds.Height > 0)
+            if (movingNode != null)
             {
-                AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.Bounds);
+                renderer.Invalidate();
 
-                if (target != null)
+                if (movingNode.Bounds.Width > 0 && movingNode.Bounds.Height > 0)
                 {
-                    renderer.ShowPreviewElement(target.Position, target.Parent, target.Anchor);
-                }
-                else
-                {
-                    renderer.HidePreviewElement();
+                    AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.Bounds);
+
+                    if (target != null)
+                    {
+                        renderer.ShowPreviewElement(target.Position, target.Parent, target.Anchor);
+                    }
+                    else
+                    {
+                        renderer.HidePreviewElement();
+                    }
                 }
             }
         }
@@ -110,7 +113,7 @@ namespace Hercules.App.Controls
         {
             if (movingNode != null)
             {
-                renderer.RemoveCustomNode(movingNode);
+                //renderer.RemoveCustomNode(movingNode);
             }
 
             renderer.HidePreviewElement();

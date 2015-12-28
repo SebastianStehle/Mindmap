@@ -26,7 +26,7 @@ namespace Hercules.Win2D.Rendering
         private CanvasTextFormat textFormat;
         private Vector2 renderSize;
         private Vector2 renderPosition;
-        private float fontSize;
+        private float fontSize = 14;
         private float minSize;
 
         public Rect2 Bounds

@@ -8,13 +8,13 @@
 
 using System;
 using System.Numerics;
-using Windows.UI;
 using GP.Windows;
 using GP.Windows.UI;
 using Hercules.Model;
 using Hercules.Model.Layouting;
 using Hercules.Model.Rendering;
 using Hercules.Model.Utils;
+using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
 
 namespace Hercules.Win2D.Rendering
@@ -24,6 +24,11 @@ namespace Hercules.Win2D.Rendering
         private static readonly Vector2 EmptyVector = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
         private readonly Win2DRenderer renderer;
         private readonly NodeBase node;
+        private readonly Win2DTextRenderer textRenderer;
+        private readonly ExpandButton button;
+        private IBodyGeometry bodyGeometry;
+        private IPathGeometry pathGeometry;
+        private IHullGeometry hullGeometry;
         private Vector2 animationTargetPosition = EmptyVector;
         private Vector2 position;
         private Vector2 renderPosition;
@@ -32,7 +37,6 @@ namespace Hercules.Win2D.Rendering
         private Rect2 bounds;
         private Rect2 boundsWithParent;
         private DateTime? animatingEndUtc;
-        private bool isMoved;
         private bool isVisible = true;
 
         public Win2DRenderNode Parent { get; set; }
@@ -87,14 +91,19 @@ namespace Hercules.Win2D.Rendering
             get { return renderSize; }
         }
 
+        public Win2DTextRenderer TextRenderer
+        {
+            get { return textRenderer; }
+        }
+
         public virtual Vector2 RenderPositionOffset
         {
-            get { return Vector2.Zero; }
+            get { return bodyGeometry.RenderPositionOffset; }
         }
 
         public virtual float VerticalPathOffset
         {
-            get { return 0; }
+            get { return bodyGeometry.VerticalPathOffset; }
         }
 
         public bool IsVisible
@@ -104,8 +113,6 @@ namespace Hercules.Win2D.Rendering
 
         public bool HideControls { get; set; }
 
-        public abstract Win2DTextRenderer TextRenderer { get; }
-
         protected Win2DRenderNode(NodeBase node, Win2DRenderer renderer)
         {
             Guard.NotNull(node, nameof(node));
@@ -114,21 +121,10 @@ namespace Hercules.Win2D.Rendering
             this.node = node;
 
             this.renderer = renderer;
-        }
 
-        public Win2DRenderNode CloneUnlinked()
-        {
-            Win2DRenderNode clone = CloneInternal();
+            button = new ExpandButton(node);
 
-            clone.Parent = null;
-            clone.isMoved = true;
-            clone.position = position;
-            clone.renderSize = renderSize;
-            clone.renderPosition = renderPosition;
-            clone.targetPosition = targetPosition;
-            clone.boundsWithParent = boundsWithParent;
-
-            return clone;
+            textRenderer = new Win2DTextRenderer(node);
         }
 
         public void Hide()
@@ -153,39 +149,36 @@ namespace Hercules.Win2D.Rendering
 
         public void RenderPath(CanvasDrawingSession session)
         {
-            RenderPathInternal(session);
+            if (pathGeometry != null)
+            {
+                pathGeometry.Render(this, session);
+            }
         }
 
         public void RenderHull(CanvasDrawingSession session)
         {
-            RenderHullInternal(session, Resources.FindColor(node));
+            if (hullGeometry != null)
+            {
+                pathGeometry.Render(this, session);
+            }
         }
 
         public void Render(CanvasDrawingSession session, bool renderControls)
         {
-#if DRAW_OUTLINE
-            session.DrawRectangle(Bounds, Colors.Green);
+            bodyGeometry.Render(this, session, Resources.FindColor(Node), renderControls);
 
-            if (Parent != null)
+            if (bodyGeometry.HasText)
             {
-                session.DrawRectangle(BoundsWithParent, Colors.Blue);
+                textRenderer.Render(session);
             }
-#endif
-            RenderInternal(session, Resources.FindColor(node), renderControls);
-        }
 
-        public void MoveBy(Vector2 offset)
-        {
-            renderPosition += offset;
-
-            isMoved = true;
-        }
-
-        public void MoveTo(Vector2 newPosition)
-        {
-            renderPosition = newPosition;
-
-            isMoved = true;
+            if (renderControls)
+            {
+                if (Node.HasChildren)
+                {
+                    button.Render(session);
+                }
+            }
         }
 
         public void MoveToLayout(Vector2 layoutPosition, AnchorPoint anchor)
@@ -206,13 +199,11 @@ namespace Hercules.Win2D.Rendering
             {
                 targetPosition.X -= 0.5f * renderSize.X;
             }
-
-            isMoved = false;
         }
 
         public bool AnimateRenderPosition(bool isAnimating, DateTime utcNow, float animationSpeed)
         {
-            if (!isMoved && IsVisible)
+            if (IsVisible)
             {
                 if (isAnimating && animationTargetPosition != EmptyVector)
                 {
@@ -251,10 +242,38 @@ namespace Hercules.Win2D.Rendering
 
         public void Measure(CanvasDrawingSession session)
         {
-            renderSize = MeasureInternal(session);
+            textRenderer.Measure(session);
+
+            if (bodyGeometry != null)
+            {
+                renderSize = bodyGeometry.Measure(this, session, textRenderer.RenderSize);
+            }
         }
 
         public void Arrange(CanvasDrawingSession session)
+        {
+            ArrangeBody(session);
+            ArrangeText();
+            ArrangeButton();
+        }
+
+        public void ArrangeHull(CanvasDrawingSession session)
+        {
+            if (hullGeometry != null)
+            {
+                hullGeometry.Arrange(this, session);
+            }
+        }
+
+        public void ArrangePath(CanvasDrawingSession session)
+        {
+            if (pathGeometry != null)
+            {
+                pathGeometry.Arrange(this, session);
+            }
+        }
+
+        private void ArrangeBody(CanvasDrawingSession session)
         {
             bounds = new Rect2(renderPosition, renderSize);
 
@@ -273,7 +292,35 @@ namespace Hercules.Win2D.Rendering
                 boundsWithParent = Bounds;
             }
 
-            ArrangeInternal(session);
+            bodyGeometry.Arrange(this, session);
+        }
+
+        private void ArrangeText()
+        {
+            if (bodyGeometry.HasText)
+            {
+                textRenderer.Arrange(bodyGeometry.TextRenderPosition);
+            }
+        }
+
+        private void ArrangeButton()
+        {
+            Vector2 buttonPosition;
+
+            if (Node.NodeSide == NodeSide.Left)
+            {
+                buttonPosition = new Vector2(
+                    RenderPosition.X - 2,
+                    RenderPosition.Y + (RenderSize.Y * 0.5f));
+            }
+            else
+            {
+                buttonPosition = new Vector2(
+                    RenderPosition.X + RenderSize.X + 2,
+                    RenderPosition.Y + (RenderSize.Y * 0.5f));
+            }
+
+            button.Arrange(buttonPosition);
         }
 
         public virtual bool HitTest(Vector2 hitPosition)
@@ -283,6 +330,11 @@ namespace Hercules.Win2D.Rendering
 
         public virtual bool HandleClick(Vector2 hitPosition)
         {
+            if (button.HitTest(hitPosition))
+            {
+                return true;
+            }
+
             if (HitTest(hitPosition))
             {
                 node.Select();
@@ -295,32 +347,78 @@ namespace Hercules.Win2D.Rendering
 
         public virtual void ClearResources()
         {
+            ClearPath();
+            ClearHull();
+            ClearBody();
         }
 
-        public virtual void ComputeHull(CanvasDrawingSession session)
+        private void ClearBody()
         {
+            if (bodyGeometry != null)
+            {
+                bodyGeometry.ClearResources();
+                bodyGeometry = null;
+            }
         }
 
-        public virtual void ComputePath(CanvasDrawingSession session)
+        private void ClearHull()
         {
+            if (hullGeometry != null)
+            {
+                hullGeometry.ClearResources();
+                hullGeometry = null;
+            }
         }
 
-        protected virtual void ArrangeInternal(CanvasDrawingSession session)
+        private void ClearPath()
         {
+            if (pathGeometry != null)
+            {
+                pathGeometry.ClearResources();
+                pathGeometry = null;
+            }
         }
 
-        protected virtual void RenderPathInternal(CanvasDrawingSession session)
+        public void ComputeBody(CanvasDrawingSession session)
         {
+            IBodyGeometry body = CreateBody(session, bodyGeometry);
+
+            if (body != null)
+            {
+                ClearBody();
+
+                bodyGeometry = body;
+            }
         }
 
-        protected virtual void RenderHullInternal(CanvasDrawingSession session, Win2DColor color)
+        public void ComputePath(CanvasDrawingSession session)
         {
+            IPathGeometry path = CreatePath(session, pathGeometry);
+
+            if (path != null)
+            {
+                ClearPath();
+
+                pathGeometry = path;
+            }
         }
 
-        protected abstract void RenderInternal(CanvasDrawingSession session, Win2DColor color, bool renderControls);
+        public void ComputeHull(CanvasDrawingSession session)
+        {
+            IHullGeometry hull = CreateHull(session, hullGeometry);
 
-        protected abstract Win2DRenderNode CloneInternal();
+            if (hull != null)
+            {
+                ClearHull();
 
-        protected abstract Vector2 MeasureInternal(CanvasDrawingSession session);
+                hullGeometry = hull;
+            }
+        }
+
+        protected abstract IBodyGeometry CreateBody(CanvasDrawingSession session, IBodyGeometry current);
+
+        protected abstract IHullGeometry CreateHull(CanvasDrawingSession session, IHullGeometry current);
+
+        protected abstract IPathGeometry CreatePath(CanvasDrawingSession session, IPathGeometry current);
     }
 }

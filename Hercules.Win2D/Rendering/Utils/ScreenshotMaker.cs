@@ -55,7 +55,7 @@ namespace Hercules.Win2D.Rendering.Utils
                             -sceneBounds.Position.X + padding,
                             -sceneBounds.Position.Y + padding);
 
-                    scene.Render(session, RenderOptions.Plain, Rect2.Infinite);
+                    scene.Render(session, true, Rect2.Infinite);
                 }
 
                 await target.SaveAsync(stream, CanvasBitmapFileFormat.Png).AsTask();

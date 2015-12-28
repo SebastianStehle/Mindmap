@@ -107,21 +107,29 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Rendering\Geometries\RenderNodeBase.cs" />
-    <Compile Include="Rendering\Geometries\RoundedRectangleNode.cs" />
-    <Compile Include="Rendering\Geometries\RectangleNode.cs" />
-    <Compile Include="Rendering\Geometries\RectangleNodeBase.cs" />
-    <Compile Include="Rendering\Geometries\BorderNode.cs" />
-    <Compile Include="Rendering\Geometries\EllipseNode.cs" />
+    <Compile Include="Rendering\Geometries\Bodies\Border.cs" />
+    <Compile Include="Rendering\Geometries\Bodies\Ellipse.cs" />
+    <Compile Include="Rendering\Geometries\Bodies\Rectangle.cs" />
+    <Compile Include="Rendering\Geometries\Bodies\RectangleBase.cs" />
+    <Compile Include="Rendering\Geometries\Bodies\Body.cs" />
+    <Compile Include="Rendering\Geometries\Bodies\RoundedRectangle.cs" />
+    <Compile Include="Rendering\Geometries\Bodies\SimpleRectangle.cs" />
+    <Compile Include="Rendering\Geometries\Hulls\RoundedPolygonHull.cs" />
+    <Compile Include="Rendering\Geometries\Paths\FilledPath.cs" />
+    <Compile Include="Rendering\Geometries\Paths\LinePath.cs" />
+    <Compile Include="Rendering\IBodyGeometry.cs" />
+    <Compile Include="Rendering\IHullGeometry.cs" />
+    <Compile Include="Rendering\IPathGeometry.cs" />
+    <Compile Include="Rendering\IResourceHolder.cs" />
     <Compile Include="Rendering\IWin2DRendererProvider.cs" />
     <Compile Include="Rendering\Themes\ModernPastel\ModernPastelPreviewNode.cs" />
+    <Compile Include="Rendering\Themes\ModernPastel\ModernPastelRenderNode.cs" />
     <Compile Include="Rendering\Themes\ModernPastel\ModernPastelRenderer.cs" />
     <Compile Include="Rendering\Themes\ModernPastel\ModernPastelRendererProvider.cs" />
     <Compile Include="Rendering\Utils\ExpandButton.cs" />
     <Compile Include="Rendering\Utils\GeometryBuilder.cs" />
     <Compile Include="Rendering\Utils\Printer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Rendering\RenderOptions.cs" />
     <Compile Include="Rendering\Win2DColor.cs" />
     <Compile Include="Rendering\Win2DIcon.cs" />
     <Compile Include="Rendering\Win2DScene.cs" />

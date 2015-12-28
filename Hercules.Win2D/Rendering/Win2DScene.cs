@@ -26,7 +26,6 @@ namespace Hercules.Win2D.Rendering
     public sealed class Win2DScene : DisposableObject, IRenderScene
     {
         private readonly Dictionary<NodeBase, Win2DRenderNode> renderNodes = new Dictionary<NodeBase, Win2DRenderNode>();
-        private readonly List<Win2DRenderNode> customNodes = new List<Win2DRenderNode>();
         private readonly Func<NodeBase, Win2DRenderNode> nodeFactory;
         private readonly Win2DRenderNode previewNode;
         private readonly Document document;
@@ -43,19 +42,14 @@ namespace Hercules.Win2D.Rendering
             get { return renderNodes.Values; }
         }
 
-        public ICollection<Win2DRenderNode> CustomNodes
-        {
-            get { return customNodes; }
-        }
-
         public ICollection<Win2DRenderNode> NonDiagramNodes
         {
-            get { return new[] { previewNode }.Union(customNodes).ToList(); }
+            get { return new[] { previewNode }; }
         }
 
         public ICollection<Win2DRenderNode> AllNodes
         {
-            get { return new[] { previewNode }.Union(renderNodes.Values).Union(customNodes).ToList(); }
+            get { return new[] { previewNode }.Union(renderNodes.Values).ToList(); }
         }
 
         internal Win2DScene(Document document, Win2DRenderNode previewNode, Func<NodeBase, Win2DRenderNode> nodeFactory)
@@ -94,29 +88,6 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        public bool IsCustomNode(Win2DRenderNode renderNode)
-        {
-            return customNodes.Contains(renderNode) || renderNode == previewNode;
-        }
-
-        public Win2DRenderNode AddCustomNode(Win2DRenderNode renderNode)
-        {
-            Guard.NotNull(renderNode, nameof(renderNode));
-
-            customNodes.Add(renderNode);
-
-            return renderNode;
-        }
-
-        public Win2DRenderNode RemoveCustomNode(Win2DRenderNode renderNode)
-        {
-            Guard.NotNull(renderNode, nameof(renderNode));
-
-            customNodes.Remove(renderNode);
-
-            return renderNode;
-        }
-
         public void InvalidateLayout()
         {
             isLayoutInvalidated = true;
@@ -138,6 +109,13 @@ namespace Hercules.Win2D.Rendering
 
         public void UpdateLayout(CanvasDrawingSession session, ILayout layout)
         {
+            foreach (Win2DRenderNode renderNode in AllNodes)
+            {
+                renderNode.ComputeBody(session);
+                renderNode.ComputeHull(session);
+                renderNode.ComputePath(session);
+            }
+
             if (isLayoutInvalidated)
             {
                 layout.UpdateVisibility(document, this);
@@ -172,7 +150,7 @@ namespace Hercules.Win2D.Rendering
 
             foreach (Win2DRenderNode renderNode in AllNodes)
             {
-                needsRedraw |= renderNode.AnimateRenderPosition(animate && !IsCustomNode(renderNode), utcNow, 600);
+                needsRedraw |= renderNode.AnimateRenderPosition(animate, utcNow, 600);
             }
 
             double minX = double.MaxValue;
@@ -184,7 +162,7 @@ namespace Hercules.Win2D.Rendering
             {
                 renderNode.Arrange(session);
 
-                if (renderNode.IsVisible && !IsCustomNode(renderNode))
+                if (renderNode.IsVisible)
                 {
                     Rect2 nodeBounds = renderNode.Bounds;
 
@@ -197,26 +175,16 @@ namespace Hercules.Win2D.Rendering
 
             foreach (Win2DRenderNode renderNode in AllNodes)
             {
-                if (renderNode.IsVisible && !IsCustomNode(renderNode))
-                {
-                    renderNode.ComputePath(session);
-                }
+                renderNode.ArrangeHull(session);
+                renderNode.ArrangePath(session);
             }
 
             bounds = new Rect2((float)minX, (float)minY, (float)(maxX - minX), (float)(maxY - minY));
         }
 
-        public void Render(CanvasDrawingSession session, RenderOptions renderOptions, Rect2 viewRect)
+        public void Render(CanvasDrawingSession session, bool renderControls, Rect2 viewRect)
         {
             session.TextAntialiasing = CanvasTextAntialiasing.Grayscale;
-
-            foreach (Win2DRenderNode renderNode in NonDiagramNodes)
-            {
-                if (renderNode.IsVisible)
-                {
-                    renderNode.ComputePath(session);
-                }
-            }
 
             foreach (Win2DRenderNode renderNode in DiagramNodes)
             {
@@ -234,19 +202,11 @@ namespace Hercules.Win2D.Rendering
                 }
             }
 
-            bool renderCustoms = (renderOptions & RenderOptions.RenderCustoms) == RenderOptions.RenderCustoms;
-            bool renderControls = (renderOptions & RenderOptions.RenderControls) == RenderOptions.RenderControls;
-
             foreach (Win2DRenderNode renderNode in AllNodes)
             {
                 if (renderNode.IsVisible && CanRenderNode(renderNode, viewRect))
                 {
-                    bool isCustomNode = IsCustomNode(renderNode);
-
-                    if (renderCustoms || !isCustomNode)
-                    {
-                        renderNode.Render(session, renderControls && !isCustomNode);
-                    }
+                    renderNode.Render(session, renderControls);
                 }
             }
         }
@@ -273,7 +233,7 @@ namespace Hercules.Win2D.Rendering
             return viewRect.IntersectsWith(renderNode.BoundsWithParent);
         }
 
-        private static bool CanRenderNode(Win2DRenderNode renderNode, Rect2 viewRect)
+        private static bool CanRenderNode(IRenderNode renderNode, Rect2 viewRect)
         {
             return viewRect.IntersectsWith(renderNode.Bounds);
         }
@@ -296,8 +256,6 @@ namespace Hercules.Win2D.Rendering
 
                 if (renderNodes.TryGetValue(node, out oldRenderNode))
                 {
-                    node.PropertyChanged -= Node_PropertyChanged;
-
                     oldRenderNode.ClearResources();
 
                     renderNodes.Remove(node);
@@ -313,8 +271,6 @@ namespace Hercules.Win2D.Rendering
                 {
                     Win2DRenderNode renderNode = nodeFactory(node);
 
-                    node.PropertyChanged += Node_PropertyChanged;
-
                     renderNode.Parent = TryAdd(node.Parent);
 
                     return renderNode;
@@ -322,17 +278,6 @@ namespace Hercules.Win2D.Rendering
             }
 
             return null;
-        }
-
-        private void Node_PropertyChanged(object sender, PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "Shape")
-            {
-                Node node = (Node)sender;
-
-                TryRemove(node);
-                TryAdd(node);
-            }
         }
 
         public IRenderNode FindRenderNode(NodeBase node)

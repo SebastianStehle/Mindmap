@@ -56,7 +56,7 @@ namespace Hercules.Win2D.Rendering.Utils
                          0.5f * (size.X - targetSizeX),
                          0.5f * (size.Y - targetSizeY));
 
-                scene.Render(session, RenderOptions.Plain, Rect2.Infinite);
+                scene.Render(session, true, Rect2.Infinite);
             };
 
             printDocument.Preview += (sender, args) =>

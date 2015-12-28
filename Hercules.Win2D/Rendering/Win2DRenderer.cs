@@ -21,7 +21,6 @@ using Hercules.Model.Utils;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
-
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
 
 namespace Hercules.Win2D.Rendering
@@ -197,23 +196,13 @@ namespace Hercules.Win2D.Rendering
                 scene.UpdateLayout(session, layout);
                 scene.UpdateArrangement(session, true, out needsRedraw);
 
-                scene.Render(session, RenderOptions.Full, visibleRect);
+                scene.Render(session, true, visibleRect);
 
                 if (needsRedraw)
                 {
                     canvas.Invalidate();
                 }
             }
-        }
-
-        public Win2DRenderNode AddCustomNode(Win2DRenderNode renderNode)
-        {
-            return scene.AddCustomNode(renderNode);
-        }
-
-        public Win2DRenderNode RemoveCustomNode(Win2DRenderNode renderNode)
-        {
-            return scene.RemoveCustomNode(renderNode);
         }
 
         public bool HandleClick(Vector2 hitPosition, out Win2DRenderNode handledNode)

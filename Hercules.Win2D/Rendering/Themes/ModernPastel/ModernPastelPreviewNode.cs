@@ -6,98 +6,59 @@
 // All rights reserved.
 // ==========================================================================
 
-using System;
 using System.Numerics;
+using Windows.UI;
 using Hercules.Model;
-using Hercules.Win2D.Rendering.Geometries;
-using Hercules.Win2D.Rendering.Utils;
+using Hercules.Win2D.Rendering.Geometries.Paths;
 using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Brushes;
-using Microsoft.Graphics.Canvas.Geometry;
+using Hercules.Win2D.Rendering.Geometries.Bodies;
 
 namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 {
-    public sealed class ModernPastelPreviewNode : RenderNodeBase
+    public sealed class ModernPastelPreviewNode : Win2DRenderNode
     {
         private static readonly Vector2 Size = new Vector2(100, 16);
-        private CanvasGeometry pathGeometry;
-
-        public override Win2DTextRenderer TextRenderer
-        {
-            get { throw new NotSupportedException(); }
-        }
 
         public ModernPastelPreviewNode(NodeBase node, Win2DRenderer renderer)
             : base(node, renderer)
         {
         }
 
-        protected override Vector2 MeasureInternal(CanvasDrawingSession session)
+        protected override IBodyGeometry CreateBody(CanvasDrawingSession session, IBodyGeometry current)
         {
-            return Size;
-        }
-
-        public override void ClearResources()
-        {
-            base.ClearResources();
-
-            ClearPath();
-        }
-
-        private void ClearPath()
-        {
-            if (pathGeometry != null)
+            if (current == null)
             {
-                pathGeometry.Dispose();
-                pathGeometry = null;
+                return new SimpleRectangle(Size);
             }
+
+            return null;
         }
 
-        public override void ComputePath(CanvasDrawingSession session)
+        protected override IHullGeometry CreateHull(CanvasDrawingSession session, IHullGeometry current)
         {
-            if (Parent != null)
-            {
-                ClearPath();
+            return null;
+        }
 
-                if (Parent.Node is RootNode)
+        protected override IPathGeometry CreatePath(CanvasDrawingSession session, IPathGeometry current)
+        {
+            NodeBase parentNode = Parent?.Node;
+
+            if (parentNode != null)
+            {
+                if (current == null || (current is FilledPath && !(parentNode is RootNode) || current is LinePath && parentNode is RootNode))
                 {
-                    pathGeometry = GeometryBuilder.ComputeFilledPath(this, Parent, session);
-                }
-                else
-                {
-                    pathGeometry = GeometryBuilder.ComputeLinePath(this, Parent, session);
+                    if (Parent.Node is RootNode)
+                    {
+                        return new FilledPath(Colors.Black, 0.5f);
+                    }
+                    else
+                    {
+                        return new LinePath(Colors.Black, 0.5f);
+                    }
                 }
             }
-        }
 
-        protected override void RenderPathInternal(CanvasDrawingSession session)
-        {
-            ICanvasBrush brush = Resources.Brush(PathColor, 0.5f);
-
-            if (pathGeometry != null)
-            {
-                if (Parent.Node is RootNode)
-                {
-                    session.FillGeometry(pathGeometry, brush);
-                }
-                else
-                {
-                    session.DrawGeometry(pathGeometry, brush, 2);
-                }
-            }
-        }
-
-        protected override void RenderInternal(CanvasDrawingSession session, Win2DColor color, bool renderControls)
-        {
-            if (Parent != null)
-            {
-                session.FillRoundedRectangle(Bounds, 2, 2, Resources.Brush(PathColor, 0.5f));
-            }
-        }
-
-        protected override Win2DRenderNode CloneInternal()
-        {
-            throw new NotSupportedException();
+            return null;
         }
     }
 }

@@ -58,50 +58,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 
         protected override Win2DRenderNode CreateRenderNode(NodeBase node)
         {
-            NodeShape shape;
-
-            if (node is RootNode)
-            {
-                shape = NodeShape.Ellipse;
-            }
-            else
-            {
-                Node nodeInstance = (Node)node;
-
-                if (nodeInstance.Shape.HasValue)
-                {
-                    shape = nodeInstance.Shape.Value;
-                }
-                else if (node.Parent is RootNode)
-                {
-                    shape = NodeShape.RoundedRectangle;
-                }
-                else
-                {
-                    shape = NodeShape.Border;
-                }
-            }
-
-            Win2DRenderNode result;
-
-            if (shape == NodeShape.Ellipse)
-            {
-                result = new EllipseNode(node, this);
-            }
-            else if (shape == NodeShape.RoundedRectangle)
-            {
-                result = new RoundedRectangleNode(node, this);
-            }
-            else if(shape == NodeShape.Rectangle)
-            {
-                result = new RectangleNode(node, this);
-            }
-            else
-            {
-                result = new BorderNode(node, this);
-            }
-
-            return result;
+            return new ModernPastelRenderNode(node, this);
         }
     }
 }

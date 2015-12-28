@@ -58,10 +58,8 @@ namespace GP.Windows.UI
             {
                 return new SolidColorBrush(ColorsHelper.ConvertToColor((int)value, offsetH, offsetS, offsetV));
             }
-            else
-            {
-                return DependencyProperty.UnsetValue;
-            }
+
+            return DependencyProperty.UnsetValue;
         }
 
         /// <summary>

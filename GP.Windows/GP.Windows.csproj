@@ -141,6 +141,7 @@
     <Compile Include="UI\Controls\TiledBackground.cs" />
     <Compile Include="UI\Controls\ZoomableCanvasControl.cs" />
     <Compile Include="UI\GreaterZeroVisibilityConverter.cs" />
+    <Compile Include="UI\Interactivity\AppBarButtonsBehavior.cs" />
     <Compile Include="UI\Interactivity\Behavior.cs" />
     <Compile Include="UI\Interactivity\CommandShortcutBehavior.cs" />
     <Compile Include="UI\Interactivity\FlyoutShortcutBehavior.cs" />

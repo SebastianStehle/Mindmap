@@ -57,6 +57,11 @@ namespace Hercules.App.Components
             this.mindmapStore = mindmapStore;
         }
 
+        public bool CanRenameTo(string newName)
+        {
+            return mindmapStore != null && mindmapStore.IsValidMindmapName(newName);
+        }
+
         public async Task DeleteAsync()
         {
             if (documentRef != null)
@@ -75,6 +80,8 @@ namespace Hercules.App.Components
 
         public async Task RenameAsync(string newName)
         {
+            Guard.ValidFileName(newName, nameof(newName));
+
             if (documentRef != null)
             {
                 await mindmapStore.RenameAsync(this, newName);

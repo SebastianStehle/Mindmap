@@ -107,6 +107,7 @@ namespace Hercules.Model.Storing.Json
 
             return taskFactory.StartNew(async () =>
             {
+                newName = newName.Trim();
                 try
                 {
                     StorageFile file = await GetFileAsync(documentRef);

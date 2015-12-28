@@ -204,7 +204,15 @@
     </Style>
 
     <Style x:Key="LightFlyoutPresenterStyle" TargetType="FlyoutPresenter">
+        <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="RequestedTheme" Value="Light" />
+        <Setter Property="MinHeight" Value="0" />
+        <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
+        <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
+    </Style>
+
+    <Style x:Key="DarkMenuFlyoutPresenterStyle" TargetType="MenuFlyoutPresenter">
+        <Setter Property="RequestedTheme" Value="Dark" />
     </Style>
 
     <Style x:Key="LightMenuFlyoutPresenterStyle" TargetType="MenuFlyoutPresenter">

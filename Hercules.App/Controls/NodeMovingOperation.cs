@@ -10,6 +10,7 @@ using System.Numerics;
 using Hercules.Model;
 using Hercules.Model.Layouting;
 using Hercules.Win2D.Rendering;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Hercules.App.Controls
 {

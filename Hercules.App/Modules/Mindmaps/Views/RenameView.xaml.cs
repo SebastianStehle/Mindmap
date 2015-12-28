@@ -11,6 +11,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using GP.Windows.UI;
 using Hercules.App.Components;
+using Hercules.App.Modules.Mindmaps.ViewModels;
 
 namespace Hercules.App.Modules.Mindmaps.Views
 {
@@ -40,7 +41,7 @@ namespace Hercules.App.Modules.Mindmaps.Views
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(NameTextBox.Text))
+            if (!MindmapItem.CanRenameTo(NameTextBox.Text))
             {
                 ErrorTextBlock.Opacity = 1;
             }

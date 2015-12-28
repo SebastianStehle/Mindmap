@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
@@ -75,6 +76,11 @@ namespace Hercules.App.Components.Implementations
             await SaveAsync();
         }
 
+        public bool IsValidMindmapName(string name)
+        {
+            return !string.IsNullOrWhiteSpace(name) && name == name.Trim() && !name.Intersect(Path.GetInvalidFileNameChars()).Any();
+        }
+
         public async Task LoadAllAsync()
         {
             if (!isLoaded)
@@ -104,7 +110,7 @@ namespace Hercules.App.Components.Implementations
 
         public Task CreateAsync(string name)
         {
-            Guard.NotNullOrEmpty(name, nameof(name));
+            Guard.ValidFileName(name, nameof(name));
 
             return DoAsync(async () =>
             {
@@ -118,7 +124,7 @@ namespace Hercules.App.Components.Implementations
 
         public Task AddAsync(string name, Document document)
         {
-            Guard.NotNullOrEmpty(name, nameof(name));
+            Guard.ValidFileName(name, nameof(name));
             Guard.NotNull(document, nameof(document));
 
             return DoAsync(async () =>
@@ -140,6 +146,7 @@ namespace Hercules.App.Components.Implementations
         public Task RenameAsync(MindmapRef mindmap, string newName)
         {
             Guard.NotNull(mindmap, nameof(mindmap));
+            Guard.ValidFileName(newName, nameof(newName));
 
             return DoAsync(mindmap, async () =>
             {

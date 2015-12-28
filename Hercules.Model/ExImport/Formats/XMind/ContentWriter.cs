@@ -29,8 +29,8 @@ namespace Hercules.Model.ExImport.Formats.XMind
                     new XElement(Namespaces.Content("sheet"),
                         new XAttribute("id", Guid.NewGuid()),
                         new XAttribute("timestamp", timestamp),
-                        new XElement(Namespaces.Content("title"), document.Root.Text),
-                        CreateTopic(timestamp, document.Root, allChildren)));
+                            new XElement(Namespaces.Content("title"), document.Root.Text),
+                                CreateTopic(timestamp, document.Root, allChildren)));
 
             content.Add(root);
         }
@@ -83,8 +83,8 @@ namespace Hercules.Model.ExImport.Formats.XMind
                         boundaries.Add(
                             new XElement(Namespaces.Content("boundary"),
                                 new XAttribute("id", Guid.NewGuid()),
-                                new XAttribute("range", $"({i}, {i})")),
-                                new XAttribute("timestamp", timestamp));
+                                new XAttribute("range", $"({i}, {i})"),
+                                new XAttribute("timestamp", timestamp)));
                     }
                 }
 

@@ -74,7 +74,7 @@ namespace Hercules.Model
 
             if (string.Equals(oldPropertyName, newPropertyName, StringComparison.OrdinalIgnoreCase))
             {
-                throw new ArgumentException($"The property names are equal.", newPropertyName);
+                throw new ArgumentException($"The property names '{newPropertyName}' are equal.", newPropertyName);
             }
 
             PropertyValue property;

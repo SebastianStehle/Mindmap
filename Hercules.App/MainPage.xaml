@@ -35,25 +35,7 @@
             <RowDefinition />
         </Grid.RowDefinitions>
 
-        <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" Foreground="{ThemeResource ThemedAppBarForegroundBrush}" RequestedTheme="Dark">
-            <Grid Background="{ThemeResource ThemedAppBarBackgroundBrush}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                <AppBarButton x:Uid="AppBarButton_ListMindmaps" Grid.Column="0" Icon="List" Click="ListAppBarButton_Click" Label="Mindmaps">
-                    <i:Interaction.Behaviors>
-                        <gpi:ShortcutBehavior RequiresControlModifier="True" Key="L" Invoked="ListAppBarButton_Click" />
-                    </i:Interaction.Behaviors>
-                </AppBarButton>
-
-                <AppBarSeparator Grid.Column="1" />
-            
-                <e:ToolbarView Grid.Column="2" />
-            </Grid>
-        </ContentControl>
+        <e:ToolbarView Grid.Row="0" ListButtonClicked="ToolbarView_ListButtonClicked" />
 
         <SplitView Grid.Row="1" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="68" x:Name="SplitView">
             <i:Interaction.Behaviors>

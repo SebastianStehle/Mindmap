@@ -7,8 +7,7 @@
     xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
     d:DesignHeight="350"
-    d:DesignWidth="400"
-    Width="410">
+    d:DesignWidth="400">
 
     <controls:MindmapFlyoutView.Resources>
         <assets:AssetProvider x:Key="AssetProvider" />
@@ -23,7 +22,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <Pivot x:Name="IconsPivot" Height="250">
+        <Pivot Height="250">
             <Pivot.Items>
                 <PivotItem x:Uid="Editor_IconsHeader" Header="Icons">
                     <GridView VerticalAlignment="Top" x:Name="IconsGrid" ItemsSource="{Binding Source={StaticResource AssetProvider}, Path=Images}" Padding="0">

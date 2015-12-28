@@ -130,6 +130,11 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             }
         }
 
+        public bool IsValidMindmapName(string name)
+        {
+            return mindmapStore.IsValidMindmapName(name);
+        }
+
         public async Task CreateNewMindmapAsync(string name)
         {
             await mindmapStore.CreateAsync(name);

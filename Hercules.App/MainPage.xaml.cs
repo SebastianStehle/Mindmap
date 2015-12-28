@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
@@ -42,8 +43,8 @@ namespace Hercules.App
             titleBar.ButtonPressedBackgroundColor = themeLightBrush.Color;
             titleBar.ButtonPressedForegroundColor = Colors.Black;
         }
-
-        private void ListAppBarButton_Click(object sender, RoutedEventArgs e)
+        
+        private void ToolbarView_ListButtonClicked(object sender, EventArgs e)
         {
             SplitView.IsPaneOpen = !SplitView.IsPaneOpen;
 

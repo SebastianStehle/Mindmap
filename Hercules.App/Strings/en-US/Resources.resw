@@ -450,4 +450,10 @@ The maximum allowed size is a 80x80 pixels.</value>
   <data name="MindmapLoadingFailed_Heading" xml:space="preserve">
     <value>Loading the mindmap failed</value>
   </data>
+  <data name="Naming_NameError.Text" xml:space="preserve">
+    <value>Invalid name for a mindmap!</value>
+  </data>
+  <data name="Naming_NameLabel.Text" xml:space="preserve">
+    <value>Enter Name:</value>
+  </data>
 </root>

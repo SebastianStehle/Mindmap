@@ -8,6 +8,7 @@
 
 using System.Numerics;
 using Hercules.Model.Rendering;
+// ReSharper disable ArrangeThisQualifier
 
 namespace Hercules.Model.Layouting.Default
 {

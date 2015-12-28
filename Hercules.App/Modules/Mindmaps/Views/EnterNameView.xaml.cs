@@ -32,14 +32,14 @@ namespace Hercules.App.Modules.Mindmaps.Views
 
         private async void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(NameTextBox.Text))
+            MindmapsViewModel viewModel = (MindmapsViewModel)DataContext;
+
+            if (!viewModel.IsValidMindmapName(NameTextBox.Text))
             {
                 ErrorTextBlock.Opacity = 1;
             }
             else
             {
-                MindmapsViewModel viewModel = (MindmapsViewModel)DataContext;
-
                 try
                 {
                     await viewModel.CreateNewMindmapAsync(NameTextBox.Text);

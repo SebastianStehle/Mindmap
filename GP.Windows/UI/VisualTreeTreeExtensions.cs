@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Globalization;
 using Windows.Foundation;
 using Windows.System;
@@ -121,6 +122,43 @@ namespace GP.Windows.UI
         }
 
         /// <summary>
+        /// Finds all children of the specified element with the requested type.
+        /// </summary>
+        /// <typeparam name="T">The type to request.</typeparam>
+        /// <param name="element">The root element.</param>
+        /// <returns>
+        /// The list of children.
+        /// </returns>
+        public static IEnumerable<T> FindChildren<T>(this object element) where T : class
+        {
+            DependencyObject dependencyObject = element as DependencyObject;
+
+            if (dependencyObject != null)
+            {
+                int numChildren = VisualTreeHelper.GetChildrenCount(dependencyObject);
+
+                for (int i = 0; i < numChildren; i++)
+                {
+                    DependencyObject child = VisualTreeHelper.GetChild(dependencyObject, i);
+
+                    T ofType = child as T;
+
+                    if (ofType != null)
+                    {
+                        yield return ofType;
+                    }
+                    else
+                    {
+                        foreach (T item in FindChildren<T>(child))
+                        {
+                            yield return item;
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Determines whether the specified child is child control of the target object.
         /// </summary>
         /// <param name="target">The target object, which is a possible parent
@@ -147,7 +185,7 @@ namespace GP.Windows.UI
                 {
                     return true;
                 }
-                else if (parent == null)
+                if (parent == null)
                 {
                     return false;
                 }

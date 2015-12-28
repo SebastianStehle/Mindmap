@@ -12,7 +12,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
-using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace GP.Windows
 {
@@ -22,8 +22,6 @@ namespace GP.Windows
     /// </summary>
     public static class Guard
     {
-        private static readonly Regex FileNamePattern = new Regex("[\\w\\- ]+");
-
         /// <summary>
         /// Verifies that the specified value is greater than a lower value
         /// and throws an exception, if not.
@@ -373,31 +371,14 @@ namespace GP.Windows
         {
             NotNullOrEmpty(target, parameterName);
 
-            if (!FileNamePattern.IsMatch(target))
+            if (target != target.Trim())
             {
-                throw new FileNotFoundException("The file name is not valid.");
+                throw new ArgumentException("Name cannot start or end with whitespaces.", parameterName);
             }
-        }
 
-        /// <summary>
-        /// Verifies, that the string method parameter with specified object value and message
-        /// is not null, not empty and does not contain only blanks and is a valid file name and throws an exception with 
-        /// the passed message if the object is null.
-        /// </summary>
-        /// <param name="target">The target string, which should be checked against being null or empty.</param>
-        /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="message">The message for the exception to throw.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="target"/> is
-        /// null (Nothing in Visual Basic).</exception>
-        /// <exception cref="ArgumentException"><paramref name="target"/> is
-        /// empty or contains only blanks.</exception>
-        public static void ValidFileName(string target, string parameterName, string message)
-        {
-            NotNullOrEmpty(target, parameterName);
-
-            if (!FileNamePattern.IsMatch(target))
+            if (target.Intersect(Path.GetInvalidFileNameChars()).Any())
             {
-                throw new FileNotFoundException(message);
+                throw new ArgumentException("Name contains an invalid character.", parameterName);
             }
         }
 

@@ -23,6 +23,8 @@ namespace Hercules.App.Components
 
         MindmapRef LoadedMindmap { get; }
 
+        bool IsValidMindmapName(string name);
+
         Task CreateAsync(string name);
 
         Task SaveAsync();

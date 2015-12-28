@@ -289,10 +289,8 @@ namespace Hercules.Win2D.Rendering
 
                 return true;
             }
-            else
-            {
-                return false;
-            }
+
+            return false;
         }
 
         public virtual void ClearResources()

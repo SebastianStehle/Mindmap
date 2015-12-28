@@ -7,8 +7,7 @@
     xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
     d:DesignHeight="300"
-    d:DesignWidth="400"
-    Width="310">
+    d:DesignWidth="400">
 
     <controls:MindmapFlyoutView.Resources>
         <controls:RenderColorBrushConverter x:Key="RenderColorBrushConverter" />
@@ -24,7 +23,7 @@
         <Pivot x:Name="ColorsPivot" Height="340" SelectionChanged="ColorsPivot_SelectionChanged">
             <Pivot.Items>
                 <PivotItem x:Uid="Editor_ColorsTheme" Header="Theme">
-                    <GridView VerticalAlignment="Top" x:Name="ColorsGrid" Padding="0">
+                    <GridView VerticalAlignment="Top" x:Name="ColorsGrid" Padding="0" MaxWidth="270" HorizontalAlignment="Left">
                         <GridView.ItemContainerTransitions>
                             <TransitionCollection />
                         </GridView.ItemContainerTransitions>

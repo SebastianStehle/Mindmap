@@ -182,10 +182,8 @@ namespace Hercules.App.Controls
 
                 return actualSize;
             }
-            else
-            {
-                return new Size(0, 0);
-            }
+
+            return new Size(0, 0);
         }
 
         private void BindToNode(Win2DRenderNode renderNode)

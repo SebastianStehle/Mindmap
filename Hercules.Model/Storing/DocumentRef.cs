@@ -28,7 +28,7 @@ namespace Hercules.Model.Storing
 
         public DocumentRef(string documentName, DateTimeOffset lastUpdate)
         {
-            Guard.NotNull(documentName, nameof(documentName));
+            Guard.ValidFileName(documentName, nameof(documentName));
 
             this.documentName = documentName;
             this.lastUpdate = lastUpdate;

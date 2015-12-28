@@ -456,4 +456,7 @@ The maximum allowed size is a 80x80 pixels.</value>
   <data name="Naming_NameLabel.Text" xml:space="preserve">
     <value>Enter Name:</value>
   </data>
+  <data name="TransactionName_ChangeShape" xml:space="preserve">
+    <value>Change Shape</value>
+  </data>
 </root>

@@ -116,6 +116,7 @@
     <Compile Include="AttachmentIcon.cs" />
     <Compile Include="ChangeColorCommand.cs" />
     <Compile Include="ChangeIconCommand.cs" />
+    <Compile Include="ChangeShapeCommand.cs" />
     <Compile Include="ChangeIconSizeCommand.cs" />
     <Compile Include="ChangeTextCommand.cs" />
     <Compile Include="ChildNodeCommandBase.cs" />
@@ -152,6 +153,7 @@
     <Compile Include="IconSize.cs" />
     <Compile Include="IDocumentCommands.cs" />
     <Compile Include="INodeIcon.cs" />
+    <Compile Include="NodeShape.cs" />
     <Compile Include="KeyIcon.cs" />
     <Compile Include="IWritable.cs" />
     <Compile Include="PropertiesBagExtensions.cs" />

@@ -50,6 +50,26 @@ namespace Hercules.App.Modules.Editor.Views
                 }
 
                 ShowHullButton.IsChecked = selectedNode.IsShowingHull;
+
+                Node normalNode = selectedNode as Node;
+
+                if (normalNode != null)
+                {
+                    if (normalNode.Shape.HasValue)
+                    {
+                        ShapeListBox.SelectedIndex = ((int)normalNode.Shape.Value) + 1;
+                    }
+                    else
+                    {
+                        ShapeListBox.SelectedIndex = 0;
+                    }
+
+                    ShapeListBox.IsEnabled = true;
+                }
+                else
+                {
+                    ShapeListBox.IsEnabled = false;
+                }
             }
         }
 
@@ -121,6 +141,23 @@ namespace Hercules.App.Modules.Editor.Views
                 selectedNode.ToggleHullTransactional();
 
                 hasChange = true;
+            }
+        }
+
+        private void ShapeListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Node selectedNode = Document?.SelectedNode as Node;
+
+            if (selectedNode != null)
+            {
+                if (ShapeListBox.SelectedIndex == 0)
+                {
+                    selectedNode.ChangeShapeTransactional(null);
+                }
+                else
+                {
+                    selectedNode.ChangeShapeTransactional((NodeShape)(ShapeListBox.SelectedIndex - 1));
+                }
             }
         }
     }

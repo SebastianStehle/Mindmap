@@ -52,6 +52,25 @@ namespace Hercules.Model
             return result;
         }
 
+        public static bool TryParseEnum<TEnum>(this PropertiesBag properties, string propertyName, out TEnum value) where TEnum : struct
+        {
+            bool result = false;
+
+            value = default(TEnum);
+
+            if (properties.Contains(propertyName))
+            {
+                string enumValue = properties[propertyName].ToString();
+
+                if (Enum.TryParse(enumValue, out value))
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
+
         public static bool TryParseInt32(this PropertiesBag properties, string propertyName, out int value)
         {
             bool result = false;

@@ -110,6 +110,19 @@ namespace Hercules.Model
             }
         }
 
+        public static void ChangeShapeTransactional(this Node node, NodeShape? shape)
+        {
+            if (node?.Document != null)
+            {
+                string tansactionName = ResourceManager.GetString("TransactionName_ChangeShape");
+
+                node.Document.MakeTransaction(tansactionName, commands =>
+                {
+                    commands.Apply(new ChangeShapeCommand(node, shape));
+                });
+            }
+        }
+
         public static void ChangeTextTransactional(this NodeBase node, string text)
         {
             if (node?.Document != null)

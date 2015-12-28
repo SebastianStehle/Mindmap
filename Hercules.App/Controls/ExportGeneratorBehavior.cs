@@ -8,6 +8,7 @@
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using GP.Windows.UI;
 using GP.Windows.UI.Interactivity;
 using Hercules.App.Modules;
 using Hercules.App.Modules.Editor.ViewModels;
@@ -56,10 +57,12 @@ namespace Hercules.App.Controls
                         {
                             text = ResourceManager.GetString($"Exporter_{exporter.NameKey}");
 
-                            MenuFlyoutItem exportButton = new MenuFlyoutItem();
-                            exportButton.Text = text;
-                            exportButton.CommandParameter = new ExportModel { Target = target, Exporter = exporter };
-                            exportButton.Command = viewModel.ExportCommand;
+                            var viewModelParameter = new ExportModel { Target = target, Exporter = exporter };
+
+                            MenuFlyoutItem exportButton =
+                                VisualTreeExtensions.CreateMenuItem(text,
+                                    viewModel.ExportCommand,
+                                    viewModelParameter);
 
                             targetItem.Items?.Add(exportButton);
                         }

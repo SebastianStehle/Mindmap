@@ -15,6 +15,7 @@ namespace Hercules.Model
     public class Node : NodeBase
     {
         private readonly List<Node> children = new List<Node>();
+        private NodeShape? shape;
 
         public IReadOnlyList<Node> Children
         {
@@ -26,9 +27,30 @@ namespace Hercules.Model
             get { return children.Count > 0; }
         }
 
+        public NodeShape? Shape
+        {
+            get
+            {
+                return shape;
+            }
+            protected set
+            {
+                if (!Equals(shape, value))
+                {
+                    shape = value;
+                    OnPropertyChanged(nameof(Shape));
+                }
+            }
+        }
+
         public Node(Guid id)
             : base(id)
         {
+        }
+        
+        internal void SetupShape(NodeShape? newShape)
+        {
+            Shape = newShape;
         }
 
         public override void Insert(Node child, int? index, NodeSide side)

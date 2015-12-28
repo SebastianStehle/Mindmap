@@ -5,6 +5,9 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
+using System;
+
 namespace Hercules.Model
 {
     public sealed class InsertChildCommand : ChildNodeCommandBase
@@ -20,7 +23,7 @@ namespace Hercules.Model
         {
             int value;
 
-            if (properties.TryParseInt32(PropertyNodeSide, out value))
+            if (properties.TryParseInt32(PropertyNodeSide, out value) && Enum.IsDefined(typeof(NodeShape), value))
             {
                 side = (NodeSide)value;
             }

@@ -21,12 +21,12 @@ namespace Hercules.Model
 
         protected override void Execute(bool isRedo)
         {
-            Node.ChangeIsCollapsed(!Node.IsCollapsed);
+            Node.SetupIsCollapsed(!Node.IsCollapsed);
         }
 
         protected override void Revert()
         {
-            Node.ChangeIsCollapsed(!Node.IsCollapsed);
+            Node.SetupIsCollapsed(!Node.IsCollapsed);
         }
     }
 }

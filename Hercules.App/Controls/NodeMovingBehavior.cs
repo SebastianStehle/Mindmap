@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Input;
 using GP.Windows.UI;
 using GP.Windows.UI.Interactivity;
 using Hercules.Win2D.Rendering;
-
+// ReSharper disable LoopCanBeConvertedToQuery
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 
 namespace Hercules.App.Controls

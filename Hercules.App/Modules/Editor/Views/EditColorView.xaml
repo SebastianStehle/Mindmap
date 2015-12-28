@@ -18,6 +18,8 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="30" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="30" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <Pivot x:Name="ColorsPivot" Height="340" SelectionChanged="ColorsPivot_SelectionChanged">
@@ -39,7 +41,42 @@
                 </PivotItem>
             </Pivot.Items>
         </Pivot>
-        
-        <ToggleButton x:Uid="Editor_ShowHullButton" Grid.Row="2" Content="Show Hull" x:Name="ShowHullButton" Click="ShowHullButton_Click" Margin="10,0,0,0" />
+
+        <ListBox Grid.Row="2" SelectedIndex="2" VerticalAlignment="Top" HorizontalAlignment="Left" x:Name="ShapeListBox" SelectionChanged="ShapeListBox_OnSelectionChanged">
+            <ListBox.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListBox.ItemsPanel>
+            <ListBox.ItemContainerStyle>
+                <Style TargetType="ListBoxItem">
+                    <Setter Property="Padding" Value="4" />
+                </Style>
+            </ListBox.ItemContainerStyle>
+
+            <ListBox.Items>
+                <Grid Width="40" Height="22">
+                    <TextBlock Text="Auto" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
+                <Grid Width="40" Height="22">
+                    <Ellipse Margin="2" Stroke="Black" StrokeThickness="2" />
+                </Grid>
+                <Grid Width="40" Height="22">
+                    <Rectangle Margin="2" Stroke="Black" StrokeThickness="2" />
+                </Grid>
+                <Grid Width="40" Height="22">
+                    <Rectangle Margin="2" Stroke="Black" RadiusX="2" RadiusY="2" StrokeThickness="2" />
+                </Grid>
+                <Grid Width="40" Height="22">
+                    <StackPanel>
+                        <TextBlock Text="T" Height="16" FontSize="14" FontWeight="Bold" FontStyle="Italic" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                        <Rectangle Margin="2" Fill="Black" Height="2" />
+                    </StackPanel>
+                </Grid>
+            </ListBox.Items>
+        </ListBox>
+
+        <ToggleButton x:Uid="Editor_ShowHullButton" Grid.Row="4" Content="Show Hull" x:Name="ShowHullButton" Click="ShowHullButton_Click" Margin="10,0,0,0" />
     </Grid>
 </controls:MindmapFlyoutView>

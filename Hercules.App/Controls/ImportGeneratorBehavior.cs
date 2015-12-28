@@ -8,6 +8,7 @@
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using GP.Windows.UI;
 using GP.Windows.UI.Interactivity;
 using Hercules.App.Modules;
 using Hercules.App.Modules.Editor.ViewModels;
@@ -56,10 +57,12 @@ namespace Hercules.App.Controls
                         {
                             text = ResourceManager.GetString($"Importer_{importer.NameKey}");
 
-                            MenuFlyoutItem importButton = new MenuFlyoutItem();
-                            importButton.Text = text;
-                            importButton.Command = viewModel.ImportCommand;
-                            importButton.CommandParameter = new ImportModel { Source = source, Importer = importer };
+                            var viewModelParameter = new ImportModel { Source = source, Importer = importer };
+
+                            MenuFlyoutItem importButton =
+                                VisualTreeExtensions.CreateMenuItem(text,
+                                    viewModel.ExportCommand,
+                                    viewModelParameter);
 
                             targetItem.Items?.Add(importButton);
                         }

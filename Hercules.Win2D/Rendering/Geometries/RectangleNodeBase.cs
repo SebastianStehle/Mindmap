@@ -12,10 +12,8 @@ using Windows.Foundation;
 using GP.Windows;
 using Hercules.Model;
 using Hercules.Model.Utils;
-using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
-using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Win2D.Rendering.Geometries
 {
@@ -27,7 +25,6 @@ namespace Hercules.Win2D.Rendering.Geometries
         private readonly float borderRadius;
         private readonly Win2DTextRenderer textRenderer;
         private float textOffset;
-        private CanvasGeometry pathGeometry;
 
         public override Win2DTextRenderer TextRenderer
         {
@@ -83,29 +80,6 @@ namespace Hercules.Win2D.Rendering.Geometries
             size.Y = Math.Max(size.Y, MinHeight);
 
             return size;
-        }
-
-        public override void ClearResources()
-        {
-            base.ClearResources();
-
-            ClearPath();
-        }
-
-        private void ClearPath()
-        {
-            if (pathGeometry != null)
-            {
-                pathGeometry.Dispose();
-                pathGeometry = null;
-            }
-        }
-
-        public override void ComputePath(CanvasDrawingSession session)
-        {
-            ClearPath();
-
-            pathGeometry = GeometryBuilder.ComputeFilledPath(this, Parent, session);
         }
 
         protected override void RenderInternal(CanvasDrawingSession session, Win2DColor color, bool renderControls)
@@ -167,16 +141,6 @@ namespace Hercules.Win2D.Rendering.Geometries
                 {
                     Button.Render(session);
                 }
-            }
-        }
-
-        protected override void RenderPathInternal(CanvasDrawingSession session)
-        {
-            if (pathGeometry != null)
-            {
-                ICanvasBrush brush = Resources.Brush(PathColor, 1);
-
-                session.FillGeometry(pathGeometry, brush);
             }
         }
     }

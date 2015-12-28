@@ -6,6 +6,8 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
+
 namespace Hercules.Model
 {
     public sealed class ChangeIconSizeCommand : CommandBase
@@ -22,11 +24,17 @@ namespace Hercules.Model
         public ChangeIconSizeCommand(PropertiesBag properties, Document document)
             : base(properties, document)
         {
-            int value;
+            IconSize value;
 
-            if (properties.TryParseInt32(PropertyIconSize, out value))
+            int intValue;
+
+            if (properties.TryParseEnum(PropertyIconSize, out value))
             {
-                newIconSize = (IconSize)value;
+                newIconSize = value;
+            }
+            else if (properties.TryParseInt32(PropertyIconSize, out intValue) && Enum.IsDefined(typeof(NodeSide), intValue))
+            {
+                newIconSize = (IconSize)intValue;
             }
             else
             {
@@ -42,7 +50,7 @@ namespace Hercules.Model
 
         public override void Save(PropertiesBag properties)
         {
-            properties.Set(PropertyIconSize, (int)newIconSize);
+            properties.Set(PropertyIconSize, newIconSize.ToString());
 
             base.Save(properties);
         }
@@ -51,13 +59,13 @@ namespace Hercules.Model
         {
             oldIconSize = Node.IconSize;
 
-            Node.ChangeIconSize(newIconSize);
+            Node.SetupIconSize(newIconSize);
             Node.Select();
         }
 
         protected override void Revert()
         {
-            Node.ChangeIconSize(oldIconSize);
+            Node.SetupIconSize(oldIconSize);
             Node.Select();
         }
     }

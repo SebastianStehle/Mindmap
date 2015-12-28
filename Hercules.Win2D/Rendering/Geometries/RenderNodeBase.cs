@@ -11,6 +11,7 @@ using Windows.UI;
 using Hercules.Model;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Win2D.Rendering.Geometries
@@ -24,6 +25,7 @@ namespace Hercules.Win2D.Rendering.Geometries
         protected static readonly CanvasStrokeStyle SelectionStrokeStyle = new CanvasStrokeStyle { DashStyle = CanvasDashStyle.Dash };
         private readonly ExpandButton button;
         private CanvasGeometry hullGeometry;
+        private CanvasGeometry pathGeometry;
 
         protected ExpandButton Button
         {
@@ -39,6 +41,14 @@ namespace Hercules.Win2D.Rendering.Geometries
         public override bool HandleClick(Vector2 hitPosition)
         {
             return button.HitTest(hitPosition) || base.HandleClick(hitPosition);
+        }
+
+        public override void ClearResources()
+        {
+            base.ClearResources();
+
+            ClearHull();
+            ClearPath();
         }
 
         protected override void ArrangeInternal(CanvasDrawingSession session)
@@ -63,11 +73,30 @@ namespace Hercules.Win2D.Rendering.Geometries
             base.ArrangeInternal(session);
         }
 
-        public override void ClearResources()
+        private void ClearPath()
         {
-            base.ClearResources();
+            if (pathGeometry != null)
+            {
+                pathGeometry.Dispose();
+                pathGeometry = null;
+            }
+        }
 
-            ClearHull();
+        public override void ComputePath(CanvasDrawingSession session)
+        {
+            ClearPath();
+
+            if (Parent != null)
+            {
+                if (Parent.Node is RootNode)
+                {
+                    pathGeometry = GeometryBuilder.ComputeFilledPath(this, Parent, session);
+                }
+                else
+                {
+                    pathGeometry = GeometryBuilder.ComputeLinePath(this, Parent, session);
+                }
+            }
         }
 
         private void ClearHull()
@@ -93,6 +122,16 @@ namespace Hercules.Win2D.Rendering.Geometries
                 session.DrawGeometry(hullGeometry, Resources.Brush(color.Normal, 1.0f), 1f);
 
                 session.FillGeometry(hullGeometry, Resources.Brush(color.Lighter, 0.5f));
+            }
+        }
+
+        protected override void RenderPathInternal(CanvasDrawingSession session)
+        {
+            if (pathGeometry != null)
+            {
+                ICanvasBrush brush = Resources.Brush(PathColor, 1);
+
+                session.FillGeometry(pathGeometry, brush);
             }
         }
     }

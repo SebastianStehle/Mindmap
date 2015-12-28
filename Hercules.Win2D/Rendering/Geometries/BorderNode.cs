@@ -105,12 +105,13 @@ namespace Hercules.Win2D.Rendering.Geometries
             }
         }
 
+        /*
         public override void ComputePath(CanvasDrawingSession session)
         {
             ClearPath();
 
             pathGeometry = GeometryBuilder.ComputeLinePath(this, Parent, session);
-        }
+        }*/
 
         protected override void RenderInternal(CanvasDrawingSession session, Win2DColor color, bool renderControls)
         {
@@ -158,7 +159,7 @@ namespace Hercules.Win2D.Rendering.Geometries
                 }
             }
         }
-
+        /*
         protected override void RenderPathInternal(CanvasDrawingSession session)
         {
             if (pathGeometry != null)
@@ -167,7 +168,7 @@ namespace Hercules.Win2D.Rendering.Geometries
 
                 session.DrawGeometry(pathGeometry, brush, 2);
             }
-        }
+        }*/
 
         protected override Win2DRenderNode CloneInternal()
         {

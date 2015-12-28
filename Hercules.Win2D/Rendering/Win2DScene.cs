@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using GP.Windows;
@@ -17,7 +18,7 @@ using Hercules.Model.Rendering;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
-
+// ReSharper disable LoopCanBeConvertedToQuery
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 
 namespace Hercules.Win2D.Rendering
@@ -295,6 +296,8 @@ namespace Hercules.Win2D.Rendering
 
                 if (renderNodes.TryGetValue(node, out oldRenderNode))
                 {
+                    node.PropertyChanged -= Node_PropertyChanged;
+
                     oldRenderNode.ClearResources();
 
                     renderNodes.Remove(node);
@@ -310,6 +313,8 @@ namespace Hercules.Win2D.Rendering
                 {
                     Win2DRenderNode renderNode = nodeFactory(node);
 
+                    node.PropertyChanged += Node_PropertyChanged;
+
                     renderNode.Parent = TryAdd(node.Parent);
 
                     return renderNode;
@@ -317,6 +322,17 @@ namespace Hercules.Win2D.Rendering
             }
 
             return null;
+        }
+
+        private void Node_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "Shape")
+            {
+                Node node = (Node)sender;
+
+                TryRemove(node);
+                TryAdd(node);
+            }
         }
 
         public IRenderNode FindRenderNode(NodeBase node)

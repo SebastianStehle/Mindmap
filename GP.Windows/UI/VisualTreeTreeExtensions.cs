@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Windows.Input;
 using Windows.Foundation;
 using Windows.System;
 using Windows.UI.ViewManagement;
@@ -33,6 +34,22 @@ namespace GP.Windows.UI
         /// Defines a point where both values are not numbers.
         /// </summary>
         public static readonly Point PointNaN = new Point(double.NaN, double.NaN);
+
+        /// <summary>
+        /// Creates a new menu item with the text the command and an optional model.
+        /// </summary>
+        /// <param name="text">The text of the command.</param>
+        /// <param name="command">The command object.</param>
+        /// <param name="model">The optional model.</param>
+        /// <returns>
+        /// The created menu item.
+        /// </returns>
+        public static MenuFlyoutItem CreateMenuItem(string text, ICommand command, object model = null)
+        {
+            MenuFlyoutItem item = new MenuFlyoutItem { Text = text, Command = command, CommandParameter = model };
+
+            return item;
+        }
 
         /// <summary>
         /// Centers the view port of the scrollviewer.

@@ -6,14 +6,11 @@
 // All rights reserved.
 // ==========================================================================
 
-using System.Numerics;
 using Windows.UI;
-using GP.Windows.UI;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
-using System;
 
 namespace Hercules.Win2D.Rendering.Geometries.Paths
 {

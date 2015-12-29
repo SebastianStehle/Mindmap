@@ -9,7 +9,6 @@
 using System;
 using GP.Windows.UI.Controls;
 using Hercules.Model;
-using Hercules.Win2D.Rendering.Geometries;
 
 namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 {

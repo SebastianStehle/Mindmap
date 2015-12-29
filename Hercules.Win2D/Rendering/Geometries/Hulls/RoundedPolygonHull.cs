@@ -6,32 +6,17 @@
 // All rights reserved.
 // ==========================================================================
 
-using Windows.UI;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Win2D.Rendering.Geometries.Hulls
 {
     public class RoundedPolygonHull : IHullGeometry
     {
-        private Color lastColor;
-        private ICanvasBrush brush;
         private CanvasGeometry hullGeometry;
 
         public void ClearResources()
-        {
-            ClearGeometry();
-
-            if (brush != null)
-            {
-                brush.Dispose();
-                brush = null;
-            }
-        }
-
-        private void ClearGeometry()
         {
             if (hullGeometry != null)
             {
@@ -40,30 +25,25 @@ namespace Hercules.Win2D.Rendering.Geometries.Hulls
             }
         }
 
-        public void Arrange(Win2DRenderNode renderNode, CanvasDrawingSession session)
+        public void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
         {
-            ClearGeometry();
+            ClearResources();
 
-            hullGeometry = GeometryBuilder.ComputeHullGeometry(session, renderNode.Scene, renderNode);
+            Win2DRenderNode renderNode = renderable as Win2DRenderNode;
+
+            if (renderNode != null)
+            {
+                hullGeometry = GeometryBuilder.ComputeHullGeometry(session, renderable.Scene, renderNode);
+            }
         }
 
-        public void Render(Win2DRenderNode renderNode, CanvasDrawingSession session, Color color)
+        public void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color)
         {
             if (hullGeometry != null)
             {
-                if (brush == null || lastColor != color)
-                {
-                    if (brush != null)
-                    {
-                        brush.Dispose();
-                    }
+                session.DrawGeometry(hullGeometry, renderable.Resources.Brush(color.Normal, 1.0f), 1f);
 
-                    brush = renderNode.Resources.Brush(color, 1);
-
-                    lastColor = color;
-                }
-
-                session.DrawGeometry(hullGeometry, brush, 2);
+                session.FillGeometry(hullGeometry, renderable.Resources.Brush(color.Lighter, 0.5f));
             }
         }
     }

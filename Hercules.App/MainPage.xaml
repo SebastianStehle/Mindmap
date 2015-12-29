@@ -8,7 +8,6 @@
     xmlns:im="using:Microsoft.Xaml.Interactions.Media"
     xmlns:e="using:Hercules.App.Modules.Editor.Views"
     xmlns:m="using:Hercules.App.Modules.Mindmaps.Views"
-    xmlns:gpi="using:GP.Windows.UI.Interactivity"
     xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
     IsTabStop="False"

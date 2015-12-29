@@ -21,10 +21,12 @@ namespace Hercules.Win2D.Rendering
 
         float VerticalPathOffset { get; }
 
-        void Arrange(Win2DRenderNode renderNode, CanvasDrawingSession session);
+        void Arrange(Win2DRenderable renderable, CanvasDrawingSession session);
 
-        void Render(Win2DRenderNode renderNode, CanvasDrawingSession session, Win2DColor color, bool renderSelection);
+        void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderSelection);
 
-        Vector2 Measure(Win2DRenderNode renderNode, CanvasDrawingSession session, Vector2 textSize);
+        Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session, Vector2 textSize);
+
+        IBodyGeometry Clone();
     }
 }

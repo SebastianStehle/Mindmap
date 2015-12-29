@@ -6,15 +6,14 @@
 // All rights reserved.
 // ==========================================================================
 
-using Windows.UI;
 using Microsoft.Graphics.Canvas;
 
 namespace Hercules.Win2D.Rendering
 {
     public interface IHullGeometry : IResourceHolder
     {
-        void Arrange(Win2DRenderNode renderNode, CanvasDrawingSession session);
+        void Arrange(Win2DRenderable renderable, CanvasDrawingSession session);
 
-        void Render(Win2DRenderNode win2DRenderNode, CanvasDrawingSession session, Color color);
+        void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color);
     }
 }

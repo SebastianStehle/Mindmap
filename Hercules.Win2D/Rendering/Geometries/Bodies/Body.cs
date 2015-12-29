@@ -40,10 +40,12 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
         {
         }
 
-        public abstract void Arrange(Win2DRenderNode renderNode, CanvasDrawingSession session);
+        public abstract void Arrange(Win2DRenderable renderable, CanvasDrawingSession session);
 
-        public abstract void Render(Win2DRenderNode renderNode, CanvasDrawingSession session, Win2DColor color, bool renderSelection);
+        public abstract void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderSelection);
 
-        public abstract Vector2 Measure(Win2DRenderNode renderNode, CanvasDrawingSession session, Vector2 textSize);
+        public abstract Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session, Vector2 textSize);
+
+        public abstract IBodyGeometry Clone();
     }
 }

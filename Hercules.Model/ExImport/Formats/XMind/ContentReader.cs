@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Xml.Linq;
+
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 
 namespace Hercules.Model.ExImport.Formats.XMind

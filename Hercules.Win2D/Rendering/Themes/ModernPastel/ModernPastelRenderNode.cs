@@ -35,17 +35,10 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             {
                 return CreateBody(nodeShape);
             }
-            else
-            {
-                NodeShape geometryShape = CreateShapeFromGeometry(current);
 
-                if (geometryShape != nodeShape)
-                {
-                    return CreateBody(nodeShape);
-                }
-            }
+            NodeShape geometryShape = CreateShapeFromGeometry(current);
 
-            return null;
+            return geometryShape != nodeShape ? CreateBody(nodeShape) : null;
         }
 
         private static IBodyGeometry CreateBody(NodeShape shape)
@@ -66,30 +59,28 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             }
             else
             {
-                result = new BorderNode(Colors.Black);
+                result = new Border(Colors.Black);
             }
 
             return result;
         }
 
-        private NodeShape CreateShapeFromGeometry(IBodyGeometry current)
+        private static NodeShape CreateShapeFromGeometry(IBodyGeometry current)
         {
             if (current is Ellipse)
             {
                 return NodeShape.Ellipse;
             }
-            else if (current is Rectangle)
+            if (current is Rectangle)
             {
                 return NodeShape.Rectangle;
             }
-            else if (current is RoundedRectangle)
+            if (current is RoundedRectangle)
             {
                 return NodeShape.RoundedRectangle;
             }
-            else
-            {
-                return NodeShape.Border;
-            }
+
+            return NodeShape.Border;
         }
 
         private static NodeShape CreateShapeFromNode(NodeBase node)
@@ -143,10 +134,8 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
                     {
                         return new FilledPath(Colors.Black);
                     }
-                    else
-                    {
-                        return new LinePath(Colors.Black);
-                    }
+
+                    return new LinePath(Colors.Black);
                 }
             }
 

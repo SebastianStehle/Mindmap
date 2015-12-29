@@ -31,7 +31,6 @@ namespace Hercules.Model.Layouting.Default
         private NodeBase parent;
         private Vector2 mindmapCenter;
         private Vector2 position;
-        private int renderIndex;
         private int? insertIndex;
 
         public DefaultAttachTargetProcess(DefaultLayout layout, IRenderScene scene, Document document, Node movingNode, Rect2 movementBounds)
@@ -164,12 +163,11 @@ namespace Hercules.Model.Layouting.Default
             {
                 Node otherNode = collection[i];
 
-                Rect2 bounds = Scene.FindRenderNode(otherNode).Bounds;
+                Rect2 bounds = Scene.FindRenderNode(otherNode).RenderBounds;
 
                 if (centerY > bounds.CenterY)
                 {
-                    renderIndex = i + 1;
-                    insertIndex = renderIndex;
+                    insertIndex = i + 1;
 
                     if (nodeIndex >= 0 && i >= nodeIndex)
                     {
@@ -184,7 +182,7 @@ namespace Hercules.Model.Layouting.Default
         {
             parentRenderNode = Scene.FindRenderNode(parent);
 
-            float y = parentRenderNode.Position.Y;
+            float y = parentRenderNode.LayoutPosition.Y;
             float x;
 
             anchor = AnchorPoint.Left;
@@ -193,22 +191,22 @@ namespace Hercules.Model.Layouting.Default
             {
                 if (children.Count > 0 && !parent.IsCollapsed)
                 {
-                    if (!insertIndex.HasValue || insertIndex >= children.Count - 1)
+                    if (!insertIndex.HasValue || insertIndex >= children.Count)
                     {
-                        Rect2 bounds = Scene.FindRenderNode(children.Last()).Bounds;
+                        Rect2 bounds = Scene.FindRenderNode(children.Last()).RenderBounds;
 
                         y = bounds.Bottom + (Layout.ElementMargin * 2f) + (movementBounds.Height * 0.5f);
                     }
                     else if (insertIndex == 0)
                     {
-                        Rect2 bounds = Scene.FindRenderNode(children.First()).Bounds;
+                        Rect2 bounds = Scene.FindRenderNode(children.First()).RenderBounds;
 
                         y = bounds.Top - Layout.ElementMargin - (movementBounds.Height * 0.5f);
                     }
                     else
                     {
-                        Rect2 bounds1 = Scene.FindRenderNode(children[renderIndex - 1]).Bounds;
-                        Rect2 bounds2 = Scene.FindRenderNode(children[renderIndex + 0]).Bounds;
+                        Rect2 bounds1 = Scene.FindRenderNode(children[insertIndex.Value - 1]).RenderBounds;
+                        Rect2 bounds2 = Scene.FindRenderNode(children[insertIndex.Value + 0]).RenderBounds;
 
                         y = (bounds1.CenterY + bounds2.CenterY) * 0.5f;
                     }
@@ -221,11 +219,11 @@ namespace Hercules.Model.Layouting.Default
             {
                 if (side == NodeSide.Right)
                 {
-                    x = parentRenderNode.Position.X + parentRenderNode.RenderSize.X + Layout.HorizontalMargin;
+                    x = parentRenderNode.LayoutPosition.X + parentRenderNode.RenderSize.X + Layout.HorizontalMargin;
                 }
                 else
                 {
-                    x = parentRenderNode.Position.X - parentRenderNode.RenderSize.X - Layout.HorizontalMargin;
+                    x = parentRenderNode.LayoutPosition.X - parentRenderNode.RenderSize.X - Layout.HorizontalMargin;
 
                     anchor = AnchorPoint.Right;
                 }
@@ -236,13 +234,13 @@ namespace Hercules.Model.Layouting.Default
             {
                 if (side == NodeSide.Right)
                 {
-                    x = parentRenderNode.Position.X + (parentRenderNode.RenderSize.X * 0.5f) + Layout.HorizontalMargin;
+                    x = parentRenderNode.LayoutPosition.X + (parentRenderNode.RenderSize.X * 0.5f) + Layout.HorizontalMargin;
 
                     ajustWithChildren();
                 }
                 else
                 {
-                    x = parentRenderNode.Position.X - (parentRenderNode.RenderSize.X * 0.5f) - Layout.HorizontalMargin;
+                    x = parentRenderNode.LayoutPosition.X - (parentRenderNode.RenderSize.X * 0.5f) - Layout.HorizontalMargin;
 
                     anchor = AnchorPoint.Right;
 
@@ -261,7 +259,7 @@ namespace Hercules.Model.Layouting.Default
             {
                 if (node != movingNode && node != movingNode.Parent && !movingNode.HasChild(node as Node))
                 {
-                    Rect2 nodeBounds = Scene.FindRenderNode(node).Bounds;
+                    Rect2 nodeBounds = Scene.FindRenderNode(node).RenderBounds;
 
                     Rect2 intersection = nodeBounds.Intersect(movementBounds);
 

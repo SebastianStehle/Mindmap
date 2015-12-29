@@ -6,10 +6,12 @@
 // All rights reserved.
 // ==========================================================================
 
+using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Graphics.Printing;
 using Windows.Storage.Streams;
 using Windows.UI;
+using Hercules.Model.Layouting;
 
 namespace Hercules.Model.Rendering
 {
@@ -22,5 +24,15 @@ namespace Hercules.Model.Rendering
         IRenderIcon FindIcon(NodeBase node);
 
         IPrintDocumentSource Print(float padding = 20);
+
+        IAdornerRenderNode CreateAdorner(IRenderNode renderNode);
+
+        void RemoveAdorner(IAdornerRenderNode adorner);
+
+        void ShowPreviewElement(Vector2 position, NodeBase parent, AnchorPoint anchor);
+
+        void HidePreviewElement();
+
+        void Invalidate();
     }
 }

@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+
 // ReSharper disable SuggestBaseTypeForParameter
 
 namespace Hercules.Model

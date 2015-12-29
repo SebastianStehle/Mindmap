@@ -19,7 +19,7 @@ using Microsoft.Graphics.Canvas.Brushes;
 
 namespace Hercules.Win2D.Rendering
 {
-    public sealed class Win2DResourceManager
+    public sealed class Win2DResourceManager : IResourceHolder
     {
         private readonly Dictionary<Tuple<Color, float>, ICanvasBrush> cachedColors = new Dictionary<Tuple<Color, float>, ICanvasBrush>();
         private readonly Dictionary<INodeIcon, Win2DIcon> cachedIcons = new Dictionary<INodeIcon, Win2DIcon>();

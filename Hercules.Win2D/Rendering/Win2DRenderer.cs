@@ -140,10 +140,7 @@ namespace Hercules.Win2D.Rendering
         {
             resources.ClearResources();
 
-            foreach (Win2DRenderNode renderNode in scene.AllNodes)
-            {
-                renderNode.ClearResources();
-            }
+            scene.ClearResources();
 
             Invalidate();
         }
@@ -183,6 +180,16 @@ namespace Hercules.Win2D.Rendering
         public Task RenderScreenshotAsync(IRandomAccessStream stream, Color background, float? dpi = null, float padding = 20)
         {
             return ScreenshotMaker.RenderScreenshotAsync(scene, canvas.Device, stream, background, dpi, padding);
+        }
+
+        public void RemoveAdorner(IAdornerRenderNode adorner)
+        {
+            scene.RemoveAdorner(adorner);
+        }
+
+        public IAdornerRenderNode CreateAdorner(IRenderNode renderNode)
+        {
+            return scene.CreateAdorner(renderNode);
         }
 
         private void RenderForUI(CanvasDrawingSession session)

@@ -31,6 +31,22 @@ namespace GP.Windows
         }
 
         /// <summary>
+        /// Adds the instance to the collection and returns the instance.
+        /// </summary>
+        /// <param name="collection">The collection to add the instance to.</param>
+        /// <param name="instance">The instance to add.</param>
+        /// <typeparam name="T">The type of the instance.</typeparam>
+        /// <returns>
+        /// The added instance.
+        /// </returns>
+        public static T AddAndReturn<T>(this ICollection<T> collection, T instance)
+        {
+            collection.Add(instance);
+
+            return instance;
+        }
+
+        /// <summary>
         /// Registers the specified collection changed event handler to the event source.
         /// </summary>
         /// <param name="eventSource">The event source. Cannot be null.</param>

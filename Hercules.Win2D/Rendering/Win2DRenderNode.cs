@@ -8,7 +8,6 @@
 
 using System;
 using System.Numerics;
-using GP.Windows;
 using GP.Windows.UI;
 using Hercules.Model;
 using Hercules.Model.Layouting;
@@ -19,76 +18,36 @@ using Microsoft.Graphics.Canvas;
 
 namespace Hercules.Win2D.Rendering
 {
-    public abstract class Win2DRenderNode : IRenderNode
+    public abstract class Win2DRenderNode : Win2DRenderable, IRenderNode, IResourceHolder
     {
         private static readonly Vector2 EmptyVector = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
-        private readonly Win2DRenderer renderer;
-        private readonly NodeBase node;
         private readonly Win2DTextRenderer textRenderer;
         private readonly ExpandButton button;
         private IBodyGeometry bodyGeometry;
         private IPathGeometry pathGeometry;
         private IHullGeometry hullGeometry;
         private Vector2 animationTargetPosition = EmptyVector;
-        private Vector2 position;
-        private Vector2 renderPosition;
-        private Vector2 renderSize;
-        private Vector2 targetPosition;
-        private Rect2 bounds;
-        private Rect2 boundsWithParent;
+        private Vector2 layoutPosition;
+        private Vector2 targetLayoutPosition;
+        private Rect2 renderBoundsWithParent;
         private DateTime? animatingEndUtc;
         private bool isVisible = true;
 
         public Win2DRenderNode Parent { get; set; }
-
-        public Win2DRenderer Renderer
+        
+        public Rect2 RenderBoundsWithParent
         {
-            get { return renderer; }
+            get { return renderBoundsWithParent; }
         }
 
-        public Win2DResourceManager Resources
+        public Vector2 LayoutPosition
         {
-            get { return renderer.Resources; }
+            get { return layoutPosition; }
         }
 
-        public Win2DScene Scene
+        public Vector2 TargetLayoutPosition
         {
-            get { return renderer.Scene; }
-        }
-
-        public NodeBase Node
-        {
-            get { return node; }
-        }
-
-        public Rect2 Bounds
-        {
-            get { return bounds; }
-        }
-
-        public Rect2 BoundsWithParent
-        {
-            get { return boundsWithParent; }
-        }
-
-        public Vector2 Position
-        {
-            get { return position; }
-        }
-
-        public Vector2 TargetPosition
-        {
-            get { return targetPosition; }
-        }
-
-        public Vector2 RenderPosition
-        {
-            get { return renderPosition; }
-        }
-
-        public Vector2 RenderSize
-        {
-            get { return renderSize; }
+            get { return targetLayoutPosition; }
         }
 
         public Win2DTextRenderer TextRenderer
@@ -101,7 +60,7 @@ namespace Hercules.Win2D.Rendering
             get { return bodyGeometry.RenderPositionOffset; }
         }
 
-        public virtual float VerticalPathOffset
+        public virtual float VerticalPathRenderOffset
         {
             get { return bodyGeometry.VerticalPathOffset; }
         }
@@ -111,17 +70,9 @@ namespace Hercules.Win2D.Rendering
             get { return isVisible; }
         }
 
-        public bool HideControls { get; set; }
-
         protected Win2DRenderNode(NodeBase node, Win2DRenderer renderer)
+            : base(node, renderer)
         {
-            Guard.NotNull(node, nameof(node));
-            Guard.NotNull(renderer, nameof(renderer));
-
-            this.node = node;
-
-            this.renderer = renderer;
-
             button = new ExpandButton(node);
 
             textRenderer = new Win2DTextRenderer(node);
@@ -159,7 +110,7 @@ namespace Hercules.Win2D.Rendering
         {
             if (hullGeometry != null)
             {
-                pathGeometry.Render(this, session);
+                hullGeometry.Render(this, session, Resources.FindColor(Node));
             }
         }
 
@@ -181,23 +132,23 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        public void MoveToLayout(Vector2 layoutPosition, AnchorPoint anchor)
+        public void MoveToLayout(Vector2 position, AnchorPoint anchor)
         {
-            position = layoutPosition;
+            layoutPosition = position;
 
             Vector2 offset = RenderPositionOffset;
 
-            targetPosition = new Vector2(
-                position.X + offset.X,
-                position.Y + offset.Y - (0.5f * renderSize.Y));
+            targetLayoutPosition = new Vector2(
+                layoutPosition.X + offset.X,
+                layoutPosition.Y + offset.Y - (0.5f * RenderSize.Y));
 
             if (anchor == AnchorPoint.Right)
             {
-                targetPosition.X -= renderSize.X;
+                targetLayoutPosition.X -= RenderSize.X;
             }
             else if (anchor == AnchorPoint.Center)
             {
-                targetPosition.X -= 0.5f * renderSize.X;
+                targetLayoutPosition.X -= 0.5f * RenderSize.X;
             }
         }
 
@@ -207,7 +158,7 @@ namespace Hercules.Win2D.Rendering
             {
                 if (isAnimating && animationTargetPosition != EmptyVector)
                 {
-                    if (animationTargetPosition != targetPosition)
+                    if (animationTargetPosition != targetLayoutPosition)
                     {
                         animatingEndUtc = utcNow.AddMilliseconds(animationSpeed);
                     }
@@ -217,7 +168,7 @@ namespace Hercules.Win2D.Rendering
                     animatingEndUtc = null;
                 }
 
-                animationTargetPosition = targetPosition;
+                animationTargetPosition = targetLayoutPosition;
 
                 float fractionComplete = 1;
 
@@ -228,11 +179,12 @@ namespace Hercules.Win2D.Rendering
                     fractionComplete -= Math.Min(1, Math.Max(0, timeRemaining / animationSpeed));
                 }
 
-                renderPosition = new Vector2(
-                    MathHelper.Interpolate(fractionComplete, renderPosition.X, targetPosition.X),
-                    MathHelper.Interpolate(fractionComplete, renderPosition.Y, targetPosition.Y));
+                UpdatePosition(
+                    new Vector2(
+                        MathHelper.Interpolate(fractionComplete, RenderPosition.X, targetLayoutPosition.X),
+                        MathHelper.Interpolate(fractionComplete, RenderPosition.Y, targetLayoutPosition.Y)));
 
-                return !MathHelper.AboutEqual(targetPosition, renderPosition);
+                return !MathHelper.AboutEqual(targetLayoutPosition, RenderPosition);
             }
 
             animationTargetPosition = EmptyVector;
@@ -246,7 +198,7 @@ namespace Hercules.Win2D.Rendering
 
             if (bodyGeometry != null)
             {
-                renderSize = bodyGeometry.Measure(this, session, textRenderer.RenderSize);
+                UpdateSize(bodyGeometry.Measure(this, session, textRenderer.RenderSize));
             }
         }
 
@@ -254,6 +206,8 @@ namespace Hercules.Win2D.Rendering
         {
             ArrangeBody(session);
             ArrangeText();
+            ArrangeHull(session);
+            ArrangePath(session);
             ArrangeButton();
         }
 
@@ -275,21 +229,21 @@ namespace Hercules.Win2D.Rendering
 
         private void ArrangeBody(CanvasDrawingSession session)
         {
-            bounds = new Rect2(renderPosition, renderSize);
+            UpdateBounds();
 
             if (Parent != null)
             {
-                double minX = Math.Min(renderPosition.X, Parent.RenderPosition.X);
-                double minY = Math.Min(renderPosition.Y, Parent.RenderPosition.Y);
+                double minX = Math.Min(RenderPosition.X, Parent.RenderPosition.X);
+                double minY = Math.Min(RenderPosition.Y, Parent.RenderPosition.Y);
 
-                double maxX = Math.Max(renderPosition.X + renderSize.X, Parent.RenderPosition.X + Parent.RenderSize.X);
-                double maxY = Math.Max(renderPosition.Y + renderSize.Y, Parent.RenderPosition.Y + Parent.RenderSize.Y);
+                double maxX = Math.Max(RenderPosition.X + RenderSize.X, Parent.RenderPosition.X + Parent.RenderSize.X);
+                double maxY = Math.Max(RenderPosition.Y + RenderSize.Y, Parent.RenderPosition.Y + Parent.RenderSize.Y);
 
-                boundsWithParent = new Rect2((float)minX, (float)minY, (float)(maxX - minX), (float)(maxY - minY));
+                renderBoundsWithParent = new Rect2((float)minX, (float)minY, (float)(maxX - minX), (float)(maxY - minY));
             }
             else
             {
-                boundsWithParent = Bounds;
+                renderBoundsWithParent = RenderBounds;
             }
 
             bodyGeometry.Arrange(this, session);
@@ -325,7 +279,7 @@ namespace Hercules.Win2D.Rendering
 
         public virtual bool HitTest(Vector2 hitPosition)
         {
-            return Bounds.Contains(hitPosition);
+            return RenderBounds.Contains(hitPosition);
         }
 
         public virtual bool HandleClick(Vector2 hitPosition)
@@ -337,7 +291,7 @@ namespace Hercules.Win2D.Rendering
 
             if (HitTest(hitPosition))
             {
-                node.Select();
+                Node.Select();
 
                 return true;
             }
@@ -420,5 +374,10 @@ namespace Hercules.Win2D.Rendering
         protected abstract IHullGeometry CreateHull(CanvasDrawingSession session, IHullGeometry current);
 
         protected abstract IPathGeometry CreatePath(CanvasDrawingSession session, IPathGeometry current);
+
+        public Win2DAdornerRenderNode CreateAdorner()
+        {
+            return new Win2DAdornerRenderNode(Node, Renderer, bodyGeometry, RenderBounds, textRenderer.RenderSize);
+        }
     }
 }

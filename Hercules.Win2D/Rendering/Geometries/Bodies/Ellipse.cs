@@ -15,7 +15,7 @@ using Microsoft.Graphics.Canvas.Brushes;
 
 namespace Hercules.Win2D.Rendering.Geometries.Bodies
 {
-    public class Ellipse : Body
+    public sealed class Ellipse : Body
     {
         private const float MinHeight = 50;
         private static readonly Vector2 ContentPadding = new Vector2(15, 5);
@@ -29,9 +29,13 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             get { return textRenderPosition; }
         }
 
-        public override void Arrange(Win2DRenderNode renderNode, CanvasDrawingSession session)
+        public Ellipse()
         {
-            float x = renderNode.RenderPosition.X, y = renderNode.Bounds.CenterY;
+        }
+
+        public override void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
+        {
+            float x = renderable.RenderPosition.X, y = renderable.RenderBounds.CenterY;
 
             x += ContentPadding.X;
             x += textOffset;
@@ -40,15 +44,15 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             textRenderPosition = new Vector2(x, y);
         }
 
-        public override Vector2 Measure(Win2DRenderNode renderNode, CanvasDrawingSession session, Vector2 textSize)
+        public override Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session, Vector2 textSize)
         {
             textRenderSize = textSize;
 
             Vector2 size = textSize + (2 * ContentPadding);
 
-            if (renderNode.Node.Icon != null)
+            if (renderable.Node.Icon != null)
             {
-                if (renderNode.Node.IconSize == IconSize.Small)
+                if (renderable.Node.IconSize == IconSize.Small)
                 {
                     textOffset = ImageSizeSmall.X + (ImageMargin * 2);
                 }
@@ -68,37 +72,37 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             return size;
         }
 
-        public override void Render(Win2DRenderNode renderNode, CanvasDrawingSession session, Win2DColor color, bool renderControls)
+        public override void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderControls)
         {
-            ICanvasBrush borderBrush = renderNode.Resources.ThemeDarkBrush(color);
+            ICanvasBrush borderBrush = renderable.Resources.ThemeDarkBrush(color);
 
             ICanvasBrush backgroundBrush =
-                renderNode.Node.IsSelected ?
-                    renderNode.Resources.ThemeLightBrush(color) :
-                    renderNode.Resources.ThemeNormalBrush(color);
+                renderable.Node.IsSelected ?
+                    renderable.Resources.ThemeLightBrush(color) :
+                    renderable.Resources.ThemeNormalBrush(color);
 
-            float radiusX = 0.5f * renderNode.RenderSize.X;
-            float radiusY = 0.5f * renderNode.RenderSize.Y;
+            float radiusX = 0.5f * renderable.RenderSize.X;
+            float radiusY = 0.5f * renderable.RenderSize.Y;
 
             session.FillEllipse(
-                renderNode.Bounds.Center,
+                renderable.RenderBounds.Center,
                 radiusX,
                 radiusY,
                 backgroundBrush);
 
             session.DrawEllipse(
-                renderNode.Bounds.Center,
+                renderable.RenderBounds.Center,
                 radiusX,
                 radiusY,
                 borderBrush);
 
-            if (renderNode.Node.Icon != null)
+            if (renderable.Node.Icon != null)
             {
-                ICanvasImage image = renderNode.Resources.Image(renderNode.Node);
+                ICanvasImage image = renderable.Resources.Image(renderable.Node);
 
                 if (image != null)
                 {
-                    Vector2 size = renderNode.Node.IconSize == IconSize.Large ? ImageSizeLarge : ImageSizeSmall;
+                    Vector2 size = renderable.Node.IconSize == IconSize.Large ? ImageSizeLarge : ImageSizeSmall;
 
                     float x = textRenderPosition.X - textOffset + ImageMargin;
                     float y = textRenderPosition.Y + ((textRenderSize.Y - size.Y) * 0.5f);
@@ -109,18 +113,23 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
 
             if (renderControls)
             {
-                if (renderNode.Node.IsSelected)
+                if (renderable.Node.IsSelected)
                 {
                     radiusX -= SelectionMargin.X;
                     radiusY -= SelectionMargin.Y;
 
                     session.DrawEllipse(
-                        renderNode.Bounds.Center,
+                        renderable.RenderBounds.Center,
                         radiusX,
                         radiusY,
                         borderBrush, 2f, SelectionStrokeStyle);
                 }
             }
+        }
+
+        public override IBodyGeometry Clone()
+        {
+            return new Ellipse();
         }
     }
 }

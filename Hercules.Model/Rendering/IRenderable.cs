@@ -1,14 +1,24 @@
 ﻿// ==========================================================================
-// XMindStyle.cs
+// IRenderable.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-namespace Hercules.Model.ExImport.Formats.XMind
+
+using System.Numerics;
+using Hercules.Model.Utils;
+
+namespace Hercules.Model.Rendering
 {
-    internal sealed class XMindStyle
+    public interface IRenderable
     {
-        public int Color { get; set; } = -1;
+        Vector2 RenderPosition { get; }
+
+        Vector2 RenderSize { get; }
+
+        Rect2 RenderBounds { get; }
+
+        NodeBase Node { get; }
     }
 }

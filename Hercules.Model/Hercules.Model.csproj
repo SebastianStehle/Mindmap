@@ -157,6 +157,8 @@
     <Compile Include="KeyIcon.cs" />
     <Compile Include="IWritable.cs" />
     <Compile Include="PropertiesBagExtensions.cs" />
+    <Compile Include="Rendering\IAdornerRenderNode.cs" />
+    <Compile Include="Rendering\IRenderable.cs" />
     <Compile Include="Rendering\IRenderColor.cs" />
     <Compile Include="Rendering\IRenderIcon.cs" />
     <Compile Include="Storing\CommandNameAttribute.cs" />

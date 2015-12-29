@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// BorderNode.cs
+// Border.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -17,7 +17,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Win2D.Rendering.Geometries.Bodies
 {
-    public sealed class BorderNode : Body
+    public sealed class Border : Body
     {
         private const float MinHeight = 40;
         private const float VerticalOffset = 16;
@@ -43,14 +43,14 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             get { return new Vector2(0, -VerticalOffset); }
         }
 
-        public BorderNode(Color pathColor)
+        public Border(Color pathColor)
         {
             this.pathColor = pathColor;
         }
 
-        public override void Arrange(Win2DRenderNode renderNode, CanvasDrawingSession session)
+        public override void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
         {
-            float x = renderNode.RenderPosition.X, y = renderNode.Bounds.CenterY;
+            float x = renderable.RenderPosition.X, y = renderable.RenderBounds.CenterY;
 
             x += ContentPadding.X;
             x += textOffset;
@@ -59,15 +59,15 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             textRenderPosition = new Vector2(x, y);
         }
 
-        public override Vector2 Measure(Win2DRenderNode renderNode, CanvasDrawingSession session, Vector2 textSize)
+        public override Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session, Vector2 textSize)
         {
             textRenderSize = textSize;
 
             Vector2 size = textSize + (2 * ContentPadding);
 
-            if (renderNode.Node.Icon != null)
+            if (renderable.Node.Icon != null)
             {
-                if (renderNode.Node.IconSize == IconSize.Small)
+                if (renderable.Node.IconSize == IconSize.Small)
                 {
                     textOffset = ImageSizeSmall.X + ImageMargin;
                 }
@@ -87,29 +87,29 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             return size;
         }
 
-        public override void Render(Win2DRenderNode renderNode, CanvasDrawingSession session, Win2DColor color, bool renderControls)
+        public override void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderControls)
         {
-            ICanvasBrush borderBrush = renderNode.Resources.ThemeDarkBrush(color);
+            ICanvasBrush borderBrush = renderable.Resources.ThemeDarkBrush(color);
 
-            ICanvasBrush lineBrush = renderNode.Resources.Brush(pathColor, 1);
+            ICanvasBrush lineBrush = renderable.Resources.Brush(pathColor, 1);
 
             Vector2 left = new Vector2(
-                (float)Math.Round(renderNode.Bounds.Left - 1),
-                (float)Math.Round(renderNode.Bounds.CenterY) + VerticalOffset);
+                (float)Math.Round(renderable.RenderBounds.Left - 1),
+                (float)Math.Round(renderable.RenderBounds.CenterY) + VerticalOffset);
 
             Vector2 right = new Vector2(
-                (float)Math.Round(renderNode.Bounds.Right + 1),
-                (float)Math.Round(renderNode.Bounds.CenterY) + VerticalOffset);
+                (float)Math.Round(renderable.RenderBounds.Right + 1),
+                (float)Math.Round(renderable.RenderBounds.CenterY) + VerticalOffset);
 
             session.DrawLine(left, right, lineBrush, 2, StrokeStyle);
 
-            if (renderNode.Node.Icon != null)
+            if (renderable.Node.Icon != null)
             {
-                ICanvasImage image = renderNode.Resources.Image(renderNode.Node);
+                ICanvasImage image = renderable.Resources.Image(renderable.Node);
 
                 if (image != null)
                 {
-                    Vector2 size = renderNode.Node.IconSize == IconSize.Large ? ImageSizeLarge : ImageSizeSmall;
+                    Vector2 size = renderable.Node.IconSize == IconSize.Large ? ImageSizeLarge : ImageSizeSmall;
 
                     float x = textRenderPosition.X - textOffset;
                     float y = textRenderPosition.Y + ((textRenderSize.Y - size.Y) * 0.5f);
@@ -120,11 +120,16 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
 
             if (renderControls)
             {
-                if (renderNode.Node.IsSelected)
+                if (renderable.Node.IsSelected)
                 {
-                    session.DrawRoundedRectangle(renderNode.Bounds, 5, 5, borderBrush, 2f, SelectionStrokeStyle);
+                    session.DrawRoundedRectangle(renderable.RenderBounds, 5, 5, borderBrush, 2f, SelectionStrokeStyle);
                 }
             }
+        }
+
+        public override IBodyGeometry Clone()
+        {
+            return new Border(pathColor);
         }
     }
 }

@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Linq;
 using System.Numerics;
 using GP.Windows;
@@ -23,9 +22,10 @@ using Microsoft.Graphics.Canvas.Text;
 
 namespace Hercules.Win2D.Rendering
 {
-    public sealed class Win2DScene : DisposableObject, IRenderScene
+    public sealed class Win2DScene : DisposableObject, IRenderScene, IResourceHolder
     {
         private readonly Dictionary<NodeBase, Win2DRenderNode> renderNodes = new Dictionary<NodeBase, Win2DRenderNode>();
+        private readonly List<Win2DAdornerRenderNode> adorners = new List<Win2DAdornerRenderNode>();
         private readonly Func<NodeBase, Win2DRenderNode> nodeFactory;
         private readonly Win2DRenderNode previewNode;
         private readonly Document document;
@@ -64,6 +64,19 @@ namespace Hercules.Win2D.Rendering
         protected override void DisposeObject(bool disposing)
         {
             ReleaseDocument();
+        }
+
+        public void ClearResources()
+        {
+            foreach (Win2DRenderNode renderNode in AllNodes)
+            {
+                renderNode.ClearResources();
+            }
+
+            foreach (Win2DAdornerRenderNode adorner in adorners)
+            {
+                adorner.ClearResources();
+            }
         }
 
         private void InitializeDocument()
@@ -126,6 +139,11 @@ namespace Hercules.Win2D.Rendering
                 renderNode.Measure(session);
             }
 
+            foreach (Win2DAdornerRenderNode adorner in adorners)
+            {
+                adorner.Measure(session);
+            }
+
             if (isLayoutInvalidated)
             {
                 layout.UpdateLayout(document, this);
@@ -164,7 +182,7 @@ namespace Hercules.Win2D.Rendering
 
                 if (renderNode.IsVisible)
                 {
-                    Rect2 nodeBounds = renderNode.Bounds;
+                    Rect2 nodeBounds = renderNode.RenderBounds;
 
                     minX = Math.Min(minX, nodeBounds.Left);
                     minY = Math.Min(minY, nodeBounds.Top);
@@ -173,10 +191,9 @@ namespace Hercules.Win2D.Rendering
                 }
             }
 
-            foreach (Win2DRenderNode renderNode in AllNodes)
+            foreach (Win2DAdornerRenderNode adorner in adorners)
             {
-                renderNode.ArrangeHull(session);
-                renderNode.ArrangePath(session);
+                adorner.Arrange(session);
             }
 
             bounds = new Rect2((float)minX, (float)minY, (float)(maxX - minX), (float)(maxY - minY));
@@ -209,6 +226,14 @@ namespace Hercules.Win2D.Rendering
                     renderNode.Render(session, renderControls);
                 }
             }
+
+            if (renderControls)
+            {
+                foreach (Win2DAdornerRenderNode adorner in adorners)
+                {
+                    adorner.Render(session);
+                }
+            }
         }
 
         public bool HandleClick(Vector2 hitPosition, out Win2DRenderNode handledNode)
@@ -230,12 +255,12 @@ namespace Hercules.Win2D.Rendering
 
         private static bool CanRenderPath(Win2DRenderNode renderNode, Rect2 viewRect)
         {
-            return viewRect.IntersectsWith(renderNode.BoundsWithParent);
+            return viewRect.IntersectsWith(renderNode.RenderBoundsWithParent);
         }
 
-        private static bool CanRenderNode(IRenderNode renderNode, Rect2 viewRect)
+        private static bool CanRenderNode(IRenderable renderNode, Rect2 viewRect)
         {
-            return viewRect.IntersectsWith(renderNode.Bounds);
+            return viewRect.IntersectsWith(renderNode.RenderBounds);
         }
 
         private void Document_NodeAdded(object sender, NodeEventArgs e)
@@ -246,6 +271,20 @@ namespace Hercules.Win2D.Rendering
         private void Document_NodeRemoved(object sender, NodeEventArgs e)
         {
             TryRemove(e.Node);
+        }
+
+        public void RemoveAdorner(IAdornerRenderNode adorner)
+        {
+            Guard.NotNull(adorner, nameof(adorner));
+
+            adorners.Remove((Win2DAdornerRenderNode)adorner);
+        }
+
+        public IAdornerRenderNode CreateAdorner(IRenderNode renderNode)
+        {
+            Guard.NotNull(renderNode, nameof(renderNode));
+
+            return adorners.AddAndReturn(((Win2DRenderNode)renderNode).CreateAdorner());
         }
 
         private void TryRemove(NodeBase node)

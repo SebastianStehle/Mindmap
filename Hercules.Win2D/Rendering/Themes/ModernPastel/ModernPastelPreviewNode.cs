@@ -17,7 +17,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 {
     public sealed class ModernPastelPreviewNode : Win2DRenderNode
     {
-        private static readonly Vector2 Size = new Vector2(100, 16);
+        private static readonly Vector2 Size = new Vector2(60, 16);
 
         public ModernPastelPreviewNode(NodeBase node, Win2DRenderer renderer)
             : base(node, renderer)
@@ -26,12 +26,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 
         protected override IBodyGeometry CreateBody(CanvasDrawingSession session, IBodyGeometry current)
         {
-            if (current == null)
-            {
-                return new SimpleRectangle(Size);
-            }
-
-            return null;
+            return current == null ? new SimpleRectangle(Size) : null;
         }
 
         protected override IHullGeometry CreateHull(CanvasDrawingSession session, IHullGeometry current)
@@ -45,16 +40,14 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 
             if (parentNode != null)
             {
-                if (current == null || (current is FilledPath && !(parentNode is RootNode) || current is LinePath && parentNode is RootNode))
+                if (current == null || (current is FilledPath && !(parentNode is RootNode)) || (current is LinePath && parentNode is RootNode))
                 {
                     if (Parent.Node is RootNode)
                     {
                         return new FilledPath(Colors.Black, 0.5f);
                     }
-                    else
-                    {
-                        return new LinePath(Colors.Black, 0.5f);
-                    }
+
+                    return new LinePath(Colors.Black, 0.5f);
                 }
             }
 

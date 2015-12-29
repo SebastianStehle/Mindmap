@@ -36,9 +36,9 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             this.borderRadius = borderRadius;
         }
 
-        public override void Arrange(Win2DRenderNode renderNode, CanvasDrawingSession session)
+        public override void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
         {
-            float x = renderNode.RenderPosition.X, y = renderNode.Bounds.CenterY;
+            float x = renderable.RenderPosition.X, y = renderable.RenderBounds.CenterY;
 
             x += ContentPadding.X;
             x += textOffset;
@@ -47,15 +47,15 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             textRenderPosition = new Vector2(x, y);
         }
 
-        public override Vector2 Measure(Win2DRenderNode renderNode, CanvasDrawingSession session, Vector2 textSize)
+        public override Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session, Vector2 textSize)
         {
             textRenderSize = textSize;
 
             Vector2 size = textSize + (2 * ContentPadding);
 
-            if (renderNode.Node.Icon != null)
+            if (renderable.Node.Icon != null)
             {
-                if (renderNode.Node.IconSize == IconSize.Small)
+                if (renderable.Node.IconSize == IconSize.Small)
                 {
                     textOffset = ImageSizeSmall.X + ImageMargin;
                 }
@@ -75,35 +75,35 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             return size;
         }
 
-        public override void Render(Win2DRenderNode renderNode, CanvasDrawingSession session, Win2DColor color, bool renderSelection)
+        public override void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderSelection)
         {
-            ICanvasBrush borderBrush = renderNode.Resources.ThemeDarkBrush(color);
+            ICanvasBrush borderBrush = renderable.Resources.ThemeDarkBrush(color);
 
             ICanvasBrush backgroundBrush =
-                renderNode.Node.IsSelected ?
-                    renderNode.Resources.ThemeLightBrush(color) :
-                    renderNode.Resources.ThemeNormalBrush(color);
+                renderable.Node.IsSelected ?
+                    renderable.Resources.ThemeLightBrush(color) :
+                    renderable.Resources.ThemeNormalBrush(color);
 
             if (borderRadius > 0)
             {
-                session.FillRoundedRectangle(renderNode.Bounds, borderRadius, borderRadius, backgroundBrush);
+                session.FillRoundedRectangle(renderable.RenderBounds, borderRadius, borderRadius, backgroundBrush);
 
-                session.DrawRoundedRectangle(renderNode.Bounds, borderRadius, borderRadius, borderBrush);
+                session.DrawRoundedRectangle(renderable.RenderBounds, borderRadius, borderRadius, borderBrush);
             }
             else
             {
-                session.FillRectangle(renderNode.Bounds, backgroundBrush);
+                session.FillRectangle(renderable.RenderBounds, backgroundBrush);
 
-                session.DrawRectangle(renderNode.Bounds, borderBrush);
+                session.DrawRectangle(renderable.RenderBounds, borderBrush);
             }
 
-            if (renderNode.Node.Icon != null)
+            if (renderable.Node.Icon != null)
             {
-                ICanvasImage image = renderNode.Resources.Image(renderNode.Node);
+                ICanvasImage image = renderable.Resources.Image(renderable.Node);
 
                 if (image != null)
                 {
-                    Vector2 size = renderNode.Node.IconSize == IconSize.Large ? ImageSizeLarge : ImageSizeSmall;
+                    Vector2 size = renderable.Node.IconSize == IconSize.Large ? ImageSizeLarge : ImageSizeSmall;
 
                     float x = textRenderPosition.X - textOffset;
                     float y = textRenderPosition.Y + ((textRenderSize.Y - size.Y) * 0.5f);
@@ -114,9 +114,9 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
 
             if (renderSelection)
             {
-                if (renderNode.Node.IsSelected)
+                if (renderable.Node.IsSelected)
                 {
-                    Rect2 rect = Rect2.Deflate(renderNode.Bounds, SelectionMargin);
+                    Rect2 rect = Rect2.Deflate(renderable.RenderBounds, SelectionMargin);
 
                     if (borderRadius > 0)
                     {

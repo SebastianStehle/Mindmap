@@ -37,7 +37,7 @@ namespace Hercules.Win2D.Rendering.Utils
                 IList<Rect2> childBounds =
                     node.AllChildren()
                         .Select(x => (Win2DRenderNode)scene.FindRenderNode(x)).Union(new[] { renderNode }).Where(x => x.IsVisible)
-                        .Select(x => Rect2.Inflate(new Rect2(x.TargetPosition, x.RenderSize), new Vector2(Padding, Padding)))
+                        .Select(x => Rect2.Inflate(new Rect2(x.TargetLayoutPosition, x.RenderSize), new Vector2(Padding, Padding)))
                         .ToList();
 
                 if (childBounds.Count > 0)
@@ -112,10 +112,10 @@ namespace Hercules.Win2D.Rendering.Utils
 
             if (parent != null && target.IsVisible)
             {
-                Rect2 targetRect = target.Bounds;
-                Rect2 parentRect = parent.Bounds;
+                Rect2 targetRect = target.RenderBounds;
+                Rect2 parentRect = parent.RenderBounds;
 
-                float targetOffset = target.VerticalPathOffset;
+                float targetOffset = target.VerticalPathRenderOffset;
 
                 Vector2 point1 = Vector2.Zero;
                 Vector2 point2 = Vector2.Zero;
@@ -171,11 +171,11 @@ namespace Hercules.Win2D.Rendering.Utils
 
             if (parent != null && target.IsVisible)
             {
-                Rect2 targetRect = target.Bounds;
-                Rect2 parentRect = parent.Bounds;
+                Rect2 targetRect = target.RenderBounds;
+                Rect2 parentRect = parent.RenderBounds;
 
-                float targetOffset = target.VerticalPathOffset;
-                float parentOffset = parent.VerticalPathOffset;
+                float targetOffset = target.VerticalPathRenderOffset;
+                float parentOffset = parent.VerticalPathRenderOffset;
 
                 Vector2 point1 = Vector2.Zero;
                 Vector2 point2 = Vector2.Zero;

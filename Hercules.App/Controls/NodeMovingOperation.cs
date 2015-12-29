@@ -9,6 +9,7 @@
 using System.Numerics;
 using Hercules.Model;
 using Hercules.Model.Layouting;
+using Hercules.Model.Rendering;
 using Hercules.Win2D.Rendering;
 // ReSharper disable ArrangeThisQualifier
 
@@ -16,14 +17,14 @@ namespace Hercules.App.Controls
 {
     public sealed class NodeMovingOperation
     {
-        private readonly Node targetNode;
-        private readonly Win2DRenderer renderer;
         private readonly Win2DRenderNode renderNode;
+        private readonly Win2DRenderer renderer;
         private readonly Document document;
-        private readonly ILayout layout;
-        private readonly Vector2 initialPosition;
         private readonly Mindmap mindmap;
-        private Win2DRenderNode movingNode;
+        private readonly Vector2 initialPosition;
+        private readonly Node targetNode;
+        private readonly ILayout layout;
+        private IAdornerRenderNode movingNode;
 
         public Mindmap Mindmap
         {
@@ -64,18 +65,16 @@ namespace Hercules.App.Controls
         {
             if (movingNode == null)
             {
-              //  movingNode = renderer.AddCustomNode(renderNode.CloneUnlinked());
+                movingNode = renderer.CreateAdorner(renderNode);
             }
 
-            // movingNode.MoveBy(translation);
+            movingNode.MoveBy(translation);
 
             if (movingNode != null)
             {
-                renderer.Invalidate();
-
-                if (movingNode.Bounds.Width > 0 && movingNode.Bounds.Height > 0)
+                if (movingNode.RenderBounds.Width > 0 && movingNode.RenderBounds.Height > 0)
                 {
-                    AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.Bounds);
+                    AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.RenderBounds);
 
                     if (target != null)
                     {
@@ -86,6 +85,8 @@ namespace Hercules.App.Controls
                         renderer.HidePreviewElement();
                     }
                 }
+
+                renderer.Invalidate();
             }
         }
 
@@ -93,9 +94,9 @@ namespace Hercules.App.Controls
         {
             try
             {
-                if (movingNode != null && (initialPosition - movingNode.Position).LengthSquared() > 100)
+                if (movingNode != null && (initialPosition - movingNode.RenderPosition).LengthSquared() > 100)
                 {
-                    AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.Bounds);
+                    AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.RenderBounds);
 
                     if (target != null)
                     {
@@ -113,7 +114,7 @@ namespace Hercules.App.Controls
         {
             if (movingNode != null)
             {
-                //renderer.RemoveCustomNode(movingNode);
+                renderer.RemoveAdorner(movingNode);
             }
 
             renderer.HidePreviewElement();

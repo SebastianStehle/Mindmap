@@ -18,7 +18,6 @@ namespace Hercules.Win2D.Rendering.Geometries.Paths
     {
         private readonly Color color;
         private readonly float opacity;
-        private ICanvasBrush brush;
         private CanvasGeometry pathGeometry;
 
         public LinePath(Color color, float opacity = 1)
@@ -30,17 +29,6 @@ namespace Hercules.Win2D.Rendering.Geometries.Paths
 
         public void ClearResources()
         {
-            ClearGeometry();
-
-            if (brush != null)
-            {
-                brush.Dispose();
-                brush = null;
-            }
-        }
-
-        private void ClearGeometry()
-        {
             if (pathGeometry != null)
             {
                 pathGeometry.Dispose();
@@ -48,9 +36,11 @@ namespace Hercules.Win2D.Rendering.Geometries.Paths
             }
         }
 
-        public void Arrange(Win2DRenderNode renderNode, CanvasDrawingSession session)
+        public void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
         {
-            ClearGeometry();
+            ClearResources();
+
+            Win2DRenderNode renderNode = renderable as Win2DRenderNode;
 
             if (renderNode?.Parent != null)
             {
@@ -58,14 +48,11 @@ namespace Hercules.Win2D.Rendering.Geometries.Paths
             }
         }
 
-        public void Render(Win2DRenderNode renderNode, CanvasDrawingSession session)
+        public void Render(Win2DRenderable renderable, CanvasDrawingSession session)
         {
             if (pathGeometry != null)
             {
-                if (brush == null)
-                {
-                    brush = renderNode.Resources.Brush(color, opacity);
-                }
+                ICanvasBrush brush = renderable.Resources.Brush(color, opacity);
 
                 session.DrawGeometry(pathGeometry, brush, 2);
             }

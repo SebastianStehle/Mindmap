@@ -14,5 +14,10 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             : base(0)
         {
         }
+
+        public override IBodyGeometry Clone()
+        {
+            return new Rectangle();
+        }
     }
 }

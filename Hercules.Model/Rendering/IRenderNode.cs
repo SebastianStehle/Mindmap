@@ -8,19 +8,12 @@
 
 using System.Numerics;
 using Hercules.Model.Layouting;
-using Hercules.Model.Utils;
 
 namespace Hercules.Model.Rendering
 {
-    public interface IRenderNode
+    public interface IRenderNode : IRenderable
     {
-        Vector2 Position { get; }
-
-        Vector2 RenderPosition { get; }
-
-        Vector2 RenderSize { get; }
-
-        Rect2 Bounds { get; }
+        Vector2 LayoutPosition { get; }
 
         bool IsVisible { get; }
 
@@ -28,6 +21,6 @@ namespace Hercules.Model.Rendering
 
         void Show();
 
-        void MoveToLayout(Vector2 layoutPosition, AnchorPoint anchor);
+        void MoveToLayout(Vector2 position, AnchorPoint anchor);
     }
 }

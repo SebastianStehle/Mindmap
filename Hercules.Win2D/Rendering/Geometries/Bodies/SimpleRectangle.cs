@@ -32,20 +32,25 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             this.size = size;
         }
 
-        public override void Arrange(Win2DRenderNode renderNode, CanvasDrawingSession session)
+        public override void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
         {
         }
 
-        public override Vector2 Measure(Win2DRenderNode renderNode, CanvasDrawingSession session, Vector2 textSize)
+        public override Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session, Vector2 textSize)
         {
             return size;
         }
 
-        public override void Render(Win2DRenderNode renderNode, CanvasDrawingSession session, Win2DColor color, bool renderSelection)
+        public override void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderSelection)
         {
-            ICanvasBrush brush = renderNode.Resources.Brush(Colors.Black, 0.5f);
+            ICanvasBrush brush = renderable.Resources.Brush(Colors.Black, 0.5f);
 
-            session.FillRoundedRectangle(renderNode.Bounds, 10, 10, brush);
+            session.FillRectangle(renderable.RenderBounds, brush);
+        }
+
+        public override IBodyGeometry Clone()
+        {
+            return new SimpleRectangle(size);
         }
     }
 }

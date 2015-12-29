@@ -12,8 +12,8 @@ namespace Hercules.Win2D.Rendering
 {
     public interface IPathGeometry : IResourceHolder
     {
-        void Arrange(Win2DRenderNode renderNode, CanvasDrawingSession session);
+        void Arrange(Win2DRenderable renderable, CanvasDrawingSession session);
 
-        void Render(Win2DRenderNode win2DRenderNode, CanvasDrawingSession session);
+        void Render(Win2DRenderable renderable, CanvasDrawingSession session);
     }
 }

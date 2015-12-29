@@ -1,14 +1,19 @@
 ﻿// ==========================================================================
-// XMindStyle.cs
+// IAdornerRenderNode.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-namespace Hercules.Model.ExImport.Formats.XMind
+
+using System.Numerics;
+
+namespace Hercules.Model.Rendering
 {
-    internal sealed class XMindStyle
+    public interface IAdornerRenderNode : IRenderable
     {
-        public int Color { get; set; } = -1;
+        void MoveTo(Vector2 position);
+
+        void MoveBy(Vector2 offset);
     }
 }

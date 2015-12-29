@@ -1,61 +1,37 @@
 ﻿// ==========================================================================
-// LinePath.cs
+// FilledPath.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
+using System.Numerics;
 using Windows.UI;
+using GP.Windows.UI;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
+using System;
 
 namespace Hercules.Win2D.Rendering.Geometries.Paths
 {
-    public class FilledPath : IPathGeometry
+    public class FilledPath : GeometryPathBase
     {
-        private readonly Color color;
-        private readonly float opacity;
-        private CanvasGeometry pathGeometry;
-
         public FilledPath(Color color, float opacity = 1)
+            : base(color, opacity)
         {
-            this.color = color;
-
-            this.opacity = opacity;
         }
 
-        public void ClearResources()
+        protected override CanvasGeometry CreateGeometry(CanvasDrawingSession session, Win2DRenderNode renderNode)
         {
-            if (pathGeometry != null)
-            {
-                pathGeometry.Dispose();
-                pathGeometry = null;
-            }
+            return GeometryBuilder.ComputeFilledPath(renderNode, renderNode.Parent, session);
         }
 
-        public void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
+        protected override void RenderGeometry(Win2DRenderable renderable, CanvasDrawingSession session, CanvasGeometry geometry, ICanvasBrush brush)
         {
-            ClearResources();
-
-            Win2DRenderNode renderNode = renderable as Win2DRenderNode;
-
-            if (renderNode?.Parent != null)
-            {
-                pathGeometry = GeometryBuilder.ComputeFilledPath(renderNode, renderNode.Parent, session);
-            }
-        }
-
-        public void Render(Win2DRenderable renderable, CanvasDrawingSession session)
-        {
-            if (pathGeometry != null)
-            {
-                ICanvasBrush brush = renderable.Resources.Brush(color, opacity);
-
-                session.FillGeometry(pathGeometry, brush);
-            }
+            session.FillGeometry(geometry, brush);
         }
     }
 }

@@ -21,6 +21,7 @@ using Hercules.Model.Utils;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
+
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
 
 namespace Hercules.Win2D.Rendering

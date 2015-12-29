@@ -11,6 +11,7 @@ using Hercules.Model;
 using Hercules.Model.Layouting;
 using Hercules.Model.Rendering;
 using Hercules.Win2D.Rendering;
+
 // ReSharper disable ArrangeThisQualifier
 
 namespace Hercules.App.Controls

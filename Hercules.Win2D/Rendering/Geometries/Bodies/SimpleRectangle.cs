@@ -13,7 +13,7 @@ using Microsoft.Graphics.Canvas.Brushes;
 
 namespace Hercules.Win2D.Rendering.Geometries.Bodies
 {
-    public sealed class SimpleRectangle : Body
+    public sealed class SimpleRectangle : BodyBase
     {
         private readonly Vector2 size;
 

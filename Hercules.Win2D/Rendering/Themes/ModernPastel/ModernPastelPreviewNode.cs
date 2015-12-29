@@ -9,9 +9,9 @@
 using System.Numerics;
 using Windows.UI;
 using Hercules.Model;
+using Hercules.Win2D.Rendering.Geometries.Bodies;
 using Hercules.Win2D.Rendering.Geometries.Paths;
 using Microsoft.Graphics.Canvas;
-using Hercules.Win2D.Rendering.Geometries.Bodies;
 
 namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 {

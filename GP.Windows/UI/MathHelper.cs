@@ -20,6 +20,16 @@ namespace GP.Windows.UI
     public static class MathHelper
     {
         /// <summary>
+        /// A positive infinity vector.
+        /// </summary>
+        public static readonly Vector2 PositiveInfinityVector = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
+
+        /// <summary>
+        /// A negative infinity vector.
+        /// </summary>
+        public static readonly Vector2 NegativeInfinityVector = new Vector2(float.NegativeInfinity, float.NegativeInfinity);
+
+        /// <summary>
         /// Calculates the length between two points.
         /// </summary>
         /// <param name="l">The first point.</param>

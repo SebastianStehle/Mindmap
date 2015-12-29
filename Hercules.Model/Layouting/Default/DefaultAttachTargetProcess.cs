@@ -13,6 +13,7 @@ using System.Numerics;
 using GP.Windows;
 using Hercules.Model.Rendering;
 using Hercules.Model.Utils;
+
 // ReSharper disable ArrangeThisQualifier
 
 // ReSharper disable LoopCanBePartlyConvertedToQuery

@@ -20,13 +20,12 @@ namespace Hercules.Win2D.Rendering
 {
     public abstract class Win2DRenderNode : Win2DRenderable, IRenderNode, IResourceHolder
     {
-        private static readonly Vector2 EmptyVector = new Vector2(float.PositiveInfinity, float.PositiveInfinity);
         private readonly Win2DTextRenderer textRenderer;
         private readonly ExpandButton button;
         private IBodyGeometry bodyGeometry;
         private IPathGeometry pathGeometry;
         private IHullGeometry hullGeometry;
-        private Vector2 animationTargetPosition = EmptyVector;
+        private Vector2 animationTargetPosition = MathHelper.PositiveInfinityVector;
         private Vector2 layoutPosition;
         private Vector2 targetLayoutPosition;
         private Rect2 renderBoundsWithParent;
@@ -84,7 +83,7 @@ namespace Hercules.Win2D.Rendering
             {
                 isVisible = false;
 
-                animationTargetPosition = EmptyVector;
+                animationTargetPosition = MathHelper.PositiveInfinityVector;
             }
         }
 
@@ -94,7 +93,7 @@ namespace Hercules.Win2D.Rendering
             {
                 isVisible = true;
 
-                animationTargetPosition = EmptyVector;
+                animationTargetPosition = MathHelper.PositiveInfinityVector;
             }
         }
 
@@ -156,7 +155,7 @@ namespace Hercules.Win2D.Rendering
         {
             if (IsVisible)
             {
-                if (isAnimating && animationTargetPosition != EmptyVector)
+                if (isAnimating && animationTargetPosition != MathHelper.PositiveInfinityVector)
                 {
                     if (animationTargetPosition != targetLayoutPosition)
                     {
@@ -187,7 +186,7 @@ namespace Hercules.Win2D.Rendering
                 return !MathHelper.AboutEqual(targetLayoutPosition, RenderPosition);
             }
 
-            animationTargetPosition = EmptyVector;
+            animationTargetPosition = MathHelper.PositiveInfinityVector;
 
             return true;
         }

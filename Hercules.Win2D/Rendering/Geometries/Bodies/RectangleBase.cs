@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// RectangleNodeBase.cs
+// RectangleBase.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -16,7 +16,7 @@ using Microsoft.Graphics.Canvas.Brushes;
 
 namespace Hercules.Win2D.Rendering.Geometries.Bodies
 {
-    public abstract class RectangleBase : Body
+    public abstract class RectangleBase : BodyBase
     {
         private const float MinHeight = 40;
         private static readonly Vector2 ContentPadding = new Vector2(15, 5);

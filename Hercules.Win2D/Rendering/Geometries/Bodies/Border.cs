@@ -17,7 +17,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Win2D.Rendering.Geometries.Bodies
 {
-    public sealed class Border : Body
+    public sealed class Border : BodyBase
     {
         private const float MinHeight = 40;
         private const float VerticalOffset = 16;

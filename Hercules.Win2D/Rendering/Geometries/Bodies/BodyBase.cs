@@ -12,7 +12,7 @@ using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Win2D.Rendering.Geometries.Bodies
 {
-    public abstract class Body : IBodyGeometry
+    public abstract class BodyBase : IBodyGeometry
     {
         protected static readonly Vector2 ImageSizeLarge = new Vector2(64, 64);
         protected static readonly Vector2 ImageSizeSmall = new Vector2(32, 32);

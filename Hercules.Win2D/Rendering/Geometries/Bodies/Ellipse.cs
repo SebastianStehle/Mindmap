@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// EllipseNode.cs
+// Ellipse.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -15,7 +15,7 @@ using Microsoft.Graphics.Canvas.Brushes;
 
 namespace Hercules.Win2D.Rendering.Geometries.Bodies
 {
-    public sealed class Ellipse : Body
+    public sealed class Ellipse : BodyBase
     {
         private const float MinHeight = 50;
         private static readonly Vector2 ContentPadding = new Vector2(15, 5);

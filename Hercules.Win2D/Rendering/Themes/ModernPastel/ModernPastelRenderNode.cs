@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// ModernPastelPreviewNode.cs
+// ModernPastelRenderNode.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -8,10 +8,10 @@
 
 using Windows.UI;
 using Hercules.Model;
+using Hercules.Win2D.Rendering.Geometries.Bodies;
 using Hercules.Win2D.Rendering.Geometries.Hulls;
 using Hercules.Win2D.Rendering.Geometries.Paths;
 using Microsoft.Graphics.Canvas;
-using Hercules.Win2D.Rendering.Geometries.Bodies;
 
 namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 {
@@ -128,7 +128,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 
             if (parentNode != null)
             {
-                if (current == null || (current is FilledPath && !(parentNode is RootNode) || current is LinePath && parentNode is RootNode))
+                if (current == null || (current is FilledPath && !(parentNode is RootNode)) || (current is LinePath && parentNode is RootNode))
                 {
                     if (Parent.Node is RootNode)
                     {

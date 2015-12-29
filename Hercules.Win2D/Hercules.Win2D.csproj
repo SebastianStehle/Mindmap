@@ -111,11 +111,12 @@
     <Compile Include="Rendering\Geometries\Bodies\Ellipse.cs" />
     <Compile Include="Rendering\Geometries\Bodies\Rectangle.cs" />
     <Compile Include="Rendering\Geometries\Bodies\RectangleBase.cs" />
-    <Compile Include="Rendering\Geometries\Bodies\Body.cs" />
+    <Compile Include="Rendering\Geometries\Bodies\BodyBase.cs" />
     <Compile Include="Rendering\Geometries\Bodies\RoundedRectangle.cs" />
     <Compile Include="Rendering\Geometries\Bodies\SimpleRectangle.cs" />
     <Compile Include="Rendering\Geometries\Hulls\RoundedPolygonHull.cs" />
     <Compile Include="Rendering\Geometries\Paths\FilledPath.cs" />
+    <Compile Include="Rendering\Geometries\Paths\GeometryPathBase.cs" />
     <Compile Include="Rendering\Geometries\Paths\LinePath.cs" />
     <Compile Include="Rendering\IBodyGeometry.cs" />
     <Compile Include="Rendering\IHullGeometry.cs" />
@@ -152,11 +153,6 @@
       <Project>{b0aa10fc-a13f-4d7e-b605-f450bbe9194d}</Project>
       <Name>Hercules.Model</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Microsoft.Graphics.Canvas">
-      <HintPath>C:\Users\Sebastian\.nuget\packages\Win2D.uwp\1.5.0\lib\uap10.0\Microsoft.Graphics.Canvas.winmd</HintPath>
-    </Reference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">
     <VisualStudioVersion>14.0</VisualStudioVersion>

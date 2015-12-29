@@ -31,7 +31,7 @@
                         </GridView.ItemContainerTransitions>
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <Border Background="{Binding Converter={StaticResource RenderColorBrushConverter}}" Width="32" Height="32" />
+                                <Border Background="{Binding Converter={StaticResource RenderColorBrushConverter}}" Width="40" Height="40" />
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
@@ -42,40 +42,36 @@
             </Pivot.Items>
         </Pivot>
 
-        <ListBox Grid.Row="2" SelectedIndex="2" Margin="10,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" x:Name="ShapeListBox" SelectionChanged="ShapeListBox_OnSelectionChanged">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <StackPanel Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemContainerStyle>
-                <Style TargetType="ListBoxItem">
-                    <Setter Property="Padding" Value="4" />
-                </Style>
-            </ListBox.ItemContainerStyle>
+        <GridView Grid.Row="2" SelectedIndex="2" Margin="10,0,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" x:Name="ShapeListBox" SelectionChanged="ShapeListBox_OnSelectionChanged">
+            <GridView.Items>
+                <Grid Width="40" Height="40" Background="White" Padding="2">
+                    <TextBlock Text="Auto" FontSize="14" FontWeight="Bold" LineHeight="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                </Grid>
 
-            <ListBox.Items>
-                <Grid Width="50" Height="22">
-                    <TextBlock Text="Auto" FontSize="14" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                <Grid Width="40" Height="40" Background="White" Padding="2">
+                    <TextBlock x:Name="EllipseFake" />
+                    <Ellipse Margin="2" MaxHeight="20" Stroke="{Binding ElementName=EllipseFake, Path=Foreground}" StrokeThickness="2" />
                 </Grid>
-                <Grid Width="50" Height="30">
-                    <Ellipse Margin="2" Stroke="Black" StrokeThickness="2" />
-                </Grid>
-                <Grid Width="50" Height="30">
-                    <Rectangle Margin="2" Stroke="Black" StrokeThickness="2" />
-                </Grid>
-                <Grid Width="50" Height="30">
-                    <Rectangle Margin="2" Stroke="Black" RadiusX="2" RadiusY="2" StrokeThickness="2" />
-                </Grid>
-                <Grid Width="50" Height="30">
-                    <StackPanel>
-                        <TextBlock Text="T" Height="16" FontSize="14" FontWeight="Bold" FontStyle="Italic" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-                        <Rectangle Margin="2" Fill="Black" Height="2" />
+                <Grid Width="40" Height="40" Background="White" Padding="2">
+                    <TextBlock x:Name="RectangleFake" />
+                    <Rectangle Margin="2" MaxHeight="20" Stroke="{Binding ElementName=RectangleFake, Path=Foreground}" StrokeThickness="2" />
+                </Grid>
+
+                <Grid Width="40" Height="40" Background="White" Padding="2">
+                    <TextBlock x:Name="RoundedRectangleFake" />
+                    <Rectangle Margin="2" MaxHeight="20" Stroke="{Binding ElementName=RoundedRectangleFake, Path=Foreground}" RadiusX="3" RadiusY="3" StrokeThickness="2" />
+                </Grid>
+
+                <Grid Width="40" Height="40" Background="White" Padding="2">
+                    <StackPanel VerticalAlignment="Center">
+                        <TextBlock x:Name="BorderText" Text="T" Height="16" FontSize="14" FontWeight="Bold" FontStyle="Italic" VerticalAlignment="Center" HorizontalAlignment="Center" />
+
+                        <Rectangle Margin="2" Fill="{Binding ElementName=BorderText, Path=Foreground}" Height="2" />
                     </StackPanel>
                 </Grid>
-            </ListBox.Items>
-        </ListBox>
+            </GridView.Items>
+        </GridView>
 
         <ToggleButton x:Uid="Editor_ShowHullButton" Grid.Row="4" Content="Show Hull" x:Name="ShowHullButton" Click="ShowHullButton_Click" Margin="10,0,0,0" />
     </Grid>

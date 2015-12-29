@@ -25,7 +25,7 @@ namespace GP.Windows.UI.Controls
     [TemplatePart(Name = PartPanel, Type = typeof(Panel))]
     public abstract class ItemsContainer<TItem, TControl> : LoadableControl where TControl : FrameworkElement, new()
     {
-        private const string PartPanel = "Panel";
+        private const string PartPanel = "PART_Panel";
 
         private readonly Dictionary<TItem, TControl> controls = new Dictionary<TItem, TControl>();
         private readonly Dictionary<TItem, TControl> controlCache = new Dictionary<TItem, TControl>();
@@ -35,7 +35,7 @@ namespace GP.Windows.UI.Controls
         /// Defines the <see cref="Items"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ItemsProperty =
-            DependencyProperty.Register("Items", typeof(ObservableCollection<TItem>), typeof(ItemsContainer<TItem, TControl>), new PropertyMetadata(null, OnItemsChanged));
+            DependencyProperty.Register(nameof(Items), typeof(ObservableCollection<TItem>), typeof(ItemsContainer<TItem, TControl>), new PropertyMetadata(null, OnItemsChanged));
 
         /// <summary>
         /// Gets or sets the items to bind.

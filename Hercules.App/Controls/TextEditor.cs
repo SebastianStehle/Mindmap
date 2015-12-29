@@ -9,18 +9,16 @@
 using System;
 using System.Numerics;
 using Windows.Foundation;
-using Windows.System;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
+using GP.Windows.UI.Controls;
 using Hercules.Model;
 using Hercules.Win2D.Rendering;
 
 namespace Hercules.App.Controls
 {
-    public sealed class TextEditor : TextBox
+    public sealed class TextEditor : AdvancedTextBox
     {
         private readonly CompositeTransform renderTransform = new CompositeTransform();
         private Win2DRenderNode editingNode;
@@ -28,11 +26,6 @@ namespace Hercules.App.Controls
         public Win2DRenderNode EditingNode
         {
             get { return editingNode; }
-        }
-
-        public bool IsEditing
-        {
-            get { return editingNode != null; }
         }
 
         public event EventHandler EditingEnded;
@@ -49,40 +42,16 @@ namespace Hercules.App.Controls
             base.OnLostFocus(e);
         }
 
-        protected override void OnGotFocus(RoutedEventArgs e)
+        protected override void OnEnter(KeyRoutedEventArgs e)
         {
-            if (IsEditing && !string.IsNullOrWhiteSpace(Text))
-            {
-                Select(0, Text.Length);
-            }
-
-            base.OnGotFocus(e);
+            EndEdit(true);
         }
 
-        protected override void OnKeyUp(KeyRoutedEventArgs e)
+        protected override void OnReset(KeyRoutedEventArgs e)
         {
-            if (IsEditing)
-            {
-                if (e.Key == VirtualKey.Enter)
-                {
-                    CoreVirtualKeyStates shiftKeyState = Window.Current.CoreWindow.GetKeyState(VirtualKey.Shift);
-
-                    if ((shiftKeyState & CoreVirtualKeyStates.Down) != CoreVirtualKeyStates.Down)
-                    {
-                        EndEdit(true);
-                    }
-                }
-                else if (e.Key == VirtualKey.Escape)
-                {
-                    CancelEdit(true);
-                }
-            }
-
-            base.OnKeyUp(e);
-
-            e.Handled = true;
+            CancelEdit(true);
         }
-
+        
         public void UpdateTransform()
         {
             InvalidateMeasure();
@@ -97,22 +66,19 @@ namespace Hercules.App.Controls
                 {
                     EndEdit(false);
 
-                    BindToNode(renderNode);
+                    editingNode = renderNode;
                 }
 
                 UpdateTransform();
-                UpdateStyle();
                 UpdateText();
 
                 Show();
-
-                Focus(FocusState.Pointer);
             }
         }
 
         public void EndEdit(bool invokeEvent)
         {
-            if (IsEditing)
+            if (editingNode != null)
             {
                 try
                 {
@@ -127,11 +93,11 @@ namespace Hercules.App.Controls
 
         public void CancelEdit(bool invokeEvent)
         {
-            if (IsEditing)
+            if (editingNode != null)
             {
                 Hide();
 
-                UnbindFromNode();
+                editingNode = null;
 
                 if (invokeEvent)
                 {
@@ -160,7 +126,7 @@ namespace Hercules.App.Controls
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (IsEditing)
+            if (editingNode != null)
             {
                 Vector2 renderSize = editingNode.TextRenderer.RenderSize;
 
@@ -186,34 +152,9 @@ namespace Hercules.App.Controls
             return new Size(0, 0);
         }
 
-        private void BindToNode(Win2DRenderNode renderNode)
-        {
-            editingNode = renderNode;
-        }
-
-        private void UnbindFromNode()
-        {
-            editingNode = null;
-        }
-
         private void UpdateText()
         {
             Text = editingNode.Node.Text ?? string.Empty;
-        }
-
-        private void UpdateStyle()
-        {
-            FontSize = editingNode.TextRenderer.FontSize;
-        }
-
-        private void Show()
-        {
-            Visibility = Visibility.Visible;
-        }
-
-        private void Hide()
-        {
-            Visibility = Visibility.Collapsed;
         }
 
         private void OnEditingEnded()

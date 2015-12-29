@@ -17,7 +17,7 @@ namespace Hercules.App.Modules.Mindmaps.Views
     public sealed partial class RenameView : IPopupControl
     {
         public static readonly DependencyProperty MindmapItemProperty =
-            DependencyProperty.Register("MindmapItem", typeof(MindmapRef), typeof(RenameView), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(MindmapItem), typeof(MindmapRef), typeof(RenameView), new PropertyMetadata(null));
         public MindmapRef MindmapItem
         {
             get { return (MindmapRef)GetValue(MindmapItemProperty); }

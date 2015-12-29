@@ -172,7 +172,7 @@
 
                             <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
                                 <Grid>
-                                    <Rectangle x:Name="HueBackground" Fill="Red" />
+                                    <Rectangle x:Name="PART_HueBackground" Fill="Red" />
                                     <Rectangle IsHitTestVisible="False">
                                         <Rectangle.Fill>
                                             <LinearGradientBrush StartPoint="0,0" EndPoint="1,0">
@@ -191,16 +191,16 @@
                                     </Rectangle>
 
                                     <Canvas Margin="-18">
-                                        <Thumb IsHitTestVisible="False" x:Name="ColorThumb" Foreground="White" Width="36" Height="36" Style="{StaticResource CircleThumbStyle}" />
+                                        <Thumb IsHitTestVisible="False" x:Name="PART_ColorThumb" Foreground="White" Width="36" Height="36" Style="{StaticResource CircleThumbStyle}" />
                                     </Canvas>
                                 </Grid>
                             </Border>
 
                             <Border Grid.Row="2" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}">
-                                <Rectangle x:Name="ValueBackground" />
+                                <Rectangle x:Name="PART_ValueBackground" />
                             </Border>
 
-                            <Slider x:Name="ValueSlider" Maximum="360" Minimum="0" Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" IsThumbToolTipEnabled="False" Style="{StaticResource ColorsSliderStyle}" Grid.Row="2" Orientation="Horizontal" Background="Transparent" Margin="-3,0-3,0" />
+                            <Slider x:Name="PART_ValueSlider" Maximum="360" Minimum="0" Value="{Binding Hue, Mode=TwoWay, RelativeSource={RelativeSource TemplatedParent}}" IsThumbToolTipEnabled="False" Style="{StaticResource ColorsSliderStyle}" Grid.Row="2" Orientation="Horizontal" Background="Transparent" Margin="-3,0-3,0" />
                         </Grid>
                     </Border>
                 </ControlTemplate>

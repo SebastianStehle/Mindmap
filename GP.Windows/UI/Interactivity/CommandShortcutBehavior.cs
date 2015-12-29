@@ -20,7 +20,7 @@ namespace GP.Windows.UI.Interactivity
         /// Defines the <see cref="Command"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CommandProperty =
-            DependencyProperty.Register("Command", typeof(ICommand), typeof(CommandShortcutBehavior), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(Command), typeof(ICommand), typeof(CommandShortcutBehavior), new PropertyMetadata(null));
         /// <summary>
         /// Gets or sets the command to invoke.
         /// </summary>
@@ -35,7 +35,7 @@ namespace GP.Windows.UI.Interactivity
         /// Defines the <see cref="CommandParameter"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty CommandParameterProperty =
-            DependencyProperty.Register("CommandParameter", typeof(object), typeof(CommandShortcutBehavior), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(CommandParameter), typeof(object), typeof(CommandShortcutBehavior), new PropertyMetadata(null));
         /// <summary>
         /// Gets or sets parameter for the command to invoke.
         /// </summary>

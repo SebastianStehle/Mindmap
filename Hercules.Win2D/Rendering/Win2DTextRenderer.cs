@@ -9,6 +9,7 @@
 using System;
 using System.Numerics;
 using Windows.UI;
+using Windows.UI.Text;
 using GP.Windows;
 using GP.Windows.UI;
 using Hercules.Model;
@@ -67,9 +68,10 @@ namespace Hercules.Win2D.Rendering
             {
                 return textFormat ?? (textFormat = new CanvasTextFormat
                 {
-                    FontSize = fontSize,
                     WordWrapping = CanvasWordWrapping.NoWrap,
-                    HorizontalAlignment = CanvasHorizontalAlignment.Center,
+                    HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                    FontSize = fontSize,
+                    FontWeight = FontWeights.Normal,
                     VerticalAlignment = CanvasVerticalAlignment.Center
                 });
             }

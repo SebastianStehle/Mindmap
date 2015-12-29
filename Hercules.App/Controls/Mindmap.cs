@@ -53,8 +53,23 @@ namespace Hercules.App.Controls
             get { return renderer.Scene; }
         }
 
+        public static readonly DependencyProperty DocumentProperty =
+            DependencyProperty.Register(nameof(Document), typeof(Document), typeof(Mindmap), new PropertyMetadata(null, OnDocumentChanged));
+        public Document Document
+        {
+            get { return (Document)GetValue(DocumentProperty); }
+            set { SetValue(DocumentProperty, value); }
+        }
+
+        public static void OnDocumentChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
+        {
+            var owner = o as Mindmap;
+
+            owner?.InitializeRenderer();
+        }
+
         public static readonly DependencyProperty LayoutProperty =
-            DependencyProperty.Register("Layout", typeof(ILayout), typeof(Mindmap), new PropertyMetadata(null, OnLayoutChanged));
+            DependencyProperty.Register(nameof(Layout), typeof(ILayout), typeof(Mindmap), new PropertyMetadata(null, OnLayoutChanged));
         public ILayout Layout
         {
             get { return (ILayout)GetValue(LayoutProperty); }
@@ -68,30 +83,15 @@ namespace Hercules.App.Controls
             owner?.InitializeLayout();
         }
 
-        public static readonly DependencyProperty Win2DRendererProviderProperty =
-            DependencyProperty.Register("Win2DRendererProvider", typeof(IWin2DRendererProvider), typeof(Mindmap), new PropertyMetadata(null, OnRendererChanged));
-        public IWin2DRendererProvider Win2DRendererProvider
+        public static readonly DependencyProperty RendererProviderProperty =
+            DependencyProperty.Register(nameof(RendererProvider), typeof(IWin2DRendererProvider), typeof(Mindmap), new PropertyMetadata(null, OnRendererChanged));
+        public IWin2DRendererProvider RendererProvider
         {
-            get { return (IWin2DRendererProvider)GetValue(Win2DRendererProviderProperty); }
-            set { SetValue(Win2DRendererProviderProperty, value); }
+            get { return (IWin2DRendererProvider)GetValue(RendererProviderProperty); }
+            set { SetValue(RendererProviderProperty, value); }
         }
 
         private static void OnRendererChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            var owner = o as Mindmap;
-
-            owner?.InitializeRenderer();
-        }
-
-        public static readonly DependencyProperty DocumentProperty =
-            DependencyProperty.Register("Document", typeof(Document), typeof(Mindmap), new PropertyMetadata(null, OnDocumentChanged));
-        public Document Document
-        {
-            get { return (Document)GetValue(DocumentProperty); }
-            set { SetValue(DocumentProperty, value); }
-        }
-
-        public static void OnDocumentChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
         {
             var owner = o as Mindmap;
 
@@ -231,13 +231,13 @@ namespace Hercules.App.Controls
                 renderer = null;
             }
 
-            if (canvasControl != null && Document != null && Win2DRendererProvider != null)
+            if (canvasControl != null && Document != null && RendererProvider != null)
             {
-                if (renderer == null || renderer.Document != Document || renderer.Canvas != canvasControl || Win2DRendererProvider != lastWin2DRendererProvider)
+                if (renderer == null || renderer.Document != Document || renderer.Canvas != canvasControl || RendererProvider != lastWin2DRendererProvider)
                 {
-                    renderer = Win2DRendererProvider.CreateRenderer(Document, canvasControl);
+                    renderer = RendererProvider.CreateRenderer(Document, canvasControl);
 
-                    lastWin2DRendererProvider = Win2DRendererProvider;
+                    lastWin2DRendererProvider = RendererProvider;
                 }
             }
 

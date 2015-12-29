@@ -126,6 +126,7 @@
     <Compile Include="Mvvm\IMessageDialogService.cs" />
     <Compile Include="Mvvm\ProcessManager.cs" />
     <Compile Include="Mvvm\MessageDialogService.cs" />
+    <Compile Include="UI\Controls\AdvancedTextBox.cs" />
     <Compile Include="UI\Controls\ColorPicker.cs" />
     <Compile Include="UI\DependencyPropertyListener.cs" />
     <Compile Include="DisposableObject.cs" />

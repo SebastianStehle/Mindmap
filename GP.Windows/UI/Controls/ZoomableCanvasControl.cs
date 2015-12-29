@@ -36,7 +36,7 @@ namespace GP.Windows.UI.Controls
         /// Identifies the <see cref="ClearColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ClearColorProperty =
-            DependencyProperty.Register("ClearColor", typeof(Color), typeof(ZoomableCanvasControl), new PropertyMetadata(Colors.Transparent, OnClearColorChanged));
+            DependencyProperty.Register(nameof(ClearColor), typeof(Color), typeof(ZoomableCanvasControl), new PropertyMetadata(Colors.Transparent, OnClearColorChanged));
         /// <summary>
         /// Gets or sets the color that the control is cleared to before the Draw event is raised.
         /// </summary>

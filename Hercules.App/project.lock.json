@@ -12,7 +12,7 @@
         }
       },
       "Fody/1.13.0": {},
-      "Microsoft.ApplicationInsights/1.2.1-beta": {
+      "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
         },
@@ -1693,7 +1693,7 @@
         }
       },
       "Fody/1.13.0": {},
-      "Microsoft.ApplicationInsights/1.2.1-beta": {
+      "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
         },
@@ -3467,7 +3467,7 @@
         }
       },
       "Fody/1.13.0": {},
-      "Microsoft.ApplicationInsights/1.2.1-beta": {
+      "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
         },
@@ -5213,7 +5213,7 @@
         }
       },
       "Fody/1.13.0": {},
-      "Microsoft.ApplicationInsights/1.2.1-beta": {
+      "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
         },
@@ -6992,7 +6992,7 @@
         }
       },
       "Fody/1.13.0": {},
-      "Microsoft.ApplicationInsights/1.2.1-beta": {
+      "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
         },
@@ -8738,7 +8738,7 @@
         }
       },
       "Fody/1.13.0": {},
-      "Microsoft.ApplicationInsights/1.2.1-beta": {
+      "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
         },
@@ -10517,7 +10517,7 @@
         }
       },
       "Fody/1.13.0": {},
-      "Microsoft.ApplicationInsights/1.2.1-beta": {
+      "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
         },
@@ -12300,14 +12300,12 @@
         "Tools/uninstall.ps1"
       ]
     },
-    "Microsoft.ApplicationInsights/1.2.1-beta": {
-      "sha512": "WB8c63MWEWOHoMWOs0DDtC8fWFHAFjP0+O1c9YnC25GZqoCV7uaBMbnk/7ZK3Ze9wzBY9Lw1fygWaju6YK6tXw==",
+    "Microsoft.ApplicationInsights/1.2.3": {
+      "sha512": "a34atobxpucCTTX9VCD7aIu6Ydzry+Va7TxK2tTQcfaMvefGW4kUKtg9GHKIn19IaXe+A4oZt/GBqsOt5vQrBA==",
       "type": "Package",
       "files": [
         "[Content_Types].xml",
         "_rels/.rels",
-        "lib/dnxcore50/Microsoft.ApplicationInsights.dll",
-        "lib/dnxcore50/Microsoft.ApplicationInsights.XML",
         "lib/net40/Microsoft.ApplicationInsights.dll",
         "lib/net40/Microsoft.ApplicationInsights.XML",
         "lib/net45/Microsoft.ApplicationInsights.dll",
@@ -12317,7 +12315,7 @@
         "lib/wp8/Microsoft.ApplicationInsights.dll",
         "lib/wp8/Microsoft.ApplicationInsights.XML",
         "Microsoft.ApplicationInsights.nuspec",
-        "package/services/metadata/core-properties/714268c1a6bc415897cf27ea1c34dbec.psmdcp"
+        "package/services/metadata/core-properties/3b36eef276524f5d883c618d5fd8c500.psmdcp"
       ]
     },
     "Microsoft.ApplicationInsights.PersistenceChannel/1.2.3": {
@@ -16153,7 +16151,7 @@
   },
   "projectFileDependencyGroups": {
     "": [
-      "Microsoft.ApplicationInsights >= 1.2.1-beta",
+      "Microsoft.ApplicationInsights >= 1.2.3",
       "Microsoft.ApplicationInsights.PersistenceChannel >= 1.2.3",
       "Microsoft.ApplicationInsights.WindowsApps >= 1.1.1",
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.0.0",

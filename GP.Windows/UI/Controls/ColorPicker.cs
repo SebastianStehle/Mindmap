@@ -21,16 +21,16 @@ namespace GP.Windows.UI.Controls
     /// <summary>
     /// Implements a color picker control.
     /// </summary>
-    [TemplatePart(Name = ColorThumbPart, Type = typeof(Thumb))]
     [TemplatePart(Name = ValueBackgroundPart, Type = typeof(Rectangle))]
     [TemplatePart(Name = HueBackgroundPart, Type = typeof(Rectangle))]
     [TemplatePart(Name = ValueSliderPart, Type = typeof(Slider))]
+    [TemplatePart(Name = ColorThumbPart, Type = typeof(Thumb))]
     public sealed class ColorPicker : Control
     {
-        private const string ColorThumbPart = "ColorThumb";
-        private const string ValueBackgroundPart = "ValueBackground";
-        private const string HueBackgroundPart = "HueBackground";
-        private const string ValueSliderPart = "ValueSlider";
+        private const string ValueBackgroundPart = "PART_ValueBackground";
+        private const string HueBackgroundPart = "PART_HueBackground";
+        private const string ValueSliderPart = "PART_ValueSlider";
+        private const string ColorThumbPart = "PART_ColorThumb";
         private readonly TranslateTransform translateTransform = new TranslateTransform();
         private Rectangle hueBackground;
         private Slider valueSlider;
@@ -47,7 +47,7 @@ namespace GP.Windows.UI.Controls
         /// Defines the <see cref="SelectedColor"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedColorProperty =
-            DependencyProperty.Register("SelectedColor", typeof(Color), typeof(ColorPicker), new PropertyMetadata(Colors.Red, (d, e) => ((ColorPicker)d).OnSelectedColorChanged()));
+            DependencyProperty.Register(nameof(SelectedColor), typeof(Color), typeof(ColorPicker), new PropertyMetadata(Colors.Red, (d, e) => ((ColorPicker)d).OnSelectedColorChanged()));
         /// <summary>
         /// Gets or sets the selected color.
         /// </summary>
@@ -61,7 +61,7 @@ namespace GP.Windows.UI.Controls
         /// Defines the <see cref="HueProperty"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty HueProperty =
-            DependencyProperty.Register("Hue", typeof(int), typeof(ColorPicker), new PropertyMetadata(0, (d, e) => ((ColorPicker)d).OnHueChanged()));
+            DependencyProperty.Register(nameof(Hue), typeof(int), typeof(ColorPicker), new PropertyMetadata(0, (d, e) => ((ColorPicker)d).OnHueChanged()));
         /// <summary>
         /// Gets or sets the hue from the selected color (HSV color space).
         /// </summary>
@@ -75,7 +75,7 @@ namespace GP.Windows.UI.Controls
         /// Defines the <see cref="Saturation"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SaturationProperty =
-            DependencyProperty.Register("Saturation", typeof(int), typeof(ColorPicker), new PropertyMetadata(100, (d, e) => ((ColorPicker)d).OnSaturationChanged()));
+            DependencyProperty.Register(nameof(Saturation), typeof(int), typeof(ColorPicker), new PropertyMetadata(100, (d, e) => ((ColorPicker)d).OnSaturationChanged()));
         /// <summary>
         /// Gets or sets the saturation from the selected color (HSV color space).
         /// </summary>
@@ -89,7 +89,7 @@ namespace GP.Windows.UI.Controls
         /// Defines the <see cref="Value"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty ValueProperty =
-            DependencyProperty.Register("Value", typeof(int), typeof(ColorPicker), new PropertyMetadata(100, (d, e) => ((ColorPicker)d).OnValueChanged()));
+            DependencyProperty.Register(nameof(Value), typeof(int), typeof(ColorPicker), new PropertyMetadata(100, (d, e) => ((ColorPicker)d).OnValueChanged()));
         /// <summary>
         /// Gets or sets the value from the selected color (HSV color space).
         /// </summary>

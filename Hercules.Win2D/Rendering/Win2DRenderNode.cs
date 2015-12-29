@@ -8,6 +8,7 @@
 
 using System;
 using System.Numerics;
+using Windows.UI;
 using GP.Windows.UI;
 using Hercules.Model;
 using Hercules.Model.Layouting;
@@ -115,6 +116,14 @@ namespace Hercules.Win2D.Rendering
 
         public void Render(CanvasDrawingSession session, bool renderControls)
         {
+#if DRAW_OUTLINE
+            session.DrawRectangle(RenderBounds, Colors.Green);
+
+            if (Parent != null)
+            {
+                session.DrawRectangle(RenderBoundsWithParent, Colors.Blue);
+            }
+#endif
             bodyGeometry.Render(this, session, Resources.FindColor(Node), renderControls);
 
             if (bodyGeometry.HasText)

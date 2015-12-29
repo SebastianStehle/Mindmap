@@ -18,7 +18,7 @@ namespace Hercules.App.Controls
         public Flyout Flyout { get; set; }
 
         public static readonly DependencyProperty DocumentProperty =
-            DependencyProperty.Register("Document", typeof(Document), typeof(MindmapFlyoutView), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(Document), typeof(Document), typeof(MindmapFlyoutView), new PropertyMetadata(null));
         public Document Document
         {
             get { return (Document)GetValue(DocumentProperty); }
@@ -26,7 +26,7 @@ namespace Hercules.App.Controls
         }
 
         public static readonly DependencyProperty RendererProperty =
-            DependencyProperty.Register("Renderer", typeof(Win2DRenderer), typeof(MindmapFlyoutView), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(Renderer), typeof(Win2DRenderer), typeof(MindmapFlyoutView), new PropertyMetadata(null));
         public Win2DRenderer Renderer
         {
             get { return (Win2DRenderer)GetValue(RendererProperty); }

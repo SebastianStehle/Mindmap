@@ -23,7 +23,7 @@
                 FontWeight="Bold" />
         </Border>
 
-        <ListBox Grid.Row="1" ItemContainerStyle="{StaticResource BorderedListBoxItemStyle}" SelectedItem="{Binding SelectedMindmap, Mode=TwoWay}" x:Name="MindmapList" ItemsSource="{Binding Mindmaps}" HorizontalContentAlignment="Stretch">
+        <ListBox Grid.Row="1" ItemContainerStyle="{StaticResource BorderedListBoxItemStyle}" SelectedItem="{Binding SelectedMindmap, Mode=TwoWay}" ItemsSource="{Binding Mindmaps}" HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid x:Name="Root" HorizontalAlignment="Stretch" Background="Transparent">

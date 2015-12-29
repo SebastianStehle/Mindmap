@@ -13,6 +13,8 @@ using System.Linq;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
+// ReSharper disable SuggestBaseTypeForParameter
+
 namespace GP.Windows.UI.Controls
 {
     /// <summary>

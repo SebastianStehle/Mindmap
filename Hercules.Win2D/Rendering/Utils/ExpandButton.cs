@@ -13,6 +13,8 @@ using Hercules.Model;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 
+// ReSharper disable SuggestBaseTypeForParameter
+
 namespace Hercules.Win2D.Rendering.Utils
 {
     public sealed class ExpandButton

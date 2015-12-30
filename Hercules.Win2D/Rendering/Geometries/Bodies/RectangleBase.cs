@@ -51,6 +51,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             }
 
             RenderIcon(renderable, session);
+            RenderText(renderable, session);
 
             if (renderSelection && renderable.Node.IsSelected)
             {

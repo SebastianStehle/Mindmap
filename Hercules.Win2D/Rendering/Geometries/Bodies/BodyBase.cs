@@ -25,16 +25,15 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
         protected const float IconSizeSmall = 32;
         protected const float IconMargin = 6;
         protected static readonly CanvasStrokeStyle SelectionStrokeStyle = new CanvasStrokeStyle { DashStyle = CanvasDashStyle.Dash };
-        private Vector2 textRenderSize;
-        private Vector2 textRenderPosition;
+        private readonly Win2DTextRenderer textRenderer = new Win2DTextRenderer();
         private Vector2 iconRenderSize;
         private Vector2 iconRenderPosition;
         private Vector2 contentRenderSize;
         private Vector2 contentPadding;
 
-        public virtual Vector2 TextRenderPosition
+        public virtual Win2DTextRenderer TextRenderer
         {
-            get { return textRenderPosition; }
+            get { return textRenderer; }
         }
 
         public virtual Vector2 RenderPositionOffset
@@ -56,53 +55,11 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
         {
         }
 
-        public virtual void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
+        public virtual Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session)
         {
-            Vector2 iconOffset = Vector2.Zero;
-            Vector2 textOffset = Vector2.Zero;
+            textRenderer.Measure(renderable, session);
 
-            if (renderable.Node.Icon == null)
-            {
-                textOffset.Y = 0.5f * (contentRenderSize.Y - textRenderSize.Y);
-            }
-            else if (renderable.Node.IconPosition == IconPosition.Left)
-            {
-                textOffset.Y = 0.5f * (contentRenderSize.Y - textRenderSize.Y);
-                textOffset.X = iconRenderSize.X + IconMargin;
-
-                iconOffset.Y = 0.5f * (contentRenderSize.Y - iconRenderSize.Y);
-            }
-            else if (renderable.Node.IconPosition == IconPosition.Right)
-            {
-                textOffset.Y = 0.5f * (contentRenderSize.Y - textRenderSize.Y);
-
-                iconOffset.X = textRenderSize.X + IconMargin;
-                iconOffset.Y = 0.5f * (contentRenderSize.Y - iconRenderSize.Y);
-            }
-            else if (renderable.Node.IconPosition == IconPosition.Top)
-            {
-                textOffset.X = 0.5f * (contentRenderSize.X - textRenderSize.X);
-                textOffset.Y = iconRenderSize.Y + IconMargin;
-
-                iconOffset.X = 0.5f * (contentRenderSize.X - iconRenderSize.X);
-            }
-            else if (renderable.Node.IconPosition == IconPosition.Bottom)
-            {
-                textOffset.X = 0.5f * (contentRenderSize.X - textRenderSize.X);
-
-                iconOffset.X = 0.5f * (contentRenderSize.X - iconRenderSize.X);
-                iconOffset.Y = textRenderSize.Y + IconMargin;
-            }
-
-            textRenderPosition = renderable.RenderPosition + contentPadding + textOffset;
-            iconRenderPosition = renderable.RenderPosition + contentPadding + iconOffset;
-        }
-
-        public virtual Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session, Vector2 textSize)
-        {
-            textRenderSize = textSize;
-
-            contentRenderSize = textSize;
+            contentRenderSize = textRenderer.RenderSize;
 
             if (renderable.Node.Icon != null)
             {
@@ -150,6 +107,58 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             contentPadding = CalculatePadding(renderable, contentRenderSize);
 
             return contentRenderSize + (2 * contentPadding);
+        }
+
+        public virtual void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
+        {
+            Vector2 iconOffset = Vector2.Zero;
+            Vector2 textOffset = Vector2.Zero;
+
+            Vector2 textRenderSize = textRenderer.RenderSize;
+
+            if (renderable.Node.Icon == null)
+            {
+                textOffset.Y = 0.5f * (contentRenderSize.Y - textRenderSize.Y);
+            }
+            else if (renderable.Node.IconPosition == IconPosition.Left)
+            {
+                textOffset.Y = 0.5f * (contentRenderSize.Y - textRenderSize.Y);
+                textOffset.X = iconRenderSize.X + IconMargin;
+
+                iconOffset.Y = 0.5f * (contentRenderSize.Y - iconRenderSize.Y);
+            }
+            else if (renderable.Node.IconPosition == IconPosition.Right)
+            {
+                textOffset.Y = 0.5f * (contentRenderSize.Y - textRenderSize.Y);
+
+                iconOffset.X = textRenderSize.X + IconMargin;
+                iconOffset.Y = 0.5f * (contentRenderSize.Y - iconRenderSize.Y);
+            }
+            else if (renderable.Node.IconPosition == IconPosition.Top)
+            {
+                textOffset.X = 0.5f * (contentRenderSize.X - textRenderSize.X);
+                textOffset.Y = iconRenderSize.Y + IconMargin;
+
+                iconOffset.X = 0.5f * (contentRenderSize.X - iconRenderSize.X);
+            }
+            else if (renderable.Node.IconPosition == IconPosition.Bottom)
+            {
+                textOffset.X = 0.5f * (contentRenderSize.X - textRenderSize.X);
+
+                iconOffset.X = 0.5f * (contentRenderSize.X - iconRenderSize.X);
+                iconOffset.Y = textRenderSize.Y + IconMargin;
+            }
+
+            iconRenderPosition = renderable.RenderPosition + contentPadding + iconOffset;
+
+            Vector2 textRenderPosition = renderable.RenderPosition + contentPadding + textOffset;
+
+            textRenderer.Arrange(textRenderPosition);
+        }
+
+        protected void RenderText(Win2DRenderable renderable, CanvasDrawingSession session)
+        {
+            textRenderer.Render(renderable, session);
         }
 
         protected void RenderIcon(Win2DRenderable renderable, CanvasDrawingSession session)

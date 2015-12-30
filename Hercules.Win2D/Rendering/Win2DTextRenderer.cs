@@ -10,9 +10,7 @@ using System;
 using System.Numerics;
 using Windows.UI;
 using Windows.UI.Text;
-using GP.Windows;
 using GP.Windows.UI;
-using Hercules.Model;
 using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
@@ -22,7 +20,6 @@ namespace Hercules.Win2D.Rendering
     public sealed class Win2DTextRenderer
     {
         private readonly Vector2 padding = new Vector2(2, 2);
-        private readonly NodeBase node;
         private CanvasTextLayout textLayout;
         private CanvasTextFormat textFormat;
         private Vector2 renderSize;
@@ -30,7 +27,7 @@ namespace Hercules.Win2D.Rendering
         private float fontSize = 14;
         private float minSize;
 
-        public Rect2 Bounds
+        public Rect2 RenderBounds
         {
             get { return new Rect2(renderPosition, renderSize); }
         }
@@ -77,20 +74,11 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        public string OverrideText { get; set; }
-
-        public Win2DTextRenderer(NodeBase node)
-        {
-            Guard.NotNull(node, nameof(node));
-
-            this.node = node;
-        }
-
-        public void Measure(CanvasDrawingSession session)
+        public void Measure(Win2DRenderable renderable, CanvasDrawingSession session)
         {
             minSize = TextFormat.FontSize * 2;
 
-            string text = OverrideText ?? node.Text;
+            string text = renderable.Node.Text;
 
             if (!string.IsNullOrWhiteSpace(text))
             {
@@ -122,15 +110,15 @@ namespace Hercules.Win2D.Rendering
             renderPosition = position;
         }
 
-        public void Render(CanvasDrawingSession session)
+        public void Render(Win2DRenderable renderable, CanvasDrawingSession session)
         {
-            string text = OverrideText ?? node.Text;
+            string text = renderable.Node.Text;
 #if DRAW_OUTLINE
-            session.DrawRectangle(Bounds, Colors.Red);
+            session.DrawRectangle(RenderBounds, Colors.Red);
 #endif
             if (!string.IsNullOrWhiteSpace(text))
             {
-                session.DrawText(text, Bounds, Colors.Black, TextFormat);
+                session.DrawText(text, RenderBounds, Colors.Black, TextFormat);
             }
         }
     }

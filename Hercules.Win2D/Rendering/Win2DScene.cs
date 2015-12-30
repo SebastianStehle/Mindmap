@@ -53,6 +53,11 @@ namespace Hercules.Win2D.Rendering
             get { return new[] { previewNode }.Union(renderNodes.Values).ToList(); }
         }
 
+        public ICollection<Win2DRenderable> AllRenderables
+        {
+            get { return new Win2DRenderable[] { previewNode }.Union(renderNodes.Values).Union(adorners).ToList(); }
+        }
+
         internal Win2DScene(Document document, Win2DRenderNode previewNode, Func<NodeBase, Win2DRenderNode> nodeFactory)
         {
             this.document = document;
@@ -69,14 +74,9 @@ namespace Hercules.Win2D.Rendering
 
         public void ClearResources()
         {
-            foreach (Win2DRenderNode renderNode in AllNodes)
+            foreach (Win2DRenderable renderNode in AllRenderables)
             {
                 renderNode.ClearResources();
-            }
-
-            foreach (Win2DAdornerRenderNode adorner in adorners)
-            {
-                adorner.ClearResources();
             }
         }
 

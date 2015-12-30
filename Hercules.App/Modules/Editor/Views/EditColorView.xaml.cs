@@ -67,6 +67,8 @@ namespace Hercules.App.Modules.Editor.Views
                 else
                 {
                     ShapeListBox.IsEnabled = false;
+
+                    ShapeListBox.SelectedIndex = 0;
                 }
             }
         }

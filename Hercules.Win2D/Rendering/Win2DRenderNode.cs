@@ -19,9 +19,8 @@ using Microsoft.Graphics.Canvas;
 
 namespace Hercules.Win2D.Rendering
 {
-    public abstract class Win2DRenderNode : Win2DRenderable, IRenderNode, IResourceHolder
+    public abstract class Win2DRenderNode : Win2DRenderable, IRenderNode
     {
-        private readonly Win2DTextRenderer textRenderer;
         private readonly ExpandButton button;
         private IBodyGeometry bodyGeometry;
         private IPathGeometry pathGeometry;
@@ -52,7 +51,7 @@ namespace Hercules.Win2D.Rendering
 
         public Win2DTextRenderer TextRenderer
         {
-            get { return textRenderer; }
+            get { return bodyGeometry.TextRenderer; }
         }
 
         public virtual Vector2 RenderPositionOffset
@@ -74,8 +73,6 @@ namespace Hercules.Win2D.Rendering
             : base(node, renderer)
         {
             button = new ExpandButton(node);
-
-            textRenderer = new Win2DTextRenderer(node);
         }
 
         public void Hide()
@@ -125,11 +122,6 @@ namespace Hercules.Win2D.Rendering
             }
 #endif
             bodyGeometry.Render(this, session, Resources.FindColor(Node), renderControls);
-
-            if (bodyGeometry.HasText)
-            {
-                textRenderer.Render(session);
-            }
 
             if (renderControls)
             {
@@ -202,18 +194,15 @@ namespace Hercules.Win2D.Rendering
 
         public void Measure(CanvasDrawingSession session)
         {
-            textRenderer.Measure(session);
-
             if (bodyGeometry != null)
             {
-                UpdateSize(bodyGeometry.Measure(this, session, textRenderer.RenderSize));
+                UpdateSize(bodyGeometry.Measure(this, session));
             }
         }
 
         public void Arrange(CanvasDrawingSession session)
         {
             ArrangeBody(session);
-            ArrangeText();
             ArrangeHull(session);
             ArrangePath(session);
             ArrangeButton();
@@ -255,14 +244,6 @@ namespace Hercules.Win2D.Rendering
             }
 
             bodyGeometry.Arrange(this, session);
-        }
-
-        private void ArrangeText()
-        {
-            if (bodyGeometry.HasText)
-            {
-                textRenderer.Arrange(bodyGeometry.TextRenderPosition);
-            }
         }
 
         private void ArrangeButton()
@@ -307,7 +288,7 @@ namespace Hercules.Win2D.Rendering
             return false;
         }
 
-        public virtual void ClearResources()
+        public override void ClearResources()
         {
             ClearPath();
             ClearHull();
@@ -385,7 +366,7 @@ namespace Hercules.Win2D.Rendering
 
         public Win2DAdornerRenderNode CreateAdorner()
         {
-            return new Win2DAdornerRenderNode(Node, Renderer, bodyGeometry, RenderBounds, textRenderer.RenderSize);
+            return new Win2DAdornerRenderNode(Node, Renderer, bodyGeometry.Clone(), RenderBounds);
         }
     }
 }

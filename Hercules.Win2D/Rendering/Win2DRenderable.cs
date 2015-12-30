@@ -14,7 +14,7 @@ using Hercules.Model.Utils;
 
 namespace Hercules.Win2D.Rendering
 {
-    public abstract class Win2DRenderable : IRenderable
+    public abstract class Win2DRenderable : IRenderable, IResourceHolder
     {
         private Vector2 renderPosition;
         private Vector2 renderSize;
@@ -65,6 +65,10 @@ namespace Hercules.Win2D.Rendering
             this.node = node;
 
             this.renderer = renderer;
+        }
+
+        public virtual void ClearResources()
+        {
         }
 
         public void UpdateSize(Vector2 size)

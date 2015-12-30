@@ -15,27 +15,24 @@ using Microsoft.Graphics.Canvas;
 
 namespace Hercules.Win2D.Rendering
 {
-    public sealed class Win2DAdornerRenderNode : Win2DRenderable, IAdornerRenderNode, IResourceHolder
+    public sealed class Win2DAdornerRenderNode : Win2DRenderable, IAdornerRenderNode
     {
         private readonly IBodyGeometry geometry;
-        private readonly Vector2 textSize;
         private bool needsArrange;
         private bool needsMeasure = true;
 
-        public Win2DAdornerRenderNode(NodeBase node, Win2DRenderer renderer, IBodyGeometry geometry, Rect2 bounds, Vector2 textSize)
+        public Win2DAdornerRenderNode(NodeBase node, Win2DRenderer renderer, IBodyGeometry geometry, Rect2 bounds)
             : base(node, renderer)
         {
             Guard.NotNull(geometry, nameof(geometry));
 
             this.geometry = geometry;
 
-            this.textSize = textSize;
-
             UpdateSize(bounds.Size);
             UpdatePosition(bounds.Position);
         }
 
-        public void ClearResources()
+        public override void ClearResources()
         {
             geometry.ClearResources();
         }
@@ -60,7 +57,7 @@ namespace Hercules.Win2D.Rendering
         {
             if (needsMeasure)
             {
-                geometry.Measure(this, session, textSize);
+                geometry.Measure(this, session);
 
                 needsMeasure = false;
             }

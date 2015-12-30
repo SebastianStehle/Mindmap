@@ -52,6 +52,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
                 borderBrush);
 
             RenderIcon(renderable, session);
+            RenderText(renderable, session);
 
             if (renderControls && renderable.Node.IsSelected)
             {

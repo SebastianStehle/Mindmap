@@ -125,7 +125,7 @@ namespace Hercules.Model
 
             string attachment;
 
-            if (properties.TryParseString(PropertyAttachment, out attachment) && string.IsNullOrWhiteSpace(attachment) && attachment.IsBase64Encoded())
+            if (properties.TryParseString(PropertyAttachment, out attachment) && !string.IsNullOrWhiteSpace(attachment) && attachment.IsBase64Encoded())
             {
                 string name;
 

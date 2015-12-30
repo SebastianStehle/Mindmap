@@ -17,9 +17,9 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
     {
         private readonly Vector2 size;
 
-        public override Vector2 TextRenderPosition
+        public override Win2DTextRenderer TextRenderer
         {
-            get { return Vector2.Zero; }
+            get { return null; }
         }
 
         public override bool HasText
@@ -36,7 +36,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
         {
         }
 
-        public override Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session, Vector2 textSize)
+        public override Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session)
         {
             return size;
         }

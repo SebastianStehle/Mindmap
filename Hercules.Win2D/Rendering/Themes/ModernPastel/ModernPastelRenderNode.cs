@@ -24,21 +24,28 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 
         protected override IBodyGeometry CreateBody(CanvasDrawingSession session, IBodyGeometry current)
         {
-            if (Node is RootNode)
-            {
-                TextRenderer.FontSize = 16;
-            }
+            IBodyGeometry geometry = null;
 
             NodeShape nodeShape = CreateShapeFromNode(Node);
 
             if (current == null)
             {
-                return CreateBody(nodeShape);
+                geometry = CreateBody(nodeShape);
             }
 
             NodeShape geometryShape = CreateShapeFromGeometry(current);
 
-            return geometryShape != nodeShape ? CreateBody(nodeShape) : null;
+            if (geometryShape != nodeShape)
+            {
+                geometry = CreateBody(nodeShape);
+            }
+
+            if (Node is RootNode && geometry != null)
+            {
+                geometry.TextRenderer.FontSize = 16;
+            }
+
+            return geometry;
         }
 
         private static IBodyGeometry CreateBody(NodeShape shape)

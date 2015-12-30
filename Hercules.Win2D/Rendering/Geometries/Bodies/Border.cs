@@ -37,9 +37,9 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             this.pathColor = pathColor;
         }
 
-        public override Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session, Vector2 textSize)
+        public override Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session)
         {
-            Vector2 size = base.Measure(renderable, session, textSize);
+            Vector2 size = base.Measure(renderable, session);
 
             verticalOffset = (size.Y - VerticalOffsetPadding) - (0.5f * size.Y);
 
@@ -68,6 +68,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             session.DrawLine(left, right, lineBrush, 2, StrokeStyle);
 
             RenderIcon(renderable, session);
+            RenderText(renderable, session);
 
             if (renderControls && renderable.Node.IsSelected)
             {

@@ -13,11 +13,9 @@ namespace Hercules.Win2D.Rendering
 {
     public interface IBodyGeometry : IResourceHolder
     {
-        Vector2 TextRenderPosition { get; }
+        Win2DTextRenderer TextRenderer { get; }
 
         Vector2 RenderPositionOffset { get; }
-
-        bool HasText { get; }
 
         float VerticalPathOffset { get; }
 
@@ -25,7 +23,7 @@ namespace Hercules.Win2D.Rendering
 
         void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderSelection);
 
-        Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session, Vector2 textSize);
+        Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session);
 
         IBodyGeometry Clone();
     }

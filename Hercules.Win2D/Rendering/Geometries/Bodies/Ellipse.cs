@@ -8,8 +8,6 @@
 
 using System;
 using System.Numerics;
-using Windows.Foundation;
-using Hercules.Model;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 
@@ -17,59 +15,16 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
 {
     public sealed class Ellipse : BodyBase
     {
-        private const float MinHeight = 50;
-        private static readonly Vector2 ContentPadding = new Vector2(15, 5);
         private static readonly Vector2 SelectionMargin = new Vector2(-5, -5);
-        private Vector2 textRenderSize;
-        private Vector2 textRenderPosition;
-        private float textOffset;
 
-        public override Vector2 TextRenderPosition
+        protected override Vector2 CalculatePadding(Win2DRenderable renderable, Vector2 contentSize)
         {
-            get { return textRenderPosition; }
-        }
+            float sqrt2 = (float)Math.Sqrt(2);
+            
+            float a = (contentSize.X + 5) / sqrt2;
+            float b = (contentSize.Y + 5) / sqrt2;
 
-        public Ellipse()
-        {
-        }
-
-        public override void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
-        {
-            float x = renderable.RenderPosition.X, y = renderable.RenderBounds.CenterY;
-
-            x += ContentPadding.X;
-            x += textOffset;
-            y -= textRenderSize.Y * 0.5f;
-
-            textRenderPosition = new Vector2(x, y);
-        }
-
-        public override Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session, Vector2 textSize)
-        {
-            textRenderSize = textSize;
-
-            Vector2 size = textSize + (2 * ContentPadding);
-
-            if (renderable.Node.Icon != null)
-            {
-                if (renderable.Node.IconSize == IconSize.Small)
-                {
-                    textOffset = ImageSizeSmall.X + (ImageMargin * 2);
-                }
-                else
-                {
-                    textOffset = ImageSizeLarge.X + (ImageMargin * 2);
-                }
-            }
-            else
-            {
-                textOffset = 0;
-            }
-
-            size.X += textOffset;
-            size.Y = Math.Max(Math.Max(size.Y, size.X / 3f), MinHeight);
-
-            return size;
+            return new Vector2(a - (contentSize.X * 0.5f), b - (contentSize.Y * 0.5f));
         }
 
         public override void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderControls)
@@ -96,34 +51,18 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
                 radiusY,
                 borderBrush);
 
-            if (renderable.Node.Icon != null)
+            RenderIcon(renderable, session);
+
+            if (renderControls && renderable.Node.IsSelected)
             {
-                ICanvasImage image = renderable.Resources.Image(renderable.Node);
+                radiusX -= SelectionMargin.X;
+                radiusY -= SelectionMargin.Y;
 
-                if (image != null)
-                {
-                    Vector2 size = renderable.Node.IconSize == IconSize.Large ? ImageSizeLarge : ImageSizeSmall;
-
-                    float x = textRenderPosition.X - textOffset + ImageMargin;
-                    float y = textRenderPosition.Y + ((textRenderSize.Y - size.Y) * 0.5f);
-
-                    session.DrawImage(image, new Rect(x, y, 32, 32), image.GetBounds(session), 1, CanvasImageInterpolation.HighQualityCubic);
-                }
-            }
-
-            if (renderControls)
-            {
-                if (renderable.Node.IsSelected)
-                {
-                    radiusX -= SelectionMargin.X;
-                    radiusY -= SelectionMargin.Y;
-
-                    session.DrawEllipse(
-                        renderable.RenderBounds.Center,
-                        radiusX,
-                        radiusY,
-                        borderBrush, 2f, SelectionStrokeStyle);
-                }
+                session.DrawEllipse(
+                    renderable.RenderBounds.Center,
+                    radiusX,
+                    radiusY,
+                    borderBrush, 2f, SelectionStrokeStyle);
             }
         }
 

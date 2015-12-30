@@ -116,6 +116,7 @@
     <Compile Include="AttachmentIcon.cs" />
     <Compile Include="ChangeColorCommand.cs" />
     <Compile Include="ChangeIconCommand.cs" />
+    <Compile Include="ChangeIconPositionCommand.cs" />
     <Compile Include="ChangeShapeCommand.cs" />
     <Compile Include="ChangeIconSizeCommand.cs" />
     <Compile Include="ChangeTextCommand.cs" />
@@ -149,6 +150,7 @@
     <Compile Include="ExImport\Formats\XMind\XMindImporter.cs" />
     <Compile Include="ExImport\Formats\XMind\XMindStyle.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IconPosition.cs" />
     <Compile Include="INodeColor.cs" />
     <Compile Include="IconSize.cs" />
     <Compile Include="IDocumentCommands.cs" />

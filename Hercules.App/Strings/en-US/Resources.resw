@@ -433,7 +433,7 @@ I want to share my mindmap for you. You can download it here: {0}. The download 
   </data>
   <data name="Editor_OpenFileButtonHint.Text" xml:space="preserve">
     <value>Select a png or jpeg image from your device.
-The maximum allowed size is a 80x80 pixels.</value>
+The maximum allowed size is a 200x200 pixels.</value>
   </data>
   <data name="Editor_RecentImages.Text" xml:space="preserve">
     <value>Recent images</value>
@@ -458,5 +458,20 @@ The maximum allowed size is a 80x80 pixels.</value>
   </data>
   <data name="TransactionName_ChangeShape" xml:space="preserve">
     <value>Change Shape</value>
+  </data>
+  <data name="Editor_IconPositionHeader.Text" xml:space="preserve">
+    <value>Icon Position</value>
+  </data>
+  <data name="Editor_IconSizeHeader.Text" xml:space="preserve">
+    <value>Icon Size</value>
+  </data>
+  <data name="Editor_ShapeHeader.Text" xml:space="preserve">
+    <value>Shape</value>
+  </data>
+  <data name="TransactionName_EditIconPosition" xml:space="preserve">
+    <value>Change Icon Position</value>
+  </data>
+  <data name="TransactionName_EditIconSize" xml:space="preserve">
+    <value>Change Icon Size</value>
   </data>
 </root>

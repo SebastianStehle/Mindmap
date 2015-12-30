@@ -8,25 +8,44 @@
 
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
+using Windows.Graphics.Imaging;
 using Windows.Storage.Streams;
-using Windows.UI.Xaml.Media.Imaging;
 using GP.Windows;
 
 namespace Hercules.Model
 {
     public sealed class AttachmentIcon : INodeIcon
     {
-        private const double MaxSize = 80;
+        private static readonly Guid[] DecoderIds =
+        {
+            BitmapDecoder.PngDecoderId,
+            BitmapDecoder.JpegDecoderId,
+            BitmapDecoder.JpegXRDecoderId
+        };
+        private const double MaxSize = 200;
         private const string NameFallback = "Attachment.png";
         private const string PropertyAttachment = "Attachment";
         private const string PropertyName = "Name";
-        private readonly string base64Content;
         private readonly string name;
+        private readonly byte[] pixelData;
+        private readonly int pixelWidth;
+        private readonly int pixelHeight;
 
-        public string Base64Content
+        public byte[] PixelData
         {
-            get { return base64Content; }
+            get { return pixelData; }
+        }
+
+        public int PixelWidth
+        {
+            get { return pixelWidth; }
+        }
+
+        public int PixelHeight
+        {
+            get { return pixelHeight; }
         }
 
         public string Name
@@ -34,68 +53,70 @@ namespace Hercules.Model
             get { return name; }
         }
 
-        public AttachmentIcon(string base64Content, string name)
+        public AttachmentIcon(string name, byte[] pixelData, int pixelWidth, int pixelHeight)
         {
             Guard.NotNullOrEmpty(name, nameof(name));
-            Guard.NotNullOrEmpty(base64Content, nameof(base64Content));
-
-            this.base64Content = base64Content;
+            Guard.NotNull(pixelData, nameof(pixelData));
+            Guard.Between(pixelWidth, 0, MaxSize, nameof(pixelWidth));
+            Guard.Between(pixelHeight, 0, MaxSize, nameof(pixelWidth));
 
             this.name = name;
+
+            this.pixelData = pixelData;
+            this.pixelWidth = pixelWidth;
+            this.pixelHeight = pixelHeight;
         }
 
-        public AttachmentIcon(Stream stream, string name)
+        public static Task<AttachmentIcon> TryCreateAsync(string name, string base64Content)
+        {
+            return TryCreateAsync(name, new MemoryStream(Convert.FromBase64String(base64Content)));
+        }
+
+        public static async Task<AttachmentIcon> TryCreateAsync(string name, IRandomAccessStream stream)
+        {
+            return await TryCreateAsync(name, await stream.ToMemoryStreamAsync());
+        }
+
+        public static async Task<AttachmentIcon> TryCreateAsync(string name, MemoryStream stream)
         {
             Guard.NotNullOrEmpty(name, nameof(name));
             Guard.NotNull(stream, nameof(stream));
 
-            this.name = name;
+            AttachmentIcon result = null;
 
-            byte[] buffer = stream.ReadToEnd();
-
-            base64Content = Convert.ToBase64String(buffer);
-        }
-
-        public static async Task<bool> ValidateAsync(IRandomAccessStream stream)
-        {
-            bool isValid = false;
-
-            if (stream != null)
+            foreach (Guid decoderId in DecoderIds)
             {
-                BitmapImage bmp = new BitmapImage();
+                stream.Position = 0;
 
                 try
                 {
-                    await bmp.SetSourceAsync(stream);
+                    BitmapDecoder decoder = await BitmapDecoder.CreateAsync(decoderId, stream.AsRandomAccessStream()).AsTask().ConfigureAwait(false);
 
-                    if (bmp.PixelWidth < MaxSize && bmp.PixelHeight < MaxSize)
+                    if (decoder.PixelWidth <= MaxSize && decoder.PixelHeight <= MaxSize)
                     {
-                        isValid = true;
+                        result = new AttachmentIcon(name, stream.ToArray(), (int)decoder.PixelWidth, (int)decoder.PixelHeight);
+                        break;
                     }
                 }
                 catch
                 {
-                    isValid = false;
-                }
-                finally
-                {
-                    stream.Seek(0);
+                    result = null;
                 }
             }
 
-            return isValid;
+            return result;
         }
 
         public void Save(PropertiesBag properties)
         {
             Guard.NotNull(properties, nameof(properties));
 
-            properties.Set(PropertyAttachment, base64Content);
+            properties.Set(PropertyAttachment, Convert.ToBase64String(pixelData));
         }
 
         public Stream ToStream()
         {
-            return new MemoryStream(Convert.FromBase64String(base64Content));
+            return new MemoryStream(pixelData);
         }
 
         public static INodeIcon TryParse(PropertiesBag properties)
@@ -113,7 +134,7 @@ namespace Hercules.Model
                     name = NameFallback;
                 }
 
-                return new AttachmentIcon(attachment, name);
+                return TryCreateAsync(name, attachment).Result;
             }
 
             return null;
@@ -131,12 +152,12 @@ namespace Hercules.Model
 
         public bool Equals(AttachmentIcon other)
         {
-            return other != null && other.base64Content == base64Content;
+            return other != null && other.pixelWidth == pixelWidth && other.pixelHeight == pixelHeight && pixelData.SequenceEqual(other.pixelData);
         }
 
         public override int GetHashCode()
         {
-            return base64Content.GetHashCode();
+            return pixelData.GetHashCode();
         }
     }
 }

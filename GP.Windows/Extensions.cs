@@ -14,6 +14,8 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.Storage.Streams;
+using Buffer = System.Buffer;
 
 namespace GP.Windows
 {
@@ -28,6 +30,23 @@ namespace GP.Windows
         /// <param name="task">The task.</param>
         public static void Forget(this Task task)
         {
+        }
+
+        /// <summary>
+        /// Determines whether the specified value is between two other
+        /// values.
+        /// </summary>
+        /// <typeparam name="TValue">The type of the values to check.
+        /// Must implement <see cref="IComparable"/>.</typeparam>
+        /// <param name="value">The value which should be between the other values.</param>
+        /// <param name="low">The lower value.</param>
+        /// <param name="high">The higher value.</param>
+        /// <returns>
+        /// <c>true</c> if the specified value is between the other values; otherwise, <c>false</c>.
+        /// </returns>
+        public static bool IsBetween<TValue>(this TValue value, TValue low, TValue high) where TValue : IComparable
+        {
+            return Comparer<TValue>.Default.Compare(low, value) <= 0 && Comparer<TValue>.Default.Compare(high, value) >= 0;
         }
 
         /// <summary>
@@ -250,6 +269,27 @@ namespace GP.Windows
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// Converts the specified stream to a memory stream asynchronously.
+        /// </summary>
+        /// <param name="stream">The stream to convert.</param>
+        /// <returns>
+        /// The resulting memory stream.
+        /// </returns>
+        public static async Task<MemoryStream> ToMemoryStreamAsync(this IRandomAccessStream stream)
+        {
+            MemoryStream memoryStream = new MemoryStream();
+
+            using (Stream ioStream = stream.AsStreamForRead())
+            {
+                await ioStream.CopyToAsync(memoryStream).ConfigureAwait(false);
+            }
+
+            memoryStream.Position = 0;
+
+            return memoryStream;
         }
 
         /// <summary>

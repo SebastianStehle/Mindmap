@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// IconSize.cs
+// IconPosition.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -7,10 +7,11 @@
 // ==========================================================================
 namespace Hercules.Model
 {
-    public enum IconSize
+    public enum IconPosition
     {
-        Small,
-        Medium,
-        Large
+        Left,
+        Right,
+        Top,
+        Bottom
     }
 }

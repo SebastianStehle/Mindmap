@@ -41,7 +41,7 @@ namespace Hercules.Win2D.Rendering
 
             name = icon.Name;
 
-            LoadFile(icon.Base64Content, canvasControl.Device).ContinueWith(task => AttachBitmap(canvasControl, task));
+            LoadFile(icon.PixelData, canvasControl.Device).ContinueWith(task => AttachBitmap(canvasControl, task));
         }
 
         public Win2DIcon(KeyIcon icon, ICanvasControl canvasControl)
@@ -82,9 +82,9 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        private static async Task<CanvasBitmap> LoadFile(string base64Content, ICanvasResourceCreator device)
+        private static async Task<CanvasBitmap> LoadFile(byte[] buffer, ICanvasResourceCreator device)
         {
-            MemoryStream memoryStream = new MemoryStream(Convert.FromBase64String(base64Content));
+            MemoryStream memoryStream = new MemoryStream(buffer);
 
             using (IRandomAccessStream stream = memoryStream.AsRandomAccessStream())
             {

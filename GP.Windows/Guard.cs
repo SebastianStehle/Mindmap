@@ -21,7 +21,29 @@ namespace GP.Windows
     /// a method agains invalid parameters.
     /// </summary>
     public static class Guard
-    {
+    {        
+        /// <summary>
+        /// Verifies that the specified value is between a lower and a upper value
+        /// and throws an exception, if not.
+        /// </summary>
+        /// <typeparam name="TValue">The type of the value.</typeparam>
+        /// <param name="target">The target value, which should be validated.</param>
+        /// <param name="lower">The lower value.</param>
+        /// <param name="upper">The upper value.</param>
+        /// <param name="parameterName">Name of the parameter, which should will be checked.</param>
+        /// <exception cref="ArgumentException"><paramref name="target"/> is not between
+        /// the lower and the upper value.</exception>
+        [DebuggerStepThrough]
+        public static void Between<TValue>(TValue target, TValue lower, TValue upper, string parameterName) where TValue : IComparable
+        {
+            if (!target.IsBetween(lower, upper))
+            {
+                string message = string.Format(CultureInfo.CurrentCulture, "Value must be between {0} and {1}", lower, upper);
+
+                throw new ArgumentException(message, parameterName);
+            }
+        }
+
         /// <summary>
         /// Verifies that the specified value is greater than a lower value
         /// and throws an exception, if not.
@@ -39,26 +61,6 @@ namespace GP.Windows
             {
                 string message = string.Format(CultureInfo.CurrentCulture, "Value must be greater than {0}", lower);
 
-                throw new ArgumentException(message, parameterName);
-            }
-        }
-
-        /// <summary>
-        /// Verifies that the specified value is greater than a lower value
-        /// and throws an exception with the passed message, if not.
-        /// </summary>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="target">The target value, which should be validated.</param>
-        /// <param name="lower">The lower value.</param>
-        /// <param name="parameterName">Name of the parameter, which should will be checked.</param>
-        /// <param name="message">The message for the exception to throw.</param>
-        /// <exception cref="ArgumentException"><paramref name="target"/> is greater than
-        /// the lower value.</exception>
-        [DebuggerStepThrough]
-        public static void GreaterThan<TValue>(TValue target, TValue lower, string parameterName, string message) where TValue : IComparable
-        {
-            if (target.CompareTo(lower) <= 0)
-            {
                 throw new ArgumentException(message, parameterName);
             }
         }
@@ -85,26 +87,6 @@ namespace GP.Windows
         }
 
         /// <summary>
-        /// Verifies that the specified value is greater or equals than a lower value
-        /// and throws an exception with the passed message, if not.
-        /// </summary>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="target">The target value, which should be validated.</param>
-        /// <param name="lower">The lower value.</param>
-        /// <param name="parameterName">Name of the parameter, which should will be checked.</param>
-        /// <param name="message">The message for the exception to throw.</param>
-        /// <exception cref="ArgumentException"><paramref name="target"/> is greater than
-        /// the lower value.</exception>
-        [DebuggerStepThrough]
-        public static void GreaterEquals<TValue>(TValue target, TValue lower, string parameterName, string message) where TValue : IComparable
-        {
-            if (target.CompareTo(lower) < 0)
-            {
-                throw new ArgumentException(message, parameterName);
-            }
-        }
-
-        /// <summary>
         /// Verifies that the specified value is less than a upper value
         /// and throws an exception, if not.
         /// </summary>
@@ -126,26 +108,6 @@ namespace GP.Windows
         }
 
         /// <summary>
-        /// Verifies that the specified value is less than a upper value
-        /// and throws an exception with the passed message, if not.
-        /// </summary>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="target">The target value, which should be validated.</param>
-        /// <param name="upper">The upper value.</param>
-        /// <param name="parameterName">Name of the parameter, which should will be checked.</param>
-        /// <param name="message">The message for the exception to throw.</param>
-        /// <exception cref="ArgumentException"><paramref name="target"/> is greater than
-        /// the lower value.</exception>
-        [DebuggerStepThrough]
-        public static void LessThan<TValue>(TValue target, TValue upper, string parameterName, string message) where TValue : IComparable
-        {
-            if (target.CompareTo(upper) >= 0)
-            {
-                throw new ArgumentException(message, parameterName);
-            }
-        }
-
-        /// <summary>
         /// Verifies that the specified value is less or equals than a upper value
         /// and throws an exception, if not.
         /// </summary>
@@ -162,26 +124,6 @@ namespace GP.Windows
             {
                 string message = string.Format(CultureInfo.CurrentCulture, "Value must be less than {0}", upper);
 
-                throw new ArgumentException(message, parameterName);
-            }
-        }
-
-        /// <summary>
-        /// Verifies that the specified value is less or equals than a upper value
-        /// and throws an exception with the passed message, if not.
-        /// </summary>
-        /// <typeparam name="TValue">The type of the value.</typeparam>
-        /// <param name="target">The target value, which should be validated.</param>
-        /// <param name="upper">The upper value.</param>
-        /// <param name="parameterName">Name of the parameter, which should will be checked.</param>
-        /// <param name="message">The message for the exception to throw.</param>
-        /// <exception cref="ArgumentException"><paramref name="target"/> is greater than
-        /// the lower value.</exception>
-        [DebuggerStepThrough]
-        public static void LessEquals<TValue>(TValue target, TValue upper, string parameterName, string message) where TValue : IComparable
-        {
-            if (target.CompareTo(upper) > 0)
-            {
                 throw new ArgumentException(message, parameterName);
             }
         }
@@ -211,31 +153,6 @@ namespace GP.Windows
         }
 
         /// <summary>
-        /// Verifies, that the collection method parameter with specified reference
-        /// contains one or more elements and throws an exception with
-        /// the passed message if the object contains no elements.
-        /// </summary>
-        /// <typeparam name="TType">The type of the items in the collection.</typeparam>
-        /// <param name="enumerable">The enumerable.</param>
-        /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="message">The message for the exception to throw.</param>
-        /// <exception cref="ArgumentException"><paramref name="enumerable"/> is
-        /// empty or contains only blanks.</exception>
-        [DebuggerStepThrough]
-        public static void NotEmpty<TType>(ICollection<TType> enumerable, string parameterName, string message)
-        {
-            if (enumerable == null)
-            {
-                throw new ArgumentNullException(nameof(enumerable));
-            }
-
-            if (enumerable.Count == 0)
-            {
-                throw new ArgumentException(message, parameterName);
-            }
-        }
-
-        /// <summary>
         /// Verifies, that the method parameter with specified object value and message  
         /// is not empty and throws an exception if the object is empty.
         /// </summary>
@@ -253,24 +170,6 @@ namespace GP.Windows
         }
 
         /// <summary>
-        /// Verifies, that the method parameter with specified object value and message
-        /// is not empty and throws an exception with the passed message if the object is empty.
-        /// </summary>
-        /// <param name="target">The target object, which cannot be empty.</param>
-        /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="message">The message for the exception to throw.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="target"/> is
-        /// empty.</exception>
-        [DebuggerStepThrough]
-        public static void NotEmpty(Guid target, string parameterName, string message)
-        {
-            if (target == Guid.Empty)
-            {
-                throw new ArgumentException(message, parameterName);
-            }
-        }
-
-        /// <summary>
         /// Verifies, that the method parameter with specified object value and message  
         /// is not null and throws an exception if the object is null.
         /// </summary>
@@ -284,24 +183,6 @@ namespace GP.Windows
             if (target == null)
             {
                 throw new ArgumentNullException(parameterName);
-            }
-        }
-
-        /// <summary>
-        /// Verifies, that the method parameter with specified object value and message
-        /// is not null and throws an exception with the passed message if the object is null.
-        /// </summary>
-        /// <param name="target">The target object, which cannot be null.</param>
-        /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="message">The message for the exception to throw.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="target"/> is
-        /// null (Nothing in Visual Basic).</exception>
-        [DebuggerStepThrough]
-        public static void NotNull(object target, string parameterName, string message)
-        {
-            if (target == null)
-            {
-                throw new ArgumentNullException(message, parameterName);
             }
         }
 
@@ -327,31 +208,6 @@ namespace GP.Windows
             if (string.IsNullOrWhiteSpace(target))
             {
                 throw new ArgumentException("String parameter cannot be null or empty and cannot contain only blanks.", parameterName);
-            }
-        }
-
-        /// <summary>
-        /// Verifies, that the string method parameter with specified object value and message
-        /// is not null, not empty and does not contain only blanks and throws an exception with 
-        /// the passed message if the object is null.
-        /// </summary>
-        /// <param name="target">The target string, which should be checked against being null or empty.</param>
-        /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="message">The message for the exception to throw.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="target"/> is
-        /// null (Nothing in Visual Basic).</exception>
-        /// <exception cref="ArgumentException"><paramref name="target"/> is
-        /// empty or contains only blanks.</exception>
-        public static void NotNullOrEmpty(string target, string parameterName, string message)
-        {
-            if (target == null)
-            {
-                throw new ArgumentNullException(parameterName);
-            }
-
-            if (string.IsNullOrWhiteSpace(target))
-            {
-                throw new ArgumentException(message, parameterName);
             }
         }
 
@@ -422,23 +278,6 @@ namespace GP.Windows
         /// <summary>
         /// Verfifies that the specified target has the right type.
         /// </summary>
-        /// <typeparam name="T">The expected type.</typeparam>
-        /// <param name="target">The target object, which cannot be null.</param>
-        /// <param name="parameterName">Name of the parameter.</param>
-        /// <param name="message">The message for the exception to throw.</param>
-        /// <exception cref="ArgumentException"><paramref name="target"/> is not of the specified type.</exception>
-        /// <exception cref="System.ArgumentException"></exception>
-        public static void IsType<T>(object target, string parameterName, string message)
-        {
-            if (target != null && target.GetType() != typeof(T))
-            {
-                throw new ArgumentException(message, parameterName);
-            }
-        }
-
-        /// <summary>
-        /// Verfifies that the specified target has the right type.
-        /// </summary>
         /// <param name="parameterName">Name of the parameter.</param>
         /// <param name="target">The target object, which cannot be null.</param>
         /// <param name="expectedType">The expected type.</param>
@@ -450,23 +289,6 @@ namespace GP.Windows
             {
                 string message = string.Format(CultureInfo.CurrentCulture, "Value must be of type {0}", expectedType);
 
-                throw new ArgumentException(message, parameterName);
-            }
-        }
-
-        /// <summary>
-        /// Verfifies that the specified target has the right type.
-        /// </summary>
-        /// <param name="message">The message for the exception to throw.</param>
-        /// <param name="target">The target object, which cannot be null.</param>
-        /// <param name="expectedType">The expected type.</param>
-        /// <param name="parameterName">Name of the parameter.</param>
-        /// <exception cref="ArgumentException"><paramref name="target"/> is not of the specified type.</exception>
-        /// <exception cref="System.ArgumentException"></exception>
-        public static void IsType(object target, Type expectedType, string parameterName, string message)
-        {
-            if (target != null && expectedType != null && target.GetType() != expectedType)
-            {
                 throw new ArgumentException(message, parameterName);
             }
         }

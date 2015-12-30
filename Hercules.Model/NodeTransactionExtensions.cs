@@ -112,7 +112,7 @@ namespace Hercules.Model
 
         public static void ChangeShapeTransactional(this Node node, NodeShape? shape)
         {
-            if (node?.Document != null)
+            if (node?.Document != null && !Equals(node.Shape, shape))
             {
                 string tansactionName = ResourceManager.GetString("TransactionName_ChangeShape");
 
@@ -125,7 +125,7 @@ namespace Hercules.Model
 
         public static void ChangeTextTransactional(this NodeBase node, string text)
         {
-            if (node?.Document != null)
+            if (node?.Document != null && !Equals(node.Text, text))
             {
                 string transactionName = ResourceManager.GetString("TransactionName_ChangeText");
 
@@ -138,7 +138,7 @@ namespace Hercules.Model
 
         public static void ChangeColorTransactional(this NodeBase node, INodeColor color)
         {
-            if (node?.Document != null)
+            if (node?.Document != null && !Equals(node.Color, color))
             {
                 string transactionName = ResourceManager.GetString("TransactionName_EditColor");
 
@@ -151,13 +151,39 @@ namespace Hercules.Model
 
         public static void ChangeIconKeyTransactional(this NodeBase node, INodeIcon icon)
         {
-            if (node?.Document != null)
+            if (node?.Document != null && !Equals(node.Icon, icon))
             {
                 string transactionName = ResourceManager.GetString("TransactionName_EditIcon");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
                     commands.Apply(new ChangeIconCommand(node, icon));
+                });
+            }
+        }
+
+        public static void ChangeIconSizeTransactional(this NodeBase node, IconSize iconSize)
+        {
+            if (node?.Document != null && !Equals(node.IconSize, iconSize))
+            {
+                string transactionName = ResourceManager.GetString("TransactionName_EditIconSize");
+
+                node.Document.MakeTransaction(transactionName, commands =>
+                {
+                    commands.Apply(new ChangeIconSizeCommand(node, iconSize));
+                });
+            }
+        }
+
+        public static void ChangeIconPositionTransactional(this NodeBase node, IconPosition iconPosition)
+        {
+            if (node?.Document != null && !Equals(node.IconPosition, iconPosition))
+            {
+                string transactionName = ResourceManager.GetString("TransactionName_EditIconPosition");
+
+                node.Document.MakeTransaction(transactionName, commands =>
+                {
+                    commands.Apply(new ChangeIconPositionCommand(node, iconPosition));
                 });
             }
         }

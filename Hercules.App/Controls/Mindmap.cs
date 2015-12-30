@@ -18,6 +18,8 @@ using Hercules.Model.Utils;
 using Hercules.Win2D.Rendering;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
+// ReSharper disable LoopCanBeConvertedToQuery
+
 // ReSharper disable SuggestBaseTypeForParameter
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 

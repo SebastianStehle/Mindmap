@@ -8,7 +8,6 @@
 
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using Windows.Storage;
 using Windows.Storage.Pickers;
@@ -25,8 +24,6 @@ namespace Hercules.App.Modules.Editor.Views
 {
     public sealed partial class EditIconView
     {
-        private bool hasChange;
-
         public EditIconView()
         {
             InitializeComponent();
@@ -68,11 +65,23 @@ namespace Hercules.App.Modules.Editor.Views
                 }
                 else
                 {
-                    RecentRecentSelection();
+                    ResetRecentSelection();
                 }
-            }
 
-            hasChange = false;
+                IconSizeListBox.SelectedIndex = (int)selectedNode.IconSize;
+
+                IconPositionListBox.SelectedIndex = (int)selectedNode.IconPosition;
+            }
+        }
+
+        private void IconPositionListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Change((IconPosition)IconPositionListBox.SelectedIndex);
+        }
+
+        private void IconSizeListBox_OnSelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Change((IconSize)IconSizeListBox.SelectedIndex);
         }
 
         private void IconsRecentGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -93,7 +102,7 @@ namespace Hercules.App.Modules.Editor.Views
 
             if (selected != null)
             {
-                RecentRecentSelection();
+                ResetRecentSelection();
 
                 Change(new KeyIcon(selected));
             }
@@ -101,13 +110,13 @@ namespace Hercules.App.Modules.Editor.Views
 
         private void RemoveIconButton_Click(object sender, RoutedEventArgs e)
         {
-            RecentRecentSelection();
+            ResetRecentSelection();
             ResetIconSelection();
 
             Change(null);
         }
 
-        private void RecentRecentSelection()
+        private void ResetRecentSelection()
         {
             IconsRecentGrid.SelectedIndex = -1;
         }
@@ -117,26 +126,33 @@ namespace Hercules.App.Modules.Editor.Views
             IconsGrid.SelectedIndex = -1;
         }
 
+        private void Change(IconSize selected)
+        {
+            NodeBase selectedNode = Document?.SelectedNode;
+
+            if (selectedNode != null)
+            {
+                selectedNode.ChangeIconSizeTransactional(selected);
+            }
+        }
+
+        private void Change(IconPosition selected)
+        {
+            NodeBase selectedNode = Document?.SelectedNode;
+
+            if (selectedNode != null)
+            {
+                selectedNode.ChangeIconPositionTransactional(selected);
+            }
+        }
+
         private void Change(INodeIcon selected)
         {
             NodeBase selectedNode = Document?.SelectedNode;
 
             if (selectedNode != null)
             {
-                if (!Equals(selected, selectedNode.Icon))
-                {
-                    if (hasChange && Document.UndoRedoManager.IsLastCommand<ChangeIconCommand>(x => x.Node.Id == selectedNode.Id))
-                    {
-                        Document.UndoRedoManager.Revert();
-                    }
-
-                    if (!Equals(selected, selectedNode.Icon))
-                    {
-                        selectedNode.ChangeIconKeyTransactional(selected);
-
-                        hasChange = true;
-                    }
-                }
+                selectedNode.ChangeIconKeyTransactional(selected);
             }
         }
 
@@ -158,10 +174,10 @@ namespace Hercules.App.Modules.Editor.Views
                 {
                     using (IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))
                     {
-                        if (await AttachmentIcon.ValidateAsync(fileStream))
-                        {
-                            AttachmentIcon attachmentIcon = new AttachmentIcon(fileStream.AsStreamForRead(), file.DisplayName);
+                        AttachmentIcon attachmentIcon = await AttachmentIcon.TryCreateAsync(file.DisplayName, fileStream);
 
+                        if (attachmentIcon != null)
+                        {
                             Change(attachmentIcon);
                         }
                         else

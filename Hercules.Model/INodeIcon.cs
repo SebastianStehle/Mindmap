@@ -12,5 +12,8 @@ namespace Hercules.Model
 {
     public interface INodeIcon : IEquatable<INodeIcon>, IWritable
     {
+        int PixelWidth { get; }
+
+        int PixelHeight { get; }
     }
 }

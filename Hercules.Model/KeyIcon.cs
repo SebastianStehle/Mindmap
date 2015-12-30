@@ -13,6 +13,7 @@ namespace Hercules.Model
 {
     public sealed class KeyIcon : INodeIcon, IEquatable<KeyIcon>
     {
+        private const int DefaultSize = 32;
         private const string PropertyKey = "Key";
         private const string PropertyKeyOld = "IconKey";
         private readonly string key;
@@ -20,6 +21,16 @@ namespace Hercules.Model
         public string Key
         {
             get { return key; }
+        }
+
+        public int PixelWidth
+        {
+            get { return DefaultSize; }
+        }
+
+        public int PixelHeight
+        {
+            get { return DefaultSize; }
         }
 
         public KeyIcon(string key)

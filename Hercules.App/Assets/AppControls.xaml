@@ -33,6 +33,14 @@
         <Setter Property="Grid.Column" Value="1" />
     </Style>
 
+    <Style x:Key="PivotLikeHeaderStyle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="{ThemeResource PivotHeaderItemFontSize}" />
+        <Setter Property="FontFamily" Value="{ThemeResource PivotHeaderItemFontFamily}" />
+        <Setter Property="FontWeight" Value="{ThemeResource PivotHeaderItemThemeFontWeight}" />
+        <Setter Property="CharacterSpacing" Value="{ThemeResource PivotHeaderItemCharacterSpacing}" />
+        <Setter Property="Margin" Value="0,0,0,8" />
+    </Style>
+
     <Style x:Key="BorderedListBoxItemStyle" TargetType="ListBoxItem">
         <Setter Property="Background" Value="Transparent"/>
         <Setter Property="TabNavigation" Value="Local"/>
@@ -207,6 +215,7 @@
         <Setter Property="VerticalAlignment" Value="Top" />
         <Setter Property="RequestedTheme" Value="Light" />
         <Setter Property="MinHeight" Value="0" />
+        <Setter Property="Padding" Value="0" />
         <Setter Property="ScrollViewer.HorizontalScrollMode" Value="Disabled" />
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
     </Style>

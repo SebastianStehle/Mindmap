@@ -15,6 +15,7 @@ namespace Hercules.Model
     {
         private Document document;
         private NodeBase parent;
+        private IconPosition iconPosition;
         private IconSize iconSize;
         private NodeSide nodeSide;
         private INodeColor color = new ThemeColor(0);
@@ -48,7 +49,7 @@ namespace Hercules.Model
             }
             protected set
             {
-                if (text != value)
+                if (!Equals(text, value))
                 {
                     text = value;
                     OnPropertyChanged(nameof(Text));
@@ -88,6 +89,22 @@ namespace Hercules.Model
             }
         }
 
+        public IconPosition IconPosition
+        {
+            get
+            {
+                return iconPosition;
+            }
+            protected set
+            {
+                if (!Equals(iconPosition, value))
+                {
+                    iconPosition = value;
+                    OnPropertyChanged(nameof(IconPosition));
+                }
+            }
+        }
+
         public IconSize IconSize
         {
             get
@@ -96,10 +113,10 @@ namespace Hercules.Model
             }
             protected set
             {
-                if (iconSize != value)
+                if (!Equals(iconSize, value))
                 {
                     iconSize = value;
-                    OnPropertyChanged(nameof(iconSize));
+                    OnPropertyChanged(nameof(IconSize));
                 }
             }
         }
@@ -112,7 +129,7 @@ namespace Hercules.Model
             }
             protected set
             {
-                if (nodeSide != value)
+                if (!Equals(nodeSide, value))
                 {
                     nodeSide = value;
                     OnPropertyChanged(nameof(NodeSide));
@@ -128,7 +145,7 @@ namespace Hercules.Model
             }
             protected set
             {
-                if (isCollapsed != value)
+                if (!Equals(isCollapsed, value))
                 {
                     isCollapsed = value;
                     OnPropertyChanged(nameof(IsCollapsed));
@@ -144,7 +161,7 @@ namespace Hercules.Model
             }
             protected set
             {
-                if (isSelected != value)
+                if (!Equals(isSelected, value))
                 {
                     isSelected = value;
                     OnPropertyChanged(nameof(isSelected));
@@ -160,7 +177,7 @@ namespace Hercules.Model
             }
             protected set
             {
-                if (isShowingHull != value)
+                if (!Equals(isShowingHull, value))
                 {
                     isShowingHull = value;
                     OnPropertyChanged(nameof(IsShowingHull));
@@ -201,6 +218,11 @@ namespace Hercules.Model
         internal void SetupIconSize(IconSize newIconSize)
         {
             IconSize = newIconSize;
+        }
+
+        public void SetupIconPosition(IconPosition newIconPosition)
+        {
+            IconPosition = newIconPosition;
         }
 
         internal void SetupText(string newText)

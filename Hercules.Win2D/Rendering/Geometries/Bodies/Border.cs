@@ -20,12 +20,13 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
     public sealed class Border : BodyBase
     {
         private const float MinHeight = 40;
-        private const float VerticalOffset = 16;
+        private const float VerticalOffsetPadding = 8;
         private static readonly Vector2 ContentPadding = new Vector2(15, 10);
         private static readonly CanvasStrokeStyle StrokeStyle = new CanvasStrokeStyle { StartCap = CanvasCapStyle.Round, EndCap = CanvasCapStyle.Round };
         private readonly Color pathColor;
         private Vector2 textRenderSize;
         private Vector2 textRenderPosition;
+        private float verticalOffset;
         private float textOffset;
 
         public override Vector2 TextRenderPosition
@@ -35,12 +36,12 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
 
         public override float VerticalPathOffset
         {
-            get { return VerticalOffset; }
+            get { return verticalOffset; }
         }
 
         public override Vector2 RenderPositionOffset
         {
-            get { return new Vector2(0, -VerticalOffset); }
+            get { return new Vector2(0, -verticalOffset); }
         }
 
         public Border(Color pathColor)
@@ -84,6 +85,8 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             size.X += textOffset;
             size.Y = Math.Max(size.Y, MinHeight);
 
+            verticalOffset = (size.Y - VerticalOffsetPadding) - 0.5f * size.Y;
+
             return size;
         }
 
@@ -95,11 +98,11 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
 
             Vector2 left = new Vector2(
                 (float)Math.Round(renderable.RenderBounds.Left - 1),
-                (float)Math.Round(renderable.RenderBounds.CenterY) + VerticalOffset);
+                (float)Math.Round(renderable.RenderBounds.CenterY) + verticalOffset);
 
             Vector2 right = new Vector2(
                 (float)Math.Round(renderable.RenderBounds.Right + 1),
-                (float)Math.Round(renderable.RenderBounds.CenterY) + VerticalOffset);
+                (float)Math.Round(renderable.RenderBounds.CenterY) + verticalOffset);
 
             session.DrawLine(left, right, lineBrush, 2, StrokeStyle);
 

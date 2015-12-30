@@ -29,7 +29,7 @@ namespace Hercules.App.Components.Implementations
     public sealed class MindmapStore : ViewModelBase, IMindmapStore
     {
         private readonly ObservableCollection<MindmapRef> allMindmaps = new ObservableCollection<MindmapRef>();
-        private readonly DispatcherTimer autosaveTimer = new DispatcherTimer();
+        private readonly DispatcherTimer autosaveTimer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(5) };
         private readonly IDocumentStore documentStore;
         private readonly IProcessManager processManager;
         private readonly ISettingsProvider settingsProvider;
@@ -66,14 +66,17 @@ namespace Hercules.App.Components.Implementations
 
         private void StartTimer()
         {
-            autosaveTimer.Interval = TimeSpan.FromMinutes(5);
             autosaveTimer.Tick += autosaveTimer_Tick;
+
             autosaveTimer.Start();
         }
 
-        private async void autosaveTimer_Tick(object sender, object e)
+        private void autosaveTimer_Tick(object sender, object e)
         {
-            await SaveAsync();
+            if (LoadedMindmap != null && LoadedDocument != null)
+            {
+                documentStore.StoreAsync(LoadedMindmap.DocumentRef, LoadedDocument).Forget();
+            }
         }
 
         public bool IsValidMindmapName(string name)
@@ -137,9 +140,9 @@ namespace Hercules.App.Components.Implementations
 
         public Task SaveAsync()
         {
-            return DoAsync(LoadedMindmap, async () =>
+            return DoAsync(LoadedMindmap, LoadedDocument, async (m, d) =>
             {
-                await documentStore.StoreAsync(LoadedMindmap.DocumentRef, LoadedDocument);
+                await documentStore.StoreAsync(m.DocumentRef, d);
             });
         }
 
@@ -148,19 +151,20 @@ namespace Hercules.App.Components.Implementations
             Guard.NotNull(mindmap, nameof(mindmap));
             Guard.ValidFileName(newName, nameof(newName));
 
-            return DoAsync(mindmap, async () =>
+            return DoAsync(mindmap, async m =>
             {
-                await documentStore.RenameAsync(mindmap.DocumentRef, newName);
+                await documentStore.RenameAsync(m.DocumentRef, newName);
             });
         }
 
         public Task SaveAsync(MindmapRef mindmap, Document document)
         {
             Guard.NotNull(mindmap, nameof(mindmap));
+            Guard.NotNull(document, nameof(document));
 
-            return DoAsync(mindmap, async () =>
+            return DoAsync(mindmap, document, async (m, d) =>
             {
-                await documentStore.StoreAsync(mindmap.DocumentRef, document);
+                await documentStore.StoreAsync(m.DocumentRef, d);
             });
         }
 
@@ -168,7 +172,7 @@ namespace Hercules.App.Components.Implementations
         {
             Guard.NotNull(mindmap, nameof(mindmap));
 
-            return DoAsync(mindmap, async () =>
+            return DoAsync(mindmap, async m =>
             {
                 if (LoadedMindmap != null && LoadedDocument != null)
                 {
@@ -177,21 +181,22 @@ namespace Hercules.App.Components.Implementations
 
                 try
                 {
-                    LoadedMindmap = mindmap;
-                    LoadedDocument = await documentStore.LoadAsync(mindmap.DocumentRef);
+                    LoadedMindmap = m;
+                    LoadedDocument = await documentStore.LoadAsync(m.DocumentRef);
 
                     OnDocumentLoaded(LoadedDocument);
                 }
+                catch (DocumentNotFoundException)
+                {
+                    ShowNotFoundErrorDialog();
+
+                    UnloadMindmap(mindmap);
+                }
                 catch
                 {
-                    LoadedMindmap = null;
+                    UnloadMindmap(m);
 
-                    OnDocumentLoaded(null);
-
-                    string content = ResourceManager.GetString("MindmapLoadingFailed_Content");
-                    string heading = ResourceManager.GetString("MindmapLoadingFailed_Heading");
-
-                    await dialogService.AlertAsync(content, heading);
+                    ShowLoadingErrorDialog();
                 }
             });
         }
@@ -200,20 +205,12 @@ namespace Hercules.App.Components.Implementations
         {
             Guard.NotNull(mindmap, nameof(mindmap));
 
-            return DoAsync(mindmap, async () =>
+            return DoAsync(mindmap, async m =>
             {
-                if (mindmap.DocumentRef != null)
-                {
-                    await documentStore.DeleteAsync(mindmap.DocumentRef);
-                }
+                await documentStore.DeleteAsync(m.DocumentRef);
 
-                UnloadMindmap(mindmap);
+                UnloadMindmap(m);
             });
-        }
-
-        private Task DoAsync(MindmapRef mindmap, Func<Task> action)
-        {
-            return DoAsync(mindmap, x => true, action);
         }
 
         private async Task DoAsync(Func<Task> action)
@@ -226,22 +223,22 @@ namespace Hercules.App.Components.Implementations
                 }
                 catch (DocumentNotFoundException)
                 {
-                    ShowErrorDialog();
+                    ShowNotFoundErrorDialog();
                 }
             }
         }
 
-        private async Task DoAsync(MindmapRef mindmap, Predicate<MindmapRef> predicate, Func<Task> action)
+        private async Task DoAsync(MindmapRef mindmap, Func<MindmapRef, Task> action)
         {
-            if (isLoaded && mindmap != null && predicate(mindmap))
+            if (isLoaded && mindmap?.DocumentRef != null)
             {
                 try
                 {
-                    await processManager.RunMainProcessAsync(this, action);
+                    await processManager.RunMainProcessAsync(this, () => action(mindmap));
                 }
                 catch (DocumentNotFoundException)
                 {
-                    ShowErrorDialog();
+                    ShowNotFoundErrorDialog();
 
                     UnloadMindmap(mindmap);
                 }
@@ -252,7 +249,36 @@ namespace Hercules.App.Components.Implementations
             }
         }
 
-        private void ShowErrorDialog()
+        private async Task DoAsync(MindmapRef mindmap, Document document, Func<MindmapRef, Document, Task> action)
+        {
+            if (isLoaded && mindmap?.DocumentRef != null && document != null)
+            {
+                try
+                {
+                    await processManager.RunMainProcessAsync(this, () => action(mindmap, document));
+                }
+                catch (DocumentNotFoundException)
+                {
+                    ShowNotFoundErrorDialog();
+
+                    UnloadMindmap(mindmap);
+                }
+                finally
+                {
+                    mindmap.RefreshProperties();
+                }
+            }
+        }
+
+        private void ShowLoadingErrorDialog()
+        {
+            string content = ResourceManager.GetString("MindmapLoadingFailed_Content");
+            string heading = ResourceManager.GetString("MindmapLoadingFailed_Heading");
+
+            dialogService.AlertAsync(content, heading).Forget();
+        }
+
+        private void ShowNotFoundErrorDialog()
         {
             string content = ResourceManager.GetString("MindmapDeleted_Content");
             string heading = ResourceManager.GetString("MindmapDeleted_Heading");

@@ -128,6 +128,7 @@
     <Compile Include="Mvvm\MessageDialogService.cs" />
     <Compile Include="UI\Controls\AdvancedTextBox.cs" />
     <Compile Include="UI\Controls\ColorPicker.cs" />
+    <Compile Include="UI\Controls\ColorPickerButton.cs" />
     <Compile Include="UI\DependencyPropertyListener.cs" />
     <Compile Include="DisposableObject.cs" />
     <Compile Include="Extensions.cs" />
@@ -146,6 +147,7 @@
     <Compile Include="UI\Interactivity\Behavior.cs" />
     <Compile Include="UI\Interactivity\CommandShortcutBehavior.cs" />
     <Compile Include="UI\Interactivity\FlyoutShortcutBehavior.cs" />
+    <Compile Include="UI\Interactivity\SelectionBehavior.cs" />
     <Compile Include="UI\Interactivity\ToggleButtonShortcutBehavior.cs" />
     <Compile Include="UI\Interactivity\CenterScrollViewerWhenExtendSizeChanged.cs" />
     <Compile Include="UI\Interactivity\ShortcutBehavior.cs" />
@@ -157,11 +159,13 @@
     <Compile Include="UI\Interactivity\ScrollViewerBringIntoViewInputPaneBehavior.cs" />
     <Compile Include="UI\Interactivity\SwallowKeyArrowEventsBehavior.cs" />
     <Compile Include="UI\IntToBrushConverter.cs" />
+    <Compile Include="UI\ColorToBrushConverter.cs" />
     <Compile Include="UI\IntToDarkBrushConverter.cs" />
     <Compile Include="UI\IntToLightBrushConverter.cs" />
     <Compile Include="UI\IPopupControl.cs" />
     <Compile Include="UI\MathHelper.cs" />
     <Compile Include="UI\TrueWhenNotNullConverter.cs" />
+    <Compile Include="UI\ValueToIntConverter.cs" />
     <Compile Include="UI\VisibleWhenNotNullConverter.cs" />
     <Compile Include="UI\PopupHandler.cs" />
     <Compile Include="UI\BooleanInverseConverter.cs" />

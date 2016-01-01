@@ -6,6 +6,16 @@
     xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
     xmlns:controls="using:Hercules.App.Controls">
 
+    <Style TargetType="controls:ColorPresenter">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="controls:ColorPresenter">
+                    <Border x:Name="PART_Panel" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="controls:Mindmap">
         <Setter Property="Template">
             <Setter.Value>

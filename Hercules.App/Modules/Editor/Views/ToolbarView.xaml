@@ -33,9 +33,6 @@
                         <Setter Target="CompactButtonUndo.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonExportSeparator.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonExport.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="CompactButtonIconSeparator.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="CompactButtonIcon.(UIElement.Visibility)" Value="Collapsed"/>
-                        <Setter Target="CompactButtonColor.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonHelpSeparator.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonHelp.(UIElement.Visibility)" Value="Collapsed"/>
                     </VisualState.Setters>
@@ -95,34 +92,6 @@
                             </AppBarButton.Flyout>
                         </AppBarButton>
 
-                        <AppBarSeparator />
-
-                        <AppBarButton x:Uid="AppBarButton_ChangeIcon" IsCompact="True" Label="Icons" 
-                            IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource TrueWhenNotNullConverter}, FallbackValue=false}">
-                            <AppBarButton.Flyout>
-                                <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
-                                    <e:EditIconView Width="410" Renderer="{Binding RendererProvider.Current}" Document="{Binding Document}" />
-                                </controls:MindmapFlyout>
-                            </AppBarButton.Flyout>
-                            <i:Interaction.Behaviors>
-                                <gpi:FlyoutShortcutBehavior RequiresControlModifier="True" Key="I" />
-                            </i:Interaction.Behaviors>
-                            <TextBlock TextAlignment="Center" FontSize="20" Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" />
-                        </AppBarButton>
-                    
-                        <AppBarButton x:Uid="AppBarButton_ChangeColor" IsCompact="True" Label="Colors" 
-                            IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource TrueWhenNotNullConverter}, FallbackValue=false}">
-                            <AppBarButton.Flyout>
-                                <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
-                                    <e:EditColorView Width="310" Renderer="{Binding RendererProvider.Current}" Document="{Binding Document}" />
-                                </controls:MindmapFlyout>
-                            </AppBarButton.Flyout>
-                            <i:Interaction.Behaviors>
-                                <gpi:FlyoutShortcutBehavior RequiresControlModifier="True" Key="O" />
-                            </i:Interaction.Behaviors>
-                            <TextBlock TextAlignment="Center" FontSize="20" Text="&#xE2B1;" FontFamily="Segoe MDL2 Assets" />
-                        </AppBarButton>
-                        
                         <AppBarSeparator />
                     </StackPanel>
 
@@ -206,28 +175,6 @@
                         <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{Binding PrintCommand}" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
-            </AppBarButton>
-
-            <AppBarSeparator x:Name="CompactButtonIconSeparator" />
-
-            <AppBarButton x:Name="CompactButtonIcon" x:Uid="AppBarButton_ChangeIcon" IsCompact="True" Label="Icons" 
-                IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource TrueWhenNotNullConverter}, FallbackValue=false}">
-                <AppBarButton.Flyout>
-                    <controls:MindmapFlyout Placement="Full" FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
-                        <e:EditIconView Renderer="{Binding RendererProvider.Current}" Document="{Binding Document}" />
-                    </controls:MindmapFlyout>
-                </AppBarButton.Flyout>
-                <TextBlock TextAlignment="Center" FontSize="20" Text="&#xEB9F;" FontFamily="Segoe MDL2 Assets" />
-            </AppBarButton>
-
-            <AppBarButton x:Name="CompactButtonColor" x:Uid="AppBarButton_ChangeColor" IsCompact="True" Label="Colors" 
-                IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource TrueWhenNotNullConverter}, FallbackValue=false}">
-                <AppBarButton.Flyout>
-                    <controls:MindmapFlyout Placement="Full" FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
-                        <e:EditColorView Renderer="{Binding RendererProvider.Current}" Document="{Binding Document}" />
-                    </controls:MindmapFlyout>
-                </AppBarButton.Flyout>
-                <TextBlock TextAlignment="Center" FontSize="20" Text="&#xE2B1;" FontFamily="Segoe MDL2 Assets" />
             </AppBarButton>
 
             <AppBarSeparator x:Name="CompactButtonHelpSeparator" />

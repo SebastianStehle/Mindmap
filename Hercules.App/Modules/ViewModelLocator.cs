@@ -23,6 +23,8 @@ using Hercules.Model.ExImport.Formats.Mindapp;
 using Hercules.Model.ExImport.Formats.XMind;
 using Hercules.Model.Storing;
 using Hercules.Model.Storing.Json;
+using Hercules.Win2D.Rendering;
+using Hercules.Win2D.Rendering.Themes.ModernPastel;
 using Microsoft.Practices.Unity;
 
 namespace Hercules.App.Modules
@@ -32,13 +34,16 @@ namespace Hercules.App.Modules
         public static IUnityContainer Container { get; set; }
 
         [Dependency]
+        public IProcessManager ProcessManager { get; set; }
+
+        [Dependency]
         public EditorViewModel Editor { get; set; }
 
         [Dependency]
         public MindmapsViewModel Mindmaps { get; set; }
 
         [Dependency]
-        public IProcessManager ProcessManager { get; set; }
+        public EditorPropertiesViewModel EditorProperties { get; set; }
 
         public ViewModelLocator()
         {
@@ -63,6 +68,8 @@ namespace Hercules.App.Modules
                 unityContainer.RegisterType<IMindmapStore, MindmapStore>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IMessageDialogService, MessageDialogService>(
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IWin2DRendererProvider, ModernPastelRendererProvider>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IImportSource, FileImportSource>("File",
                     new ContainerControlledLifetimeManager());

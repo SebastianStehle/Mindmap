@@ -114,6 +114,13 @@ namespace Hercules.Model
             properties.Set(PropertyAttachment, Convert.ToBase64String(pixelData));
         }
 
+        public Task<IRandomAccessStream> OpenAsStreamAsync()
+        {
+            MemoryStream memoryStream = new MemoryStream(pixelData);
+
+            return Task.FromResult(memoryStream.AsRandomAccessStream());
+        }
+
         public Stream ToStream()
         {
             return new MemoryStream(pixelData);

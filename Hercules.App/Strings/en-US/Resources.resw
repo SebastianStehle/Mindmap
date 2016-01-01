@@ -474,4 +474,10 @@ The maximum allowed size is a 200x200 pixels.</value>
   <data name="TransactionName_EditIconSize" xml:space="preserve">
     <value>Change Icon Size</value>
   </data>
+  <data name="Editor_CustomColors" xml:space="preserve">
+    <value>Custom Colors</value>
+  </data>
+  <data name="Editor_ThemeColors" xml:space="preserve">
+    <value>Theme Colors</value>
+  </data>
 </root>

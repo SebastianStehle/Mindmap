@@ -7,7 +7,6 @@
 // ==========================================================================
 
 using System;
-using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GP.Windows;
@@ -18,18 +17,14 @@ using Hercules.Model;
 using Hercules.Model.ExImport;
 using Hercules.Model.Storing;
 using Hercules.Win2D.Rendering;
-using Hercules.Win2D.Rendering.Themes.ModernPastel;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
 
 namespace Hercules.App.Modules.Editor.ViewModels
 {
     [ImplementPropertyChanged]
-    public sealed class EditorViewModel : ViewModelBase
+    public sealed class EditorViewModel : DocumentViewModelBase
     {
-        private readonly IWin2DRendererProvider rendererProvider = new ModernPastelRendererProvider();
-        private readonly IMindmapStore mindmapStore;
-        private Document document;
         private RelayCommand<ExportModel> exportCommand;
         private RelayCommand<ImportModel> importCommand;
         private RelayCommand printCommand;
@@ -73,41 +68,6 @@ namespace Hercules.App.Modules.Editor.ViewModels
         [Dependency]
         public IMessageDialogService MessageDialogService { get; set; }
 
-        public IWin2DRendererProvider RendererProvider
-        {
-            get
-            {
-                return rendererProvider;
-            }
-        }
-
-        public Document Document
-        {
-            get
-            {
-                return document;
-            }
-            set
-            {
-                if (document != value)
-                {
-                    if (document != null)
-                    {
-                        document.UndoRedoManager.StateChanged -= UndoRedoManager_StateChanged;
-                    }
-
-                    document = value;
-
-                    RaisePropertyChanged();
-
-                    if (document != null)
-                    {
-                        document.UndoRedoManager.StateChanged += UndoRedoManager_StateChanged;
-                    }
-                }
-            }
-        }
-
         public RelayCommand<ImportModel> ImportCommand
         {
             get
@@ -129,7 +89,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                     {
                         Document.UndoRedoManager.Redo();
                     }
-                }, () => Document != null && Document.UndoRedoManager.CanRedo));
+                }, () => Document != null && Document.UndoRedoManager.CanRedo).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -143,7 +103,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                     {
                         Document.UndoRedoManager.Undo();
                     }
-                }, () => Document != null && Document.UndoRedoManager.CanUndo));
+                }, () => Document != null && Document.UndoRedoManager.CanUndo).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -153,8 +113,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return exportCommand ?? (exportCommand = new RelayCommand<ExportModel>(async x =>
                 {
-                    await ProcessManager.RunMainProcessAsync(this, () => x.Target.ExportAsync(mindmapStore.LoadedMindmap.Name, Document, x.Exporter, RendererProvider.Current));
-                }, x => Document != null));
+                    await ProcessManager.RunMainProcessAsync(this, () => x.Target.ExportAsync(MindmapStore.LoadedMindmap.Name, Document, x.Exporter, RendererProvider.Current));
+                }, x => Document != null).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -165,7 +125,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return printCommand ?? (printCommand = new RelayCommand(async () =>
                 {
                     await ProcessManager.RunMainProcessAsync(this, () => PrintService.PrintAsync(Document, RendererProvider.Current));
-                }, () => Document != null));
+                }, () => Document != null).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -176,7 +136,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return selectTopCommand ?? (selectTopCommand = new RelayCommand(() =>
                 {
                     Document.SelectTopOfSelectedNode();
-                }, () => Document != null));
+                }, () => Document != null).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -187,7 +147,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return selectRightCommand ?? (selectRightCommand = new RelayCommand(() =>
                 {
                     Document.SelectRightOfSelectedNode();
-                }, () => Document != null));
+                }, () => Document != null).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -198,7 +158,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return selectBottomCommand ?? (selectBottomCommand = new RelayCommand(() =>
                 {
                     Document.SelectBottomOfSelectedNode();
-                }, () => Document != null));
+                }, () => Document != null).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -209,7 +169,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return selectLeftCommand ?? (selectLeftCommand = new RelayCommand(() =>
                 {
                     Document.SelectLeftOfSelectedNode();
-                }, () => Document != null));
+                }, () => Document != null).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -220,7 +180,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return removeCommand ?? (removeCommand = new RelayCommand(() =>
                 {
                     Document.RemoveSelectedNodeTransactional();
-                }, () => Document != null));
+                }, () => Document != null).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -231,7 +191,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return addChildCommand ?? (addChildCommand = new RelayCommand(() =>
                 {
                     Document.AddChildToSelectedNodeTransactional();
-                }, () => Document != null));
+                }, () => Document != null).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -251,23 +211,21 @@ namespace Hercules.App.Modules.Editor.ViewModels
             Messenger.Default.Register<SaveMindmapMessage>(this, OnSaveMindmap);
         }
 
-        public EditorViewModel(IMindmapStore mindmapStore)
-            : this()
+        public EditorViewModel(IMindmapStore mindmapStore, IWin2DRendererProvider rendererProvider)
+            : base(mindmapStore, rendererProvider)
         {
-            this.mindmapStore = mindmapStore;
-
-            mindmapStore.DocumentLoaded += MindmapStore_DocumentLoaded;
+            Messenger.Default.Register<SaveMindmapMessage>(this, OnSaveMindmap);
         }
 
-        private void MindmapStore_DocumentLoaded(object sender, DocumentLoadedEventArgs e)
+        protected override void OnDocumentUnset(Document oldDocument)
         {
-            Document = e.Document;
-
-            UpdateUndoRedo();
+            oldDocument.StateChanged -= UndoRedoManager_StateChanged;
         }
 
-        public void OnDocumentChanged()
+        protected override void OnDocumentSet(Document newDocument)
         {
+            newDocument.StateChanged += UndoRedoManager_StateChanged;
+
             UpdateUndoRedo();
 
             ExportCommand.RaiseCanExecuteChanged();
@@ -287,7 +245,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
         private async void OnSaveMindmap(SaveMindmapMessage message)
         {
-            await mindmapStore.SaveAsync();
+            await MindmapStore.SaveAsync();
 
             message.Callback();
         }

@@ -7,13 +7,19 @@
 // ==========================================================================
 
 using System;
+using System.Threading.Tasks;
+using Windows.Storage.Streams;
 
 namespace Hercules.Model
 {
     public interface INodeIcon : IEquatable<INodeIcon>, IWritable
     {
+        string Name { get; }
+
         int PixelWidth { get; }
 
         int PixelHeight { get; }
+
+        Task<IRandomAccessStream> OpenAsStreamAsync();
     }
 }

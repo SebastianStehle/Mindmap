@@ -9,12 +9,18 @@
 
     <local:NotRootToBooleanConverter x:Key="NotRootToBooleanConverter" />
     <local:NotRootToVisibilityConverter x:Key="NotRootToVisibilityConverter" />
+
+    <gp:ColorToBrushConverter x:Key="ColorToBrushConverter" />
     
     <gp:TrueWhenNotNullConverter x:Key="TrueWhenNotNullConverter" />
-    
+
+    <gp:IntToDarkBrushConverter x:Key="IntToDarkBrushConverter" />
+    <gp:IntToLightBrushConverter x:Key="IntToLightBrushConverter" />
+
     <gp:BooleanInverseConverter x:Key="BooleanInverseConverter" />
 
     <gp:VisibleWhenNotNullConverter x:Key="VisibleWhenNotNullConverter" />
     <gp:VisibleWhenFalseConverter x:Key="VisibleWhenFalseConverter" />
     <gp:VisibleWhenTrueConverter x:Key="VisibleWhenTrueConverter" />
+    <gp:ValueToIntConverter x:Key="ValueToIntConverter" />
 </ResourceDictionary>

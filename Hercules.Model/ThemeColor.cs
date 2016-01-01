@@ -13,6 +13,7 @@ namespace Hercules.Model
 {
     public sealed class ThemeColor : INodeColor, IEquatable<ThemeColor>
     {
+        public static ThemeColor Default = new ThemeColor(0);
         private const string PropertyIndex = "Index";
         private const string PropertyIndexOld = "Color";
         private readonly int index;

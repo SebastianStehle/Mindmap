@@ -33,10 +33,14 @@
             <RowDefinition Height="Auto" />
             <RowDefinition />
         </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="280" />
+        </Grid.ColumnDefinitions>
 
-        <e:ToolbarView Grid.Row="0" ListButtonClicked="ToolbarView_ListButtonClicked" />
+        <e:ToolbarView Grid.Row="0" Grid.ColumnSpan="2" ListButtonClicked="ToolbarView_ListButtonClicked" />
 
-        <SplitView Grid.Row="1" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="68" x:Name="SplitView">
+        <SplitView Grid.Row="1" Grid.Column="0" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="68" x:Name="SplitView">
             <i:Interaction.Behaviors>
                 <ic:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=SplitView}">
                     <ic:DataTriggerBehavior.Value>
@@ -83,5 +87,7 @@
                 <e:EditorView />
             </SplitView.Content>
         </SplitView>
+
+        <e:EditorPropertiesView Grid.Column="1" Grid.Row="1" Background="#FFF2F2F2" />
     </Grid>
 </Page>

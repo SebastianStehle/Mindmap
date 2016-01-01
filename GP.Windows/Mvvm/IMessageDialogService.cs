@@ -52,7 +52,7 @@ namespace GP.Windows.Mvvm
         /// <returns>
         /// The task for synchronization.
         /// </returns>
-        Task OpenFileDialogAsync(string[] extensions, Func<Stream, Task> open);
+        Task OpenFileDialogAsync(string[] extensions, Func<string, Stream, Task> open);
 
         /// <summary>
         /// Opens a dialog to open a file.
@@ -64,7 +64,7 @@ namespace GP.Windows.Mvvm
         /// <returns>
         /// The task for synchronization.
         /// </returns>
-        Task OpenFileDialogAsync(string[] extensions, Func<IRandomAccessStream, Task> open);
+        Task OpenFileDialogAsync(string[] extensions, Func<string, IRandomAccessStream, Task> open);
 
         /// <summary>
         /// Shows an confirm dialog.

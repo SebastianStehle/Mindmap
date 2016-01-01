@@ -15,11 +15,11 @@ namespace Hercules.Model
     {
         private Document document;
         private NodeBase parent;
+        private NodeSide nodeSide;
         private IconPosition iconPosition;
         private IconSize iconSize;
-        private NodeSide nodeSide;
-        private INodeColor color = new ThemeColor(0);
         private INodeIcon icon;
+        private INodeColor color = ThemeColor.Default;
         private string text;
         private bool isShowingHull;
         private bool isCollapsed;

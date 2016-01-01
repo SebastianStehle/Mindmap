@@ -208,6 +208,26 @@
         </Setter>
     </Style>
 
+    <Style TargetType="local:ColorPickerButton" >
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="local:ColorPickerButton">
+                    <Button Style="{TemplateBinding ButtonStyle}" Content="{TemplateBinding ButtonContent}">
+                        <Button.Flyout>
+                            <Flyout x:Name="PART_Flyout">
+                                <StackPanel>
+                                    <local:ColorPicker Width="200" Height="200" SelectedColor="{TemplateBinding SelectedColor}" Style="{TemplateBinding ColorPickerStyle}" x:Name="PART_ColorPicker"></local:ColorPicker>
+
+                                    <Button Margin="0,20,0,0" Style="{TemplateBinding SelectionButtonStyle}" Content="{TemplateBinding SelectionButtonContent}" x:Name="PART_SelectionButton"></Button>
+                                </StackPanel>
+                            </Flyout>
+                        </Button.Flyout>
+                    </Button>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
     <Style TargetType="local:TiledBackground">
         <Setter Property="BorderBrush" Value="#DDD" />
         <Setter Property="BorderThickness" Value="0.5" />

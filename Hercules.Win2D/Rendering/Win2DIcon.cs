@@ -9,7 +9,6 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Windows.Storage;
 using Windows.Storage.Streams;
 using Windows.UI.Core;
 using GP.Windows;
@@ -35,37 +34,13 @@ namespace Hercules.Win2D.Rendering
             get { return name; }
         }
 
-        public Win2DIcon(AttachmentIcon icon, ICanvasControl canvasControl)
+        public Win2DIcon(INodeIcon icon, ICanvasControl canvasControl)
         {
             Guard.NotNull(icon, nameof(icon));
 
             name = icon.Name;
 
-            LoadFile(icon.PixelData, canvasControl.Device).ContinueWith(task => AttachBitmap(canvasControl, task));
-        }
-
-        public Win2DIcon(KeyIcon icon, ICanvasControl canvasControl)
-        {
-            Guard.NotNull(icon, nameof(icon));
-            Guard.NotNull(canvasControl, nameof(canvasControl));
-
-            name = $"{icon.Key}.png";
-
             LoadFile(icon, canvasControl.Device).ContinueWith(task => AttachBitmap(canvasControl, task));
-        }
-
-        public static Win2DIcon Create(INodeIcon icon, ICanvasControl canvasControl)
-        {
-            KeyIcon keyIcon = icon as KeyIcon;
-
-            if (keyIcon != null)
-            {
-                return new Win2DIcon(keyIcon, canvasControl);
-            }
-
-            AttachmentIcon attachmentIcon = icon as AttachmentIcon;
-
-            return attachmentIcon != null ? new Win2DIcon(attachmentIcon, canvasControl) : null;
         }
 
         private void AttachBitmap(ICanvasControl canvasControl, Task<CanvasBitmap> task)
@@ -81,24 +56,10 @@ namespace Hercules.Win2D.Rendering
                 bitmap = task.Result;
             }
         }
-
-        private static async Task<CanvasBitmap> LoadFile(byte[] buffer, ICanvasResourceCreator device)
+        
+        private static async Task<CanvasBitmap> LoadFile(INodeIcon icon, ICanvasResourceCreator device)
         {
-            MemoryStream memoryStream = new MemoryStream(buffer);
-
-            using (IRandomAccessStream stream = memoryStream.AsRandomAccessStream())
-            {
-                return await CanvasBitmap.LoadAsync(device, stream).AsTask();
-            }
-        }
-
-        private static async Task<CanvasBitmap> LoadFile(KeyIcon icon, ICanvasResourceCreator device)
-        {
-            string uri = $"ms-appx://{icon.Key}";
-
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
-
-            using (IRandomAccessStream stream = await file.OpenReadAsync())
+            using (IRandomAccessStream stream = await icon.OpenAsStreamAsync())
             {
                 return await CanvasBitmap.LoadAsync(device, stream).AsTask();
             }

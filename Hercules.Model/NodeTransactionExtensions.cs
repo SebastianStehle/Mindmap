@@ -149,7 +149,7 @@ namespace Hercules.Model
             }
         }
 
-        public static void ChangeIconKeyTransactional(this NodeBase node, INodeIcon icon)
+        public static void ChangeIconTransactional(this NodeBase node, INodeIcon icon)
         {
             if (node?.Document != null && !Equals(node.Icon, icon))
             {

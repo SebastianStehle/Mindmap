@@ -129,12 +129,12 @@ namespace Hercules.Win2D.Rendering
         {
             Guard.NotNull(node, nameof(node));
 
-            return cachedIcons.GetOrCreateDefault(node.Icon, () => Win2DIcon.Create(node.Icon, canvas))?.Bitmap;
+            return cachedIcons.GetOrCreateDefault(node.Icon, () => new Win2DIcon(node.Icon, canvas))?.Bitmap;
         }
 
         public Win2DIcon FindIcon(NodeBase node)
         {
-            return cachedIcons.GetOrCreateDefault(node.Icon, () => Win2DIcon.Create(node.Icon, canvas));
+            return cachedIcons.GetOrCreateDefault(node.Icon, () => new Win2DIcon(node.Icon, canvas));
         }
 
         public Win2DColor FindColor(NodeBase node)

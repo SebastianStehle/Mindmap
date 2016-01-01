@@ -42,8 +42,8 @@
             </i:Interaction.Behaviors>
         </controls:Mindmap>
 
-        <Grid DataContext="{Binding ProcessManager, Source={StaticResource ViewModelLocator}}" Visibility="{Binding IsMainProcessRunning, Converter={StaticResource VisibleWhenTrueConverter}}">
-            <Border Background="White" Opacity="0.9" IsHitTestVisible="True" />
+        <Grid DataContext="{Binding ProcessManager, Source={StaticResource ViewModelLocator}}" Visibility="{Binding IsMainProcessRunning, Converter={StaticResource VisibleWhenTrueConverter}, FallbackValue=Collapsed}">
+            <Border Background="White" Opacity="0.5" IsHitTestVisible="True" />
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <ProgressRing Margin="10" VerticalAlignment="Center" IsActive="True" />

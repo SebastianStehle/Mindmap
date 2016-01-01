@@ -114,10 +114,11 @@
     <Compile Include="Components\Implementations\PrintService.cs" />
     <Compile Include="Components\IPrintService.cs" />
     <Compile Include="Components\ISettingsProvider.cs" />
-    <Compile Include="Controls\AttachmentIconBitmapConverter.cs" />
     <Compile Include="Controls\CanvasControlWrapper.cs" />
+    <Compile Include="Controls\ColorPresenter.cs" />
     <Compile Include="Controls\ImportGeneratorBehavior.cs" />
     <Compile Include="Controls\ExportGeneratorBehavior.cs" />
+    <Compile Include="Controls\NodeIconBitmapConverter.cs" />
     <Compile Include="Controls\MindmapFlyout.cs" />
     <Compile Include="Controls\MindmapFlyoutView.cs" />
     <Compile Include="Controls\Mindmap.cs" />
@@ -129,21 +130,20 @@
     <Compile Include="Controls\RenderColorBrushConverter.cs" />
     <Compile Include="Messages\ImportMessage.cs" />
     <Compile Include="Messages\SaveMindmapMessage.cs" />
-    <Compile Include="Modules\Editor\Views\EditColorView.xaml.cs">
-      <DependentUpon>EditColorView.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Modules\Editor\ViewModels\DocumentViewModelBase.cs" />
+    <Compile Include="Modules\Editor\ViewModels\EditorPropertiesViewModel.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\Editor\Views\EditIconView.xaml.cs">
-      <DependentUpon>EditIconView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Editor\Views\EditorView.xaml.cs">
       <DependentUpon>EditorView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Editor\Views\HelpView.xaml.cs">
       <DependentUpon>HelpView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Editor\Views\EditorPropertiesView.xaml.cs">
+      <DependentUpon>EditorPropertiesView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Editor\Views\ToolbarView.xaml.cs">
       <DependentUpon>ToolbarView.xaml</DependentUpon>
@@ -160,6 +160,7 @@
     <Compile Include="Modules\Mindmaps\Views\EnterNameView.xaml.cs">
       <DependentUpon>EnterNameView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\MvvmExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Modules\Editor\ViewModels\EditorViewModel.cs" />
     <Compile Include="Modules\ViewModelLocator.cs" />
@@ -274,23 +275,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Modules\Editor\Views\EditColorView.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Modules\Editor\Views\EditIconView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\Editor\Views\EditorView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\Editor\Views\HelpView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Editor\Views\EditorPropertiesView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

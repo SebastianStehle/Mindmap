@@ -7,6 +7,9 @@
 // ==========================================================================
 
 using System;
+using System.Threading.Tasks;
+using Windows.Storage;
+using Windows.Storage.Streams;
 using GP.Windows;
 
 namespace Hercules.Model
@@ -19,6 +22,11 @@ namespace Hercules.Model
         private readonly string key;
 
         public string Key
+        {
+            get { return key; }
+        }
+
+        public string Name
         {
             get { return key; }
         }
@@ -63,6 +71,15 @@ namespace Hercules.Model
             }
 
             return null;
+        }
+
+        public async Task<IRandomAccessStream> OpenAsStreamAsync()
+        {
+            string uri = $"ms-appx://{Key}";
+
+            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
+
+            return await file.OpenReadAsync();
         }
 
         public override bool Equals(object obj)

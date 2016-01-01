@@ -33,7 +33,7 @@ namespace GP.Windows.Mvvm
         /// <returns>
         /// The task for synchronization.
         /// </returns>
-        public async Task OpenFileDialogAsync(string[] extensions, Func<Stream, Task> open)
+        public async Task OpenFileDialogAsync(string[] extensions, Func<string, Stream, Task> open)
         {
             Guard.NotNull(extensions, nameof(extensions));
             Guard.NotNull(open, nameof(open));
@@ -46,7 +46,7 @@ namespace GP.Windows.Mvvm
             {
                 using (Stream fileStream = await file.OpenStreamForWriteAsync())
                 {
-                    await open(fileStream);
+                    await open(file.DisplayName, fileStream);
                 }
             }
         }
@@ -61,7 +61,7 @@ namespace GP.Windows.Mvvm
         /// <returns>
         /// The task for synchronization.
         /// </returns>
-        public async Task OpenFileDialogAsync(string[] extensions, Func<IRandomAccessStream, Task> open)
+        public async Task OpenFileDialogAsync(string[] extensions, Func<string, IRandomAccessStream, Task> open)
         {
             Guard.NotNull(extensions, nameof(extensions));
             Guard.NotNull(open, nameof(open));
@@ -74,7 +74,7 @@ namespace GP.Windows.Mvvm
             {
                 using (IRandomAccessStream fileStream = await file.OpenAsync(FileAccessMode.ReadWrite))
                 {
-                    await open(fileStream);
+                    await open(file.DisplayName, fileStream);
                 }
             }
         }

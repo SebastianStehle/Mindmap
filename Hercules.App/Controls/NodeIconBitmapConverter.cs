@@ -1,0 +1,45 @@
+﻿// ==========================================================================
+// KeyIconBitmapConverter.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+using System;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
+using Windows.UI.Xaml.Data;
+using Windows.UI.Xaml.Media.Imaging;
+using GP.Windows;
+using Hercules.Model;
+
+namespace Hercules.App.Controls
+{
+    public sealed class NodeIconBitmapConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, string language)
+        {
+            INodeIcon icon = (INodeIcon)value;
+
+            BitmapImage bitmapImage = new BitmapImage();
+
+            icon.OpenAsStreamAsync().ContinueWith(stream =>
+            {
+                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                    CoreDispatcherPriority.Normal,
+                    () =>
+                    {
+                        bitmapImage.SetSourceAsync(stream.Result).AsTask().Forget();
+                    }).AsTask().Forget();
+            });
+            
+            return bitmapImage;
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, string language)
+        {
+            throw new NotSupportedException();
+        }
+    }
+}

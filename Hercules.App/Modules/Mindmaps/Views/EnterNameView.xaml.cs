@@ -8,16 +8,12 @@
 
 using System.IO;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls.Primitives;
-using GP.Windows.UI;
 using Hercules.App.Modules.Mindmaps.ViewModels;
 
 namespace Hercules.App.Modules.Mindmaps.Views
 {
-    public sealed partial class EnterNameView : IPopupControl
+    public sealed partial class EnterNameView
     {
-        public Popup Popup { get; set; }
-
         public EnterNameView()
         {
             InitializeComponent();

@@ -56,7 +56,7 @@ namespace Hercules.Win2D.Rendering
                 bitmap = task.Result;
             }
         }
-        
+
         private static async Task<CanvasBitmap> LoadFile(INodeIcon icon, ICanvasResourceCreator device)
         {
             using (IRandomAccessStream stream = await icon.OpenAsStreamAsync())

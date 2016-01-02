@@ -19,7 +19,6 @@ using Hercules.Win2D.Rendering;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
 // ReSharper disable LoopCanBeConvertedToQuery
-
 // ReSharper disable SuggestBaseTypeForParameter
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 
@@ -132,6 +131,8 @@ namespace Hercules.App.Controls
             {
                 scrollViewer.ViewChanging += ScrollViewer_ViewChanging;
 
+                scrollViewer.SizeChanged += ScrollViewer_SizeChanged;
+
                 scrollViewer.ZoomSnapPoints.Add(0.5f);
                 scrollViewer.ZoomSnapPoints.Add(1.0f);
                 scrollViewer.ZoomSnapPoints.Add(2.0f);
@@ -150,15 +151,21 @@ namespace Hercules.App.Controls
             }
         }
 
+        private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            WithRenderer(r =>
+            {
+                if (lastView != null)
+                {
+                    Transform(r, lastView);
+                }
+            });
+        }
+
         private void ScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
         {
             WithRenderer(r =>
             {
-                if (Document == null)
-                {
-                    return;
-                }
-
                 ScrollViewerView view = e.FinalView;
 
                 if (lastView == null || (Math.Abs(view.ZoomFactor - lastView.ZoomFactor) > float.Epsilon || Math.Abs(view.HorizontalOffset - lastView.HorizontalOffset) > float.Epsilon || Math.Abs(view.VerticalOffset - lastView.VerticalOffset) > float.Epsilon))

@@ -89,7 +89,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                     {
                         Document.UndoRedoManager.Redo();
                     }
-                }, () => Document != null && Document.UndoRedoManager.CanRedo).DependentOn(this, nameof(Document)));
+                },
+                () => Document != null && Document.UndoRedoManager.CanRedo).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -103,7 +104,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                     {
                         Document.UndoRedoManager.Undo();
                     }
-                }, () => Document != null && Document.UndoRedoManager.CanUndo).DependentOn(this, nameof(Document)));
+                },
+                () => Document != null && Document.UndoRedoManager.CanUndo).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -114,7 +116,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return exportCommand ?? (exportCommand = new RelayCommand<ExportModel>(async x =>
                 {
                     await ProcessManager.RunMainProcessAsync(this, () => x.Target.ExportAsync(MindmapStore.LoadedMindmap.Name, Document, x.Exporter, RendererProvider.Current));
-                }, x => Document != null).DependentOn(this, nameof(Document)));
+                },
+                x => Document != null).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -125,7 +128,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return printCommand ?? (printCommand = new RelayCommand(async () =>
                 {
                     await ProcessManager.RunMainProcessAsync(this, () => PrintService.PrintAsync(Document, RendererProvider.Current));
-                }, () => Document != null).DependentOn(this, nameof(Document)));
+                },
+                () => Document != null).DependentOn(this, nameof(Document)));
             }
         }
 
@@ -136,7 +140,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return selectTopCommand ?? (selectTopCommand = new RelayCommand(() =>
                 {
                     Document.SelectTopOfSelectedNode();
-                }, () => Document != null).DependentOn(this, nameof(Document)));
+                },
+                () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
         }
 
@@ -147,7 +152,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return selectRightCommand ?? (selectRightCommand = new RelayCommand(() =>
                 {
                     Document.SelectRightOfSelectedNode();
-                }, () => Document != null).DependentOn(this, nameof(Document)));
+                },
+                () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
         }
 
@@ -158,7 +164,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return selectBottomCommand ?? (selectBottomCommand = new RelayCommand(() =>
                 {
                     Document.SelectBottomOfSelectedNode();
-                }, () => Document != null).DependentOn(this, nameof(Document)));
+                },
+                () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
         }
 
@@ -169,7 +176,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return selectLeftCommand ?? (selectLeftCommand = new RelayCommand(() =>
                 {
                     Document.SelectLeftOfSelectedNode();
-                }, () => Document != null).DependentOn(this, nameof(Document)));
+                },
+                () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
         }
 
@@ -180,7 +188,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return removeCommand ?? (removeCommand = new RelayCommand(() =>
                 {
                     Document.RemoveSelectedNodeTransactional();
-                }, () => Document != null).DependentOn(this, nameof(Document)));
+                },
+                () => Document != null && SelectedNode is Node).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
         }
 
@@ -191,7 +200,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return addChildCommand ?? (addChildCommand = new RelayCommand(() =>
                 {
                     Document.AddChildToSelectedNodeTransactional();
-                }, () => Document != null).DependentOn(this, nameof(Document)));
+                },
+                () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
         }
 
@@ -202,7 +212,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 return addSiblingCommand ?? (addSiblingCommand = new RelayCommand(() =>
                 {
                     Document.AddSibilingToSelectedNodeTransactional();
-                }, () => Document != null));
+                },
+                () => Document != null && SelectedNode is Node).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
         }
 
@@ -217,30 +228,19 @@ namespace Hercules.App.Modules.Editor.ViewModels
             Messenger.Default.Register<SaveMindmapMessage>(this, OnSaveMindmap);
         }
 
-        protected override void OnDocumentUnset(Document oldDocument)
+        protected override void OnDocumentChanged(Document oldDocument, Document newDocument)
         {
-            oldDocument.StateChanged -= UndoRedoManager_StateChanged;
-        }
+            if (oldDocument != null)
+            {
+                oldDocument.StateChanged -= UndoRedoManager_StateChanged;
+            }
 
-        protected override void OnDocumentSet(Document newDocument)
-        {
-            newDocument.StateChanged += UndoRedoManager_StateChanged;
+            if (newDocument != null)
+            {
+                newDocument.StateChanged += UndoRedoManager_StateChanged;
+            }
 
             UpdateUndoRedo();
-
-            ExportCommand.RaiseCanExecuteChanged();
-
-            PrintCommand.RaiseCanExecuteChanged();
-
-            AddChildCommand.RaiseCanExecuteChanged();
-            AddSiblingCommand.RaiseCanExecuteChanged();
-
-            RemoveCommand.RaiseCanExecuteChanged();
-
-            SelectTopCommand.RaiseCanExecuteChanged();
-            selectLeftCommand.RaiseCanExecuteChanged();
-            SelectRightCommand.RaiseCanExecuteChanged();
-            SelectBottomCommand.RaiseCanExecuteChanged();
         }
 
         private async void OnSaveMindmap(SaveMindmapMessage message)

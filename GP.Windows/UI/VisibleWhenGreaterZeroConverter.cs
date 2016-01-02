@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// GreaterZeroVisibilityConverter.cs
+// VisibleWhenGreaterZeroConverter.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -15,7 +15,7 @@ namespace GP.Windows.UI
     /// <summary>
     /// Converter that shows a element when the value is greater than zero.
     /// </summary>
-    public sealed class GreaterZeroVisibilityConverter : IValueConverter
+    public sealed class VisibleWhenGreaterZeroConverter : IValueConverter
     {
         /// <summary>
         /// Modifies the source data before passing it to the target for display in the UI.

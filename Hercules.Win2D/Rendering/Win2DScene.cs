@@ -179,7 +179,7 @@ namespace Hercules.Win2D.Rendering
 
             foreach (Win2DRenderNode renderNode in AllNodes)
             {
-                renderNode.Arrange(session);
+                renderNode.ArrangeBodyAndButton(session);
 
                 if (renderNode.IsVisible)
                 {
@@ -190,6 +190,12 @@ namespace Hercules.Win2D.Rendering
                     maxX = Math.Max(maxX, nodeBounds.Right);
                     maxY = Math.Max(maxY, nodeBounds.Bottom);
                 }
+            }
+
+            foreach (Win2DRenderNode renderNode in AllNodes)
+            {
+                renderNode.ArrangePath(session);
+                renderNode.ArrangeHull(session);
             }
 
             foreach (Win2DAdornerRenderNode adorner in adorners)

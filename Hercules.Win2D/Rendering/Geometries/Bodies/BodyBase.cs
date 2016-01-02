@@ -36,11 +36,6 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             get { return textRenderer; }
         }
 
-        public virtual Vector2 RenderPositionOffset
-        {
-            get { return Vector2.Zero; }
-        }
-
         public virtual bool HasText
         {
             get { return true; }

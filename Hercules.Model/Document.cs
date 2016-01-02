@@ -215,14 +215,14 @@ namespace Hercules.Model
             {
                 if (selectedNode != null)
                 {
-                    selectedNode.SetupIsSelected(false);
+                    selectedNode.ChangeIsSelected(false);
                 }
 
                 selectedNode = node;
 
                 if (selectedNode != null)
                 {
-                    selectedNode.SetupIsSelected(true);
+                    selectedNode.ChangeIsSelected(true);
                 }
 
                 OnPropertyChanged("SelectedNode");

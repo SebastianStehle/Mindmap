@@ -21,12 +21,12 @@ namespace Hercules.Model
 
         protected override void Execute(bool isRedo)
         {
-            Node.SetupIsShowingHull(!Node.IsShowingHull);
+            Node.ChangeIsShowingHull(!Node.IsShowingHull);
         }
 
         protected override void Revert()
         {
-            Node.SetupIsShowingHull(!Node.IsShowingHull);
+            Node.ChangeIsShowingHull(!Node.IsShowingHull);
         }
     }
 }

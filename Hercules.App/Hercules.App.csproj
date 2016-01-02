@@ -124,10 +124,7 @@
     <Compile Include="Controls\Mindmap.cs" />
     <Compile Include="Controls\NodeMovingBehavior.cs" />
     <Compile Include="Controls\NodeMovingOperation.cs" />
-    <Compile Include="Controls\NotRootToBooleanConverter.cs" />
-    <Compile Include="Controls\NotRootToVisibilityConverter.cs" />
     <Compile Include="Controls\TextEditor.cs" />
-    <Compile Include="Controls\RenderColorBrushConverter.cs" />
     <Compile Include="Messages\ImportMessage.cs" />
     <Compile Include="Messages\SaveMindmapMessage.cs" />
     <Compile Include="Modules\Editor\ViewModels\DocumentViewModelBase.cs" />

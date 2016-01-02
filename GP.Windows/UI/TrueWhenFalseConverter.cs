@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// BooleanInverseConverter.cs
+// TrueWhenFalseConverter.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -14,7 +14,7 @@ namespace GP.Windows.UI
     /// <summary>
     /// Inverse boolean converter.
     /// </summary>
-    public sealed class BooleanInverseConverter : IValueConverter
+    public sealed class TrueWhenFalseConverter : IValueConverter
     {
         /// <summary>
         /// Modifies the source data before passing it to the target for display in the UI.

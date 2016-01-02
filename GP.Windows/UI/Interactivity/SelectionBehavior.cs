@@ -17,15 +17,6 @@ namespace GP.Windows.UI.Interactivity
     /// </summary>
     public sealed class SelectionBehavior : Behavior<ListViewBase>
     {
-        private sealed class NoneValue
-        {
-            public static readonly NoneValue Instance = new NoneValue();
-
-            private NoneValue()
-            {
-            }
-        }
-
         /// <summary>
         /// Defines the <see cref="SelectedItemCommand"/> dependency property.
         /// </summary>
@@ -60,7 +51,7 @@ namespace GP.Windows.UI.Interactivity
         /// Defines the <see cref="SelectedItem"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedItemProperty =
-            DependencyProperty.Register(nameof(SelectedItem), typeof(object), typeof(SelectionBehavior), new PropertyMetadata(NoneValue.Instance, (d, e) => ((SelectionBehavior)d).OnSelectedItemChanged()));
+            DependencyProperty.Register(nameof(SelectedItem), typeof(object), typeof(SelectionBehavior), new PropertyMetadata(DependencyProperty.UnsetValue, (d, e) => ((SelectionBehavior)d).OnSelectedItemChanged()));
 
         /// <summary>
         /// Gets or sets the selected item of the list.
@@ -79,8 +70,6 @@ namespace GP.Windows.UI.Interactivity
         protected override void OnAttached()
         {
             AssociatedElement.SelectionChanged += AssociatedElement_SelectionChanged;
-
-            UpdateSelection();
         }
 
         /// <summary>

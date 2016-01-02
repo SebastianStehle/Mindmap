@@ -89,7 +89,7 @@ namespace Hercules.Model.ExImport.Formats.XMind
             {
                 if (style.Color >= 0)
                 {
-                    node.ChangeColorTransactional(ValueColor.Create(style.Color));
+                    node.ChangeColorTransactional(new ValueColor(style.Color));
                 }
             }
         }

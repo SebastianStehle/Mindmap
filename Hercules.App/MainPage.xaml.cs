@@ -17,6 +17,8 @@ namespace Hercules.App
 {
     public sealed partial class MainPage
     {
+        private bool isPropertiesOpen = true;
+
         public MainPage()
         {
             InitializeComponent();
@@ -43,12 +45,28 @@ namespace Hercules.App
             titleBar.ButtonPressedBackgroundColor = themeLightBrush.Color;
             titleBar.ButtonPressedForegroundColor = Colors.Black;
         }
-        
+
         private void ToolbarView_ListButtonClicked(object sender, EventArgs e)
         {
             SplitView.IsPaneOpen = !SplitView.IsPaneOpen;
 
             MindmapsContainer.Focus(FocusState.Programmatic);
+        }
+
+        private void ToolbarView_PropertiesButtonClicked(object sender, EventArgs e)
+        {
+            if (isPropertiesOpen)
+            {
+                ShowPropertiesStoryboard.Stop();
+                HidePropertiesStoryboard.Begin();
+            }
+            else
+            {
+                ShowPropertiesStoryboard.Begin();
+                HidePropertiesStoryboard.Stop();
+            }
+
+            isPropertiesOpen = !isPropertiesOpen;
         }
     }
 }

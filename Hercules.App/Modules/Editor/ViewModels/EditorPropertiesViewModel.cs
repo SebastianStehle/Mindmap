@@ -27,10 +27,10 @@ namespace Hercules.App.Modules.Editor.ViewModels
     [ImplementPropertyChanged]
     public sealed class EditorPropertiesViewModel : DocumentViewModelBase
     {
+        private static readonly string[] ImageExtensions = { ".png", ".jpg", ".jpeg" };
         private readonly ObservableCollection<INodeColor> customColors = new ObservableCollection<INodeColor>();
         private readonly ObservableCollection<INodeColor> themeColors = new ObservableCollection<INodeColor>();
         private readonly ObservableCollection<INodeIcon> customIcons = new ObservableCollection<INodeIcon>();
-        private readonly ObservableCollection<INodeIcon> noneIcons = new ObservableCollection<INodeIcon> { null };
         private RelayCommand<Color> addColorCommand;
         private RelayCommand<INodeColor> changeColorCommand;
         private RelayCommand<INodeIcon> changeIconCommand;
@@ -61,18 +61,13 @@ namespace Hercules.App.Modules.Editor.ViewModels
             get { return customIcons; }
         }
 
-        public ObservableCollection<INodeIcon> NoneIcons
-        {
-            get { return noneIcons; }
-        }
-
         public ICommand AddIconCommand
         {
             get
             {
                 return addIconCommand ?? (addIconCommand = new RelayCommand(async () =>
                 {
-                    await MessageDialogService.OpenFileDialogAsync(new[] {".png", ".jpg", ".jpeg"}, async (name, stream) =>
+                    await MessageDialogService.OpenFileDialogAsync(ImageExtensions, async (name, stream) =>
                     {
                         AttachmentIcon attachmentIcon = await AttachmentIcon.TryCreateAsync(name, stream);
 
@@ -91,7 +86,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                             MessageDialogService.AlertAsync(content, heading).Forget();
                         }
                     });
-                }, () => Document != null)).DependentOn(this, nameof(Document));
+                },
+                () => Document != null)).DependentOn(this, nameof(Document));
             }
         }
 
@@ -101,13 +97,14 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return addColorCommand ?? (addColorCommand = new RelayCommand<Color>(x =>
                 {
-                    var value =  new ValueColor(ColorsHelper.ConvertToInt(x));
+                    var value = new ValueColor(ColorsHelper.ConvertToInt(x));
 
                     if (!customColors.Contains(value))
                     {
                         customColors.Add(value);
                     }
-                }, x => Document != null)).DependentOn(this, nameof(Document));
+                },
+                x => Document != null)).DependentOn(this, nameof(Document));
             }
         }
 
@@ -130,7 +127,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                             node.ChangeShapeTransactional((NodeShape)(x - 1));
                         }
                     }
-                }, x => SelectedNode is Node)).DependentOn(this, nameof(SelectedNode));
+                },
+                x => SelectedNode is Node)).DependentOn(this, nameof(SelectedNode));
             }
         }
 
@@ -200,32 +198,34 @@ namespace Hercules.App.Modules.Editor.ViewModels
             rendererProvider.RendererCreated += RendererProvider_RendererCreated;
         }
 
-        protected override void OnDocumentSet(Document newDocument)
+        protected override void OnDocumentChanged(Document oldDocument, Document newDocument)
         {
             customColors.Clear();
-
-            var recentColors =
-                newDocument.UndoRedoManager.Commands()
-                    .OfType<ChangeColorCommand>().Select(x => x.NewColor)
-                    .OfType<ValueColor>()
-                    .Distinct();
-
-            foreach (var recent in recentColors)
-            {
-                customColors.Add(recent);
-            }
-
             customIcons.Clear();
 
-            var recentIcons =
-                newDocument.UndoRedoManager.Commands()
-                    .OfType<ChangeIconCommand>().Select(x => x.NewIcon)
-                    .OfType<AttachmentIcon>()
-                    .Distinct();
-
-            foreach (var recent in recentIcons)
+            if (newDocument != null)
             {
-                customIcons.Add(recent);
+                var recentColors =
+                    newDocument.UndoRedoManager.Commands()
+                        .OfType<ChangeColorCommand>().Select(x => x.NewColor)
+                        .OfType<ValueColor>()
+                        .Distinct();
+
+                foreach (var recent in recentColors)
+                {
+                    customColors.Add(recent);
+                }
+
+                var recentIcons =
+                    newDocument.UndoRedoManager.Commands()
+                        .OfType<ChangeIconCommand>().Select(x => x.NewIcon)
+                        .OfType<AttachmentIcon>()
+                        .Distinct();
+
+                foreach (var recent in recentIcons)
+                {
+                    customIcons.Add(recent);
+                }
             }
         }
 

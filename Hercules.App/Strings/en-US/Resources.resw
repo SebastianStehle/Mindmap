@@ -135,23 +135,14 @@
   <data name="AppBarButton_AddSibling.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Add sibiling to selected subtopic (CTRL + ENTER)</value>
   </data>
-  <data name="AppBarButton_ChangeColor.Label" xml:space="preserve">
-    <value>Colors</value>
+  <data name="AppBarButton_ToggleProperties.Label" xml:space="preserve">
+    <value>Properties</value>
   </data>
-  <data name="AppBarButton_ChangeColor.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Change Color</value>
+  <data name="AppBarButton_ToggleProperties.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Properties</value>
   </data>
-  <data name="AppBarButton_ChangeColor.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Change color of selected subtopic (CNTRL + O)</value>
-  </data>
-  <data name="AppBarButton_ChangeIcon.Label" xml:space="preserve">
-    <value>Icons</value>
-  </data>
-  <data name="AppBarButton_ChangeIcon.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Change Icon</value>
-  </data>
-  <data name="AppBarButton_ChangeIcon.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Change icon of selected subtopic (CTRL + I)</value>
+  <data name="AppBarButton_ToggleProperties.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Show or hide the properties pane</value>
   </data>
   <data name="AppBarButton_ExportHtml.Text" xml:space="preserve">
     <value>Export as Html (Outline)</value>
@@ -261,25 +252,13 @@
   <data name="Editor_Busy.Text" xml:space="preserve">
     <value>Working hard...</value>
   </data>
-  <data name="Editor_ColorsCustom.Header" xml:space="preserve">
-    <value>Custom</value>
-  </data>
-  <data name="Editor_ColorsTheme.Header" xml:space="preserve">
-    <value>Theme</value>
-  </data>
-  <data name="Editor_IconsClear.Content" xml:space="preserve">
-    <value>Remove Icon</value>
-  </data>
-  <data name="Editor_IconsHeader.Header" xml:space="preserve">
-    <value>Icons</value>
-  </data>
-  <data name="Editor_ShowHullButton.Content" xml:space="preserve">
+  <data name="Properties_HullButton.Content" xml:space="preserve">
     <value>Show Hull</value>
   </data>
-  <data name="Editor_ShowHullButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+  <data name="Properties_HullButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Show Hull</value>
   </data>
-  <data name="Editor_ShowHullButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+  <data name="Properties_HullButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Show hull around subtopic and children</value>
   </data>
   <data name="Exporter_HtmlOutline" xml:space="preserve">
@@ -425,18 +404,12 @@ I want to share my mindmap for you. You can download it here: {0}. The download 
   <data name="MindmapDeleted_Heading" xml:space="preserve">
     <value>Mindmap has been deleted.</value>
   </data>
-  <data name="Editor_IconsFileHeader.Header" xml:space="preserve">
-    <value>From File</value>
+  <data name="Properties_AddIonButton.Content" xml:space="preserve">
+    <value>Add Icon from File</value>
   </data>
-  <data name="Editor_OpenFileButton.Content" xml:space="preserve">
-    <value>Open File</value>
-  </data>
-  <data name="Editor_OpenFileButtonHint.Text" xml:space="preserve">
+  <data name="Properties_AddIconHint.Text" xml:space="preserve">
     <value>Select a png or jpeg image from your device.
 The maximum allowed size is a 200x200 pixels.</value>
-  </data>
-  <data name="Editor_RecentImages.Text" xml:space="preserve">
-    <value>Recent images</value>
   </data>
   <data name="LoadingIconFailed_Content" xml:space="preserve">
     <value>The image is not valid or is too large (the maximum size is 80x80 pixels).</value>
@@ -459,13 +432,13 @@ The maximum allowed size is a 200x200 pixels.</value>
   <data name="TransactionName_ChangeShape" xml:space="preserve">
     <value>Change Shape</value>
   </data>
-  <data name="Editor_IconPositionHeader.Text" xml:space="preserve">
+  <data name="Properties_IconPositionHeader.Text" xml:space="preserve">
     <value>Icon Position</value>
   </data>
-  <data name="Editor_IconSizeHeader.Text" xml:space="preserve">
+  <data name="Properties_IconSizeHeader.Text" xml:space="preserve">
     <value>Icon Size</value>
   </data>
-  <data name="Editor_ShapeHeader.Text" xml:space="preserve">
+  <data name="Properties_ShapeHeader.Text" xml:space="preserve">
     <value>Shape</value>
   </data>
   <data name="TransactionName_EditIconPosition" xml:space="preserve">
@@ -479,5 +452,26 @@ The maximum allowed size is a 200x200 pixels.</value>
   </data>
   <data name="Editor_ThemeColors" xml:space="preserve">
     <value>Theme Colors</value>
+  </data>
+  <data name="Properties_AddIconButton.Content" xml:space="preserve">
+    <value>Add Icon</value>
+  </data>
+  <data name="Properties_AddIconButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Add Icon</value>
+  </data>
+  <data name="Properties_AddIconButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Add a custom icon from your file system.</value>
+  </data>
+  <data name="Properties_ColorPickerButton.ButtonContent" xml:space="preserve">
+    <value>Select a custom Color</value>
+  </data>
+  <data name="Properties_ColorPickerButton.SelectionButtonContent" xml:space="preserve">
+    <value>Select this Color</value>
+  </data>
+  <data name="Properties_ColorPickerButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Select a custom Color</value>
+  </data>
+  <data name="Properties_ColorPickerButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Select a custom Color</value>
   </data>
 </root>

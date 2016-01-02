@@ -33,7 +33,7 @@ namespace Hercules.Win2D.Rendering
         private bool isVisible = true;
 
         public Win2DRenderNode Parent { get; set; }
-        
+
         public Rect2 RenderBoundsWithParent
         {
             get { return renderBoundsWithParent; }
@@ -52,11 +52,6 @@ namespace Hercules.Win2D.Rendering
         public Win2DTextRenderer TextRenderer
         {
             get { return bodyGeometry.TextRenderer; }
-        }
-
-        public virtual Vector2 RenderPositionOffset
-        {
-            get { return bodyGeometry.RenderPositionOffset; }
         }
 
         public virtual float VerticalPathRenderOffset
@@ -136,11 +131,9 @@ namespace Hercules.Win2D.Rendering
         {
             layoutPosition = position;
 
-            Vector2 offset = RenderPositionOffset;
-
             targetLayoutPosition = new Vector2(
-                layoutPosition.X + offset.X,
-                layoutPosition.Y + offset.Y - (0.5f * RenderSize.Y));
+                layoutPosition.X,
+                layoutPosition.Y - (0.5f * RenderSize.Y));
 
             if (anchor == AnchorPoint.Right)
             {
@@ -200,11 +193,10 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        public void Arrange(CanvasDrawingSession session)
+        public void ArrangeBodyAndButton(CanvasDrawingSession session)
         {
             ArrangeBody(session);
-            ArrangeHull(session);
-            ArrangePath(session);
+
             ArrangeButton();
         }
 

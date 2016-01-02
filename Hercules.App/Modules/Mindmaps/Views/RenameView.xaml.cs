@@ -8,13 +8,11 @@
 
 using System.IO;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls.Primitives;
-using GP.Windows.UI;
 using Hercules.App.Components;
 
 namespace Hercules.App.Modules.Mindmaps.Views
 {
-    public sealed partial class RenameView : IPopupControl
+    public sealed partial class RenameView
     {
         public static readonly DependencyProperty MindmapItemProperty =
             DependencyProperty.Register(nameof(MindmapItem), typeof(MindmapRef), typeof(RenameView), new PropertyMetadata(null));
@@ -23,8 +21,6 @@ namespace Hercules.App.Modules.Mindmaps.Views
             get { return (MindmapRef)GetValue(MindmapItemProperty); }
             set { SetValue(MindmapItemProperty, value); }
         }
-
-        public Popup Popup { get; set; }
 
         public RenameView()
         {

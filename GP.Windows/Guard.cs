@@ -21,7 +21,7 @@ namespace GP.Windows
     /// a method agains invalid parameters.
     /// </summary>
     public static class Guard
-    {        
+    {
         /// <summary>
         /// Verifies that the specified value is between a lower and a upper value
         /// and throws an exception, if not.

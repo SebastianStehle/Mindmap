@@ -47,13 +47,13 @@ namespace Hercules.Model
         {
             oldIcon = Node.Icon;
 
-            Node.SetupIcon(newIcon);
+            Node.ChangeIcon(newIcon);
             Node.Select();
         }
 
         protected override void Revert()
         {
-            Node.SetupIcon(oldIcon);
+            Node.ChangeIcon(oldIcon);
             Node.Select();
         }
     }

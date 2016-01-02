@@ -27,11 +27,6 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             get { return verticalOffset; }
         }
 
-        public override Vector2 RenderPositionOffset
-        {
-            get { return new Vector2(0, -verticalOffset); }
-        }
-
         public Border(Color pathColor)
         {
             this.pathColor = pathColor;

@@ -190,42 +190,42 @@ namespace Hercules.Model
         {
         }
 
-        internal void SetupIsSelected(bool newIsSelected)
+        internal void ChangeIsSelected(bool newIsSelected)
         {
             IsSelected = newIsSelected;
         }
 
-        internal void SetupIsCollapsed(bool newIsCollapsed)
+        internal void ChangeIsCollapsed(bool newIsCollapsed)
         {
             IsCollapsed = newIsCollapsed;
         }
 
-        internal void SetupIsShowingHull(bool newIsShowingHull)
+        internal void ChangeIsShowingHull(bool newIsShowingHull)
         {
             IsShowingHull = newIsShowingHull;
         }
 
-        internal void SetupColor(INodeColor newColor)
+        internal void ChangeColor(INodeColor newColor)
         {
             Color = newColor;
         }
 
-        internal void SetupIcon(INodeIcon newIcon)
+        internal void ChangeIcon(INodeIcon newIcon)
         {
             Icon = newIcon;
         }
 
-        internal void SetupIconSize(IconSize newIconSize)
+        internal void ChangeIconSize(IconSize newIconSize)
         {
             IconSize = newIconSize;
         }
 
-        public void SetupIconPosition(IconPosition newIconPosition)
+        public void ChangeIconPosition(IconPosition newIconPosition)
         {
             IconPosition = newIconPosition;
         }
 
-        internal void SetupText(string newText)
+        internal void ChangeText(string newText)
         {
             Text = newText;
         }

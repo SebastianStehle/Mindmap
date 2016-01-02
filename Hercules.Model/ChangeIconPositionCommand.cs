@@ -59,13 +59,13 @@ namespace Hercules.Model
         {
             oldIconPosition = Node.IconPosition;
 
-            Node.SetupIconPosition(newIconPosition);
+            Node.ChangeIconPosition(newIconPosition);
             Node.Select();
         }
 
         protected override void Revert()
         {
-            Node.SetupIconPosition(oldIconPosition);
+            Node.ChangeIconPosition(oldIconPosition);
             Node.Select();
         }
     }

@@ -20,7 +20,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
         protected override Vector2 CalculatePadding(Win2DRenderable renderable, Vector2 contentSize)
         {
             float sqrt2 = (float)Math.Sqrt(2);
-            
+
             float a = (contentSize.X + 5) / sqrt2;
             float b = (contentSize.Y + 5) / sqrt2;
 

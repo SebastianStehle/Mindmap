@@ -33,7 +33,7 @@ namespace Hercules.App.Controls
                         bitmapImage.SetSourceAsync(stream.Result).AsTask().Forget();
                     }).AsTask().Forget();
             });
-            
+
             return bitmapImage;
         }
 

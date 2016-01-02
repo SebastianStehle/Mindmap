@@ -61,7 +61,7 @@ namespace Hercules.App.Controls
 
                             MenuFlyoutItem importButton =
                                 VisualTreeExtensions.CreateMenuItem(text,
-                                    viewModel.ExportCommand,
+                                    viewModel.ImportCommand,
                                     viewModelParameter);
 
                             targetItem.Items?.Add(importButton);

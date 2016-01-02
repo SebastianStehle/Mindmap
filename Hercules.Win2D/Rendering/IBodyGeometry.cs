@@ -15,8 +15,6 @@ namespace Hercules.Win2D.Rendering
     {
         Win2DTextRenderer TextRenderer { get; }
 
-        Vector2 RenderPositionOffset { get; }
-
         float VerticalPathOffset { get; }
 
         void Arrange(Win2DRenderable renderable, CanvasDrawingSession session);

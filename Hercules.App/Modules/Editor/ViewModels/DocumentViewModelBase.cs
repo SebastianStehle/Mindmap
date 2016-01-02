@@ -21,7 +21,6 @@ namespace Hercules.App.Modules.Editor.ViewModels
     {
         private readonly IWin2DRendererProvider rendererProvider;
         private readonly IMindmapStore mindmapStore;
-        private Document document;
 
         public IWin2DRendererProvider RendererProvider
         {
@@ -37,45 +36,10 @@ namespace Hercules.App.Modules.Editor.ViewModels
         public Win2DRenderer Renderer { get; set; }
 
         [NotifyUI]
-        public NodeBase SelectedNode { get; set; }
+        public NodeBase SelectedNode { get; private set; }
 
-        public Document Document
-        {
-            get
-            {
-                return document;
-            }
-            set
-            {
-                if (document != value)
-                {
-                    if (document != null)
-                    {
-                        document.NodeSelected -= Document_NodeSelected;
-
-                        OnDocumentUnset(document);
-                    }
-
-                    document = value;
-
-                    RaisePropertyChanged();
-
-                    if (document != null)
-                    {
-                        document.NodeSelected += Document_NodeSelected;
-
-                        OnDocumentSet(document);
-
-                        SelectedNode = document.SelectedNode;
-                    }
-                }
-            }
-        }
-
-        private void Document_NodeSelected(object sender, NodeEventArgs e)
-        {
-            SelectedNode = e.Node;
-        }
+        [NotifyUI]
+        public Document Document { get; set; }
 
         protected DocumentViewModelBase()
         {
@@ -108,16 +72,47 @@ namespace Hercules.App.Modules.Editor.ViewModels
             Document = e.Document;
         }
 
-        protected virtual void OnDocumentSet(Document newDocument)
+        public void OnPropertyChanged(string propertyName, object before, object after)
+        {
+            if (propertyName == "Document")
+            {
+                OnDocumentChanged(before as Document, after as Document);
+
+                OnDocumentChangedInternal(before as Document, after as Document);
+            }
+            else if (propertyName == "SelectedNode")
+            {
+                OnSelectedNodeChanged(before as NodeBase, after as NodeBase);
+            }
+
+            RaisePropertyChanged(propertyName);
+        }
+
+        private void OnDocumentChangedInternal(Document oldDocument, Document newDocument)
+        {
+            if (oldDocument != null)
+            {
+                oldDocument.NodeSelected -= Document_NodeSelected;
+            }
+            if (newDocument != null)
+            {
+                newDocument.NodeSelected += Document_NodeSelected;
+
+                SelectedNode = newDocument.SelectedNode;
+            }
+        }
+
+        protected virtual void OnDocumentChanged(Document oldDocument, Document newDocument)
         {
         }
 
-        protected virtual void OnDocumentUnset(Document oldDocument)
+        protected virtual void OnSelectedNodeChanged(NodeBase oldNode, NodeBase newNode)
         {
         }
 
-        protected virtual void OnSelectedNodeChanged()
+        private void Document_NodeSelected(object sender, NodeEventArgs e)
         {
+            SelectedNode = e.Node;
         }
     }
 }

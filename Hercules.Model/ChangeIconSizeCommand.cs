@@ -59,13 +59,13 @@ namespace Hercules.Model
         {
             oldIconSize = Node.IconSize;
 
-            Node.SetupIconSize(newIconSize);
+            Node.ChangeIconSize(newIconSize);
             Node.Select();
         }
 
         protected override void Revert()
         {
-            Node.SetupIconSize(oldIconSize);
+            Node.ChangeIconSize(oldIconSize);
             Node.Select();
         }
     }

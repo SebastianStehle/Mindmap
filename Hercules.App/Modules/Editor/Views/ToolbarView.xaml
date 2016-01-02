@@ -37,7 +37,7 @@
                         <Setter Target="CompactButtonHelp.(UIElement.Visibility)" Value="Collapsed"/>
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="920"/>
+                        <AdaptiveTrigger MinWindowWidth="860"/>
                     </VisualState.StateTriggers>
                 </VisualState>
             </VisualStateGroup>
@@ -114,8 +114,7 @@
             </StackPanel>
         </CommandBar.Content>
         <CommandBar.PrimaryCommands>
-            <AppBarButton x:Uid="AppBarButton_RemoveNode" IsCompact="True" Label="Remove" 
-                IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}" Icon="Delete"
+            <AppBarButton x:Uid="AppBarButton_RemoveNode" IsCompact="True" Label="Remove" Icon="Delete"
                 Command="{Binding RemoveCommand}">
                 <i:Interaction.Behaviors>
                     <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Delete" />
@@ -126,19 +125,23 @@
             <AppBarSeparator x:Name="RemoveButtonSeparator" Visibility="Collapsed" />
 
             <AppBarButton x:Uid="AppBarButton_AddSibling" Style="{StaticResource AppBarButtonStyleSibling}" IsCompact="True" Label="Sibling" 
-                IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource NotRootToBooleanConverter}, FallbackValue=false}"
                 Command="{Binding AddSiblingCommand}">
                 <i:Interaction.Behaviors>
                     <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Enter" />
                 </i:Interaction.Behaviors>
             </AppBarButton>
 
-            <AppBarButton x:Uid="AppBarButton_AddChild" Style="{StaticResource AppBarButtonStyleChild}" IsCompact="True" Label="Child" 
-                IsEnabled="{Binding Document.SelectedNode, Converter={StaticResource TrueWhenNotNullConverter}, FallbackValue=false}"
+            <AppBarButton x:Uid="AppBarButton_AddChild" Style="{StaticResource AppBarButtonStyleChild}" IsCompact="True" Label="Child"
                 Command="{Binding AddChildCommand}" >
                 <i:Interaction.Behaviors>
                     <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Tab" />
                 </i:Interaction.Behaviors>
+            </AppBarButton>
+
+            <AppBarSeparator />
+            
+            <AppBarButton x:Uid="AppBarButton_ToggleProperties" IsCompact="True" Label="Properties" Click="PropertiesButton_Click">
+                <TextBlock TextAlignment="Center" FontSize="20" Text="&#xE2B1;" FontFamily="Segoe MDL2 Assets" />
             </AppBarButton>
         </CommandBar.PrimaryCommands>
         <CommandBar.SecondaryCommands>

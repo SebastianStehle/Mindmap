@@ -11,10 +11,29 @@
     xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
     IsTabStop="False"
-    IsEnabled="{Binding ProcessManager.IsMainProcessRunning, Source={StaticResource ViewModelLocator}, Converter={StaticResource BooleanInverseConverter}}"
+    IsEnabled="{Binding ProcessManager.IsMainProcessRunning, Source={StaticResource ViewModelLocator}, Converter={StaticResource TrueWhenFalseConverter}}"
     DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
 
     <Page.Resources>
+        <Storyboard x:Name="ShowPropertiesStoryboard">
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="PropertiesPane">
+                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
+                <SplineDoubleKeyFrame KeySpline="0.1,0.9 0.2,1.0" KeyTime="0:0:0.35" Value="300"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="PropertiesContainer">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Name="HidePropertiesStoryboard">
+            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="PropertiesPane">
+                <SplineDoubleKeyFrame KeySpline="0.1,0.9 0.2,1.0" KeyTime="0:0:0.12" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="PropertiesContainer">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        
         <Storyboard x:Key="ShowListStoryboard">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="MindmapsContainer">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
@@ -35,10 +54,10 @@
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="280" />
+            <ColumnDefinition Width="Auto" />
         </Grid.ColumnDefinitions>
 
-        <e:ToolbarView Grid.Row="0" Grid.ColumnSpan="2" ListButtonClicked="ToolbarView_ListButtonClicked" />
+        <e:ToolbarView Grid.Row="0" Grid.ColumnSpan="2" ListButtonClicked="ToolbarView_ListButtonClicked" PropertiesButtonClicked="ToolbarView_PropertiesButtonClicked" />
 
         <SplitView Grid.Row="1" Grid.Column="0" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="68" x:Name="SplitView">
             <i:Interaction.Behaviors>
@@ -75,7 +94,7 @@
                         </StackPanel>
                         <Button.Flyout>
                             <controls:MindmapFlyout>
-                                <m:EnterNameView />
+                                <m:EnterNameView x:Name="EnterNameView" />
                             </controls:MindmapFlyout>
                         </Button.Flyout>
                     </Button>
@@ -88,6 +107,8 @@
             </SplitView.Content>
         </SplitView>
 
-        <e:EditorPropertiesView Grid.Column="1" Grid.Row="1" Background="#FFF2F2F2" />
+        <Grid Grid.Column="1" Grid.Row="1" x:Name="PropertiesPane" Width="300" Background="#FFF2F2F2">
+            <e:EditorPropertiesView x:Name="PropertiesContainer" />
+        </Grid>
     </Grid>
 </Page>

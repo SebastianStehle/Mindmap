@@ -35,6 +35,16 @@ namespace GP.Windows.UI
         public object Convert(object value, Type targetType, object parameter, string language)
         {
             int result = 0;
+            int offset = 0;
+
+            if (parameter is int)
+            {
+                offset = (int)parameter;
+            }
+            else if (parameter is string)
+            {
+                int.TryParse((string)parameter, NumberStyles.Any, CultureInfo.InvariantCulture, out offset);
+            }
 
             if (value != null)
             {
@@ -42,10 +52,12 @@ namespace GP.Windows.UI
 
                 TypeInfo typeInfo = value.GetType().GetTypeInfo();
 
-                if (typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>))
+                if (typeInfo.IsClass || (typeInfo.IsGenericType && typeInfo.GetGenericTypeDefinition() == typeof(Nullable<>)))
                 {
                     result++;
                 }
+
+                result += offset;
             }
 
             return result;
@@ -64,7 +76,7 @@ namespace GP.Windows.UI
         /// </returns>
         public object ConvertBack(object value, Type targetType, object parameter, string language)
         {
-            throw new NotSupportedException();
+            return null;
         }
     }
 }

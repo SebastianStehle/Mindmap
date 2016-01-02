@@ -40,13 +40,13 @@ namespace Hercules.Model
         {
             oldColor = Node.Color;
 
-            Node.SetupColor(newColor);
+            Node.ChangeColor(newColor);
             Node.Select();
         }
 
         protected override void Revert()
         {
-            Node.SetupColor(oldColor);
+            Node.ChangeColor(oldColor);
             Node.Select();
         }
     }

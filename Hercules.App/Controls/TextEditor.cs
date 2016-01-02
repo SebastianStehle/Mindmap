@@ -51,7 +51,7 @@ namespace Hercules.App.Controls
         {
             CancelEdit(true);
         }
-        
+
         public void UpdateTransform()
         {
             InvalidateMeasure();

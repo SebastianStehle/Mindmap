@@ -47,8 +47,8 @@ namespace Hercules.Model
             : base(id)
         {
         }
-        
-        internal void SetupShape(NodeShape? newShape)
+
+        internal void ChangeShape(NodeShape? newShape)
         {
             Shape = newShape;
         }

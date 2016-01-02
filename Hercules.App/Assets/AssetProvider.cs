@@ -13,9 +13,15 @@ namespace Hercules.App.Assets
 {
     public sealed class AssetProvider
     {
-        private readonly List<KeyIcon> icons;
+        private readonly List<INodeIcon> icons;
+        private readonly List<INodeIcon> none = new List<INodeIcon> { null };
 
-        public List<KeyIcon> Icons
+        public List<INodeIcon> None
+        {
+            get { return none; }
+        }
+
+        public List<INodeIcon> Icons
         {
             get
             {
@@ -25,7 +31,7 @@ namespace Hercules.App.Assets
 
         public AssetProvider()
         {
-            icons = new List<KeyIcon>
+            icons = new List<INodeIcon>
             {
                 new KeyIcon("/Assets/Icons/Alerts.png"),
                 new KeyIcon("/Assets/Icons/Arrow_Left.png"),

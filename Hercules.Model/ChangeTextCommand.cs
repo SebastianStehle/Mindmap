@@ -44,7 +44,7 @@ namespace Hercules.Model
         {
             oldText = Node.Text;
 
-            Node.SetupText(newText);
+            Node.ChangeText(newText);
 
             if (!disableSelection)
             {
@@ -54,7 +54,7 @@ namespace Hercules.Model
 
         protected override void Revert()
         {
-            Node.SetupText(oldText);
+            Node.ChangeText(oldText);
             Node.Select();
         }
     }

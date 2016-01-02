@@ -32,7 +32,6 @@ namespace Hercules.App.Modules
             return command;
         }
 
-
         public static RelayCommand<T> DependentOn<T>(this RelayCommand<T> command, INotifyPropertyChanged owner, params string[] properties)
         {
             if (owner != null && properties != null && properties.Length > 0)

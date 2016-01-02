@@ -1,5 +1,6 @@
 ﻿<UserControl x:Class="Hercules.App.Modules.Editor.Views.EditorPropertiesView"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:s="using:System"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
@@ -53,7 +54,7 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer x:Name="Root" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden">
+    <ScrollViewer IsEnabled="{Binding Document, Converter={StaticResource TrueWhenNotNullConverter}, FallbackValue=False}" x:Name="Root" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden">
         <StackPanel Width="{Binding ElementName=Root, Path=ActualWidth}">
             <Border Style="{StaticResource PropertySectionStyle}">
                 <StackPanel>
@@ -86,10 +87,15 @@
                 <StackPanel>
                     <TextBlock x:Uid="Properties_ShapesHeader" Text="Shape" Style="{StaticResource PropertyHeaderStyle}" />
 
-                    <GridView SelectedIndex="{Binding SelectedNode.Shape, Converter={StaticResource ValueToIntConverter}}" Style="{StaticResource PropertyGridStyle}">
+                    <GridView Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
                             <gpi:SelectionBehavior SelectedIndexCommand="{Binding ChangeShapeCommand}" />
                         </i:Interaction.Behaviors>
+                        <GridView.SelectedIndex>
+                            <Binding Path="SelectedNode.Shape" Converter="{StaticResource ValueToIntConverter}" Mode="TwoWay">
+                                <Binding.ConverterParameter>1</Binding.ConverterParameter>
+                            </Binding>
+                        </GridView.SelectedIndex>
                         <GridView.Items>
                             <Grid Margin="2" Width="40" Height="40" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Padding="4">
                                 <TextBlock Text="Auto" FontSize="14" FontWeight="Bold" LineHeight="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
@@ -124,13 +130,13 @@
 
             <Border Style="{StaticResource PropertySectionStyle}">
                 <StackPanel>
-                    <Button x:Uid="Properties_HullButton" Content="Show Hull" Command="{Binding ToggleHullCommand}" />
+                    <Button x:Uid="Properties_HullButton" Content="Toggle Hull" Command="{Binding ToggleHullCommand}" />
                 </StackPanel>
             </Border>
 
             <Border Style="{StaticResource PropertySectionStyle}">
                 <StackPanel>
-                    <GridView ItemsSource="{Binding NoneIcons}" Style="{StaticResource PropertyGridStyle}">
+                    <GridView ItemsSource="{Binding Source={StaticResource AssetProvider}, Path=None}" SelectedIndex="0" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
                             <gpi:SelectionBehavior SelectedItem="{Binding SelectedNode.Icon}" SelectedItemCommand="{Binding ChangeIconCommand}" />
                         </i:Interaction.Behaviors>
@@ -140,7 +146,6 @@
                                     <Border Width="24" Height="24" BorderBrush="Red" BorderThickness="2" Background="White">
                                         <Line X1="0" X2="24" Y1="0" Y2="24" Stroke="Red" StrokeThickness="2"></Line>
                                     </Border>
-                                    
                                 </Grid>
                             </DataTemplate>
                         </GridView.ItemTemplate>
@@ -172,7 +177,7 @@
 
                     <Button x:Uid="Properties_AddIconButton" Content="Open File" Command="{Binding AddIconCommand}" Margin="0,10,0,0" />
 
-                    <TextBlock x:Uid="Editor_OpenFileButtonHint" Foreground="Gray" TextWrapping="Wrap" Margin="0,6,0,0" Text="Icons Hint" FontSize="12" LineHeight="16" />
+                    <TextBlock x:Uid="Properties_AddIconHint" Foreground="Gray" TextWrapping="Wrap" Margin="0,6,0,0" Text="Icons Hint" FontSize="12" LineHeight="16" />
                 </StackPanel>
             </Border>
 
@@ -180,7 +185,7 @@
                 <StackPanel>
                     <TextBlock x:Uid="Properties_IconPositionHeader" Text="Icon Placement" Style="{StaticResource PropertyHeaderStyle}" />
 
-                    <GridView SelectedIndex="{Binding SelectedNode.IconPosition, Converter={StaticResource ValueToIntConverter}}" Style="{StaticResource PropertyGridStyle}">
+                    <GridView SelectedIndex="{Binding SelectedNode.IconPosition, Converter={StaticResource ValueToIntConverter}, Mode=TwoWay}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
                             <gpi:SelectionBehavior SelectedIndexCommand="{Binding ChangeIconPositionCommand}" />
                         </i:Interaction.Behaviors>
@@ -261,7 +266,7 @@
                 <StackPanel>
                     <TextBlock x:Uid="Properties_IconSizeHeader" Text="Icon Size" Style="{StaticResource PropertyHeaderStyle}" />
 
-                    <GridView SelectedIndex="{Binding SelectedNode.IconSize, Converter={StaticResource ValueToIntConverter}}" Style="{StaticResource PropertyGridStyle}">
+                    <GridView SelectedIndex="{Binding SelectedNode.IconSize, Converter={StaticResource ValueToIntConverter}, Mode=TwoWay}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
                             <gpi:SelectionBehavior SelectedIndexCommand="{Binding ChangeIconSizeCommand}" />
                         </i:Interaction.Behaviors>

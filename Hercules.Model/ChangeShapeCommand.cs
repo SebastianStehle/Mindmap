@@ -68,7 +68,7 @@ namespace Hercules.Model
             {
                 oldShape = node.Shape;
 
-                node.SetupShape(newShape);
+                node.ChangeShape(newShape);
                 node.Select();
             }
         }
@@ -79,7 +79,7 @@ namespace Hercules.Model
 
             if (node != null)
             {
-                node.SetupShape(oldShape);
+                node.ChangeShape(oldShape);
                 node.Select();
             }
         }

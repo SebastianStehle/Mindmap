@@ -21,6 +21,6 @@ namespace Hercules.Model.Rendering
 
         void Show();
 
-        void MoveToLayout(Vector2 position, AnchorPoint anchor);
+        void MoveToLayout(Vector2 position, NodeSide anchor);
     }
 }

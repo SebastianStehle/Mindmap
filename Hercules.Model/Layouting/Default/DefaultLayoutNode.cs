@@ -16,7 +16,7 @@ namespace Hercules.Model.Layouting.Default
     internal sealed class DefaultLayoutNode
     {
         private readonly DefaultLayoutNode parent;
-        private readonly Vector2 nodeSize;
+        private readonly Vector2 renderSize;
         private readonly IRenderNode renderNode;
 
         public Vector2 Position { get; set; }
@@ -38,19 +38,19 @@ namespace Hercules.Model.Layouting.Default
             get { return parent; }
         }
 
-        public Vector2 NodeSize
+        public Vector2 RenderSize
         {
-            get { return nodeSize; }
+            get { return renderSize; }
         }
 
-        public float NodeWidth
+        public float RenderWidth
         {
-            get { return nodeSize.X; }
+            get { return renderSize.X; }
         }
 
-        public float NodeHeight
+        public float RenderHeight
         {
-            get { return nodeSize.Y; }
+            get { return renderSize.Y; }
         }
 
         public static DefaultLayoutNode AttachTo(NodeBase node, IRenderNode renderNode, DefaultLayoutNode parent)
@@ -65,13 +65,13 @@ namespace Hercules.Model.Layouting.Default
         private DefaultLayoutNode(IRenderNode renderNode, DefaultLayoutNode parent)
         {
             this.parent = parent;
-            this.nodeSize = renderNode.RenderSize;
+            this.renderSize = renderNode.RenderSize;
             this.renderNode = renderNode;
 
             TreeSize = renderNode.RenderSize;
         }
 
-        public void MoveTo(Vector2 position, AnchorPoint anchor)
+        public void MoveTo(Vector2 position, NodeSide anchor)
         {
             Position = position;
 

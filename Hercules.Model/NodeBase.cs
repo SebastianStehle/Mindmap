@@ -295,7 +295,7 @@ namespace Hercules.Model
             {
                 collection.Remove(child);
 
-                ChangeSide(child, NodeSide.Undefined);
+                ChangeSide(child, NodeSide.Auto);
 
                 child.UnlinkFromParent();
 

@@ -7,11 +7,5 @@
 // ==========================================================================
 namespace Hercules.Model
 {
-    public enum IconPosition
-    {
-        Left,
-        Right,
-        Top,
-        Bottom
-    }
+    public enum IconPosition { Left, Right, Top, Bottom }
 }

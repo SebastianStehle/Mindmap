@@ -173,7 +173,6 @@
     <Compile Include="InsertChildCommand.cs" />
     <Compile Include="IUndoRedoAction.cs" />
     <Compile Include="IUndoRedoManager.cs" />
-    <Compile Include="Layouting\AnchorPoint.cs" />
     <Compile Include="Layouting\AttachTarget.cs" />
     <Compile Include="Layouting\Default\DefaultLayout.cs" />
     <Compile Include="Layouting\Default\DefaultLayoutNode.cs" />

@@ -151,7 +151,7 @@ namespace Hercules.Win2D.Rendering
             scene.HidePreviewElement();
         }
 
-        public void ShowPreviewElement(Vector2 position, NodeBase parent, AnchorPoint anchor)
+        public void ShowPreviewElement(Vector2 position, NodeBase parent, NodeSide anchor)
         {
             scene.ShowPreviewElement(position, parent, anchor);
         }

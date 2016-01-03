@@ -7,11 +7,5 @@
 // ==========================================================================
 namespace Hercules.Model
 {
-    public enum NodeShape
-    {
-        Ellipse,
-        Rectangle,
-        RoundedRectangle,
-        Border
-    }
+    public enum NodeShape { Ellipse, Rectangle, RoundedRectangle, Border }
 }

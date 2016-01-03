@@ -9,6 +9,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using GP.Windows;
+// ReSharper disable ConvertIfStatementToReturnStatement
 
 namespace Hercules.Model
 {
@@ -72,6 +73,21 @@ namespace Hercules.Model
 
                 AddChildren(allChildren, child);
             }
+        }
+
+        public static NodeSide OppositeSide(this NodeSide side)
+        {
+            if (side == NodeSide.Right)
+            {
+                return NodeSide.Left;
+            }
+
+            if (side == NodeSide.Left)
+            {
+                return NodeSide.Right;
+            }
+
+            return NodeSide.Auto;
         }
 
         public static IReadOnlyList<Node> RetrieveParentCollection(this Node node)

@@ -38,6 +38,11 @@ namespace Hercules.Model.Utils
             get { return new Vector2(CenterX, CenterY); }
         }
 
+        public float Area
+        {
+            get { return size.X * size.Y; }
+        }
+
         public float X
         {
             get { return position.X; }

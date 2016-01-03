@@ -11,7 +11,6 @@ using System.Threading.Tasks;
 using Windows.Graphics.Printing;
 using Windows.Storage.Streams;
 using Windows.UI;
-using Hercules.Model.Layouting;
 
 namespace Hercules.Model.Rendering
 {
@@ -29,7 +28,7 @@ namespace Hercules.Model.Rendering
 
         void RemoveAdorner(IAdornerRenderNode adorner);
 
-        void ShowPreviewElement(Vector2 position, NodeBase parent, AnchorPoint anchor);
+        void ShowPreviewElement(Vector2 position, NodeBase parent, NodeSide anchor);
 
         void HidePreviewElement();
 

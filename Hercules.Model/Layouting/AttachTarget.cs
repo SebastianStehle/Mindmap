@@ -15,12 +15,11 @@ namespace Hercules.Model.Layouting
         private readonly Vector2 position;
         private readonly NodeBase node;
         private readonly NodeSide nodeSide;
-        private readonly AnchorPoint anchor;
         private readonly int? index;
 
-        public AnchorPoint Anchor
+        public NodeSide Anchor
         {
-            get { return anchor; }
+            get { return nodeSide.OppositeSide(); }
         }
 
         public NodeSide NodeSide
@@ -43,11 +42,10 @@ namespace Hercules.Model.Layouting
             get { return index; }
         }
 
-        public AttachTarget(NodeBase node, NodeSide nodeSide, int? index, Vector2 position, AnchorPoint anchor)
+        public AttachTarget(NodeBase node, NodeSide nodeSide, int? index, Vector2 position)
         {
             this.node = node;
             this.index = index;
-            this.anchor = anchor;
             this.nodeSide = nodeSide;
             this.position = position;
         }

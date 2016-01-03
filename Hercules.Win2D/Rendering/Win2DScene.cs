@@ -112,12 +112,13 @@ namespace Hercules.Win2D.Rendering
             previewNode.Hide();
         }
 
-        public void ShowPreviewElement(Vector2 position, NodeBase parent, AnchorPoint anchor)
+        public void ShowPreviewElement(Vector2 position, NodeBase parent, NodeSide anchor)
         {
             Win2DRenderNode parentNode = TryAdd(parent);
 
-            previewNode.MoveToLayout(position, anchor);
             previewNode.Parent = parentNode;
+
+            previewNode.MoveToLayout(position, anchor);
             previewNode.Show();
         }
 

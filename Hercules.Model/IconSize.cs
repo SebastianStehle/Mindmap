@@ -7,10 +7,5 @@
 // ==========================================================================
 namespace Hercules.Model
 {
-    public enum IconSize
-    {
-        Small,
-        Medium,
-        Large
-    }
+    public enum IconSize { Small, Medium, Large }
 }

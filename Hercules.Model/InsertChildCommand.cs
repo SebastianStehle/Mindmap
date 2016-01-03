@@ -71,7 +71,10 @@ namespace Hercules.Model
         {
             Node.Insert(Child, index, side);
 
-            Child.Select();
+            if (isRedo)
+            {
+                Child.Select();
+            }
         }
 
         protected override void Revert()

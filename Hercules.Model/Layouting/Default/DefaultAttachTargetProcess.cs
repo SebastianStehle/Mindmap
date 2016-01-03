@@ -15,7 +15,6 @@ using Hercules.Model.Rendering;
 using Hercules.Model.Utils;
 
 // ReSharper disable ArrangeThisQualifier
-
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 
 namespace Hercules.Model.Layouting.Default
@@ -27,11 +26,10 @@ namespace Hercules.Model.Layouting.Default
         private readonly Rect2 movementBounds;
         private IRenderNode parentRenderNode;
         private IReadOnlyList<NodeBase> children;
-        private AnchorPoint anchor;
         private NodeSide side;
         private NodeBase parent;
-        private Vector2 mindmapCenter;
         private Vector2 position;
+        private int renderIndex;
         private int? insertIndex;
 
         public DefaultAttachTargetProcess(DefaultLayout layout, IRenderScene scene, Document document, Node movingNode, Rect2 movementBounds)
@@ -46,55 +44,72 @@ namespace Hercules.Model.Layouting.Default
 
         public AttachTarget CalculateAttachTarget()
         {
-            CalculateCenter();
-
             FindAttachOnParent();
 
-            if (parent != null)
+            if (parent == null)
             {
-                CalculateParentAttachTarget();
-            }
-            else
-            {
-                CalculateReorderTarget();
+                FindReorderTarget();
             }
 
             if (children != null)
             {
-                CalculatePreviewPoint();
+                CalculatePreviewPosition();
 
-                return new AttachTarget(parent, side, insertIndex, position, anchor);
+                return new AttachTarget(parent, side, insertIndex, position);
             }
 
             return null;
         }
 
-        private void CalculateCenter()
+        private void FindAttachOnParent()
         {
-            float x = 0.5f * Document.Size.X;
-            float y = 0.5f * Document.Size.Y;
+            double rectArea = movementBounds.Area;
 
-            mindmapCenter = new Vector2(x, y);
+            foreach (NodeBase node in Document.Nodes)
+            {
+                if (node == movingNode || node == movingNode.Parent || movingNode.HasChild(node as Node))
+                {
+                    continue;
+                }
+
+                IRenderNode renderNode = Scene.FindRenderNode(node);
+
+                if (renderNode == null || !renderNode.IsVisible)
+                {
+                    continue;
+                }
+
+                Rect2 intersection = renderNode.RenderBounds.Intersect(movementBounds);
+
+                if (intersection == Rect2.Empty)
+                {
+                    continue;
+                }
+
+                double minArea = Math.Min(rectArea, renderNode.RenderBounds.Area);
+
+                if (intersection.Area > 0.5f * minArea)
+                {
+                    parent = node;
+                    break;
+                }
+            }
+
+            if (parent != null)
+            {
+                CalculateAttachOnTargetChildren();
+            }
         }
 
-        private void CalculateParentAttachTarget()
+        private void CalculateAttachOnTargetChildren()
         {
             RootNode root = parent as RootNode;
 
             if (root != null)
             {
-                if (movingNode.NodeSide == NodeSide.Right)
-                {
-                    side = NodeSide.Right;
+                side = movingNode.NodeSide;
 
-                    children = root.RightChildren;
-                }
-                else
-                {
-                    side = NodeSide.Left;
-
-                    children = root.LeftChildren;
-                }
+                children = movingNode.NodeSide == NodeSide.Right ? root.RightChildren : root.LeftChildren;
             }
             else
             {
@@ -104,7 +119,7 @@ namespace Hercules.Model.Layouting.Default
             }
         }
 
-        private void CalculateReorderTarget()
+        private void FindReorderTarget()
         {
             RootNode root = movingNode.Document.Root;
 
@@ -112,47 +127,30 @@ namespace Hercules.Model.Layouting.Default
 
             if (movingNode.Parent == root)
             {
-                if (movingNode.NodeSide == NodeSide.Right && movementCenter.X < mindmapCenter.X)
+                if (movingNode.NodeSide == NodeSide.Right && movementCenter.X < MindmapCenter.X)
                 {
-                    CalculateReorderTarget(root.LeftChildren, NodeSide.Left);
+                    FindReorderTarget(root.LeftChildren, NodeSide.Left);
                 }
                 else if (movingNode.NodeSide == NodeSide.Right)
                 {
-                    CalculateReorderTarget(root.RightChildren, NodeSide.Right);
+                    FindReorderTarget(root.RightChildren, NodeSide.Right);
                 }
-                else if (movingNode.NodeSide == NodeSide.Left && movementCenter.X > mindmapCenter.X)
+                else if (movingNode.NodeSide == NodeSide.Left && movementCenter.X > MindmapCenter.X)
                 {
-                    CalculateReorderTarget(root.RightChildren, NodeSide.Right);
+                    FindReorderTarget(root.RightChildren, NodeSide.Right);
                 }
                 else
                 {
-                    CalculateReorderTarget(root.LeftChildren, NodeSide.Left);
+                    FindReorderTarget(root.LeftChildren, NodeSide.Left);
                 }
             }
             else
             {
-                CalculateReorderTarget(((Node)movingNode.Parent).Children, movingNode.Parent.NodeSide);
+                FindReorderTarget(((Node)movingNode.Parent).Children, movingNode.Parent.NodeSide);
             }
         }
 
-        private void CalculateReorderTarget(IReadOnlyList<Node> collection, NodeSide targetSide)
-        {
-            CalculateIndex(collection);
-
-            if (insertIndex.HasValue && insertIndex >= 0)
-            {
-                int currentIndex = collection.IndexOf(movingNode);
-
-                if (currentIndex != insertIndex)
-                {
-                    children = collection;
-
-                    side = targetSide;
-                }
-            }
-        }
-
-        private void CalculateIndex(IReadOnlyList<Node> collection)
+        private void FindReorderTarget(IReadOnlyList<Node> collection, NodeSide targetSide)
         {
             double centerY = movementCenter.Y;
 
@@ -166,117 +164,101 @@ namespace Hercules.Model.Layouting.Default
 
                 Rect2 bounds = Scene.FindRenderNode(otherNode).RenderBounds;
 
-                if (centerY > bounds.CenterY)
+                if (centerY <= bounds.CenterY)
                 {
-                    insertIndex = i + 1;
-
-                    if (nodeIndex >= 0 && i >= nodeIndex)
-                    {
-                        insertIndex--;
-                    }
-                    break;
+                    continue;
                 }
+
+                renderIndex = i + 1;
+                insertIndex = i + 1;
+
+                if (nodeIndex >= 0 && i >= nodeIndex)
+                {
+                    insertIndex--;
+                }
+
+                break;
+            }
+
+            if (nodeIndex != insertIndex)
+            {
+                children = collection;
+
+                side = targetSide;
             }
         }
 
-        private void CalculatePreviewPoint()
+        private void CalculatePreviewPosition()
         {
             parentRenderNode = Scene.FindRenderNode(parent);
 
-            float y = parentRenderNode.LayoutPosition.Y;
-            float x;
+            float factor = parent is RootNode ? 0.5f : 1.0f;
 
-            anchor = AnchorPoint.Left;
-
-            Action ajustWithChildren = () =>
-            {
-                if (children.Count > 0 && !parent.IsCollapsed)
-                {
-                    if (!insertIndex.HasValue || insertIndex >= children.Count)
-                    {
-                        Rect2 bounds = Scene.FindRenderNode(children.Last()).RenderBounds;
-
-                        y = bounds.Bottom + (Layout.ElementMargin * 2f) + (movementBounds.Height * 0.5f);
-                    }
-                    else if (insertIndex == 0)
-                    {
-                        Rect2 bounds = Scene.FindRenderNode(children.First()).RenderBounds;
-
-                        y = bounds.Top - Layout.ElementMargin - (movementBounds.Height * 0.5f);
-                    }
-                    else
-                    {
-                        Rect2 bounds1 = Scene.FindRenderNode(children[insertIndex.Value - 1]).RenderBounds;
-                        Rect2 bounds2 = Scene.FindRenderNode(children[insertIndex.Value + 0]).RenderBounds;
-
-                        y = (bounds1.CenterY + bounds2.CenterY) * 0.5f;
-                    }
-                }
-            };
-
-            Node node = parent as Node;
-
-            if (node != null)
-            {
-                if (side == NodeSide.Right)
-                {
-                    x = parentRenderNode.LayoutPosition.X + parentRenderNode.RenderSize.X + Layout.HorizontalMargin;
-                }
-                else
-                {
-                    x = parentRenderNode.LayoutPosition.X - parentRenderNode.RenderSize.X - Layout.HorizontalMargin;
-
-                    anchor = AnchorPoint.Right;
-                }
-
-                ajustWithChildren();
-            }
-            else
-            {
-                if (side == NodeSide.Right)
-                {
-                    x = parentRenderNode.LayoutPosition.X + (parentRenderNode.RenderSize.X * 0.5f) + Layout.HorizontalMargin;
-
-                    ajustWithChildren();
-                }
-                else
-                {
-                    x = parentRenderNode.LayoutPosition.X - (parentRenderNode.RenderSize.X * 0.5f) - Layout.HorizontalMargin;
-
-                    anchor = AnchorPoint.Right;
-
-                    ajustWithChildren();
-                }
-            }
+            float x = CalculateX(factor);
+            float y = CalculateY();
 
             position = new Vector2(x, y);
         }
 
-        private void FindAttachOnParent()
+        private float CalculateX(float factor)
         {
-            double rectArea = movementBounds.Width * movementBounds.Height;
+            float x = parentRenderNode.LayoutPosition.X;
 
-            foreach (NodeBase node in Document.Nodes)
+            if (side == NodeSide.Right)
             {
-                if (node != movingNode && node != movingNode.Parent && !movingNode.HasChild(node as Node))
+                x += (parentRenderNode.RenderSize.X * factor) + Layout.HorizontalMargin;
+            }
+            else
+            {
+                x -= (parentRenderNode.RenderSize.X * factor) + Layout.HorizontalMargin;
+            }
+
+            return x;
+        }
+
+        private float CalculateY()
+        {
+            float y = parentRenderNode.LayoutPosition.Y;
+
+            if (children.Count > 0 && !parent.IsCollapsed)
+            {
+                if (!insertIndex.HasValue || renderIndex >= children.Count)
                 {
-                    Rect2 nodeBounds = Scene.FindRenderNode(node).RenderBounds;
-
-                    Rect2 intersection = nodeBounds.Intersect(movementBounds);
-
-                    double intersectionArea = intersection.Width * intersection.Height;
-
-                    if (!double.IsInfinity(intersectionArea))
-                    {
-                        double minArea = Math.Min(rectArea, nodeBounds.Width * nodeBounds.Height);
-
-                        if (intersectionArea > 0.5f * minArea)
-                        {
-                            parent = node;
-                        }
-                    }
+                    y = CalculateYBeforeFirstChild();
+                }
+                else if (insertIndex == 0)
+                {
+                    y = CalculateYAfterLastChild();
+                }
+                else
+                {
+                    y = CalculateYBetweenChildren();
                 }
             }
+
+            return y;
+        }
+
+        private float CalculateYBeforeFirstChild()
+        {
+            Rect2 bounds = Scene.FindRenderNode(children.Last()).RenderBounds;
+
+            return bounds.Bottom + (Layout.ElementMargin * 2f) + (movementBounds.Height * 0.5f);
+        }
+
+        private float CalculateYAfterLastChild()
+        {
+            Rect2 bounds = Scene.FindRenderNode(children.First()).RenderBounds;
+
+            return bounds.Top - Layout.ElementMargin - (movementBounds.Height * 0.5f);
+        }
+
+        private float CalculateYBetweenChildren()
+        {
+            Rect2 bounds1 = Scene.FindRenderNode(children[renderIndex - 1]).RenderBounds;
+            Rect2 bounds2 = Scene.FindRenderNode(children[renderIndex + 0]).RenderBounds;
+
+            return (bounds1.CenterY + bounds2.CenterY) * 0.5f;
         }
     }
 }

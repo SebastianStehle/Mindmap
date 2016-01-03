@@ -37,7 +37,7 @@ namespace Hercules.Model
         {
             if (node?.Document != null)
             {
-                InsertChildCommand command = new InsertChildCommand(node, null, NodeSide.Undefined);
+                InsertChildCommand command = new InsertChildCommand(node, null, NodeSide.Auto);
 
                 string tansactionName = ResourceManager.GetString("TransactionName_AddChild");
 

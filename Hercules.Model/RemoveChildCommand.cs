@@ -27,7 +27,11 @@ namespace Hercules.Model
             oldSide = Child.NodeSide;
 
             Node.Remove(Child, out oldIndex);
-            Node.Select();
+
+            if (isRedo)
+            {
+                Node.Select();
+            }
         }
 
         protected override void Revert()

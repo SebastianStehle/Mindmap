@@ -7,10 +7,5 @@
 // ==========================================================================
 namespace Hercules.Model
 {
-    public enum NodeSide
-    {
-        Undefined,
-        Left,
-        Right
-    }
+    public enum NodeSide { Auto, Left, Right }
 }

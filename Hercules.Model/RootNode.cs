@@ -51,7 +51,7 @@ namespace Hercules.Model
 
         public override void Insert(Node child, int? index, NodeSide side)
         {
-            if (side != NodeSide.Undefined)
+            if (side != NodeSide.Auto)
             {
                 if (side == NodeSide.Right)
                 {

@@ -18,6 +18,25 @@
         
         <assets:AssetProvider x:Key="AssetProvider" />
 
+        <Style x:Key="PropertySelectionStyle" TargetType="GridViewItem">
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="Width" Value="40" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+            <Setter Property="VerticalContentAlignment" Value="Stretch" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GridViewItem">
+                        <ListViewItemPresenter CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}" ContentMargin="{TemplateBinding Padding}" CheckMode="Overlay" ContentTransitions="{TemplateBinding ContentTransitions}" CheckBoxBrush="{ThemeResource SystemControlBackgroundChromeMediumBrush}" DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}" DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}" DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}" DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}" FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" PointerOverForeground="{ThemeResource SystemControlForegroundBaseHighBrush}" PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}" PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}" ReorderHintOffset="{ThemeResource GridViewItemReorderHintThemeOffset}" SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}" SelectionCheckMarkVisualEnabled="True" SelectedForeground="{ThemeResource SystemControlForegroundBaseHighBrush}" SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListAccentMediumBrush}" SelectedBackground="{ThemeResource SystemControlHighlightAccentBrush}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
         <Style x:Key="PropertyGridStyle" TargetType="GridView">
             <Setter Property="Padding" Value="0" />
             <Setter Property="ItemContainerStyle">
@@ -86,7 +105,7 @@
                 <StackPanel>
                     <TextBlock x:Uid="Properties_ShapesHeader" Text="Shape" Style="{StaticResource PropertyHeaderStyle}" />
 
-                    <GridView Style="{StaticResource PropertyGridStyle}">
+                    <GridView ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
                             <gpi:SelectionBehavior SelectedIndexCommand="{Binding ChangeShapeCommand}" />
                         </i:Interaction.Behaviors>
@@ -96,32 +115,30 @@
                             </Binding>
                         </GridView.SelectedIndex>
                         <GridView.Items>
-                            <Grid Margin="2" Width="40" Height="40" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Padding="4">
-                                <TextBlock Text="Auto" FontSize="14" FontWeight="Bold" LineHeight="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <Grid>
+                                <TextBlock Text="Auto" FontSize="12" FontWeight="Bold" LineHeight="20" VerticalAlignment="Center" HorizontalAlignment="Center" />
                             </Grid>
 
-                            <Grid Margin="2" Width="40" Height="40" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Padding="4">
+                            <Grid>
                                 <TextBlock x:Name="EllipseFake" />
                                 <Ellipse MaxHeight="20" Stroke="{Binding ElementName=EllipseFake, Path=Foreground}" StrokeThickness="2" />
                             </Grid>
 
-                            <Grid Margin="2" Width="40" Height="40" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Padding="4">
+                            <Grid>
                                 <TextBlock x:Name="RectangleFake" />
                                 <Rectangle MaxHeight="20" Stroke="{Binding ElementName=RectangleFake, Path=Foreground}" StrokeThickness="2" />
                             </Grid>
 
-                            <Grid Margin="2" Width="40" Height="40" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Padding="4">
+                            <Grid>
                                 <TextBlock x:Name="RoundedRectangleFake" />
                                 <Rectangle MaxHeight="20" Stroke="{Binding ElementName=RoundedRectangleFake, Path=Foreground}" RadiusX="3" RadiusY="3" StrokeThickness="2" />
                             </Grid>
 
-                            <Grid Margin="2" Width="40" Height="40" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Padding="4">
-                                <StackPanel VerticalAlignment="Center">
-                                    <TextBlock x:Name="BorderText" Text="T" Height="16" FontSize="14" FontWeight="Bold" FontStyle="Italic" VerticalAlignment="Center" HorizontalAlignment="Center" />
+                            <StackPanel VerticalAlignment="Center">
+                                <TextBlock x:Name="BorderText" Text="T" Height="16" FontSize="14" FontWeight="Bold" FontStyle="Italic" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-                                    <Rectangle Fill="{Binding ElementName=BorderText, Path=Foreground}" Height="2" />
-                                </StackPanel>
-                            </Grid>
+                                <Rectangle Fill="{Binding ElementName=BorderText, Path=Foreground}" Height="2" />
+                            </StackPanel>
                         </GridView.Items>
                     </GridView>
                 </StackPanel>
@@ -184,77 +201,69 @@
                 <StackPanel>
                     <TextBlock x:Uid="Properties_IconPositionHeader" Text="Icon Placement" Style="{StaticResource PropertyHeaderStyle}" />
 
-                    <GridView SelectedIndex="{Binding SelectedNode.IconPosition, Converter={StaticResource ValueToIntConverter}, Mode=TwoWay}" Style="{StaticResource PropertyGridStyle}">
+                    <GridView SelectedIndex="{Binding SelectedNode.IconPosition, Converter={StaticResource ValueToIntConverter}, Mode=TwoWay}" ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
                             <gpi:SelectionBehavior SelectedIndexCommand="{Binding ChangeIconPositionCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.Items>
-                            <Grid Margin="2" Width="40" Height="40" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Padding="4">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1*" />
-                                        <ColumnDefinition Width="2" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="2" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
 
-                                    <TextBlock x:Name="LeftFake" />
+                                <TextBlock x:Name="LeftFake" />
 
-                                    <Ellipse Grid.Column="0" Width="14" Height="14" 
-                                        Stroke="{Binding ElementName=LeftFake, Path=Foreground}" 
-                                        StrokeThickness="2" />
-                                    <Rectangle Grid.Column="2" Fill="{Binding ElementName=LeftFake, Path=Foreground}" Height="2" Width="14" />
-                                </Grid>
+                                <Ellipse Grid.Column="0" Width="12" Height="12" 
+                                    Stroke="{Binding ElementName=LeftFake, Path=Foreground}" 
+                                    StrokeThickness="2" />
+                                <Rectangle Grid.Column="2" Fill="{Binding ElementName=LeftFake, Path=Foreground}" Height="2" Width="12" />
                             </Grid>
 
-                            <Grid Margin="2" Width="40" Height="40" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Padding="4">
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="1*" />
-                                        <ColumnDefinition Width="2" />
-                                        <ColumnDefinition Width="1*" />
-                                    </Grid.ColumnDefinitions>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="1*" />
+                                    <ColumnDefinition Width="2" />
+                                    <ColumnDefinition Width="1*" />
+                                </Grid.ColumnDefinitions>
 
-                                    <TextBlock x:Name="RightFake" />
+                                <TextBlock x:Name="RightFake" />
 
-                                    <Ellipse Grid.Column="2" Width="14" Height="14" 
-                                        Stroke="{Binding ElementName=RightFake, Path=Foreground}" 
-                                        StrokeThickness="2" />
-                                    <Rectangle Grid.Column="0" Fill="{Binding ElementName=RightFake, Path=Foreground}" Height="2" Width="14" />
-                                </Grid>
+                                <Ellipse Grid.Column="2" Width="12" Height="12" 
+                                    Stroke="{Binding ElementName=RightFake, Path=Foreground}" 
+                                    StrokeThickness="2" />
+                                <Rectangle Grid.Column="0" Fill="{Binding ElementName=RightFake, Path=Foreground}" Height="2" Width="12" />
                             </Grid>
 
-                            <Grid Margin="2" Width="40" Height="40" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Padding="4">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="1*" />
-                                        <RowDefinition Height="2" />
-                                        <RowDefinition Height="1*" />
-                                    </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="2" />
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
 
-                                    <TextBlock x:Name="TopFake" />
+                                <TextBlock x:Name="TopFake" />
 
-                                    <Ellipse Grid.Row="0" Width="14" Height="14" 
-                                        Stroke="{Binding ElementName=TopFake, Path=Foreground}" 
-                                        StrokeThickness="2" />
-                                    <Rectangle Grid.Row="2" Fill="{Binding ElementName=TopFake, Path=Foreground}" Height="2" Width="14" />
-                                </Grid>
+                                <Ellipse Grid.Row="0" Width="12" Height="12" 
+                                    Stroke="{Binding ElementName=TopFake, Path=Foreground}" 
+                                    StrokeThickness="2" />
+                                <Rectangle Grid.Row="2" Fill="{Binding ElementName=TopFake, Path=Foreground}" Height="2" Width="12" />
                             </Grid>
 
-                            <Grid Margin="2" Width="40" Height="40" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Padding="4">
-                                <Grid>
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="1*" />
-                                        <RowDefinition Height="2" />
-                                        <RowDefinition Height="1*" />
-                                    </Grid.RowDefinitions>
+                            <Grid>
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="1*" />
+                                    <RowDefinition Height="2" />
+                                    <RowDefinition Height="1*" />
+                                </Grid.RowDefinitions>
 
-                                    <TextBlock x:Name="BottomFake" />
+                                <TextBlock x:Name="BottomFake" />
 
-                                    <Ellipse Grid.Row="2" Width="14" Height="14" 
-                                        Stroke="{Binding ElementName=BottomFake, Path=Foreground}" 
-                                        StrokeThickness="2" />
-                                    <Rectangle Grid.Row="0" Fill="{Binding ElementName=BottomFake, Path=Foreground}" Height="2" Width="14" />
-                                </Grid>
+                                <Ellipse Grid.Row="2" Width="12" Height="12" 
+                                    Stroke="{Binding ElementName=BottomFake, Path=Foreground}" 
+                                    StrokeThickness="2" />
+                                <Rectangle Grid.Row="0" Fill="{Binding ElementName=BottomFake, Path=Foreground}" Height="2" Width="12" />
                             </Grid>
                         </GridView.Items>
                     </GridView>
@@ -265,12 +274,12 @@
                 <StackPanel>
                     <TextBlock x:Uid="Properties_IconSizeHeader" Text="Icon Size" Style="{StaticResource PropertyHeaderStyle}" />
 
-                    <GridView SelectedIndex="{Binding SelectedNode.IconSize, Converter={StaticResource ValueToIntConverter}, Mode=TwoWay}" Style="{StaticResource PropertyGridStyle}">
+                    <GridView SelectedIndex="{Binding SelectedNode.IconSize, Converter={StaticResource ValueToIntConverter}, Mode=TwoWay}" ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
                             <gpi:SelectionBehavior SelectedIndexCommand="{Binding ChangeIconSizeCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.Items>
-                            <Grid Margin="2" Width="40" Height="40" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Padding="4">
+                            <Grid>
                                 <TextBlock x:Name="SmallFake" />
 
                                 <Rectangle Width="14" Height="14" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
@@ -278,7 +287,7 @@
                                     StrokeThickness="2" />
                             </Grid>
 
-                            <Grid Margin="2" Width="40" Height="40" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Padding="4">
+                            <Grid>
                                 <TextBlock x:Name="MediumFake" />
 
                                 <Rectangle Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"
@@ -286,10 +295,10 @@
                                     StrokeThickness="2" />
                             </Grid>
 
-                            <Grid Margin="2" Width="40" Height="40" Background="{ThemeResource SystemControlBackgroundBaseLowBrush}" Padding="4">
+                            <Grid>
                                 <TextBlock x:Name="LargeFake" />
 
-                                <Rectangle Width="32" Height="32"
+                                <Rectangle
                                     Stroke="{Binding ElementName=LargeFake, Path=Foreground}" 
                                     StrokeThickness="2" />
                             </Grid>

@@ -127,7 +127,7 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        public void MoveToLayout(Vector2 position, AnchorPoint anchor)
+        public void MoveToLayout(Vector2 position, NodeSide anchor)
         {
             layoutPosition = position;
 
@@ -135,11 +135,11 @@ namespace Hercules.Win2D.Rendering
                 layoutPosition.X,
                 layoutPosition.Y - (0.5f * RenderSize.Y));
 
-            if (anchor == AnchorPoint.Right)
+            if (anchor == NodeSide.Right)
             {
                 targetLayoutPosition.X -= RenderSize.X;
             }
-            else if (anchor == AnchorPoint.Center)
+            else if (anchor == NodeSide.Auto)
             {
                 targetLayoutPosition.X -= 0.5f * RenderSize.X;
             }

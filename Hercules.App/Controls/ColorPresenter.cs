@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Media;
 using GP.Windows.UI;
 using Hercules.Model;
 using Hercules.Win2D.Rendering;
+
 // ReSharper disable ConvertIfStatementToConditionalTernaryExpression
 
 namespace Hercules.App.Controls

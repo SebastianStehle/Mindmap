@@ -131,7 +131,7 @@ namespace Hercules.Model
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
-                    commands.Apply(new ChangeTextCommand(node, text ?? string.Empty, true));
+                    commands.Apply(new ChangeTextCommand(node, text ?? string.Empty));
                 });
             }
         }

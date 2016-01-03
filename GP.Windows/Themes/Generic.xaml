@@ -216,9 +216,9 @@
                         <Button.Flyout>
                             <Flyout x:Name="PART_Flyout">
                                 <StackPanel>
-                                    <local:ColorPicker Width="200" Height="200" SelectedColor="{TemplateBinding SelectedColor}" Style="{TemplateBinding ColorPickerStyle}" x:Name="PART_ColorPicker"></local:ColorPicker>
+                                    <local:ColorPicker Width="200" Height="200" SelectedColor="{TemplateBinding SelectedColor}" Style="{TemplateBinding ColorPickerStyle}" x:Name="PART_ColorPicker" />
 
-                                    <Button Margin="0,20,0,0" Style="{TemplateBinding SelectionButtonStyle}" Content="{TemplateBinding SelectionButtonContent}" x:Name="PART_SelectionButton"></Button>
+                                    <Button Margin="0,20,0,0" Style="{TemplateBinding SelectionButtonStyle}" Content="{TemplateBinding SelectionButtonContent}" x:Name="PART_SelectionButton" />
                                 </StackPanel>
                             </Flyout>
                         </Button.Flyout>

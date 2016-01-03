@@ -43,6 +43,9 @@ namespace Hercules.App.Modules
         public MindmapsViewModel Mindmaps { get; set; }
 
         [Dependency]
+        public TitleBarUpdater TitleBarUpdater { get; set; }
+
+        [Dependency]
         public EditorPropertiesViewModel EditorProperties { get; set; }
 
         public ViewModelLocator()

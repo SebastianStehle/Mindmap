@@ -10,7 +10,7 @@ using System;
 
 namespace Hercules.Model
 {
-    public sealed class ChangeIconSizeCommand : CommandBase
+    public sealed class ChangeIconSizeCommand : CommandBase<NodeBase>
     {
         private const string PropertyIconSize = "IconSize";
         private readonly IconSize newIconSize;
@@ -60,7 +60,11 @@ namespace Hercules.Model
             oldIconSize = Node.IconSize;
 
             Node.ChangeIconSize(newIconSize);
-            Node.Select();
+
+            if (isRedo)
+            {
+                Node.Select();
+            }
         }
 
         protected override void Revert()

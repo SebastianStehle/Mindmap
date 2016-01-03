@@ -30,7 +30,7 @@ namespace Hercules.Win2D.Rendering.Utils
             Guard.NotNull(device, nameof(device));
             Guard.GreaterThan(padding, 0, nameof(padding));
 
-            Rect2 sceneBounds = scene.Bounds;
+            Rect2 sceneBounds = scene.RenderBounds;
 
             float w = sceneBounds.Size.X + (2 * padding);
             float h = sceneBounds.Size.Y + (2 * padding);

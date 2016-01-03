@@ -1,14 +1,14 @@
 ﻿// ==========================================================================
-// DependentRelayCommand.cs
+// MvvmExtension.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
+using System.Collections.Generic;
 using System.ComponentModel;
 using GalaSoft.MvvmLight.Command;
-using System.Collections.Generic;
 
 namespace Hercules.App.Modules
 {

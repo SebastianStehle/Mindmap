@@ -218,8 +218,6 @@ namespace Hercules.Win2D.Rendering
 
         private void ArrangeBody(CanvasDrawingSession session)
         {
-            UpdateBounds();
-
             if (Parent != null)
             {
                 double minX = Math.Min(RenderPosition.X, Parent.RenderPosition.X);

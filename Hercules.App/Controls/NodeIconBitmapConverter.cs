@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// KeyIconBitmapConverter.cs
+// NodeIconBitmapConverter.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle

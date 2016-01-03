@@ -184,7 +184,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
         {
             get
             {
-                return toggleHullCommand ?? (toggleHullCommand =new RelayCommand(() =>
+                return toggleHullCommand ?? (toggleHullCommand = new RelayCommand(() =>
                 {
                     SelectedNode.ToggleHullTransactional();
                 },

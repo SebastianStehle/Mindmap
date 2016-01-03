@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace Hercules.Model
@@ -130,7 +131,7 @@ namespace Hercules.Model
             return nodeCache.GetOrCreateNode(id, factory);
         }
 
-        public void Apply(CommandBase command)
+        public void Apply(IUndoRedoCommand command)
         {
             if (IsChangeTracking)
             {
@@ -156,7 +157,7 @@ namespace Hercules.Model
         {
             if (transaction != null)
             {
-                foreach (CommandBase command in transaction.Commands)
+                foreach (IUndoRedoCommand command in transaction.Actions.OfType<IUndoRedoCommand>())
                 {
                     command.Execute();
                 }

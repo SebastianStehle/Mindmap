@@ -7,7 +7,7 @@
 // ==========================================================================
 namespace Hercules.Model
 {
-    public sealed class ChangeColorCommand : CommandBase
+    public sealed class ChangeColorCommand : CommandBase<NodeBase>
     {
         private readonly INodeColor newColor;
         private INodeColor oldColor;
@@ -41,7 +41,11 @@ namespace Hercules.Model
             oldColor = Node.Color;
 
             Node.ChangeColor(newColor);
-            Node.Select();
+
+            if (isRedo)
+            {
+                Node.Select();
+            }
         }
 
         protected override void Revert()

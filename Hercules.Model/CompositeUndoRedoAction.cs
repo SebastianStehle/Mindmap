@@ -15,7 +15,7 @@ namespace Hercules.Model
 {
     public sealed class CompositeUndoRedoAction : IUndoRedoAction
     {
-        private readonly List<CommandBase> commands = new List<CommandBase>();
+        private readonly List<IUndoRedoAction> actions = new List<IUndoRedoAction>();
         private readonly DateTimeOffset date;
         private readonly string name;
 
@@ -29,9 +29,9 @@ namespace Hercules.Model
             get { return name; }
         }
 
-        public IReadOnlyList<CommandBase> Commands
+        public IReadOnlyList<IUndoRedoAction> Actions
         {
-            get { return commands; }
+            get { return actions; }
         }
 
         public CompositeUndoRedoAction(string name, DateTimeOffset date)
@@ -42,26 +42,26 @@ namespace Hercules.Model
             this.name = name;
         }
 
-        public void Add(CommandBase command)
+        public void Add(IUndoRedoAction command)
         {
             Guard.NotNull(command, nameof(command));
 
-            commands.Add(command);
+            actions.Add(command);
         }
 
         public void Undo()
         {
-            foreach (CommandBase command in commands.OfType<CommandBase>().Reverse())
+            foreach (IUndoRedoAction action in actions.OfType<IUndoRedoAction>().Reverse())
             {
-                command.Undo();
+                action.Undo();
             }
         }
 
         public void Redo()
         {
-            foreach (CommandBase command in commands)
+            foreach (IUndoRedoAction action in actions)
             {
-                command.Redo();
+                action.Redo();
             }
         }
     }

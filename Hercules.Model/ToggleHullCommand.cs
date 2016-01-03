@@ -7,7 +7,7 @@
 // ==========================================================================
 namespace Hercules.Model
 {
-    public sealed class ToggleHullCommand : CommandBase
+    public sealed class ToggleHullCommand : CommandBase<NodeBase>
     {
         public ToggleHullCommand(PropertiesBag properties, Document document)
             : base(properties, document)
@@ -22,11 +22,16 @@ namespace Hercules.Model
         protected override void Execute(bool isRedo)
         {
             Node.ChangeIsShowingHull(!Node.IsShowingHull);
+
+            if (isRedo)
+            {
+                Node.Select();
+            }
         }
 
         protected override void Revert()
         {
-            Node.ChangeIsShowingHull(!Node.IsShowingHull);
+            Execute(true);
         }
     }
 }

@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 
 namespace Hercules.Model.Storing
@@ -21,7 +22,7 @@ namespace Hercules.Model.Storing
 
         static CommandFactory()
         {
-            Type commandBaseType = typeof(CommandBase);
+            Type commandBaseType = typeof(IUndoRedoCommand);
 
             Assembly assembly = typeof(CommandFactory).GetTypeInfo().Assembly;
 
@@ -29,7 +30,7 @@ namespace Hercules.Model.Storing
             {
                 TypeInfo typeInfo = type.GetTypeInfo();
 
-                if (typeInfo.IsSubclassOf(commandBaseType))
+                if (type.GetInterfaces().Contains(commandBaseType))
                 {
                     string typeName = ResolveTypeName(type);
 
@@ -45,7 +46,7 @@ namespace Hercules.Model.Storing
             }
         }
 
-        public static string ToTypeName(CommandBase command)
+        public static string ToTypeName(IUndoRedoCommand command)
         {
             return NamesByType[command.GetType()];
         }
@@ -72,16 +73,16 @@ namespace Hercules.Model.Storing
             return result;
         }
 
-        public static CommandBase CreateCommand(string typeName, PropertiesBag properties, Document document)
+        public static IUndoRedoCommand CreateCommand(string typeName, PropertiesBag properties, Document document)
         {
             Type type = ResolveType(typeName);
 
             return CreateCommand(properties, document, type);
         }
 
-        private static CommandBase CreateCommand(PropertiesBag properties, Document document, Type type)
+        private static IUndoRedoCommand CreateCommand(PropertiesBag properties, Document document, Type type)
         {
-            return (CommandBase)Activator.CreateInstance(type, properties, document);
+            return (IUndoRedoCommand)Activator.CreateInstance(type, properties, document);
         }
 
         private static Type ResolveType(string typeName)

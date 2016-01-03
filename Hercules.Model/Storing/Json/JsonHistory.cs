@@ -46,7 +46,7 @@ namespace Hercules.Model.Storing.Json
         {
             JsonHistoryStep jsonStep = new JsonHistoryStep { Name = transaction.Name, Date = transaction.Date };
 
-            foreach (CommandBase command in transaction.Commands)
+            foreach (IUndoRedoCommand command in transaction.Actions.OfType<IUndoRedoCommand>())
             {
                 JsonHistoryStepCommand jsonCommand = new JsonHistoryStepCommand { CommandType = CommandFactory.ToTypeName(command) };
 
@@ -68,7 +68,7 @@ namespace Hercules.Model.Storing.Json
 
                 foreach (JsonHistoryStepCommand jsonCommand in step.Commands)
                 {
-                    CommandBase command = CommandFactory.CreateCommand(jsonCommand.CommandType, jsonCommand.Properties, document);
+                    IUndoRedoCommand command = CommandFactory.CreateCommand(jsonCommand.CommandType, jsonCommand.Properties, document);
 
                     document.Apply(command);
                 }

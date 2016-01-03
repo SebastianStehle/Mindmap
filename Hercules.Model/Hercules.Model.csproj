@@ -150,6 +150,7 @@
     <Compile Include="ExImport\Formats\XMind\XMindImporter.cs" />
     <Compile Include="ExImport\Formats\XMind\XMindStyle.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IUndoRedoCommand.cs" />
     <Compile Include="IconPosition.cs" />
     <Compile Include="INodeColor.cs" />
     <Compile Include="IconSize.cs" />

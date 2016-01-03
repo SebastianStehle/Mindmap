@@ -9,6 +9,6 @@ namespace Hercules.Model
 {
     public interface IDocumentCommands
     {
-        void Apply(CommandBase command);
+        void Apply(IUndoRedoCommand command);
     }
 }

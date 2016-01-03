@@ -52,7 +52,7 @@ namespace Hercules.Model.Storing.Json
                 {
                     BasicProperties properties = await file.GetBasicPropertiesAsync();
 
-                    result.Add(new DocumentRef(file.DisplayName, properties.DateModified));
+                    result.Add(new DocumentRef(file.NameWithoutExtension(JsonDocumentSerializer.FileExtension), properties.DateModified));
                 }
 
                 return result.OrderByDescending(x => x.LastUpdate).ToList();
@@ -92,6 +92,8 @@ namespace Hercules.Model.Storing.Json
                     StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.ReplaceExisting);
 
                     await JsonDocumentSerializer.SerializeToFileAsync(file, history);
+
+                    documentRef.Updated().Rename(file.NameWithoutExtension(JsonDocumentSerializer.FileExtension));
                 }
                 catch (FileNotFoundException e)
                 {
@@ -114,7 +116,7 @@ namespace Hercules.Model.Storing.Json
 
                     await file.RenameAsync($"{newName}{JsonDocumentSerializer.FileExtension.Extension}", NameCollisionOption.GenerateUniqueName);
 
-                    documentRef.Updated().Rename(file.DisplayName);
+                    documentRef.Updated().Rename(file.NameWithoutExtension(JsonDocumentSerializer.FileExtension));
                 }
                 catch (FileNotFoundException e)
                 {
@@ -160,6 +162,8 @@ namespace Hercules.Model.Storing.Json
                     StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.GenerateUniqueName);
 
                     await JsonDocumentSerializer.SerializeToFileAsync(file, history);
+
+                    documentRef.Updated().Rename(file.NameWithoutExtension(JsonDocumentSerializer.FileExtension));
 
                     return documentRef;
                 }

@@ -74,14 +74,18 @@ namespace Hercules.Win2D.Rendering
         public void UpdateSize(Vector2 size)
         {
             renderSize = size;
+
+            UpdateBounds();
         }
 
         public void UpdatePosition(Vector2 position)
         {
             renderPosition = position;
+
+            UpdateBounds();
         }
 
-        public void UpdateBounds()
+        private void UpdateBounds()
         {
             renderBounds = new Rect2(renderPosition, renderSize);
         }

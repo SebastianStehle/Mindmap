@@ -11,7 +11,7 @@ using System.Globalization;
 
 namespace Hercules.Model
 {
-    public abstract class ChildNodeCommandBase : CommandBase
+    public abstract class ChildNodeCommandBase : CommandBase<NodeBase>
     {
         private const string PropertyChildId = "ChildId";
         private readonly Node child;

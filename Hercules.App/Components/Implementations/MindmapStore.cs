@@ -38,6 +38,8 @@ namespace Hercules.App.Components.Implementations
 
         public event EventHandler<DocumentLoadedEventArgs> DocumentLoaded;
 
+        public event EventHandler MindmapUpdated;
+
         public ObservableCollection<MindmapRef> AllMindmaps
         {
             get { return allMindmaps; }
@@ -154,6 +156,8 @@ namespace Hercules.App.Components.Implementations
             return DoAsync(mindmap, async m =>
             {
                 await documentStore.RenameAsync(m.DocumentRef, newName);
+
+                OnMindmapUpdated();
             });
         }
 
@@ -165,6 +169,8 @@ namespace Hercules.App.Components.Implementations
             return DoAsync(mindmap, document, async (m, d) =>
             {
                 await documentStore.StoreAsync(m.DocumentRef, d);
+
+                OnMindmapUpdated();
             });
         }
 
@@ -297,6 +303,11 @@ namespace Hercules.App.Components.Implementations
 
                 OnDocumentLoaded(null);
             }
+        }
+
+        private void OnMindmapUpdated()
+        {
+            MindmapUpdated?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnDocumentLoaded(Document document)

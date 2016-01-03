@@ -40,7 +40,6 @@ namespace Hercules.Win2D.Rendering
         public void MoveTo(Vector2 position)
         {
             UpdatePosition(position);
-            UpdateBounds();
 
             needsArrange = true;
         }
@@ -48,7 +47,6 @@ namespace Hercules.Win2D.Rendering
         public void MoveBy(Vector2 offset)
         {
             UpdatePosition(RenderPosition + offset);
-            UpdateBounds();
 
             needsArrange = true;
         }

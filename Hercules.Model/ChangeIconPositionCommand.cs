@@ -10,7 +10,7 @@ using System;
 
 namespace Hercules.Model
 {
-    public sealed class ChangeIconPositionCommand : CommandBase
+    public sealed class ChangeIconPositionCommand : CommandBase<NodeBase>
     {
         private const string PropertyIconPosition = "IconPosition";
         private readonly IconPosition newIconPosition;
@@ -60,7 +60,11 @@ namespace Hercules.Model
             oldIconPosition = Node.IconPosition;
 
             Node.ChangeIconPosition(newIconPosition);
-            Node.Select();
+
+            if (isRedo)
+            {
+                Node.Select();
+            }
         }
 
         protected override void Revert()

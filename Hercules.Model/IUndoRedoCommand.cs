@@ -1,17 +1,16 @@
 ﻿// ==========================================================================
-// EditorPropertiesView.xaml.cs
+// IUndoRedoCommand.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-namespace Hercules.App.Modules.Editor.Views
+namespace Hercules.Model
 {
-    public sealed partial class EditorPropertiesView
+    public interface IUndoRedoCommand : IUndoRedoAction
     {
-        public EditorPropertiesView()
-        {
-            InitializeComponent();
-        }
+        void Execute();
+
+        void Save(PropertiesBag properties);
     }
 }

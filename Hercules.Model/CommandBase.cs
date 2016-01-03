@@ -12,17 +12,17 @@ using GP.Windows;
 
 namespace Hercules.Model
 {
-    public abstract class CommandBase : IUndoRedoAction
+    public abstract class CommandBase<TNode> : IUndoRedoCommand where TNode : NodeBase
     {
         private const string PropertyNodeId = "NodeId";
-        private readonly NodeBase node;
+        private readonly TNode node;
 
-        public NodeBase Node
+        public TNode Node
         {
             get { return node; }
         }
 
-        protected CommandBase(NodeBase node)
+        protected CommandBase(TNode node)
         {
             Guard.NotNull(node, nameof(node));
 
@@ -36,7 +36,7 @@ namespace Hercules.Model
 
             Guid nodeId = properties[PropertyNodeId].ToGuid(CultureInfo.InvariantCulture);
 
-            node = document.GetOrCreateNode(nodeId, i => new Node(i));
+            node = (TNode)document.GetOrCreateNode(nodeId, i => new Node(i));
         }
 
         public virtual void Save(PropertiesBag properties)

@@ -12,7 +12,7 @@ using System;
 
 namespace Hercules.Model
 {
-    public sealed class ChangeShapeCommand : CommandBase
+    public sealed class ChangeShapeCommand : CommandBase<Node>
     {
         private const string PropertyShape = "Shape";
         private readonly NodeShape? newShape;
@@ -62,26 +62,20 @@ namespace Hercules.Model
 
         protected override void Execute(bool isRedo)
         {
-            Node node = Node as Node;
+            oldShape = Node.Shape;
 
-            if (node != null)
+            Node.ChangeShape(newShape);
+
+            if (isRedo)
             {
-                oldShape = node.Shape;
-
-                node.ChangeShape(newShape);
-                node.Select();
+                Node.Select();
             }
         }
 
         protected override void Revert()
         {
-            Node node = Node as Node;
-
-            if (node != null)
-            {
-                node.ChangeShape(oldShape);
-                node.Select();
-            }
+            Node.ChangeShape(oldShape);
+            Node.Select();
         }
     }
 }

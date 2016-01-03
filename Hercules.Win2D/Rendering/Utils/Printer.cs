@@ -26,7 +26,7 @@ namespace Hercules.Win2D.Rendering.Utils
 
             CanvasPrintDocument printDocument = new CanvasPrintDocument();
 
-            Rect2 sceneBounds = scene.Bounds;
+            Rect2 sceneBounds = scene.RenderBounds;
 
             Action<CanvasDrawingSession, PrintPageDescription> renderForPrint = (session, page) =>
             {

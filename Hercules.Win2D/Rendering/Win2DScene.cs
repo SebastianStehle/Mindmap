@@ -30,12 +30,12 @@ namespace Hercules.Win2D.Rendering
         private readonly Func<NodeBase, Win2DRenderNode> nodeFactory;
         private readonly Win2DRenderNode previewNode;
         private readonly Document document;
-        private Rect2 bounds;
+        private Rect2 renderBounds;
         private bool isLayoutInvalidated;
 
-        public Rect2 Bounds
+        public Rect2 RenderBounds
         {
-            get { return bounds; }
+            get { return renderBounds; }
         }
 
         public ICollection<Win2DRenderNode> DiagramNodes
@@ -181,7 +181,7 @@ namespace Hercules.Win2D.Rendering
             {
                 renderNode.ArrangeBodyAndButton(session);
 
-                if (renderNode.IsVisible)
+                if (renderNode.IsVisible && renderNode != previewNode)
                 {
                     Rect2 nodeBounds = renderNode.RenderBounds;
 
@@ -203,7 +203,7 @@ namespace Hercules.Win2D.Rendering
                 adorner.Arrange(session);
             }
 
-            bounds = new Rect2((float)minX, (float)minY, (float)(maxX - minX), (float)(maxY - minY));
+            renderBounds = new Rect2((float)minX, (float)minY, (float)(maxX - minX), (float)(maxY - minY));
         }
 
         public void Render(CanvasDrawingSession session, bool renderControls, Rect2 viewRect)

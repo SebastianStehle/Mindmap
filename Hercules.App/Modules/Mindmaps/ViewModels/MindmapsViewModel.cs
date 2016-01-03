@@ -97,11 +97,10 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                         foreach (var result in results)
                         {
                             await mindmapStore.AddAsync(result.Name, result.Document);
+                            await mindmapStore.LoadAsync(mindmapStore.AllMindmaps[0]);
+
+                            SelectedMindmap = mindmapStore.AllMindmaps[0];
                         }
-
-                        await mindmapStore.LoadAsync(mindmapStore.AllMindmaps[0]);
-
-                        SelectedMindmap = mindmapStore.AllMindmaps[0];
                     }
                 }
                 catch

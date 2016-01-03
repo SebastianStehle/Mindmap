@@ -227,11 +227,6 @@ namespace GP.Windows
         {
             NotNullOrEmpty(target, parameterName);
 
-            if (target != target.Trim())
-            {
-                throw new ArgumentException("Name cannot start or end with whitespaces.", parameterName);
-            }
-
             if (target.Intersect(Path.GetInvalidFileNameChars()).Any())
             {
                 throw new ArgumentException("Name contains an invalid character.", parameterName);

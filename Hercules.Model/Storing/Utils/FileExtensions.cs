@@ -23,6 +23,18 @@ namespace Hercules.Model.Storing.Utils
             return localFolder.GetFilesAsync(extension.Extension);
         }
 
+        public static string NameWithoutExtension(this StorageFile file, FileExtension extension)
+        {
+            string name = file.Name;
+
+            if (name.EndsWith(extension.ToString(), StringComparison.OrdinalIgnoreCase))
+            {
+                name = name.Substring(0, name.Length - extension.ToString().Length);
+            }
+
+            return name;
+        }
+
         public static async Task<List<StorageFile>> GetFilesAsync(this StorageFolder localFolder, string extension)
         {
             IEnumerable<StorageFile> files = await localFolder.GetFilesAsync();

@@ -7,7 +7,7 @@
 // ==========================================================================
 namespace Hercules.Model
 {
-    public sealed class ToggleCollapseCommand : CommandBase
+    public sealed class ToggleCollapseCommand : CommandBase<NodeBase>
     {
         public ToggleCollapseCommand(PropertiesBag properties, Document document)
             : base(properties, document)
@@ -22,11 +22,16 @@ namespace Hercules.Model
         protected override void Execute(bool isRedo)
         {
             Node.ChangeIsCollapsed(!Node.IsCollapsed);
+
+            if (isRedo)
+            {
+                Node.Select();
+            }
         }
 
         protected override void Revert()
         {
-            Node.ChangeIsCollapsed(!Node.IsCollapsed);
+            Execute(true);
         }
     }
 }

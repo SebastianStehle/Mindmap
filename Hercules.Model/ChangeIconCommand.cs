@@ -11,7 +11,7 @@ using Hercules.Model.Storing;
 namespace Hercules.Model
 {
     [LegacyName("Hercules.Model.ChangeIconKeyCommand, Hercules.Model, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null")]
-    public sealed class ChangeIconCommand : CommandBase
+    public sealed class ChangeIconCommand : CommandBase<NodeBase>
     {
         private readonly INodeIcon newIcon;
         private INodeIcon oldIcon;
@@ -48,7 +48,11 @@ namespace Hercules.Model
             oldIcon = Node.Icon;
 
             Node.ChangeIcon(newIcon);
-            Node.Select();
+
+            if (isRedo)
+            {
+                Node.Select();
+            }
         }
 
         protected override void Revert()

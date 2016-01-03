@@ -17,6 +17,8 @@ namespace Hercules.App.Components
     {
         event EventHandler<DocumentLoadedEventArgs> DocumentLoaded;
 
+        event EventHandler MindmapUpdated;
+
         ObservableCollection<MindmapRef> AllMindmaps { get; }
 
         Document LoadedDocument { get; }

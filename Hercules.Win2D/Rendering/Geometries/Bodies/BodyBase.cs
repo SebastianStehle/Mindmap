@@ -48,6 +48,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
 
         public virtual void ClearResources()
         {
+            textRenderer.ClearResources();
         }
 
         public virtual Vector2 Measure(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)

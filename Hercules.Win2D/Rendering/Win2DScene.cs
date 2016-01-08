@@ -62,6 +62,7 @@ namespace Hercules.Win2D.Rendering
         {
             this.document = document;
             this.previewNode = previewNode;
+            this.previewNode.Hide();
             this.nodeFactory = nodeFactory;
 
             InitializeDocument();

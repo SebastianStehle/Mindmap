@@ -17,15 +17,15 @@ using Microsoft.Graphics.Canvas.Text;
 
 namespace Hercules.Win2D.Rendering
 {
-    public sealed class Win2DTextRenderer
+    public sealed class Win2DTextRenderer : IResourceHolder
     {
-        private readonly Vector2 padding = new Vector2(2, 2);
-        private CanvasTextLayout textLayout;
+        private const float PaddingY = 2;
         private CanvasTextFormat textFormat;
         private Vector2 renderSize;
         private Vector2 renderPosition;
+        private string lastText;
+        private bool isFirstMeasure = true;
         private float fontSize = 14;
-        private float minSize;
 
         public Rect2 RenderBounds
         {
@@ -74,35 +74,44 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
+        public void ClearResources()
+        {
+            if (textFormat != null)
+            {
+                textFormat.Dispose();
+                textFormat = null;
+            }
+        }
+
         public void Measure(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
         {
-            minSize = TextFormat.FontSize * 2;
-
             string text = renderable.Node.Text;
 
-            if (!string.IsNullOrWhiteSpace(text))
+            if (isFirstMeasure || !string.Equals(text, lastText, StringComparison.CurrentCulture))
             {
-                textLayout = new CanvasTextLayout(resourceCreator, text, TextFormat, 0.0f, 0.0f);
+                isFirstMeasure = true;
 
-                renderSize = new Vector2(
-                    (float)textLayout.DrawBounds.Width,
-                    (float)textLayout.DrawBounds.Height);
+                lastText = text;
+
+                if (!string.IsNullOrWhiteSpace(text))
+                {
+                    using (CanvasTextLayout textLayout = new CanvasTextLayout(resourceCreator, text, TextFormat, 0.0f, 0.0f))
+                    {
+                        renderSize = new Vector2(
+                            (float)textLayout.DrawBounds.Width,
+                            (float)textLayout.DrawBounds.Height);
+                    }
+                }
+                else
+                {
+                    renderSize = Vector2.Zero;
+                }
+
+                renderSize.Y = Math.Max(renderSize.Y, TextFormat.FontSize * 2) + PaddingY;
+                renderSize.X = Math.Max(renderSize.X, TextFormat.FontSize * 2);
+
+                renderSize = MathHelper.RoundToMultipleOfTwo(renderSize);
             }
-            else
-            {
-                renderSize = Vector2.Zero;
-            }
-
-            renderSize.Y = Math.Max(renderSize.Y, minSize);
-
-            MathHelper.Round(ref renderSize);
-
-            if (Math.Abs((renderSize.Y % 2) - 1) < float.Epsilon)
-            {
-                renderSize.Y += 1;
-            }
-
-            renderSize += 2 * padding;
         }
 
         public void Arrange(Vector2 position)

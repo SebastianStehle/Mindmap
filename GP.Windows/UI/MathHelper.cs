@@ -11,6 +11,7 @@ using System.Numerics;
 using System.Runtime.CompilerServices;
 using Windows.Foundation;
 using Windows.UI.Xaml.Media;
+// ReSharper disable CompareOfFloatsByEqualityOperator
 
 namespace GP.Windows.UI
 {
@@ -240,6 +241,56 @@ namespace GP.Windows.UI
         {
             value.X = (float)Math.Round(value.X);
             value.Y = (float)Math.Round(value.Y);
+        }
+
+        /// <summary>
+        /// Rounds the vector to a multiple of two.
+        /// </summary>
+        /// <param name="value">The vector to round.</param>
+        /// <returns>
+        /// The rounded value.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static void RoundToMultipleOfTwo(ref Vector2 value)
+        {
+            value.X = (float)Math.Round(value.X);
+            value.Y = (float)Math.Round(value.Y);
+
+            if (value.Y % 2 == 1)
+            {
+                value.Y += 1;
+            }
+
+            if (value.X % 2 == 1)
+            {
+                value.X += 1;
+            }
+        }
+
+        /// <summary>
+        /// Rounds the vector to a multiple of two.
+        /// </summary>
+        /// <param name="value">The vector to round.</param>
+        /// <returns>
+        /// The rounded value.
+        /// </returns>
+        [MethodImpl(MethodImplOptions.AggressiveInlining)]
+        public static Vector2 RoundToMultipleOfTwo(Vector2 value)
+        {
+            value.X = (float)Math.Round(value.X);
+            value.Y = (float)Math.Round(value.Y);
+
+            if (value.Y % 2 == 1)
+            {
+                value.Y += 1;
+            }
+
+            if (value.X % 2 == 1)
+            {
+                value.X += 1;
+            }
+
+            return value;
         }
 
         /// <summary>

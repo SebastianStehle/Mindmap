@@ -54,7 +54,7 @@ namespace Hercules.Model.Storing.Json
 
             JsonHistory history = new JsonHistory(document);
 
-            return SerializeToFileAsync(history, file);
+            return SerializeObjectToFileAsync(file, history);
         }
 
         public static void SerializeToStream(Stream stream, JsonHistory history)
@@ -70,7 +70,7 @@ namespace Hercules.Model.Storing.Json
             Guard.NotNull(file, nameof(file));
             Guard.NotNull(history, nameof(history));
 
-            return SerializeToFileAsync(history, file);
+            return SerializeObjectToFileAsync(file, history);
         }
 
         public static Document DeserializeFromStream(Stream stream)
@@ -96,7 +96,7 @@ namespace Hercules.Model.Storing.Json
             }
         }
 
-        private static async Task SerializeToFileAsync(object value, IStorageFile2 file)
+        private static async Task SerializeObjectToFileAsync(IStorageFile2 file, object value)
         {
             using (StorageStreamTransaction transaction = await file.OpenTransactedWriteAsync(StorageOpenOptions.None))
             {

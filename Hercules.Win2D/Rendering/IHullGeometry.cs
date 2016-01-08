@@ -12,7 +12,7 @@ namespace Hercules.Win2D.Rendering
 {
     public interface IHullGeometry : IResourceHolder
     {
-        void Arrange(Win2DRenderable renderable, CanvasDrawingSession session);
+        void Arrange(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator);
 
         void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color);
     }

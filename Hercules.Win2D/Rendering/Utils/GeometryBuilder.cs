@@ -24,11 +24,11 @@ namespace Hercules.Win2D.Rendering.Utils
         private const float Radius = 10;
         private const float Padding = 10;
 
-        public static CanvasGeometry ComputeHullGeometry(CanvasDrawingSession session, Win2DScene scene, Win2DRenderNode renderNode)
+        public static CanvasGeometry ComputeHullGeometry(ICanvasResourceCreator resourceCreator, Win2DScene scene, Win2DRenderNode renderNode)
         {
             Guard.NotNull(scene, nameof(scene));
-            Guard.NotNull(session, nameof(session));
             Guard.NotNull(renderNode, nameof(renderNode));
+            Guard.NotNull(resourceCreator, nameof(resourceCreator));
 
             NodeBase node = renderNode.Node;
 
@@ -46,7 +46,7 @@ namespace Hercules.Win2D.Rendering.Utils
 
                     List<Vector2> points = RoundCorners(hull);
 
-                    return BuildGeometry(session, points);
+                    return BuildGeometry(resourceCreator, points);
                 }
             }
 
@@ -82,9 +82,9 @@ namespace Hercules.Win2D.Rendering.Utils
             return points;
         }
 
-        private static CanvasGeometry BuildGeometry(ICanvasResourceCreator session, IReadOnlyList<Vector2> points)
+        private static CanvasGeometry BuildGeometry(ICanvasResourceCreator resourceCreator, IReadOnlyList<Vector2> points)
         {
-            using (CanvasPathBuilder builder = new CanvasPathBuilder(session.Device))
+            using (CanvasPathBuilder builder = new CanvasPathBuilder(resourceCreator.Device))
             {
                 builder.BeginFigure(points[0]);
 
@@ -105,10 +105,10 @@ namespace Hercules.Win2D.Rendering.Utils
                 return CanvasGeometry.CreatePath(builder);
             }
         }
-        public static CanvasGeometry ComputeFilledPath(Win2DRenderNode target, Win2DRenderNode parent, CanvasDrawingSession session)
+        public static CanvasGeometry ComputeFilledPath(Win2DRenderNode target, Win2DRenderNode parent, ICanvasResourceCreator resourceCreator)
         {
             Guard.NotNull(target, nameof(target));
-            Guard.NotNull(session, nameof(session));
+            Guard.NotNull(resourceCreator, nameof(resourceCreator));
 
             if (parent != null && target.IsVisible)
             {
@@ -134,7 +134,7 @@ namespace Hercules.Win2D.Rendering.Utils
                 MathHelper.Round(ref point1);
                 MathHelper.Round(ref point2);
 
-                return CreateFilledPath(session, point1, point2);
+                return CreateFilledPath(resourceCreator, point1, point2);
             }
 
             return null;
@@ -164,10 +164,10 @@ namespace Hercules.Win2D.Rendering.Utils
             }
         }
 
-        public static CanvasGeometry ComputeLinePath(Win2DRenderNode target, Win2DRenderNode parent, CanvasDrawingSession session)
+        public static CanvasGeometry ComputeLinePath(Win2DRenderNode target, Win2DRenderNode parent, ICanvasResourceCreator resourceCreator)
         {
             Guard.NotNull(target, nameof(target));
-            Guard.NotNull(session, nameof(session));
+            Guard.NotNull(resourceCreator, nameof(resourceCreator));
 
             if (parent != null && target.IsVisible)
             {
@@ -194,17 +194,17 @@ namespace Hercules.Win2D.Rendering.Utils
                 MathHelper.Round(ref point1);
                 MathHelper.Round(ref point2);
 
-                return CreateLinePath(session, point1, point2);
+                return CreateLinePath(resourceCreator, point1, point2);
             }
 
             return null;
         }
 
-        private static CanvasGeometry CreateLinePath(ICanvasResourceCreator session, Vector2 point1, Vector2 point2)
+        private static CanvasGeometry CreateLinePath(ICanvasResourceCreator resourceCreator, Vector2 point1, Vector2 point2)
         {
             float halfX = (point1.X + point2.X) * 0.5f;
 
-            using (CanvasPathBuilder builder = new CanvasPathBuilder(session.Device))
+            using (CanvasPathBuilder builder = new CanvasPathBuilder(resourceCreator.Device))
             {
                 builder.BeginFigure(point1);
 

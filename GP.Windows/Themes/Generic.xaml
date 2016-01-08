@@ -1,8 +1,7 @@
 <ResourceDictionary
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:local="using:GP.Windows.UI.Controls"
-    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml">
+    xmlns:local="using:GP.Windows.UI.Controls">
 
     <Style x:Key="ColorsSliderStyle" TargetType="Slider">
         <Setter Property="Background" Value="{ThemeResource SystemControlForegroundBaseMediumLowBrush}"/>
@@ -237,22 +236,6 @@
                 <ControlTemplate TargetType="local:TiledBackground">
                     <Border Background="{TemplateBinding Background}" IsHitTestVisible="False" UseLayoutRounding="True">
                         <Path x:Name="PART_Path" Stroke="{TemplateBinding BorderBrush}" StrokeThickness="{Binding BorderThickness.Left, RelativeSource={RelativeSource TemplatedParent}}" />
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-
-    <Style TargetType="local:ZoomableCanvasControl">
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="local:ZoomableCanvasControl">
-                    <Border 
-                        Background="{TemplateBinding Background}"
-                        BorderBrush="{TemplateBinding BorderBrush}" 
-                        BorderThickness="{TemplateBinding BorderThickness}" 
-                        Padding="{TemplateBinding Padding}">
-                        <canvas:CanvasSwapChainPanel x:Name="PART_SwapChainPanel" />
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

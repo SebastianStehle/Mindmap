@@ -39,7 +39,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Paths
             }
         }
 
-        public void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
+        public void Arrange(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
         {
             Win2DRenderNode renderNode = renderable as Win2DRenderNode;
 
@@ -55,12 +55,12 @@ namespace Hercules.Win2D.Rendering.Geometries.Paths
 
                     ClearResources();
 
-                    pathGeometry = CreateGeometry(session, renderNode);
+                    pathGeometry = CreateGeometry(renderNode, resourceCreator);
                 }
             }
         }
 
-        protected abstract CanvasGeometry CreateGeometry(CanvasDrawingSession session, Win2DRenderNode renderNode);
+        protected abstract CanvasGeometry CreateGeometry(Win2DRenderNode renderNode, ICanvasResourceCreator resourceCreator);
 
         public void Render(Win2DRenderable renderable, CanvasDrawingSession session)
         {

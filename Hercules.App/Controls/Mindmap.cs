@@ -8,13 +8,13 @@
 
 using System;
 using System.Numerics;
+using Windows.Graphics.Display;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Hercules.Model;
 using Hercules.Model.Layouting;
-using Hercules.Model.Utils;
 using Hercules.Win2D.Rendering;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
@@ -33,8 +33,8 @@ namespace Hercules.App.Controls
         private const string TextBoxPart = "PART_TextBox";
         private const string ScrollViewerPart = "PART_ScrollViewer";
         private IWin2DRendererProvider lastWin2DRendererProvider;
+        private float displayDpi;
         private ScrollViewer scrollViewer;
-        private ScrollViewerView lastView;
         private Win2DRenderer renderer;
         private CanvasControlWrapper canvasControl;
         private TextEditor textEditor;
@@ -107,10 +107,28 @@ namespace Hercules.App.Controls
         protected override void OnApplyTemplate()
         {
             BindCanvasControl();
+            BindDisplay();
             BindTextEditor();
             BindScrollViewer();
 
             InitializeRenderer();
+        }
+
+        private void BindDisplay()
+        {
+            DisplayInformation display = DisplayInformation.GetForCurrentView();
+
+            if (display != null)
+            {
+                display.DpiChanged += Display_DpiChanged;
+
+                displayDpi = display.LogicalDpi;
+            }
+        }
+
+        private void Display_DpiChanged(DisplayInformation sender, object args)
+        {
+            displayDpi = sender.LogicalDpi;
         }
 
         private void BindTextEditor()
@@ -129,102 +147,52 @@ namespace Hercules.App.Controls
 
             if (scrollViewer != null)
             {
-                scrollViewer.ViewChanging += ScrollViewer_ViewChanging;
-
-                scrollViewer.SizeChanged += ScrollViewer_SizeChanged;
-
-                scrollViewer.ZoomSnapPoints.Add(0.5f);
-                scrollViewer.ZoomSnapPoints.Add(1.0f);
-                scrollViewer.ZoomSnapPoints.Add(2.0f);
+                scrollViewer.ViewChanged += ScrollViewer_ViewChanged;
             }
         }
 
         private void BindCanvasControl()
         {
-            CanvasControl control = GetTemplateChild(CanvasPart) as CanvasControl;
+            CanvasVirtualControl control = GetTemplateChild(CanvasPart) as CanvasVirtualControl;
 
             if (control != null)
             {
                 canvasControl = new CanvasControlWrapper(control);
 
-                canvasControl.Draw += CanvasControl_Draw;
+                canvasControl.AfterDraw += CanvasControl_AfterDraw;
             }
         }
 
-        private void ScrollViewer_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void ScrollViewer_ViewChanged(object sender, ScrollViewerViewChangedEventArgs e)
         {
             WithRenderer(r =>
             {
-                if (lastView != null)
+                if (!e.IsIntermediate)
                 {
-                    Transform(r, lastView);
+                    UpdateScale();
                 }
             });
         }
 
-        private void ScrollViewer_ViewChanging(object sender, ScrollViewerViewChangingEventArgs e)
+        private void UpdateScale()
         {
-            WithRenderer(r =>
+            if (canvasControl != null && displayDpi > 0)
             {
-                ScrollViewerView view = e.FinalView;
+                float dpiAdjustment = 96 / displayDpi;
 
-                if (lastView == null || (Math.Abs(view.ZoomFactor - lastView.ZoomFactor) > float.Epsilon || Math.Abs(view.HorizontalOffset - lastView.HorizontalOffset) > float.Epsilon || Math.Abs(view.VerticalOffset - lastView.VerticalOffset) > float.Epsilon))
+                float dpiScale = dpiAdjustment * scrollViewer.ZoomFactor;
+                float dpiRatio = canvasControl.DpiScale / dpiScale;
+
+                if (dpiRatio <= 0.8 || dpiRatio >= 1.25)
                 {
-                    lastView = view;
-
-                    Transform(r, view);
+                    canvasControl.DpiScale = dpiScale;
                 }
-            });
+            }
         }
 
-        private void Transform(Win2DRenderer rendererToTransform, ScrollViewerView view)
+        private void CanvasControl_AfterDraw(object sender, EventArgs e)
         {
-            double zoomFactor = view.ZoomFactor;
-
-            double xOffset = view.HorizontalOffset;
-            double yOffset = view.VerticalOffset;
-
-            double inverseZoom = 1.0 / zoomFactor;
-
-            double scaledContentW = Document.Size.X * zoomFactor;
-            double scaledContentH = Document.Size.Y * zoomFactor;
-
-            double translateX;
-            double translateY;
-
-            if (scaledContentW < scrollViewer.ViewportWidth)
-            {
-                translateX = ((scrollViewer.ViewportWidth * inverseZoom) - Document.Size.X) * 0.5;
-            }
-            else
-            {
-                translateX = -inverseZoom * xOffset;
-            }
-
-            if (scaledContentH < scrollViewer.ViewportHeight)
-            {
-                translateY = ((scrollViewer.ViewportHeight * inverseZoom) - Document.Size.Y) * 0.5;
-            }
-            else
-            {
-                translateY = -inverseZoom * yOffset;
-            }
-
-            double visibleX = inverseZoom * xOffset;
-            double visibleY = inverseZoom * yOffset;
-
-            double visibleW = Math.Min(Document.Size.X, inverseZoom * scrollViewer.ViewportWidth);
-            double visibleH = Math.Min(Document.Size.Y, inverseZoom * scrollViewer.ViewportHeight);
-
-            Rect2 visibleRect = new Rect2((float)visibleX, (float)visibleY, (float)visibleW, (float)visibleH);
-
-            rendererToTransform.Transform(new Vector2((float)translateX, (float)translateY), (float)zoomFactor, visibleRect);
-            rendererToTransform.InvalidateWithoutLayout();
-        }
-
-        private void CanvasControl_Draw(object sender, CanvasDrawEventArgs e)
-        {
-            WithRenderer(r => textEditor.UpdateTransform());
+            WithRenderer(r => textEditor.Transform());
         }
 
         private void InitializeRenderer()
@@ -252,9 +220,9 @@ namespace Hercules.App.Controls
 
             InitializeLayout();
 
-            if (renderer != null && lastView != null)
+            if (renderer != null)
             {
-                Transform(renderer, lastView);
+                UpdateScale();
             }
             else if (canvasControl != null)
             {
@@ -301,7 +269,7 @@ namespace Hercules.App.Controls
         {
             WithRenderer(r =>
             {
-                Vector2 position = r.GetMindmapPosition(e.GetCurrentPoint(this).Position.ToVector2());
+                Vector2 position = e.GetCurrentPoint(canvasControl.Inner).Position.ToVector2();
 
                 foreach (Win2DRenderNode renderNode in r.Scene.DiagramNodes)
                 {
@@ -326,6 +294,7 @@ namespace Hercules.App.Controls
                     Win2DRenderNode renderNode = (Win2DRenderNode)r.Scene.FindRenderNode(Document.SelectedNode);
 
                     textEditor.BeginEdit(renderNode);
+                    textEditor.Transform();
                 }
             });
         }
@@ -334,13 +303,14 @@ namespace Hercules.App.Controls
         {
             WithRenderer(r =>
             {
-                Vector2 position = r.GetMindmapPosition(e.GetPosition(this).ToVector2());
+                Vector2 position = e.GetPosition(canvasControl.Inner).ToVector2();
 
                 foreach (Win2DRenderNode renderNode in r.Scene.DiagramNodes)
                 {
                     if (renderNode.HitTest(position))
                     {
                         textEditor.BeginEdit(renderNode);
+                        textEditor.Transform();
                         break;
                     }
                 }
@@ -353,7 +323,7 @@ namespace Hercules.App.Controls
             {
                 if (textEditor != null)
                 {
-                    Vector2 position = r.GetMindmapPosition(e.GetPosition(this).ToVector2());
+                    Vector2 position = e.GetPosition(canvasControl.Inner).ToVector2();
 
                     Win2DRenderNode handledNode;
 

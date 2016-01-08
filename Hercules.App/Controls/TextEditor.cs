@@ -8,7 +8,6 @@
 
 using System;
 using System.Numerics;
-using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
@@ -20,7 +19,7 @@ namespace Hercules.App.Controls
 {
     public sealed class TextEditor : AdvancedTextBox
     {
-        private readonly CompositeTransform renderTransform = new CompositeTransform();
+        private readonly TranslateTransform renderTransform = new TranslateTransform();
         private Win2DRenderNode editingNode;
 
         public Win2DRenderNode EditingNode
@@ -52,12 +51,6 @@ namespace Hercules.App.Controls
             CancelEdit(true);
         }
 
-        public void UpdateTransform()
-        {
-            InvalidateMeasure();
-            InvalidateArrange();
-        }
-
         public void BeginEdit(Win2DRenderNode renderNode)
         {
             if (renderNode != null)
@@ -69,7 +62,6 @@ namespace Hercules.App.Controls
                     editingNode = renderNode;
                 }
 
-                UpdateTransform();
                 UpdateText();
 
                 Show();
@@ -106,50 +98,26 @@ namespace Hercules.App.Controls
             }
         }
 
-        protected override Size ArrangeOverride(Size finalSize)
+        public void Transform()
         {
             if (editingNode != null)
             {
-                Vector2 position = editingNode.Renderer.GetOverlayPosition(editingNode.TextRenderer.RenderPosition);
+                Vector2 position = editingNode.TextRenderer.RenderPosition;
 
-                renderTransform.TranslateX = position.X - Padding.Left - BorderThickness.Left;
-                renderTransform.TranslateY = position.Y - Padding.Top - BorderThickness.Top;
+                renderTransform.X = position.X - Padding.Left - BorderThickness.Left;
+                renderTransform.Y = position.Y - Padding.Top  - BorderThickness.Top;
 
-                float zoom = editingNode.Renderer.ZoomFactor;
-
-                renderTransform.ScaleX = zoom;
-                renderTransform.ScaleY = zoom;
-            }
-
-            return base.ArrangeOverride(finalSize);
-        }
-
-        protected override Size MeasureOverride(Size availableSize)
-        {
-            if (editingNode != null)
-            {
                 Vector2 renderSize = editingNode.TextRenderer.RenderSize;
 
-                Size actualSize = base.MeasureOverride(availableSize);
+                MinWidth =
+                    renderSize.X +
+                    Padding.Left +
+                    Padding.Right +
+                    BorderThickness.Left +
+                    BorderThickness.Right;
 
-                double minSizeX = Math.Max(MinWidth, renderSize.X + Padding.Left + Padding.Right + BorderThickness.Left + BorderThickness.Right);
-
-                if (actualSize.Width < minSizeX)
-                {
-                    actualSize.Width = minSizeX;
-                }
-
-                double minSizeY = renderSize.Y + Padding.Top + Padding.Bottom + BorderThickness.Top + BorderThickness.Bottom;
-
-                if (actualSize.Height < minSizeY)
-                {
-                    actualSize.Height = minSizeY;
-                }
-
-                return actualSize;
+                MinHeight = renderSize.Y + Padding.Top + Padding.Bottom + BorderThickness.Top + BorderThickness.Bottom;
             }
-
-            return new Size(0, 0);
         }
 
         private void UpdateText()

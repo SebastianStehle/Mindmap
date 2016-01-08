@@ -50,9 +50,9 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
         {
         }
 
-        public virtual Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session)
+        public virtual Vector2 Measure(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
         {
-            textRenderer.Measure(renderable, session);
+            textRenderer.Measure(renderable, resourceCreator);
 
             contentRenderSize = textRenderer.RenderSize;
 
@@ -104,7 +104,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             return contentRenderSize + (2 * contentPadding);
         }
 
-        public virtual void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
+        public virtual void Arrange(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
         {
             Vector2 iconOffset = Vector2.Zero;
             Vector2 textOffset = Vector2.Zero;

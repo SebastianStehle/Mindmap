@@ -9,7 +9,6 @@
 using System;
 using Windows.UI.Core;
 using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 
 namespace GP.Windows.UI.Controls
 {
@@ -29,6 +28,11 @@ namespace GP.Windows.UI.Controls
         CanvasDevice Device { get; }
 
         /// <summary>
+        /// Gets or sets a scaling factor applied to this control's Dpi.
+        /// </summary>
+        float DpiScale { get; set; }
+
+        /// <summary>
         /// Converts the dips to pixels.
         /// </summary>
         /// <param name="dips">The dips to convert.</param>
@@ -39,9 +43,19 @@ namespace GP.Windows.UI.Controls
         int ConvertDipsToPixels(float dips, CanvasDpiRounding dpiRounding);
 
         /// <summary>
+        /// This occurs before a drawing operation.
+        /// </summary>
+        event EventHandler BeforeDraw;
+
+        /// <summary>
+        /// This occurs before a drawing operation.
+        /// </summary>
+        event EventHandler AfterDraw;
+
+        /// <summary>
         /// This is where the magic happens! Hook this event to issue your immediate mode 2D drawing calls.
         /// </summary>
-        event EventHandler<CanvasDrawEventArgs> Draw;
+        event EventHandler<BoundedCanvasDrawEventArgs> Draw;
 
         /// <summary>
         /// Occurs when the resources must be created.

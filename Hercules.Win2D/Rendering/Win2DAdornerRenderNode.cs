@@ -51,21 +51,21 @@ namespace Hercules.Win2D.Rendering
             needsArrange = true;
         }
 
-        public void Measure(CanvasDrawingSession session)
+        public void Measure(ICanvasResourceCreator resourceCreator)
         {
             if (needsMeasure)
             {
-                geometry.Measure(this, session);
+                geometry.Measure(this, resourceCreator);
 
                 needsMeasure = false;
             }
         }
 
-        public void Arrange(CanvasDrawingSession session)
+        public void Arrange(ICanvasResourceCreator resourceCreator)
         {
             if (needsArrange)
             {
-                geometry.Arrange(this, session);
+                geometry.Arrange(this, resourceCreator);
 
                 needsArrange = false;
             }

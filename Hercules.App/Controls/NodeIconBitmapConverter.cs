@@ -30,8 +30,8 @@ namespace Hercules.App.Controls
                     CoreDispatcherPriority.Normal,
                     () =>
                     {
-                        bitmapImage.SetSourceAsync(stream.Result).AsTask().Forget();
-                    }).AsTask().Forget();
+                        bitmapImage.SetSourceAsync(stream.Result).Forget();
+                    }).Forget();
             });
 
             return bitmapImage;

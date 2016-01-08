@@ -32,9 +32,9 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             this.pathColor = pathColor;
         }
 
-        public override Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session)
+        public override Vector2 Measure(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
         {
-            Vector2 size = base.Measure(renderable, session);
+            Vector2 size = base.Measure(renderable, resourceCreator);
 
             verticalOffset = (size.Y - VerticalOffsetPadding) - (0.5f * size.Y);
 

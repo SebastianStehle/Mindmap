@@ -25,7 +25,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Hulls
             }
         }
 
-        public void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
+        public void Arrange(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
         {
             ClearResources();
 
@@ -33,7 +33,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Hulls
 
             if (renderNode != null)
             {
-                hullGeometry = GeometryBuilder.ComputeHullGeometry(session, renderable.Scene, renderNode);
+                hullGeometry = GeometryBuilder.ComputeHullGeometry(resourceCreator, renderable.Scene, renderNode);
             }
         }
 

@@ -72,7 +72,7 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer IsEnabled="{Binding Document, Converter={StaticResource TrueWhenNotNullConverter}, FallbackValue=False}" x:Name="Root" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden">
+    <ScrollViewer IsEnabled="{Binding SelectedNode, Converter={StaticResource TrueWhenNotNullConverter}, FallbackValue=False}" x:Name="Root" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden">
         <StackPanel Width="{Binding ElementName=Root, Path=ActualWidth}">
             <Border Style="{StaticResource PropertySectionStyle}">
                 <StackPanel>

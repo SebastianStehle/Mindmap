@@ -110,6 +110,13 @@ namespace Hercules.Model.Utils
             this.size = size;
         }
 
+        public Rect2(Rect rect)
+        {
+            position = new Vector2((float)rect.X, (float)rect.Y);
+
+            size = new Vector2((float)rect.Width, (float)rect.Height);
+        }
+
         public Rect2(float x, float y, float w, float h)
         {
             position = new Vector2(x, y);

@@ -33,6 +33,14 @@ namespace GP.Windows
         }
 
         /// <summary>
+        /// Does nothing.
+        /// </summary>
+        /// <param name="task">The task.</param>
+        public static void Forget(this IAsyncAction task)
+        {
+        }
+
+        /// <summary>
         /// Determines whether the specified value is between two other
         /// values.
         /// </summary>

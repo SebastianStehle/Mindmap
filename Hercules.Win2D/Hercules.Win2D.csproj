@@ -136,7 +136,6 @@
     <Compile Include="Rendering\Win2DIcon.cs" />
     <Compile Include="Rendering\Win2DRenderable.cs" />
     <Compile Include="Rendering\Win2DScene.cs" />
-    <Compile Include="Rendering\Win2DSceneTransformator.cs" />
     <Compile Include="Rendering\Utils\ScreenshotMaker.cs" />
     <Compile Include="Rendering\Win2DRenderer.cs" />
     <Compile Include="Rendering\Win2DRenderNode.cs" />

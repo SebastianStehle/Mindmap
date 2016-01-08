@@ -8,6 +8,7 @@
 
 using System.Numerics;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using GP.Windows.UI;
 using GP.Windows.UI.Interactivity;
@@ -20,6 +21,7 @@ namespace Hercules.App.Controls
 {
     public sealed class NodeMovingBehavior : Behavior<FrameworkElement>
     {
+        private ScrollViewer scrollViewer;
         private NodeMovingOperation movingOperation;
 
         protected override void OnAttached()
@@ -55,20 +57,25 @@ namespace Hercules.App.Controls
 
         private void AssociatedElement_ManipulationStarted(object sender, ManipulationStartedRoutedEventArgs e)
         {
+            scrollViewer = AssociatedElement.FindParent<ScrollViewer>();
+
             if (movingOperation != null)
             {
                 movingOperation.Cancel();
                 movingOperation = null;
             }
 
-            movingOperation = AcquireOperation(e.Position.ToVector2());
+            if (scrollViewer != null)
+            {
+                movingOperation = AcquireOperation(e.Position.ToVector2());
+            }
         }
 
         private void AssociatedElement_ManipulationDelta(object sender, ManipulationDeltaRoutedEventArgs e)
         {
-            if (movingOperation != null)
+            if (movingOperation != null && scrollViewer != null)
             {
-                Vector2 translation = movingOperation.Mindmap.Renderer.GetMindmapSize(e.Delta.Translation.ToVector2());
+                Vector2 translation = e.Delta.Translation.ToVector2() / scrollViewer.ZoomFactor;
 
                 movingOperation.Move(translation);
             }
@@ -83,6 +90,8 @@ namespace Hercules.App.Controls
                 movingOperation.Complete();
                 movingOperation = null;
             }
+
+            scrollViewer = null;
         }
 
         private NodeMovingOperation AcquireOperation(Vector2 position)

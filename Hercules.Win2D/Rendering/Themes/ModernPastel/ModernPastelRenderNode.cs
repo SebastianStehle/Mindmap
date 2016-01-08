@@ -22,7 +22,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
         {
         }
 
-        protected override IBodyGeometry CreateBody(CanvasDrawingSession session, IBodyGeometry current)
+        protected override IBodyGeometry CreateBody(ICanvasResourceCreator resourceCreator, IBodyGeometry current)
         {
             IBodyGeometry geometry = null;
 
@@ -119,7 +119,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             return shape;
         }
 
-        protected override IHullGeometry CreateHull(CanvasDrawingSession session, IHullGeometry current)
+        protected override IHullGeometry CreateHull(ICanvasResourceCreator resourceCreator, IHullGeometry current)
         {
             if (current == null && Node.IsShowingHull)
             {
@@ -129,7 +129,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             return null;
         }
 
-        protected override IPathGeometry CreatePath(CanvasDrawingSession session, IPathGeometry current)
+        protected override IPathGeometry CreatePath(ICanvasResourceCreator resourceCreator, IPathGeometry current)
         {
             NodeBase parentNode = Parent?.Node;
 

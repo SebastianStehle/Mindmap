@@ -26,7 +26,7 @@ namespace Hercules.Model
 
         public static void AddSibilingToSelectedNodeTransactional(this Document document)
         {
-            document?.SelectedNode.AddSibilingransactional();
+            document?.SelectedNode.AddSibilingTransactional();
         }
 
         public static NodeBase SelectRightOfSelectedNode(this Document document)

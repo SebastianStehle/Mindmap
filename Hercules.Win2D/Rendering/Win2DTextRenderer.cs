@@ -74,7 +74,7 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        public void Measure(Win2DRenderable renderable, CanvasDrawingSession session)
+        public void Measure(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
         {
             minSize = TextFormat.FontSize * 2;
 
@@ -82,7 +82,7 @@ namespace Hercules.Win2D.Rendering
 
             if (!string.IsNullOrWhiteSpace(text))
             {
-                textLayout = new CanvasTextLayout(session, text, TextFormat, 0.0f, 0.0f);
+                textLayout = new CanvasTextLayout(resourceCreator, text, TextFormat, 0.0f, 0.0f);
 
                 renderSize = new Vector2(
                     (float)textLayout.DrawBounds.Width,

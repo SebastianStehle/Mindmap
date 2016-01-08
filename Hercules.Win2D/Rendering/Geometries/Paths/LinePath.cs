@@ -21,9 +21,9 @@ namespace Hercules.Win2D.Rendering.Geometries.Paths
         {
         }
 
-        protected override CanvasGeometry CreateGeometry(CanvasDrawingSession session, Win2DRenderNode renderNode)
+        protected override CanvasGeometry CreateGeometry(Win2DRenderNode renderNode, ICanvasResourceCreator resourceCreator)
         {
-            return GeometryBuilder.ComputeLinePath(renderNode, renderNode.Parent, session);
+            return GeometryBuilder.ComputeLinePath(renderNode, renderNode.Parent, resourceCreator);
         }
 
         protected override void RenderGeometry(Win2DRenderable renderable, CanvasDrawingSession session, CanvasGeometry geometry, ICanvasBrush brush)

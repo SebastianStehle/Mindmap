@@ -32,11 +32,11 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             this.size = size;
         }
 
-        public override void Arrange(Win2DRenderable renderable, CanvasDrawingSession session)
+        public override void Arrange(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
         {
         }
 
-        public override Vector2 Measure(Win2DRenderable renderable, CanvasDrawingSession session)
+        public override Vector2 Measure(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
         {
             return size;
         }

@@ -7,7 +7,6 @@
 // ==========================================================================
 
 using System.Numerics;
-using Hercules.Model.Layouting;
 
 namespace Hercules.Model.Rendering
 {

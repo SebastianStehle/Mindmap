@@ -19,7 +19,7 @@ namespace Hercules.Model
         private readonly HashSet<NodeBase> nodes = new HashSet<NodeBase>();
         private readonly RootNode root;
         private readonly IUndoRedoManager undoRedoManager = new UndoRedoManager();
-        private readonly Vector2 size = new Vector2(5000, 5000);
+        private readonly Vector2 size = new Vector2(20000, 12000);
         private CompositeUndoRedoAction transaction;
         private NodeBase selectedNode;
 

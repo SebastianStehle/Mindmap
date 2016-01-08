@@ -12,7 +12,7 @@ namespace Hercules.Model
 {
     public static class NodeTransactionExtensions
     {
-        public static NodeBase AddSibilingransactional(this NodeBase node)
+        public static NodeBase AddSibilingTransactional(this NodeBase node)
         {
             Node selectedNormalNode = node as Node;
 
@@ -26,6 +26,8 @@ namespace Hercules.Model
                 {
                     commands.Apply(command);
                 });
+
+                command.Child.Select();
 
                 return command.Child;
             }
@@ -45,6 +47,8 @@ namespace Hercules.Model
                 {
                     commands.Apply(command);
                 });
+
+                command.Child.Select();
 
                 return command.Child;
             }

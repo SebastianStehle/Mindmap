@@ -20,7 +20,6 @@ using Hercules.Model.Rendering;
 using Hercules.Model.Utils;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 
 // ReSharper disable DoNotCallOverridableMethodsInConstructor
 
@@ -31,15 +30,8 @@ namespace Hercules.Win2D.Rendering
         private readonly Win2DResourceManager resources;
         private readonly Document document;
         private readonly Win2DScene scene;
-        private readonly Win2DSceneTransformator transformator = new Win2DSceneTransformator();
         private readonly ICanvasControl canvas;
-        private Rect2 visibleRect;
         private ILayout layout;
-
-        public float ZoomFactor
-        {
-            get { return transformator.ZoomFactor; }
-        }
 
         public Win2DScene Scene
         {
@@ -104,13 +96,6 @@ namespace Hercules.Win2D.Rendering
             ReleaseCanvas();
         }
 
-        public void Transform(Vector2 translate, float zoom, Rect2 visible)
-        {
-            visibleRect = visible;
-
-            transformator.Transform(translate, zoom);
-        }
-
         private void InitializeDocument()
         {
             document.StateChanged += Document_StateChanged;
@@ -127,12 +112,16 @@ namespace Hercules.Win2D.Rendering
         {
             canvas.CreateResources += Canvas_CreateResources;
 
+            canvas.BeforeDraw += Canvas_BeforeDraw;
+
             canvas.Draw += Canvas_Draw;
         }
 
         private void ReleaseCanvas()
         {
             canvas.CreateResources -= Canvas_CreateResources;
+
+            canvas.BeforeDraw -= Canvas_BeforeDraw;
 
             canvas.Draw -= Canvas_Draw;
         }
@@ -168,9 +157,14 @@ namespace Hercules.Win2D.Rendering
             canvas.Invalidate();
         }
 
-        private void Canvas_Draw(object sender, CanvasDrawEventArgs args)
+        private void Canvas_BeforeDraw(object sender, EventArgs e)
         {
-            RenderForUI(args.DrawingSession);
+            PrepareForUI(canvas.Device);
+        }
+
+        private void Canvas_Draw(object sender, BoundedCanvasDrawEventArgs e)
+        {
+            RenderForUI(e.DrawingSession, new Rect2(e.RenderBounds));
         }
 
         public IPrintDocumentSource Print(float padding = 20)
@@ -193,23 +187,24 @@ namespace Hercules.Win2D.Rendering
             return scene.CreateAdorner(renderNode);
         }
 
-        private void RenderForUI(CanvasDrawingSession session)
+        private void PrepareForUI(ICanvasResourceCreator resourceCreator)
         {
             if (layout != null)
             {
-                transformator.Transform(session);
+                scene.UpdateLayout(resourceCreator, layout);
 
-                bool needsRedraw;
-
-                scene.UpdateLayout(session, layout);
-                scene.UpdateArrangement(session, true, out needsRedraw);
-
-                scene.Render(session, true, visibleRect);
-
-                if (needsRedraw)
+                if (scene.UpdateArrangement(resourceCreator, true))
                 {
                     canvas.Invalidate();
                 }
+            }
+        }
+
+        private void RenderForUI(CanvasDrawingSession session, Rect2 visibleRect)
+        {
+            if (layout != null)
+            {
+                scene.Render(session, true, visibleRect);
             }
         }
 
@@ -223,26 +218,6 @@ namespace Hercules.Win2D.Rendering
             }
 
             return isHit;
-        }
-
-        public Vector2 GetMindmapSize(Vector2 size)
-        {
-            return transformator.GetMindmapSize(size);
-        }
-
-        public Vector2 GetMindmapPosition(Vector2 position)
-        {
-            return transformator.GetMindmapPosition(position);
-        }
-
-        public Vector2 GetOverlaySize(Vector2 size)
-        {
-            return transformator.GetOverlaySize(size);
-        }
-
-        public Vector2 GetOverlayPosition(Vector2 position)
-        {
-            return transformator.GetOverlayPosition(position);
         }
 
         private void Document_NodeSelected(object sender, NodeEventArgs e)

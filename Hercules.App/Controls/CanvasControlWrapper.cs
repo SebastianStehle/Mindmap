@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using Windows.Foundation;
 using Windows.UI.Core;
 using GP.Windows;
 using GP.Windows.UI.Controls;
@@ -17,11 +18,16 @@ namespace Hercules.App.Controls
 {
     public sealed class CanvasControlWrapper : ICanvasControl
     {
-        private readonly CanvasControl inner;
+        private readonly CanvasVirtualControl inner;
 
         public CanvasDevice Device
         {
             get { return inner.Device; }
+        }
+
+        public CanvasVirtualControl Inner
+        {
+            get { return inner; }
         }
 
         public CoreDispatcher Dispatcher
@@ -29,13 +35,33 @@ namespace Hercules.App.Controls
             get { return inner.Dispatcher; }
         }
 
-        public event EventHandler<CanvasDrawEventArgs> Draw;
+        public float DpiScale
+        {
+            get { return inner.DpiScale; }
+            set { inner.DpiScale = value; }
+        }
+
+        public event EventHandler<BoundedCanvasDrawEventArgs> Draw;
+
+        public event EventHandler BeforeDraw;
+
+        public event EventHandler AfterDraw;
 
         public event EventHandler CreateResources;
 
-        private void OnDraw(CanvasDrawEventArgs e)
+        private void OnDraw(BoundedCanvasDrawEventArgs e)
         {
             Draw?.Invoke(this, e);
+        }
+
+        private void OnBeforeDraw()
+        {
+            BeforeDraw?.Invoke(this, EventArgs.Empty);
+        }
+
+        private void OnAfterDraw()
+        {
+            AfterDraw?.Invoke(this, EventArgs.Empty);
         }
 
         private void OnCreateResources()
@@ -43,7 +69,7 @@ namespace Hercules.App.Controls
             CreateResources?.Invoke(this, EventArgs.Empty);
         }
 
-        public CanvasControlWrapper(CanvasControl canvasControl)
+        public CanvasControlWrapper(CanvasVirtualControl canvasControl)
         {
             Guard.NotNull(canvasControl, nameof(canvasControl));
 
@@ -54,9 +80,22 @@ namespace Hercules.App.Controls
                 OnCreateResources();
             };
 
-            inner.Draw += (sender, args) =>
+            inner.RegionsInvalidated += (sender, args) =>
             {
-                OnDraw(args);
+                if (args.InvalidatedRegions.Length > 0)
+                {
+                    OnBeforeDraw();
+
+                    foreach (Rect region in args.InvalidatedRegions)
+                    {
+                        using (CanvasDrawingSession session = canvasControl.CreateDrawingSession(region))
+                        {
+                            OnDraw(new BoundedCanvasDrawEventArgs(session, region));
+                        }
+                    }
+
+                    OnAfterDraw();
+                }
             };
         }
 
@@ -67,16 +106,7 @@ namespace Hercules.App.Controls
 
         public void Invalidate()
         {
-            if (inner.ReadyToDraw)
-            {
-                inner.Invalidate();
-            }
-            else
-            {
-#pragma warning disable 4014
-                Dispatcher.RunIdleAsync(x => inner.Invalidate());
-#pragma warning restore 4014
-            }
+            Dispatcher.RunIdleAsync(x => inner.Invalidate()).Forget();
         }
     }
 }

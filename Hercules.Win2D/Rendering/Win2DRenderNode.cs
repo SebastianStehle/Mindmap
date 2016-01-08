@@ -11,7 +11,6 @@ using System.Numerics;
 using Windows.UI;
 using GP.Windows.UI;
 using Hercules.Model;
-using Hercules.Model.Layouting;
 using Hercules.Model.Rendering;
 using Hercules.Model.Utils;
 using Hercules.Win2D.Rendering.Utils;
@@ -185,38 +184,38 @@ namespace Hercules.Win2D.Rendering
             return true;
         }
 
-        public void Measure(CanvasDrawingSession session)
+        public void Measure(ICanvasResourceCreator resourceCreator)
         {
             if (bodyGeometry != null)
             {
-                UpdateSize(bodyGeometry.Measure(this, session));
+                UpdateSize(bodyGeometry.Measure(this, resourceCreator));
             }
         }
 
-        public void ArrangeBodyAndButton(CanvasDrawingSession session)
+        public void ArrangeBodyAndButton(ICanvasResourceCreator resourceCreator)
         {
-            ArrangeBody(session);
+            ArrangeBody(resourceCreator);
 
             ArrangeButton();
         }
 
-        public void ArrangeHull(CanvasDrawingSession session)
+        public void ArrangeHull(ICanvasResourceCreator resourceCreator)
         {
             if (hullGeometry != null)
             {
-                hullGeometry.Arrange(this, session);
+                hullGeometry.Arrange(this, resourceCreator);
             }
         }
 
-        public void ArrangePath(CanvasDrawingSession session)
+        public void ArrangePath(ICanvasResourceCreator resourceCreator)
         {
             if (pathGeometry != null)
             {
-                pathGeometry.Arrange(this, session);
+                pathGeometry.Arrange(this, resourceCreator);
             }
         }
 
-        private void ArrangeBody(CanvasDrawingSession session)
+        private void ArrangeBody(ICanvasResourceCreator resourceCreator)
         {
             if (Parent != null)
             {
@@ -233,7 +232,7 @@ namespace Hercules.Win2D.Rendering
                 renderBoundsWithParent = RenderBounds;
             }
 
-            bodyGeometry.Arrange(this, session);
+            bodyGeometry.Arrange(this, resourceCreator);
         }
 
         private void ArrangeButton()
@@ -312,9 +311,9 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        public void ComputeBody(CanvasDrawingSession session)
+        public void ComputeBody(ICanvasResourceCreator resourceCreator)
         {
-            IBodyGeometry body = CreateBody(session, bodyGeometry);
+            IBodyGeometry body = CreateBody(resourceCreator, bodyGeometry);
 
             if (body != null)
             {
@@ -324,9 +323,9 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        public void ComputePath(CanvasDrawingSession session)
+        public void ComputePath(ICanvasResourceCreator resourceCreator)
         {
-            IPathGeometry path = CreatePath(session, pathGeometry);
+            IPathGeometry path = CreatePath(resourceCreator, pathGeometry);
 
             if (path != null)
             {
@@ -336,9 +335,9 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        public void ComputeHull(CanvasDrawingSession session)
+        public void ComputeHull(ICanvasResourceCreator resourceCreator)
         {
-            IHullGeometry hull = CreateHull(session, hullGeometry);
+            IHullGeometry hull = CreateHull(resourceCreator, hullGeometry);
 
             if (hull != null)
             {
@@ -348,11 +347,11 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        protected abstract IBodyGeometry CreateBody(CanvasDrawingSession session, IBodyGeometry current);
+        protected abstract IBodyGeometry CreateBody(ICanvasResourceCreator resourceCreator, IBodyGeometry current);
 
-        protected abstract IHullGeometry CreateHull(CanvasDrawingSession session, IHullGeometry current);
+        protected abstract IHullGeometry CreateHull(ICanvasResourceCreator resourceCreator, IHullGeometry current);
 
-        protected abstract IPathGeometry CreatePath(CanvasDrawingSession session, IPathGeometry current);
+        protected abstract IPathGeometry CreatePath(ICanvasResourceCreator resourceCreator, IPathGeometry current);
 
         public Win2DAdornerRenderNode CreateAdorner()
         {

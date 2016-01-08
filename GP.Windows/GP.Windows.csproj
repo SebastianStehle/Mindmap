@@ -127,6 +127,7 @@
     <Compile Include="Mvvm\ProcessManager.cs" />
     <Compile Include="Mvvm\MessageDialogService.cs" />
     <Compile Include="UI\Controls\AdvancedTextBox.cs" />
+    <Compile Include="UI\Controls\BoundedCanvasDrawEventArgs.cs" />
     <Compile Include="UI\Controls\ColorPicker.cs" />
     <Compile Include="UI\Controls\ColorPickerButton.cs" />
     <Compile Include="UI\DependencyPropertyListener.cs" />
@@ -139,7 +140,6 @@
     <Compile Include="UI\ColorsHelper.cs" />
     <Compile Include="UI\Controls\ICanvasControl.cs" />
     <Compile Include="UI\Controls\TiledBackground.cs" />
-    <Compile Include="UI\Controls\ZoomableCanvasControl.cs" />
     <Compile Include="UI\VisibleWhenGreaterZeroConverter.cs" />
     <Compile Include="UI\Interactivity\AppBarButtonsBehavior.cs" />
     <Compile Include="UI\Interactivity\Behavior.cs" />

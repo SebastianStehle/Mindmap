@@ -8,6 +8,7 @@
 
 using System;
 using System.Numerics;
+using Windows.ApplicationModel;
 using Windows.Graphics.Display;
 using Windows.System;
 using Windows.UI.Xaml;
@@ -116,13 +117,16 @@ namespace Hercules.App.Controls
 
         private void BindDisplay()
         {
-            DisplayInformation display = DisplayInformation.GetForCurrentView();
-
-            if (display != null)
+            if (!DesignMode.DesignModeEnabled)
             {
-                display.DpiChanged += Display_DpiChanged;
+                DisplayInformation display = DisplayInformation.GetForCurrentView();
 
-                displayDpi = display.LogicalDpi;
+                if (display != null)
+                {
+                    display.DpiChanged += Display_DpiChanged;
+
+                    displayDpi = display.LogicalDpi;
+                }
             }
         }
 

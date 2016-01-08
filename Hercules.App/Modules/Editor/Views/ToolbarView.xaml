@@ -15,20 +15,23 @@
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState x:Name="Tablet">
                     <VisualState.Setters>
-                        <Setter Target="UndoRedoButtons.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="PrimaryListButton.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="PrimaryUndoRedoButtons.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="PrimaryPropertiesButtonSeparator.(UIElement.Visibility)" Value="Visible"/>
                         <Setter Target="CompactButtonRedo.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonUndo.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonExportSeparator.(UIElement.Visibility)" Value="Collapsed"/>
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="490"/>
+                        <AdaptiveTrigger MinWindowWidth="600"/>
                     </VisualState.StateTriggers>
                 </VisualState>
                 <VisualState x:Name="Desktop">
                     <VisualState.Setters>
-                        <Setter Target="UndoRedoButtons.(UIElement.Visibility)" Value="Visible"/>
-                        <Setter Target="AdvancedButtons.(UIElement.Visibility)" Value="Visible"/>
-                        <Setter Target="RemoveButtonSeparator.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="PrimaryListButton.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="PrimaryUndoRedoButtons.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="PrimaryAdvancedButtons.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="PrimaryRemoveButtonSeparator.(UIElement.Visibility)" Value="Visible"/>
                         <Setter Target="CompactButtonRedo.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonUndo.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonExportSeparator.(UIElement.Visibility)" Value="Collapsed"/>
@@ -49,14 +52,14 @@
         
         <CommandBar.Content>
             <StackPanel Orientation="Horizontal">
-                <AppBarButton x:Uid="AppBarButton_ListMindmaps" Icon="List" Click="ListAppBarButton_Click" IsCompact="True" Label="Mindmaps">
+                <AppBarButton x:Name="PrimaryListButton" x:Uid="AppBarButton_ListMindmaps" Icon="List" Click="ListAppBarButton_Click" IsCompact="True" Label="Mindmaps" Visibility="Collapsed">
                     <i:Interaction.Behaviors>
                         <gpi:ShortcutBehavior RequiresControlModifier="True" Key="L" Invoked="ListAppBarButton_Click" />
                     </i:Interaction.Behaviors>
                 </AppBarButton>
 
                 <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource VisibleWhenNotNullConverter}, FallbackValue=Visible}">
-                    <StackPanel x:Name="AdvancedButtons" Visibility="Collapsed" Orientation="Horizontal">
+                    <StackPanel x:Name="PrimaryAdvancedButtons" Visibility="Collapsed" Orientation="Horizontal">
                         <AppBarSeparator />
 
                         <AppBarButton x:Uid="AppBarButton_Help" Icon="Help" IsCompact="True" Label="Help">
@@ -95,7 +98,7 @@
                         <AppBarSeparator />
                     </StackPanel>
 
-                    <StackPanel x:Name="UndoRedoButtons" Visibility="Collapsed" Orientation="Horizontal">
+                    <StackPanel x:Name="PrimaryUndoRedoButtons" Visibility="Collapsed" Orientation="Horizontal">
                         <AppBarButton x:Uid="AppBarButton_Undo" Icon="Undo" IsCompact="True" Label="Undo"
                             Command="{Binding UndoCommand}">
                             <i:Interaction.Behaviors>
@@ -122,7 +125,7 @@
                 </i:Interaction.Behaviors>
             </AppBarButton>
 
-            <AppBarSeparator x:Name="RemoveButtonSeparator" Visibility="Collapsed" />
+            <AppBarSeparator x:Name="PrimaryRemoveButtonSeparator" Visibility="Collapsed" />
 
             <AppBarButton x:Uid="AppBarButton_AddSibling" Style="{StaticResource AppBarButtonStyleSibling}" IsCompact="True" Label="Sibling" 
                 Command="{Binding AddSiblingCommand}">
@@ -138,21 +141,21 @@
                 </i:Interaction.Behaviors>
             </AppBarButton>
 
-            <AppBarSeparator />
+            <AppBarSeparator x:Name="PrimaryPropertiesButtonSeparator" Visibility="Collapsed" />
             
             <AppBarButton x:Uid="AppBarButton_ToggleProperties" IsCompact="True" Label="Properties" Click="PropertiesButton_Click">
                 <TextBlock TextAlignment="Center" FontSize="20" Text="&#xE2B1;" FontFamily="Segoe MDL2 Assets" />
             </AppBarButton>
         </CommandBar.PrimaryCommands>
         <CommandBar.SecondaryCommands>
-            <AppBarButton x:Name="CompactButtonUndo" x:Uid="AppBarButton_Undo" Icon="Undo" IsCompact="True" Label="Undo"
+            <AppBarButton x:Name="CompactButtonUndo" x:Uid="AppBarButton_Undo" Icon="Undo" Label="Undo"
                 Command="{Binding UndoCommand}">
                 <i:Interaction.Behaviors>
                     <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
                 </i:Interaction.Behaviors>
             </AppBarButton>
 
-            <AppBarButton x:Name="CompactButtonRedo" x:Uid="AppBarButton_Redo" Icon="Redo" IsCompact="True" Label="Redo"
+            <AppBarButton x:Name="CompactButtonRedo" x:Uid="AppBarButton_Redo" Icon="Redo" Label="Redo"
                 Command="{Binding RedoCommand}">
                 <i:Interaction.Behaviors>
                     <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Y" />
@@ -161,7 +164,7 @@
 
             <AppBarSeparator x:Name="CompactButtonExportSeparator" />
 
-            <AppBarButton x:Name="CompactButtonExport" x:Uid="AppBarButton_Share" Icon="Download" IsCompact="True" Label="Export">
+            <AppBarButton x:Name="CompactButtonExport" x:Uid="AppBarButton_Share" Icon="Download" Label="Export">
                 <AppBarButton.Flyout>
                     <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource DarkMenuFlyoutPresenterStyle}">
                         <MenuFlyoutSubItem x:Uid="AppBarButton_Export" Text="Export">
@@ -179,10 +182,10 @@
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-
+            
             <AppBarSeparator x:Name="CompactButtonHelpSeparator" />
 
-            <AppBarButton x:Name="CompactButtonHelp" x:Uid="AppBarButton_Help" Icon="Help" IsCompact="True" Label="Help">
+            <AppBarButton x:Name="CompactButtonHelp" x:Uid="AppBarButton_Help" Icon="Help" Label="Help">
                 <AppBarButton.Flyout>
                     <controls:MindmapFlyout Placement="Full" FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
                         <e:HelpView />

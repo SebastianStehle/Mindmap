@@ -15,25 +15,6 @@
     DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
 
     <Page.Resources>
-        <Storyboard x:Name="ShowPropertiesStoryboard">
-            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="PropertiesPane">
-                <DiscreteDoubleKeyFrame KeyTime="0:0:0" Value="0"/>
-                <SplineDoubleKeyFrame KeySpline="0.1,0.9 0.2,1.0" KeyTime="0:0:0.35" Value="300"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="PropertiesContainer">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Name="HidePropertiesStoryboard">
-            <DoubleAnimationUsingKeyFrames EnableDependentAnimation="True" Storyboard.TargetProperty="(FrameworkElement.Width)" Storyboard.TargetName="PropertiesPane">
-                <SplineDoubleKeyFrame KeySpline="0.1,0.9 0.2,1.0" KeyTime="0:0:0.12" Value="0"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="PropertiesContainer">
-                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        
         <Storyboard x:Key="ShowListStoryboard">
             <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="MindmapsContainer">
                 <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
@@ -45,29 +26,54 @@
                 <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="ShowPropertiesStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="PropertiesContainer">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.3" Value="0"/>
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="1"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="HidePropertiesStoryboard">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="PropertiesContainer">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.2" Value="0"/>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ResponsiveStates">
+                <VisualState x:Name="Tablet">
+                    <VisualState.Setters>
+                        <Setter Target="InnerSplitView.(SplitView.DisplayMode)" Value="Inline"/>
+                        <Setter Target="OuterSplitView.(SplitView.DisplayMode)" Value="CompactOverlay"/>
+                        <Setter Target="InnerSplitView.(SplitView.OpenPaneLength)" Value="320"/>
+                        <Setter Target="OuterSplitView.(SplitView.OpenPaneLength)" Value="320"/>
+                        <Setter Target="BottomToolBar.(UIElement.Visibility)" Value="Collapsed"/>
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="600"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="Auto" />
-        </Grid.ColumnDefinitions>
 
-        <e:ToolbarView Grid.Row="0" Grid.ColumnSpan="2" ListButtonClicked="ToolbarView_ListButtonClicked" PropertiesButtonClicked="ToolbarView_PropertiesButtonClicked" />
+        <e:ToolbarView Grid.Row="0" ListButtonClicked="Toolbars_ListButtonClicked" PropertiesButtonClicked="Toolbars_PropertiesButtonClicked" />
 
-        <SplitView Grid.Row="1" Grid.Column="0" DisplayMode="CompactOverlay" IsPaneOpen="False" CompactPaneLength="68" x:Name="SplitView">
+        <SplitView x:Name="OuterSplitView" Grid.Row="1" DisplayMode="Overlay" OpenPaneLength="280" CompactPaneLength="68">
             <i:Interaction.Behaviors>
-                <ic:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=SplitView}">
+                <ic:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=OuterSplitView}">
                     <ic:DataTriggerBehavior.Value>
                         <x:Boolean>True</x:Boolean>
                     </ic:DataTriggerBehavior.Value>
                     <im:ControlStoryboardAction Storyboard="{StaticResource ShowListStoryboard}"/>
                 </ic:DataTriggerBehavior>
-                <ic:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=SplitView}">
+                <ic:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=OuterSplitView}">
                     <ic:DataTriggerBehavior.Value>
                         <x:Boolean>False</x:Boolean>
                     </ic:DataTriggerBehavior.Value>
@@ -99,16 +105,36 @@
                         </Button.Flyout>
                     </Button>
 
-                    <m:ListView x:Name="MindmapsContainer" Grid.Row="1" Margin="0,5,0,0" Opacity="0" />
+                    <m:ListView x:Name="MindmapsContainer" Grid.Row="1" Margin="0,5,0,0" />
                 </Grid>
             </SplitView.Pane>
             <SplitView.Content>
-                <e:EditorView />
+                <SplitView x:Name="InnerSplitView" PanePlacement="Right" OpenPaneLength="280">
+                    <i:Interaction.Behaviors>
+                        <ic:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=InnerSplitView}">
+                            <ic:DataTriggerBehavior.Value>
+                                <x:Boolean>True</x:Boolean>
+                            </ic:DataTriggerBehavior.Value>
+                            <im:ControlStoryboardAction Storyboard="{StaticResource ShowPropertiesStoryboard}"/>
+                        </ic:DataTriggerBehavior>
+                        <ic:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=InnerSplitView}">
+                            <ic:DataTriggerBehavior.Value>
+                                <x:Boolean>False</x:Boolean>
+                            </ic:DataTriggerBehavior.Value>
+                            <im:ControlStoryboardAction Storyboard="{StaticResource HidePropertiesStoryboard}"/>
+                        </ic:DataTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                    
+                    <SplitView.Pane>
+                        <e:EditorPropertiesView x:Name="PropertiesContainer" />
+                    </SplitView.Pane>
+                    <SplitView.Content>
+                        <e:EditorView />
+                    </SplitView.Content>
+                </SplitView>
             </SplitView.Content>
         </SplitView>
-
-        <Grid Grid.Column="1" Grid.Row="1" x:Name="PropertiesPane" Width="300" Background="#FFF2F2F2">
-            <e:EditorPropertiesView x:Name="PropertiesContainer" />
-        </Grid>
+        
+        <e:BottomBarView x:Name="BottomToolBar" Grid.Row="2" ListButtonClicked="Toolbars_ListButtonClicked"></e:BottomBarView>
     </Grid>
 </Page>

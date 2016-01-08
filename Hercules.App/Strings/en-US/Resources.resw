@@ -144,6 +144,15 @@
   <data name="AppBarButton_ToggleProperties.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Show or hide the properties pane</value>
   </data>
+  <data name="AppBarButton_AddMindmap.Label" xml:space="preserve">
+    <value>Mindmap </value>
+  </data>
+  <data name="AppBarButton_AddMindmap.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Adds Mindmap</value>
+  </data>
+  <data name="AppBarButton_AddMindmap.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Create a new Mindmap</value>
+  </data>
   <data name="AppBarButton_ExportHtml.Text" xml:space="preserve">
     <value>Export as Html (Outline)</value>
   </data>

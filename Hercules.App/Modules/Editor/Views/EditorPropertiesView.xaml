@@ -11,7 +11,7 @@
     mc:Ignorable="d"
     d:DesignHeight="600"
     d:DesignWidth="400"
-    DataContext="{Binding EditorProperties, Source={StaticResource ViewModelLocator}}">
+    DataContext="{Binding EditorProperties, Source={StaticResource ViewModelLocator}}" SizeChanged="EditorPropertiesView_OnSizeChanged">
 
     <UserControl.Resources>
         <controls:NodeIconBitmapConverter x:Key="NodeIconBitmapConverter" />
@@ -72,8 +72,8 @@
         </Style>
     </UserControl.Resources>
 
-    <ScrollViewer IsEnabled="{Binding SelectedNode, Converter={StaticResource TrueWhenNotNullConverter}, FallbackValue=False}" x:Name="Root" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden">
-        <StackPanel Width="{Binding ElementName=Root, Path=ActualWidth}">
+    <ScrollViewer IsEnabled="{Binding SelectedNode, Converter={StaticResource TrueWhenNotNullConverter}, FallbackValue=False}" VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden">
+        <StackPanel x:Name="Root">
             <Border Style="{StaticResource PropertySectionStyle}">
                 <StackPanel>
                     <GridView ItemsSource="{Binding ThemeColors}" Style="{StaticResource PropertyGridStyle}" MaxWidth="200" HorizontalAlignment="Left">

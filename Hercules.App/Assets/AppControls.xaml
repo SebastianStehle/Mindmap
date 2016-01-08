@@ -220,6 +220,10 @@
         <Setter Property="ScrollViewer.HorizontalScrollBarVisibility" Value="Disabled" />
     </Style>
 
+    <Style x:Key="LightFlyoutPresenterStyleSimple" TargetType="FlyoutPresenter">
+        <Setter Property="RequestedTheme" Value="Light" />
+    </Style>
+
     <Style x:Key="DarkMenuFlyoutPresenterStyle" TargetType="MenuFlyoutPresenter">
         <Setter Property="RequestedTheme" Value="Dark" />
     </Style>

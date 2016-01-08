@@ -7,9 +7,11 @@
 // ==========================================================================
 
 using System;
+using Windows.ApplicationModel;
 using Windows.UI;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using GP.Windows.UI;
 
@@ -17,13 +19,14 @@ namespace Hercules.App
 {
     public sealed partial class MainPage
     {
-        private bool isPropertiesOpen = true;
-
         public MainPage()
         {
             InitializeComponent();
 
-            ApplyThemeColors();
+            if (!DesignMode.DesignModeEnabled)
+            {
+                ApplyThemeColors();
+            }
         }
 
         private static void ApplyThemeColors()
@@ -46,27 +49,32 @@ namespace Hercules.App
             titleBar.ButtonPressedForegroundColor = Colors.Black;
         }
 
-        private void ToolbarView_ListButtonClicked(object sender, EventArgs e)
+        private void Toolbars_ListButtonClicked(object sender, EventArgs e)
         {
-            SplitView.IsPaneOpen = !SplitView.IsPaneOpen;
+            OuterSplitView.IsPaneOpen = !OuterSplitView.IsPaneOpen;
 
-            MindmapsContainer.Focus(FocusState.Programmatic);
+            if (OuterSplitView.IsPaneOpen)
+            {
+                if (InnerSplitView.DisplayMode == SplitViewDisplayMode.Overlay)
+                {
+                    InnerSplitView.IsPaneOpen = false;
+                }
+
+                MindmapsContainer.Focus(FocusState.Programmatic);
+            }
         }
 
-        private void ToolbarView_PropertiesButtonClicked(object sender, EventArgs e)
+        private void Toolbars_PropertiesButtonClicked(object sender, EventArgs e)
         {
-            if (isPropertiesOpen)
-            {
-                ShowPropertiesStoryboard.Stop();
-                HidePropertiesStoryboard.Begin();
-            }
-            else
-            {
-                ShowPropertiesStoryboard.Begin();
-                HidePropertiesStoryboard.Stop();
-            }
+            InnerSplitView.IsPaneOpen = !InnerSplitView.IsPaneOpen;
 
-            isPropertiesOpen = !isPropertiesOpen;
+            if (InnerSplitView.IsPaneOpen)
+            {
+                if (OuterSplitView.DisplayMode == SplitViewDisplayMode.Overlay)
+                {
+                    OuterSplitView.IsPaneOpen = false;
+                }
+            }
         }
     }
 }

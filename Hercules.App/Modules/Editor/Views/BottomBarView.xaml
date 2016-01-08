@@ -1,0 +1,57 @@
+﻿<UserControl x:Class="Hercules.App.Modules.Editor.Views.BottomBarView"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:m="using:Hercules.App.Modules.Mindmaps.Views"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:gpi="using:GP.Windows.UI.Interactivity"
+    xmlns:controls="using:Hercules.App.Controls"
+    mc:Ignorable="d">
+
+    <CommandBar Background="{ThemeResource ThemedAppBarBackgroundBrush}" RequestedTheme="Dark">
+        <i:Interaction.Behaviors>
+            <gpi:AppBarButtonsBehavior />
+        </i:Interaction.Behaviors>
+
+        <CommandBar.Content>
+            <StackPanel Orientation="Horizontal">
+                <AppBarButton x:Uid="AppBarButton_ListMindmaps" Icon="List" Click="ListAppBarButton_Click" IsCompact="True" Label="Mindmaps">
+                    <i:Interaction.Behaviors>
+                        <gpi:ShortcutBehavior RequiresControlModifier="True" Key="L" Invoked="ListAppBarButton_Click" />
+                    </i:Interaction.Behaviors>
+                </AppBarButton>
+            </StackPanel>
+        </CommandBar.Content>
+        <CommandBar.PrimaryCommands>
+            <AppBarButton x:Uid="AppBarButton_Share" Icon="Download" IsCompact="True" Label="Export"
+                DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
+                <AppBarButton.Flyout>
+                    <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
+                        <MenuFlyoutSubItem x:Uid="AppBarButton_Export" Text="Export">
+                            <i:Interaction.Behaviors>
+                                <controls:ExportGeneratorBehavior EditorViewModel="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </MenuFlyoutSubItem>
+                        <MenuFlyoutSubItem x:Uid="AppBarButton_Import" Text="Import">
+                            <i:Interaction.Behaviors>
+                                <controls:ImportGeneratorBehavior EditorViewModel="{Binding}" />
+                            </i:Interaction.Behaviors>
+                        </MenuFlyoutSubItem>
+
+                        <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{Binding PrintCommand}" />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+
+            <AppBarButton x:Uid="AppBarButton_AddMindmap" IsCompact="True" Label="Remove" Icon="Add" 
+                DataContext="{Binding Mindmaps, Source={StaticResource ViewModelLocator}}">
+                <AppBarButton.Flyout>
+                    <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyleSimple}">
+                        <m:EnterNameView />
+                    </controls:MindmapFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+        </CommandBar.PrimaryCommands>
+    </CommandBar>
+</UserControl>

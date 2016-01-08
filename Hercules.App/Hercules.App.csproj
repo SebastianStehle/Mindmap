@@ -99,7 +99,9 @@
     </Content>
     <None Include="Hercules.App_StoreKey.pfx" />
     <None Include="project.json" />
-    <PRIResource Include="Strings\en-US\Resources.resw" />
+    <PRIResource Include="Strings\en-US\Resources.resw">
+      <SubType>Designer</SubType>
+    </PRIResource>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
@@ -133,6 +135,9 @@
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Modules\Editor\Views\BottomBarView.xaml.cs">
+      <DependentUpon>BottomBarView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\Editor\Views\EditorView.xaml.cs">
       <DependentUpon>EditorView.xaml</DependentUpon>
@@ -276,6 +281,10 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Modules\Editor\Views\BottomBarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\Editor\Views\EditorView.xaml">
       <SubType>Designer</SubType>

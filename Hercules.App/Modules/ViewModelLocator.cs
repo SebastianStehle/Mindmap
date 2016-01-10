@@ -66,7 +66,7 @@ namespace Hercules.App.Modules
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IOutlineGenerator, HtmlOutlineExporter>(
                     new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IPrintService, PrintService>(
+                unityContainer.RegisterType<IMindmapPrintService, MindmapPrintService>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IMindmapStore, MindmapStore>(
                     new ContainerControlledLifetimeManager());

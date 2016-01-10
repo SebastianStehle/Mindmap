@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// IPrintService.cs
+// IMindmapPrintService.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -12,7 +12,7 @@ using Hercules.Model.Rendering;
 
 namespace Hercules.App.Components
 {
-    public interface IPrintService
+    public interface IMindmapPrintService
     {
         Task PrintAsync(Document document, IRenderer renderer);
     }

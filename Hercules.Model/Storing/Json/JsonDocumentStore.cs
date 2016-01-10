@@ -89,7 +89,7 @@ namespace Hercules.Model.Storing.Json
             {
                 try
                 {
-                    StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.ReplaceExisting);
+                    StorageFile file = await GetOrCreateFileAsync(documentRef);
 
                     await JsonDocumentSerializer.SerializeToFileAsync(file, history);
 
@@ -125,7 +125,7 @@ namespace Hercules.Model.Storing.Json
             }).Unwrap();
         }
 
-        public Task DeleteAsync(DocumentRef documentRef)
+        public Task<bool> DeleteAsync(DocumentRef documentRef)
         {
             Guard.NotNull(documentRef, nameof(documentRef));
 
@@ -159,7 +159,7 @@ namespace Hercules.Model.Storing.Json
 
                 try
                 {
-                    StorageFile file = await CreateFileAsync(documentRef, CreationCollisionOption.GenerateUniqueName);
+                    StorageFile file = await CreateFileAsync(documentRef);
 
                     await JsonDocumentSerializer.SerializeToFileAsync(file, history);
 
@@ -182,13 +182,22 @@ namespace Hercules.Model.Storing.Json
             }
         }
 
-        private async Task<StorageFile> CreateFileAsync(DocumentRef documentRef, CreationCollisionOption options)
+        private async Task<StorageFile> CreateFileAsync(DocumentRef documentRef)
         {
             await EnsureFolderAsync();
 
             string fileName = $"{documentRef.DocumentName}{JsonDocumentSerializer.FileExtension.Extension}";
 
-            return await localFolder.CreateFileAsync(fileName, options);
+            return await localFolder.CreateFileAsync(fileName, CreationCollisionOption.GenerateUniqueName);
+        }
+
+        private async Task<StorageFile> GetOrCreateFileAsync(DocumentRef documentRef)
+        {
+            await EnsureFolderAsync();
+
+            string fileName = $"{documentRef.DocumentName}{JsonDocumentSerializer.FileExtension.Extension}";
+
+            return await localFolder.GetOrCreateFileAsync(fileName);
         }
 
         private async Task<StorageFile> GetFileAsync(DocumentRef documentRef)

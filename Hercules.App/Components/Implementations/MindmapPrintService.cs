@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// PrintService.cs
+// MindmapPrintService.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -15,7 +15,7 @@ using Hercules.Model.Utils;
 
 namespace Hercules.App.Components.Implementations
 {
-    public sealed class PrintService : IPrintService
+    public sealed class MindmapPrintService : IMindmapPrintService
     {
         private IPrintDocumentSource printDocument;
 

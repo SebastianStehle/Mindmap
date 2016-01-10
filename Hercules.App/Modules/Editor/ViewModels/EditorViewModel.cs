@@ -42,7 +42,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
         public bool ShowHelp { get; set; }
 
         [Dependency]
-        public IPrintService PrintService { get; set; }
+        public IMindmapPrintService PrintService { get; set; }
 
         [Dependency]
         public IDocumentStore DocumentStore { get; set; }

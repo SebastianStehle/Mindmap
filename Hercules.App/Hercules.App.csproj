@@ -113,8 +113,8 @@
     <Compile Include="Components\Implementations\DefaultSettingsProvider.cs" />
     <Compile Include="Components\MindmapRef.cs" />
     <Compile Include="Components\Implementations\MindmapStore.cs" />
-    <Compile Include="Components\Implementations\PrintService.cs" />
-    <Compile Include="Components\IPrintService.cs" />
+    <Compile Include="Components\Implementations\MindmapPrintService.cs" />
+    <Compile Include="Components\IMindmapPrintService.cs" />
     <Compile Include="Components\ISettingsProvider.cs" />
     <Compile Include="Components\TitleBarUpdater.cs" />
     <Compile Include="Controls\CanvasControlWrapper.cs" />

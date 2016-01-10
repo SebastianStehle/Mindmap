@@ -19,6 +19,7 @@ using GP.Windows.Mvvm;
 using Hercules.Model;
 using Hercules.Model.Storing;
 using Hercules.Model.Utils;
+using Microsoft.ApplicationInsights.DataContracts;
 using PropertyChanged;
 
 // ReSharper disable ImplicitlyCapturedClosure
@@ -192,17 +193,17 @@ namespace Hercules.App.Components.Implementations
 
                     OnDocumentLoaded(LoadedDocument);
                 }
-                catch (DocumentNotFoundException)
+                catch (DocumentNotFoundException e)
                 {
-                    ShowNotFoundErrorDialog();
+                    ShowNotFoundErrorDialog(e);
 
                     UnloadMindmap(mindmap);
                 }
-                catch
+                catch (Exception e)
                 {
                     UnloadMindmap(m);
 
-                    ShowLoadingErrorDialog();
+                    ShowLoadingErrorDialog(e);
                 }
             });
         }
@@ -227,9 +228,9 @@ namespace Hercules.App.Components.Implementations
                 {
                     await processManager.RunMainProcessAsync(this, action);
                 }
-                catch (DocumentNotFoundException)
+                catch (DocumentNotFoundException e)
                 {
-                    ShowNotFoundErrorDialog();
+                    ShowNotFoundErrorDialog(e);
                 }
             }
         }
@@ -242,9 +243,9 @@ namespace Hercules.App.Components.Implementations
                 {
                     await processManager.RunMainProcessAsync(this, () => action(mindmap));
                 }
-                catch (DocumentNotFoundException)
+                catch (DocumentNotFoundException e)
                 {
-                    ShowNotFoundErrorDialog();
+                    ShowNotFoundErrorDialog(e);
 
                     UnloadMindmap(mindmap);
                 }
@@ -263,9 +264,9 @@ namespace Hercules.App.Components.Implementations
                 {
                     await processManager.RunMainProcessAsync(this, () => action(mindmap, document));
                 }
-                catch (DocumentNotFoundException)
+                catch (DocumentNotFoundException e)
                 {
-                    ShowNotFoundErrorDialog();
+                    ShowNotFoundErrorDialog(e);
 
                     UnloadMindmap(mindmap);
                 }
@@ -276,20 +277,24 @@ namespace Hercules.App.Components.Implementations
             }
         }
 
-        private void ShowLoadingErrorDialog()
+        private void ShowLoadingErrorDialog(Exception e)
         {
             string content = ResourceManager.GetString("MindmapLoadingFailed_Content");
             string heading = ResourceManager.GetString("MindmapLoadingFailed_Heading");
 
             dialogService.AlertAsync(content, heading).Forget();
+
+            App.TelemetryClient?.TrackException(new ExceptionTelemetry(e));
         }
 
-        private void ShowNotFoundErrorDialog()
+        private void ShowNotFoundErrorDialog(Exception e)
         {
             string content = ResourceManager.GetString("MindmapDeleted_Content");
             string heading = ResourceManager.GetString("MindmapDeleted_Heading");
 
             dialogService.AlertAsync(content, heading).Forget();
+
+            App.TelemetryClient?.TrackException(new ExceptionTelemetry(e));
         }
 
         private void UnloadMindmap(MindmapRef mindmap)

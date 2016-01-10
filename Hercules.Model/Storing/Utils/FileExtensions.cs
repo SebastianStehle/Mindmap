@@ -57,6 +57,21 @@ namespace Hercules.Model.Storing.Utils
             return folder;
         }
 
+        public static async Task<StorageFile> GetOrCreateFileAsync(this StorageFolder localFolder, string name)
+        {
+            StorageFile folder;
+            try
+            {
+                folder = await localFolder.GetFileAsync(name);
+            }
+            catch (FileNotFoundException)
+            {
+                folder = await localFolder.CreateFileAsync(name, CreationCollisionOption.ReplaceExisting);
+            }
+
+            return folder;
+        }
+
         public static async Task<bool> TryDeleteIfExistsAsync(this StorageFolder localFolder, string name)
         {
             try

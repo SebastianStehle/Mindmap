@@ -9,8 +9,9 @@
 using System;
 using Windows.Foundation;
 using Windows.UI.Core;
-using GP.Windows;
-using GP.Windows.UI.Controls;
+using GP.Utils;
+using GP.Utils.Mathematics;
+using GP.Utils.UI.Controls;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
@@ -90,7 +91,7 @@ namespace Hercules.App.Controls
                     {
                         using (CanvasDrawingSession session = canvasControl.CreateDrawingSession(region))
                         {
-                            OnDraw(new BoundedCanvasDrawEventArgs(session, region));
+                            OnDraw(new BoundedCanvasDrawEventArgs(session, region.ToRect2()));
                         }
                     }
 

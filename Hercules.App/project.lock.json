@@ -93,14 +93,6 @@
           "lib/netcore50/Microsoft.CSharp.dll": {}
         }
       },
-      "Microsoft.Experimental.Collections/1.0.3-alpha": {
-        "compile": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        }
-      },
       "Microsoft.Net.Http/2.2.22": {
         "dependencies": {
           "Microsoft.Bcl": "[1.1.9, )",
@@ -307,7 +299,7 @@
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
         }
       },
-      "Newtonsoft.Json/7.0.1": {
+      "Newtonsoft.Json/8.0.2": {
         "compile": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         },
@@ -1774,14 +1766,6 @@
           "lib/netcore50/Microsoft.CSharp.dll": {}
         }
       },
-      "Microsoft.Experimental.Collections/1.0.3-alpha": {
-        "compile": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        }
-      },
       "Microsoft.Net.Http/2.2.22": {
         "dependencies": {
           "Microsoft.Bcl": "[1.1.9, )",
@@ -2031,7 +2015,7 @@
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
         }
       },
-      "Newtonsoft.Json/7.0.1": {
+      "Newtonsoft.Json/8.0.2": {
         "compile": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         },
@@ -3548,14 +3532,6 @@
           "lib/netcore50/Microsoft.CSharp.dll": {}
         }
       },
-      "Microsoft.Experimental.Collections/1.0.3-alpha": {
-        "compile": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        }
-      },
       "Microsoft.Net.Http/2.2.22": {
         "dependencies": {
           "Microsoft.Bcl": "[1.1.9, )",
@@ -3791,7 +3767,7 @@
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
         }
       },
-      "Newtonsoft.Json/7.0.1": {
+      "Newtonsoft.Json/8.0.2": {
         "compile": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         },
@@ -5294,14 +5270,6 @@
           "lib/netcore50/Microsoft.CSharp.dll": {}
         }
       },
-      "Microsoft.Experimental.Collections/1.0.3-alpha": {
-        "compile": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        }
-      },
       "Microsoft.Net.Http/2.2.22": {
         "dependencies": {
           "Microsoft.Bcl": "[1.1.9, )",
@@ -5556,7 +5524,7 @@
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
         }
       },
-      "Newtonsoft.Json/7.0.1": {
+      "Newtonsoft.Json/8.0.2": {
         "compile": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         },
@@ -7073,14 +7041,6 @@
           "lib/netcore50/Microsoft.CSharp.dll": {}
         }
       },
-      "Microsoft.Experimental.Collections/1.0.3-alpha": {
-        "compile": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        }
-      },
       "Microsoft.Net.Http/2.2.22": {
         "dependencies": {
           "Microsoft.Bcl": "[1.1.9, )",
@@ -7316,7 +7276,7 @@
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
         }
       },
-      "Newtonsoft.Json/7.0.1": {
+      "Newtonsoft.Json/8.0.2": {
         "compile": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         },
@@ -8819,14 +8779,6 @@
           "lib/netcore50/Microsoft.CSharp.dll": {}
         }
       },
-      "Microsoft.Experimental.Collections/1.0.3-alpha": {
-        "compile": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        }
-      },
       "Microsoft.Net.Http/2.2.22": {
         "dependencies": {
           "Microsoft.Bcl": "[1.1.9, )",
@@ -9081,7 +9033,7 @@
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
         }
       },
-      "Newtonsoft.Json/7.0.1": {
+      "Newtonsoft.Json/8.0.2": {
         "compile": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         },
@@ -10598,14 +10550,6 @@
           "lib/netcore50/Microsoft.CSharp.dll": {}
         }
       },
-      "Microsoft.Experimental.Collections/1.0.3-alpha": {
-        "compile": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        },
-        "runtime": {
-          "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll": {}
-        }
-      },
       "Microsoft.Net.Http/2.2.22": {
         "dependencies": {
           "Microsoft.Bcl": "[1.1.9, )",
@@ -10841,7 +10785,7 @@
           "lib/windows81/GalaSoft.MvvmLight.Platform.dll": {}
         }
       },
-      "Newtonsoft.Json/7.0.1": {
+      "Newtonsoft.Json/8.0.2": {
         "compile": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         },
@@ -12530,19 +12474,6 @@
         "ref/xamarinmac20/_._"
       ]
     },
-    "Microsoft.Experimental.Collections/1.0.3-alpha": {
-      "sha512": "op6XTwDeq9oYZ7tZXnTucytwfhX6fw5S055LNAlPj501khnAPwnhQN6Pj5ZjDxwxESWqhtk9kbv6qhBZWMHr5Q==",
-      "type": "Package",
-      "files": [
-        "[Content_Types].xml",
-        "_rels/.rels",
-        "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.dll",
-        "lib/portable-net45+win8+wp8/Microsoft.Experimental.Collections.xml",
-        "License-Stable.rtf",
-        "Microsoft.Experimental.Collections.nuspec",
-        "package/services/metadata/core-properties/50c06840f0eb438caeac33bf707354df.psmdcp"
-      ]
-    },
     "Microsoft.Net.Http/2.2.22": {
       "sha512": "bqVLJ2UimlAEs2bn3y28lB1pmFRxuysv9pFyB0A86WEMYGYTfDyfjAGjm0fiaSRjlMNU1jVnp8Mxt8qe4OmpXQ==",
       "type": "Package",
@@ -13366,8 +13297,8 @@
         "package/services/metadata/core-properties/2416d2969a834c638aba3851d652cc13.psmdcp"
       ]
     },
-    "Newtonsoft.Json/7.0.1": {
-      "sha512": "q3V4KLetMLnt1gpAVWgtXnHjKs0UG/RalBc29u2ZKxd5t5Ze4JBL5WiiYIklJyK/5CRiIiNwigVQUo0FgbsuWA==",
+    "Newtonsoft.Json/8.0.2": {
+      "sha512": "e5yWmEfu68rmtG431zl9N/7PlNKQDIuiDW5MHlEFAZcecakcxrIGnKqrPAtWNILzK2oNanRB5cD150MYhECK3g==",
       "type": "Package",
       "files": [
         "[Content_Types].xml",
@@ -13385,7 +13316,7 @@
         "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll",
         "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.xml",
         "Newtonsoft.Json.nuspec",
-        "package/services/metadata/core-properties/49e907fc018c4c7ab632e6d4ad4766f8.psmdcp",
+        "package/services/metadata/core-properties/cc8c591d554640789c6a6ef6456f7772.psmdcp",
         "tools/install.ps1"
       ]
     },

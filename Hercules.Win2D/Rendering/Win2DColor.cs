@@ -6,39 +6,66 @@
 // All rights reserved.
 // ==========================================================================
 
+using System.Numerics;
 using Windows.UI;
-using GP.Windows.UI;
+using GP.Utils.UI;
 using Hercules.Model;
 using Hercules.Model.Rendering;
+using GP.Utils.Mathematics;
+
+// ReSharper disable ArrangeThisQualifier
 
 namespace Hercules.Win2D.Rendering
 {
     public sealed class Win2DColor : IRenderColor
     {
-        private readonly Color normal;
-        private readonly Color darker;
-        private readonly Color lighter;
+        private readonly Color normalValue;
+        private readonly Color darkerValue;
+        private readonly Color lighterValue;
+        private readonly Vector3 normalVector;
+        private readonly Vector3 darkerVector;
+        private readonly Vector3 lighterVector;
 
         public Color Normal
         {
-            get { return normal; }
+            get { return normalValue; }
         }
 
         public Color Darker
         {
-            get { return darker; }
+            get { return darkerValue; }
         }
 
         public Color Lighter
         {
-            get { return lighter; }
+            get { return lighterValue; }
+        }
+
+        Vector3 IRenderColor.Normal
+        {
+            get { return normalVector; }
+        }
+
+        Vector3 IRenderColor.Darker
+        {
+            get { return darkerVector; }
+        }
+
+        Vector3 IRenderColor.Lighter
+        {
+            get { return lighterVector; }
         }
 
         public Win2DColor(Color normal, Color darker, Color lighter)
         {
-            this.normal = normal;
-            this.darker = darker;
-            this.lighter = lighter;
+            this.normalValue = normal;
+            this.normalVector = normal.ToVector3();
+
+            this.darkerValue = darker;
+            this.darkerVector = darker.ToVector3();
+
+            this.lighterValue = lighter;
+            this.lighterVector = lighter.ToVector3();
         }
 
         public Win2DColor(ValueColor color)

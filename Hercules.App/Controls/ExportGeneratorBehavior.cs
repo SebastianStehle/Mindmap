@@ -8,12 +8,12 @@
 
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using GP.Windows.UI;
-using GP.Windows.UI.Interactivity;
+using GP.Utils;
+using GP.Utils.UI;
+using GP.Utils.UI.Interactivity;
 using Hercules.App.Modules;
 using Hercules.App.Modules.Editor.ViewModels;
 using Hercules.Model.ExImport;
-using Hercules.Model.Utils;
 
 namespace Hercules.App.Controls
 {
@@ -49,13 +49,13 @@ namespace Hercules.App.Controls
                 {
                     foreach (IExportTarget target in viewModel.ExportTargets)
                     {
-                        string text = ResourceManager.GetString($"ExportTarget_{target.NameKey}");
+                        string text = LocalizationManager.GetString($"ExportTarget_{target.NameKey}");
 
                         MenuFlyoutSubItem targetItem = new MenuFlyoutSubItem { Text = text };
 
                         foreach (IExporter exporter in viewModel.Exporters)
                         {
-                            text = ResourceManager.GetString($"Exporter_{exporter.NameKey}");
+                            text = LocalizationManager.GetString($"Exporter_{exporter.NameKey}");
 
                             var viewModelParameter = new ExportModel { Target = target, Exporter = exporter };
 

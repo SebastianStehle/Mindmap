@@ -7,10 +7,10 @@
 // ==========================================================================
 
 using System.Numerics;
-using GP.Windows;
+using GP.Utils;
+using GP.Utils.Mathematics;
 using Hercules.Model;
 using Hercules.Model.Rendering;
-using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 
 namespace Hercules.Win2D.Rendering

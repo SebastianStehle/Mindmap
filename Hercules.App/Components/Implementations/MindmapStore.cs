@@ -14,11 +14,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.UI.Xaml;
 using GalaSoft.MvvmLight;
-using GP.Windows;
-using GP.Windows.Mvvm;
+using GP.Utils;
+using GP.Utils.Mvvm;
 using Hercules.Model;
 using Hercules.Model.Storing;
-using Hercules.Model.Utils;
 using Microsoft.ApplicationInsights.DataContracts;
 using PropertyChanged;
 
@@ -108,7 +107,7 @@ namespace Hercules.App.Components.Implementations
                     {
                         settingsProvider.IsAlreadyStarted = true;
 
-                        await CreateAsync(ResourceManager.GetString("MyMindmap"));
+                        await CreateAsync(LocalizationManager.GetString("MyMindmap"));
                     }
                 });
             }
@@ -279,8 +278,8 @@ namespace Hercules.App.Components.Implementations
 
         private void ShowLoadingErrorDialog(Exception e)
         {
-            string content = ResourceManager.GetString("MindmapLoadingFailed_Content");
-            string heading = ResourceManager.GetString("MindmapLoadingFailed_Heading");
+            string content = LocalizationManager.GetString("MindmapLoadingFailed_Content");
+            string heading = LocalizationManager.GetString("MindmapLoadingFailed_Heading");
 
             dialogService.AlertAsync(content, heading).Forget();
 
@@ -289,8 +288,8 @@ namespace Hercules.App.Components.Implementations
 
         private void ShowNotFoundErrorDialog(Exception e)
         {
-            string content = ResourceManager.GetString("MindmapDeleted_Content");
-            string heading = ResourceManager.GetString("MindmapDeleted_Heading");
+            string content = LocalizationManager.GetString("MindmapDeleted_Content");
+            string heading = LocalizationManager.GetString("MindmapDeleted_Heading");
 
             dialogService.AlertAsync(content, heading).Forget();
 

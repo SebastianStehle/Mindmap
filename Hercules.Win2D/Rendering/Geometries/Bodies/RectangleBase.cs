@@ -7,7 +7,8 @@
 // ==========================================================================
 
 using System.Numerics;
-using Hercules.Model.Utils;
+using Windows.Foundation;
+using GP.Utils.Mathematics;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 
@@ -37,17 +38,19 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
                     renderable.Resources.ThemeLightBrush(color) :
                     renderable.Resources.ThemeNormalBrush(color);
 
+            Rect bounds = renderable.RenderBounds.ToRect();
+
             if (borderRadius > 0)
             {
-                session.FillRoundedRectangle(renderable.RenderBounds, borderRadius, borderRadius, backgroundBrush);
+                session.FillRoundedRectangle(bounds, borderRadius, borderRadius, backgroundBrush);
 
-                session.DrawRoundedRectangle(renderable.RenderBounds, borderRadius, borderRadius, borderBrush);
+                session.DrawRoundedRectangle(bounds, borderRadius, borderRadius, borderBrush);
             }
             else
             {
-                session.FillRectangle(renderable.RenderBounds, backgroundBrush);
+                session.FillRectangle(bounds, backgroundBrush);
 
-                session.DrawRectangle(renderable.RenderBounds, borderBrush);
+                session.DrawRectangle(bounds, borderBrush);
             }
 
             RenderIcon(renderable, session);
@@ -55,7 +58,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
 
             if (renderSelection && renderable.Node.IsSelected)
             {
-                Rect2 rect = Rect2.Deflate(renderable.RenderBounds, SelectionMargin);
+                Rect rect = Rect2.Deflate(renderable.RenderBounds, SelectionMargin).ToRect();
 
                 if (borderRadius > 0)
                 {

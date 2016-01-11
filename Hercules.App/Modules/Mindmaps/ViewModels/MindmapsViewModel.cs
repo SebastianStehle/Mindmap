@@ -12,12 +12,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
-using GP.Windows;
-using GP.Windows.Mvvm;
+using GP.Utils;
+using GP.Utils.Mvvm;
 using Hercules.App.Components;
 using Hercules.App.Messages;
 using Hercules.Model.ExImport;
-using Hercules.Model.Utils;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
 
@@ -55,8 +54,8 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             {
                 return deleteCommand ?? (deleteCommand = new RelayCommand<MindmapRef>(async item =>
                 {
-                    string content = ResourceManager.GetString("DeleteMindmap_Content");
-                    string message = ResourceManager.GetString("DeleteMindmap_Heading");
+                    string content = LocalizationManager.GetString("DeleteMindmap_Content");
+                    string message = LocalizationManager.GetString("DeleteMindmap_Heading");
 
                     if (await MessageDialogService.ConfirmAsync(content, message))
                     {
@@ -105,8 +104,8 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                 }
                 catch
                 {
-                    string content = ResourceManager.GetString("ImportFailed_Content");
-                    string heading = ResourceManager.GetString("ImportFailed_Heading");
+                    string content = LocalizationManager.GetString("ImportFailed_Content");
+                    string heading = LocalizationManager.GetString("ImportFailed_Heading");
 
                     await MessageDialogService.AlertAsync(content, heading);
                 }

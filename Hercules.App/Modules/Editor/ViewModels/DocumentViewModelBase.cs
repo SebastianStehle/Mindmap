@@ -8,7 +8,7 @@
 
 using System;
 using GalaSoft.MvvmLight;
-using GP.Windows;
+using GP.Utils;
 using Hercules.App.Components;
 using Hercules.Model;
 using Hercules.Win2D.Rendering;

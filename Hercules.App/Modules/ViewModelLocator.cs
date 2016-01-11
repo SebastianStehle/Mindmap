@@ -9,11 +9,13 @@
 using Windows.ApplicationModel;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
-using GP.Windows.Mvvm;
+using GP.Utils;
+using GP.Utils.Mvvm;
 using Hercules.App.Components;
 using Hercules.App.Components.Implementations;
 using Hercules.App.Modules.Editor.ViewModels;
 using Hercules.App.Modules.Mindmaps.ViewModels;
+using Hercules.Model;
 using Hercules.Model.ExImport;
 using Hercules.Model.ExImport.Channels.Email;
 using Hercules.Model.ExImport.Channels.File;
@@ -50,6 +52,10 @@ namespace Hercules.App.Modules
 
         public ViewModelLocator()
         {
+            LocalizationManager.Provider = new ResourceLocalizationProvider();
+
+            ImageSerializer.Setup();
+
             if (!DesignMode.DesignModeEnabled)
             {
                 IUnityContainer unityContainer = new UnityContainer();

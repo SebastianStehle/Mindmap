@@ -9,6 +9,7 @@
 using System;
 using System.Numerics;
 using Windows.UI;
+using GP.Utils.Mathematics;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
@@ -67,7 +68,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
 
             if (renderControls && renderable.Node.IsSelected)
             {
-                session.DrawRoundedRectangle(renderable.RenderBounds, 5, 5, borderBrush, 2f, SelectionStrokeStyle);
+                session.DrawRoundedRectangle(renderable.RenderBounds.ToRect(), 5, 5, borderBrush, 2f, SelectionStrokeStyle);
             }
         }
 

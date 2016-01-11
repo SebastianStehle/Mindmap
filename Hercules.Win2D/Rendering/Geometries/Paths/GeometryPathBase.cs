@@ -8,7 +8,7 @@
 
 using System.Numerics;
 using Windows.UI;
-using GP.Windows.UI;
+using GP.Utils.Mathematics;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;

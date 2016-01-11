@@ -5,7 +5,7 @@
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:e="using:Hercules.App.Modules.Editor.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:gpi="using:GP.Windows.UI.Interactivity"
+    xmlns:gpi="using:GP.Utils.UI.Interactivity"
     xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
     DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">

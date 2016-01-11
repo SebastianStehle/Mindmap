@@ -8,16 +8,16 @@
 
 using System;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
 using System.Windows.Input;
 using Windows.UI;
 using GalaSoft.MvvmLight.Command;
-using GP.Windows;
-using GP.Windows.Mvvm;
-using GP.Windows.UI;
+using GP.Utils;
+using GP.Utils.Mvvm;
+using GP.Utils.UI;
 using Hercules.App.Components;
 using Hercules.Model;
-using Hercules.Model.Utils;
 using Hercules.Win2D.Rendering;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
@@ -69,7 +69,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 {
                     await MessageDialogService.OpenFileDialogAsync(ImageExtensions, async (name, stream) =>
                     {
-                        AttachmentIcon attachmentIcon = await AttachmentIcon.TryCreateAsync(name, stream);
+                        AttachmentIcon attachmentIcon = await AttachmentIcon.TryCreateAsync(name, await stream.ToMemoryStreamAsync());
 
                         if (attachmentIcon != null)
                         {
@@ -80,8 +80,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
                         }
                         else
                         {
-                            string content = ResourceManager.GetString("LoadingIconFailed_Content");
-                            string heading = ResourceManager.GetString("LoadingIconFailed_Heading");
+                            string content = LocalizationManager.GetString("LoadingIconFailed_Content");
+                            string heading = LocalizationManager.GetString("LoadingIconFailed_Heading");
 
                             MessageDialogService.AlertAsync(content, heading).Forget();
                         }

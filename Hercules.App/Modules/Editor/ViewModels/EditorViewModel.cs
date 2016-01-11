@@ -9,8 +9,8 @@
 using System;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
-using GP.Windows;
-using GP.Windows.Mvvm;
+using GP.Utils;
+using GP.Utils.Mvvm;
 using Hercules.App.Components;
 using Hercules.App.Messages;
 using Hercules.Model;

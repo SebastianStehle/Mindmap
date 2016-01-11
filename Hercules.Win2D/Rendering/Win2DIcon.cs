@@ -9,10 +9,9 @@
 using System;
 using System.IO;
 using System.Threading.Tasks;
-using Windows.Storage.Streams;
 using Windows.UI.Core;
-using GP.Windows;
-using GP.Windows.UI.Controls;
+using GP.Utils;
+using GP.Utils.UI.Controls;
 using Hercules.Model;
 using Hercules.Model.Rendering;
 using Microsoft.Graphics.Canvas;
@@ -59,9 +58,9 @@ namespace Hercules.Win2D.Rendering
 
         private static async Task<CanvasBitmap> LoadFile(INodeIcon icon, ICanvasResourceCreator device)
         {
-            using (IRandomAccessStream stream = await icon.OpenAsStreamAsync())
+            using (Stream stream = await icon.OpenAsStreamAsync())
             {
-                return await CanvasBitmap.LoadAsync(device, stream).AsTask();
+                return await CanvasBitmap.LoadAsync(device, stream.AsRandomAccessStream()).AsTask();
             }
         }
 

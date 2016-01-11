@@ -14,6 +14,6 @@ namespace Hercules.App.Components
 {
     public interface IMindmapPrintService
     {
-        Task PrintAsync(Document document, IRenderer renderer);
+        Task PrintAsync(Document document, IPrintableRenderer renderer);
     }
 }

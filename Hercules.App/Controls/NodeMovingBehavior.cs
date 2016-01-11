@@ -10,8 +10,8 @@ using System.Numerics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using GP.Windows.UI;
-using GP.Windows.UI.Interactivity;
+using GP.Utils.UI;
+using GP.Utils.UI.Interactivity;
 using Hercules.Win2D.Rendering;
 
 // ReSharper disable LoopCanBeConvertedToQuery

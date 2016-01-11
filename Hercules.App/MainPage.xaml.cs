@@ -13,7 +13,7 @@ using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using GP.Windows.UI;
+using GP.Utils.UI;
 
 namespace Hercules.App
 {

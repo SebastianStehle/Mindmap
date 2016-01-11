@@ -9,10 +9,9 @@
 using System;
 using System.Numerics;
 using Windows.UI;
-using GP.Windows.UI;
+using GP.Utils.Mathematics;
 using Hercules.Model;
 using Hercules.Model.Rendering;
-using Hercules.Model.Utils;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
 
@@ -108,11 +107,11 @@ namespace Hercules.Win2D.Rendering
         public void Render(CanvasDrawingSession session, bool renderControls)
         {
 #if DRAW_OUTLINE
-            session.DrawRectangle(RenderBounds, Colors.Green);
+            session.DrawRectangle(RenderBounds.ToRect(), Colors.Green);
 
             if (Parent != null)
             {
-                session.DrawRectangle(RenderBoundsWithParent, Colors.Blue);
+                session.DrawRectangle(RenderBoundsWithParent.ToRect(), Colors.Blue);
             }
 #endif
             bodyGeometry.Render(this, session, Resources.FindColor(Node), renderControls);

@@ -7,13 +7,12 @@
 // ==========================================================================
 
 using System;
+using System.IO;
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Graphics.Display;
-using Windows.Storage.Streams;
-using Windows.UI;
-using GP.Windows;
-using Hercules.Model.Utils;
+using GP.Utils;
+using GP.Utils.Mathematics;
 using Microsoft.Graphics.Canvas;
 
 namespace Hercules.Win2D.Rendering.Utils
@@ -23,7 +22,7 @@ namespace Hercules.Win2D.Rendering.Utils
         private const float MaxAllowedSize = 5000;
         private const float DpiWithPixelMapping = 96;
 
-        public static async Task RenderScreenshotAsync(Win2DScene scene, ICanvasResourceCreator device, IRandomAccessStream stream, Color background, float? dpi = null, float padding = 20)
+        public static async Task RenderScreenshotAsync(Win2DScene scene, ICanvasResourceCreator device, Stream stream, Vector3 background, float? dpi = null, float padding = 20)
         {
             Guard.NotNull(scene, nameof(scene));
             Guard.NotNull(stream, nameof(stream));
@@ -48,7 +47,7 @@ namespace Hercules.Win2D.Rendering.Utils
             {
                 using (CanvasDrawingSession session = target.CreateDrawingSession())
                 {
-                    session.Clear(background);
+                    session.Clear(background.ToColor());
 
                     session.Transform =
                         Matrix3x2.CreateTranslation(
@@ -58,7 +57,7 @@ namespace Hercules.Win2D.Rendering.Utils
                     scene.Render(session, true, Rect2.Infinite);
                 }
 
-                await target.SaveAsync(stream, CanvasBitmapFileFormat.Png).AsTask();
+                await target.SaveAsync(stream.AsRandomAccessStream(), CanvasBitmapFileFormat.Png).AsTask();
             }
         }
     }

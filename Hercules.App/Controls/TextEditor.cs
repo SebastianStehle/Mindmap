@@ -11,7 +11,7 @@ using System.Numerics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using GP.Windows.UI.Controls;
+using GP.Utils.UI.Controls;
 using Hercules.Model;
 using Hercules.Win2D.Rendering;
 

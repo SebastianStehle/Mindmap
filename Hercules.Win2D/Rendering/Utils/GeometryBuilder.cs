@@ -10,10 +10,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using GP.Windows;
-using GP.Windows.UI;
+using GP.Utils;
+using GP.Utils.Mathematics;
 using Hercules.Model;
-using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
 

@@ -10,8 +10,7 @@ using System;
 using System.Numerics;
 using Windows.UI;
 using Windows.UI.Text;
-using GP.Windows.UI;
-using Hercules.Model.Utils;
+using GP.Utils.Mathematics;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
 
@@ -123,11 +122,11 @@ namespace Hercules.Win2D.Rendering
         {
             string text = renderable.Node.Text;
 #if DRAW_OUTLINE
-            session.DrawRectangle(RenderBounds, Colors.Red);
+            session.DrawRectangle(RenderBounds.ToRect(), Colors.Red);
 #endif
             if (!string.IsNullOrWhiteSpace(text))
             {
-                session.DrawText(text, RenderBounds, Colors.Black, TextFormat);
+                session.DrawText(text, RenderBounds.ToRect(), Colors.Black, TextFormat);
             }
         }
     }

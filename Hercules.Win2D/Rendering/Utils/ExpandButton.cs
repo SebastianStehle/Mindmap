@@ -8,9 +8,9 @@
 
 using System.Numerics;
 using Windows.UI;
-using GP.Windows;
+using GP.Utils;
+using GP.Utils.Mathematics;
 using Hercules.Model;
-using Hercules.Model.Utils;
 using Microsoft.Graphics.Canvas;
 
 // ReSharper disable SuggestBaseTypeForParameter

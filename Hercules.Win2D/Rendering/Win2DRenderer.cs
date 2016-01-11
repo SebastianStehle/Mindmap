@@ -7,17 +7,16 @@
 // ==========================================================================
 
 using System;
+using System.IO;
 using System.Numerics;
 using System.Threading.Tasks;
 using Windows.Graphics.Printing;
-using Windows.Storage.Streams;
-using Windows.UI;
-using GP.Windows;
-using GP.Windows.UI.Controls;
+using GP.Utils;
+using GP.Utils.Mathematics;
+using GP.Utils.UI.Controls;
 using Hercules.Model;
 using Hercules.Model.Layouting;
 using Hercules.Model.Rendering;
-using Hercules.Model.Utils;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
 
@@ -25,7 +24,7 @@ using Microsoft.Graphics.Canvas;
 
 namespace Hercules.Win2D.Rendering
 {
-    public abstract class Win2DRenderer : DisposableObject, IRenderer
+    public abstract class Win2DRenderer : DisposableObject, IPrintableRenderer
     {
         private readonly Win2DResourceManager resources;
         private readonly Document document;
@@ -164,7 +163,7 @@ namespace Hercules.Win2D.Rendering
 
         private void Canvas_Draw(object sender, BoundedCanvasDrawEventArgs e)
         {
-            RenderForUI(e.DrawingSession, new Rect2(e.RenderBounds));
+            RenderForUI(e.DrawingSession, e.RenderBounds);
         }
 
         public IPrintDocumentSource Print(float padding = 20)
@@ -172,7 +171,7 @@ namespace Hercules.Win2D.Rendering
             return Printer.Print(scene, padding);
         }
 
-        public Task RenderScreenshotAsync(IRandomAccessStream stream, Color background, float? dpi = null, float padding = 20)
+        public Task RenderScreenshotAsync(Stream stream, Vector3 background, float? dpi = null, float padding = 20)
         {
             return ScreenshotMaker.RenderScreenshotAsync(scene, canvas.Device, stream, background, dpi, padding);
         }

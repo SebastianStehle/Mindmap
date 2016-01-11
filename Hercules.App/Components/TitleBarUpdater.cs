@@ -8,7 +8,7 @@
 
 using System;
 using Windows.UI.ViewManagement;
-using GP.Windows;
+using GP.Utils;
 
 namespace Hercules.App.Components
 {

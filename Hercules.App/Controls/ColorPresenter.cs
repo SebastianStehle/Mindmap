@@ -10,7 +10,8 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using GP.Windows.UI;
+using GP.Utils.Mathematics;
+using GP.Utils.UI;
 using Hercules.Model;
 using Hercules.Win2D.Rendering;
 
@@ -62,7 +63,7 @@ namespace Hercules.App.Controls
 
                 if (themeColor != null)
                 {
-                    color = Renderer.Resources.Colors[themeColor.Index].Normal;
+                    color = Renderer.Resources.Colors[themeColor.Index].Normal.ToColor();
                 }
                 else
                 {

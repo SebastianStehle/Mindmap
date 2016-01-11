@@ -10,8 +10,8 @@ using System;
 using System.Numerics;
 using Windows.Graphics.Printing;
 using Windows.UI;
-using GP.Windows;
-using Hercules.Model.Utils;
+using GP.Utils;
+using GP.Utils.Mathematics;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Printing;
 

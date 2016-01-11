@@ -10,8 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using Windows.UI;
-using GP.Windows;
-using GP.Windows.UI.Controls;
+using GP.Utils;
+using GP.Utils.UI.Controls;
 using Hercules.Model;
 using Hercules.Model.Rendering;
 using Microsoft.Graphics.Canvas;
@@ -74,35 +74,35 @@ namespace Hercules.Win2D.Rendering
         {
             Guard.NotNull(color, nameof(color));
 
-            return Brush(color.Normal, 1);
+            return Brush(((Win2DColor)color).Normal, 1);
         }
 
         public ICanvasBrush ThemeDarkBrush(int colorIndex)
         {
             IRenderColor color = ResolveColor(colorIndex);
 
-            return Brush(color.Darker, 1);
+            return Brush(((Win2DColor)color).Darker, 1);
         }
 
         public ICanvasBrush ThemeDarkBrush(IRenderColor color)
         {
             Guard.NotNull(color, nameof(color));
 
-            return Brush(color.Darker, 1);
+            return Brush(((Win2DColor)color).Darker, 1);
         }
 
         public ICanvasBrush ThemeLightBrush(int colorIndex)
         {
             IRenderColor color = ResolveColor(colorIndex);
 
-            return Brush(color.Lighter, 1);
+            return Brush(((Win2DColor)color).Lighter, 1);
         }
 
         public ICanvasBrush ThemeLightBrush(IRenderColor color)
         {
             Guard.NotNull(color, nameof(color));
 
-            return Brush(color.Lighter, 1);
+            return Brush(((Win2DColor)color).Lighter, 1);
         }
 
         private IRenderColor ResolveColor(int colorIndex)

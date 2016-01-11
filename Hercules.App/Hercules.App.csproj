@@ -320,13 +320,21 @@
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GP.Windows\GP.Windows.csproj">
+    <ProjectReference Include="..\GP.Utils.Shared\GP.Utils.Shared.csproj">
+      <Project>{1666ffbb-520f-466c-ba04-406968246bf6}</Project>
+      <Name>GP.Utils.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\GP.Windows\GP.Utils.Uwp.csproj">
       <Project>{bf45f42d-d00c-4ac5-ac3f-ce261da43f99}</Project>
       <Name>GP.Windows</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Hercules.Model\Hercules.Model.csproj">
-      <Project>{b0aa10fc-a13f-4d7e-b605-f450bbe9194d}</Project>
-      <Name>Hercules.Model</Name>
+    <ProjectReference Include="..\Hercules.Model.Shared\Hercules.Model.Shared.csproj">
+      <Project>{c8e9741d-cc6d-4131-90d5-87866f25ee89}</Project>
+      <Name>Hercules.Model.Shared</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Hercules.Model.Uwp\Hercules.Model.Uwp.csproj">
+      <Project>{33210f45-5d90-4ab9-9332-2ee1be3b299b}</Project>
+      <Name>Hercules.Model.Uwp</Name>
     </ProjectReference>
     <ProjectReference Include="..\Hercules.Win2D\Hercules.Win2D.csproj">
       <Project>{c0a898b4-b04c-4a54-9c73-c127c096a3da}</Project>

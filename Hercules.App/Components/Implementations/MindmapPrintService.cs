@@ -9,9 +9,9 @@
 using System;
 using System.Threading.Tasks;
 using Windows.Graphics.Printing;
+using GP.Utils;
 using Hercules.Model;
 using Hercules.Model.Rendering;
-using Hercules.Model.Utils;
 
 namespace Hercules.App.Components.Implementations
 {
@@ -19,7 +19,7 @@ namespace Hercules.App.Components.Implementations
     {
         private IPrintDocumentSource printDocument;
 
-        public async Task PrintAsync(Document document, IRenderer renderer)
+        public async Task PrintAsync(Document document, IPrintableRenderer renderer)
         {
             if (printDocument != null)
             {
@@ -51,7 +51,7 @@ namespace Hercules.App.Components.Implementations
 
         private void PrintManager_PrintTaskRequested(PrintManager sender, PrintTaskRequestedEventArgs args)
         {
-            string heading = ResourceManager.GetString("Print_Heading");
+            string heading = LocalizationManager.GetString("Print_Heading");
 
             args.Request.CreatePrintTask(heading, a =>
             {

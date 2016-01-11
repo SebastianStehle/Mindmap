@@ -8,7 +8,7 @@
 
 using Windows.ApplicationModel;
 using Windows.UI.Xaml;
-using GP.Windows.UI;
+using GP.Utils.UI;
 
 namespace Hercules.App.Modules.Editor.Views
 {

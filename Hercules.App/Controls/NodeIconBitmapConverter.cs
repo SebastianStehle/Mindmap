@@ -7,11 +7,12 @@
 // ==========================================================================
 
 using System;
+using System.IO;
 using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Media.Imaging;
-using GP.Windows;
+using GP.Utils;
 using Hercules.Model;
 
 namespace Hercules.App.Controls
@@ -30,7 +31,7 @@ namespace Hercules.App.Controls
                     CoreDispatcherPriority.Normal,
                     () =>
                     {
-                        bitmapImage.SetSourceAsync(stream.Result).Forget();
+                        bitmapImage.SetSourceAsync(stream.Result.AsRandomAccessStream()).Forget();
                     }).Forget();
             });
 

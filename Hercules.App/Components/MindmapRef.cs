@@ -10,7 +10,7 @@ using System;
 using System.Globalization;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
-using GP.Windows;
+using GP.Utils;
 using Hercules.Model;
 using Hercules.Model.Storing;
 

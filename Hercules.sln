@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.24720.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GP.Utils.Uwp", "GP.Windows\GP.Utils.Uwp.csproj", "{BF45F42D-D00C-4AC5-AC3F-CE261DA43F99}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GP.Utils.Uwp", "GP.Utils.Uwp\GP.Utils.Uwp.csproj", "{BF45F42D-D00C-4AC5-AC3F-CE261DA43F99}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hercules.App", "Hercules.App\Hercules.App.csproj", "{36491669-D3EF-4EA6-A8E1-5EB82C5BBD84}"
 EndProject

@@ -14,7 +14,7 @@ namespace GP.Utils
     /// <summary>
     /// Provides strings from resources.
     /// </summary>
-    public class ResourceLocalizationProvider :  ILocalizationProvider
+    public class ResourceLocalizationProvider : ILocalizationProvider
     {
         /// <summary>
         /// Gets the string with the specified key.

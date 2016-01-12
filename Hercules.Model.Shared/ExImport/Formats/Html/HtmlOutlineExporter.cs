@@ -126,7 +126,7 @@ namespace Hercules.Model.ExImport.Formats.Html
             }
 
             xmlWriter.WriteStartElement("span");
-            xmlWriter.WriteAttributeString("style", string.Format(CultureInfo.CurrentCulture, "color:{0};font-size:{1};", color, fontSize));
+            xmlWriter.WriteAttributeString("style", string.Format(CultureInfo.InvariantCulture, "color:{0};font-size:{1};", color, fontSize));
 
             xmlWriter.WriteValue(!string.IsNullOrWhiteSpace(nodeBase.Text) ? nodeBase.Text : noTextPlaceholder);
 

@@ -101,7 +101,6 @@ namespace Tests.Facts
             Assert.False(rect.Contains(rect.CenterX, 100));
             Assert.False(rect.Contains(100, rect.CenterY));
             Assert.False(rect.Contains(-50, rect.CenterY));
-
         }
 
         [Fact]
@@ -111,7 +110,7 @@ namespace Tests.Facts
 
             var corners = rect.ToCorners();
 
-            Assert.Equal(new []
+            Assert.Equal(new[]
             {
                 new Vector2(10, 20),
                 new Vector2(60, 20),

@@ -22,13 +22,13 @@ namespace Tests.Facts
             Rect2 rect1 = new Rect2(00, 00, 50, 50);
             Rect2 rect2 = new Rect2(50, 50, 20, 20);
 
-            IEnumerable<Rect2> rects = new [] { rect1, rect2 };
+            IEnumerable<Rect2> rects = new[] { rect1, rect2 };
 
             ConvexHull hull = ConvexHull.Compute(rects);
 
             Assert.Equal(6, hull.Points.Count);
 
-            Assert.Equal(new []
+            Assert.Equal(new[]
             {
                 new Vector2(00, 00),
                 new Vector2(00, 50),

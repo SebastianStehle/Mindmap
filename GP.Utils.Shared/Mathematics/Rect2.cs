@@ -302,7 +302,6 @@ namespace GP.Utils.Mathematics
             return Contains(v.X, v.Y);
         }
 
-
         /// <summary>
         /// Determines whether the rectangle contains the x and y value.
         /// </summary>

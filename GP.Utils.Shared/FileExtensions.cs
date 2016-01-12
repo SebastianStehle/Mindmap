@@ -18,7 +18,7 @@ namespace GP.Utils
     /// Represents a file extension as a pair of extension and mime type.
     /// </summary>
     [GeneratedCode("GP.Utils", "1.0")]
-	[ExcludeFromCodeCoverage]
+    [ExcludeFromCodeCoverageAttribute]
     public partial class FileExtension
     {
         private static readonly Dictionary<string, FileExtension> extensionMappings = new Dictionary<string, FileExtension>(550, StringComparer.OrdinalIgnoreCase);

@@ -1,28 +1,27 @@
 ﻿// ==========================================================================
-// CommandNameAttribute.cs
+// DisposableMockup.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
-using System;
+using GP.Utils;
 
-namespace Hercules.Model.Storing
+namespace Tests.Given
 {
-    [AttributeUsage(AttributeTargets.Class)]
-    public class CommandNameAttribute : Attribute
+    public class DisposableMockup : DisposableObject
     {
-        private readonly string name;
+        public int DisposeCount { get; private set; }
 
-        public string Name
+        protected override void DisposeObject(bool disposing)
         {
-            get { return name; }
+            DisposeCount++;
         }
 
-        public CommandNameAttribute(string name)
+        public void Foo()
         {
-            this.name = name;
+            ThrowIfDisposed();
         }
     }
 }

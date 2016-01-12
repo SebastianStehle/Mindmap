@@ -78,12 +78,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Facts\ColorsHelperTest.cs" />
+    <Compile Include="Facts\ConvexHullTest.cs" />
+    <Compile Include="Facts\DisposableObjectTest.cs" />
     <Compile Include="Facts\DocumentTest.cs" />
     <Compile Include="Facts\ExtensionsTest.cs" />
     <Compile Include="Facts\GuardTest.cs" />
     <Compile Include="Facts\DocumentSerializerTest.cs" />
+    <Compile Include="Facts\ImageExporterTest.cs" />
+    <Compile Include="Facts\LimitedConcurrencyLevelTaskSchedulerTest.cs" />
     <Compile Include="Facts\LocalizationManagerTest.cs" />
+    <Compile Include="Facts\MathHelperTest.cs" />
+    <Compile Include="Facts\Rect2Test.cs" />
     <Compile Include="Facts\UndoRedoManagerTests.cs" />
+    <Compile Include="Given\DisposableMockup.cs" />
     <Compile Include="Given\GivenMocks.cs" />
     <Compile Include="Mockups\MockupAction.cs" />
     <Compile Include="Mockups\MockupModel.cs" />
@@ -117,6 +124,7 @@
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

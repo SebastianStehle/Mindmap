@@ -112,7 +112,6 @@
     <Compile Include="Rendering\IRenderScene.cs" />
     <Compile Include="RootNode.cs" />
     <Compile Include="Storing\CommandFactory.cs" />
-    <Compile Include="Storing\CommandNameAttribute.cs" />
     <Compile Include="Storing\DocumentNotFoundException.cs" />
     <Compile Include="Storing\DocumentRef.cs" />
     <Compile Include="Storing\IDocumentStore.cs" />

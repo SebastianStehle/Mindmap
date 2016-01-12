@@ -19,8 +19,8 @@ namespace Hercules.Win2D.Rendering.Geometries.Paths
     {
         private readonly Color color;
         private readonly float opacity;
-        private Vector2 lastActualPosition = MathHelper.PositiveInfinityVector;
-        private Vector2 lastParentPosition = MathHelper.PositiveInfinityVector;
+        private Vector2 lastActualPosition = MathHelper.PositiveInfinityVector2;
+        private Vector2 lastParentPosition = MathHelper.PositiveInfinityVector2;
         private CanvasGeometry pathGeometry;
 
         protected GeometryPathBase(Color color, float opacity = 1)

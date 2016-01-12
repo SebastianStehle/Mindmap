@@ -6,10 +6,13 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
 using GP.Utils;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using Xunit;
 
 // ReSharper disable InvokeAsExtensionMethod
@@ -19,12 +22,69 @@ namespace Tests.Facts
     public class ExtensionsTest
     {
         [Fact]
+        public void Forget_DoesNothing()
+        {
+            Extensions.Forget(new Task(() => { }));
+        }
+
+        [Fact]
         public void AddAndReturn_Added()
         {
             IList<int> list = new List<int> { 1, 5, 7, 9 };
 
             Assert.Equal(11, list.AddAndReturn(11));
             Assert.Equal(11, list.Last());
+        }
+
+        [Fact]
+        public void WriteFromStream()
+        {
+            byte[] buffer = { 1, 5, 6, 7 };
+
+            MemoryStream source = new MemoryStream(buffer);
+            MemoryStream target = new MemoryStream();
+
+            Extensions.Write(target, source);
+
+            Assert.Equal(buffer, target.ToArray());
+        }
+
+        [Fact]
+        public async Task ToMemoryStreamAsync()
+        {
+            byte[] buffer = { 1, 5, 6, 7 };
+
+            MemoryStream result = await Extensions.ToMemoryStreamAsync(new MemoryStream(buffer));
+
+            Assert.Equal(buffer, result.ToArray());
+        }
+
+        [Fact]
+        public void IsBase64Encoded_Valid_ReturnsTrue()
+        {
+            Assert.True(Extensions.IsBase64Encoded(Convert.ToBase64String(new byte[4])));
+        }
+
+        [Fact]
+        public void IsBase64Encoded_NotValid_ReturnsFalse()
+        {
+            Assert.False(Extensions.IsBase64Encoded("%INVALID%"));
+        }
+
+        [Fact]
+        public void GetOrCreateDefault_Found_ReturnsValue()
+        {
+            Dictionary<int, int> dictionary = new Dictionary<int, int> { { 1, 5 } };
+
+            Assert.Equal(5, dictionary.GetOrCreateDefault(1));
+        }
+
+        [Fact]
+        public void GetOrCreateDefault_NotFound_ReturnsDefault()
+        {
+            Dictionary<int, int> dictionary = new Dictionary<int, int>();
+
+            Assert.Equal(0, dictionary.GetOrCreateDefault(1));
         }
 
         [Fact]

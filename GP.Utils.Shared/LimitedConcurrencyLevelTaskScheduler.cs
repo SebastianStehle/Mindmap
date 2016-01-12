@@ -8,6 +8,8 @@
 
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -18,7 +20,8 @@ namespace GP.Utils
     /// </summary>
     public sealed class LimitedConcurrencyLevelTaskScheduler : TaskScheduler
     {
-        [ThreadStatic] private static bool currentThreadIsProcessingItems;
+        [ThreadStatic]
+        private static bool currentThreadIsProcessingItems;
         private readonly LinkedList<Task> tasks = new LinkedList<Task>();
         private readonly Action<Action> scheduler;
         private readonly int maxDegreeOfParallelism;
@@ -106,6 +109,7 @@ namespace GP.Utils
         /// <returns>
         /// A Boolean value indicating whether the task was executed inline.
         /// </returns>
+        [ExcludeFromCodeCoverage]
         protected override bool TryExecuteTaskInline(Task task, bool taskWasPreviouslyQueued)
         {
             if (!currentThreadIsProcessingItems)
@@ -115,7 +119,10 @@ namespace GP.Utils
 
             if (taskWasPreviouslyQueued)
             {
-                return TryDequeue(task) && TryExecuteTask(task);
+                if (!TryDequeue(task))
+                {
+                    return false;
+                }
             }
 
             return TryExecuteTask(task);
@@ -142,13 +149,16 @@ namespace GP.Utils
         /// <returns>
         /// An enumerable that allows a debugger to traverse the tasks currently queued to this scheduler.
         /// </returns>
-        /// <exception cref="System.NotSupportedException"></exception>
+        /// <exception cref="NotSupportedException"></exception>
+        [DebuggerNonUserCode]
+        [ExcludeFromCodeCoverage]
         protected override IEnumerable<Task> GetScheduledTasks()
         {
             bool lockTaken = false;
             try
             {
                 Monitor.TryEnter(tasks, ref lockTaken);
+
                 if (lockTaken)
                 {
                     return tasks;

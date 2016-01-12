@@ -40,7 +40,7 @@ namespace Hercules.Model.Storing.Json
 
             JsonHistory history = new JsonHistory(document);
 
-            JsonStreamConvert.SerializeAsJson(history, stream, HistorySerializerSettings);
+            SerializeToStream(stream, history);
         }
 
         public static void SerializeToStream(Stream stream, JsonHistory history)
@@ -64,7 +64,7 @@ namespace Hercules.Model.Storing.Json
         {
             Guard.NotNull(stream, nameof(stream));
 
-            JsonHistory history = JsonStreamConvert.DeserializeAsJson<JsonHistory>(stream, HistorySerializerSettings);
+            JsonHistory history = DeserializeHistoryFromStream(stream);
 
             return history.ToDocument();
         }

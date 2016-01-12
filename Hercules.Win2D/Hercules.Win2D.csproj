@@ -148,7 +148,7 @@
       <Project>{1666ffbb-520f-466c-ba04-406968246bf6}</Project>
       <Name>GP.Utils.Shared</Name>
     </ProjectReference>
-    <ProjectReference Include="..\GP.Windows\GP.Utils.Uwp.csproj">
+    <ProjectReference Include="..\GP.Utils.Uwp\GP.Utils.Uwp.csproj">
       <Project>{bf45f42d-d00c-4ac5-ac3f-ce261da43f99}</Project>
       <Name>GP.Utils.Uwp</Name>
     </ProjectReference>

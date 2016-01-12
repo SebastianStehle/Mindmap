@@ -16,6 +16,7 @@
 using System;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 // ReSharper disable InconsistentNaming
 <#
 string[][] mimeTypes = File.ReadAllLines(Host.ResolvePath("Resources\\MimeTypes.txt"))
@@ -27,9 +28,13 @@ string[][] mimeTypes = File.ReadAllLines(Host.ResolvePath("Resources\\MimeTypes.
 	.Select(x => x.First()).ToArray();
 #>
 
-namespace GP.Windows
+namespace GP.Utils
 {
+    /// <summary>
+    /// Represents a file extension as a pair of extension and mime type.
+    /// </summary>
     [GeneratedCode("GP.Utils", "1.0")]
+	[ExcludeFromCodeCoverageAttribute]
     public partial class FileExtension
     {
         private static readonly Dictionary<string, FileExtension> extensionMappings = new Dictionary<string, FileExtension>(<#= mimeTypes.Length #>, StringComparer.OrdinalIgnoreCase);

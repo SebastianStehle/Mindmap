@@ -43,36 +43,6 @@ namespace GP.Utils.Mathematics
         }
 
         /// <summary>
-        /// Extents the convex hull by the specified padding and creates a new one.
-        /// </summary>
-        /// <param name="padding">The padding.</param>
-        /// <returns>
-        /// The new convex hull.
-        /// </returns>
-        public ConvexHull Extent(float padding)
-        {
-            int size = points.Count;
-
-            List<Vector2> hull = new List<Vector2>(size);
-
-            int e = size - 1;
-
-            for (int i = 0; i < size; i++)
-            {
-                Vector2 c = points[i], n, p;
-
-                p = i > 0 ? points[i - 1] : points[e];
-                n = i < e ? points[i + 1] : points[0];
-
-                Vector2 v = Vector2.Normalize((p - c) + (n - c));
-
-                hull.Add(p - (v * padding));
-            }
-
-            return new ConvexHull(hull);
-        }
-
-        /// <summary>
         /// Computes a new hull from the specified bounds.
         /// </summary>
         /// <param name="bounds">The bounds to create the hull from.</param>

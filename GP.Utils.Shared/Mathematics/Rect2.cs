@@ -157,7 +157,7 @@ namespace GP.Utils.Mathematics
         /// </summary>
         public bool IsInfinite
         {
-            get { return float.IsPositiveInfinity(size.X) || float.IsPositiveInfinity(size.X); }
+            get { return float.IsPositiveInfinity(size.X) || float.IsPositiveInfinity(size.Y); }
         }
 
         /// <summary>
@@ -422,9 +422,9 @@ namespace GP.Utils.Mathematics
         public IEnumerable<Vector2> ToCorners()
         {
             yield return new Vector2(Left, Top);
-            yield return new Vector2(Left, Bottom);
             yield return new Vector2(Right, Top);
             yield return new Vector2(Right, Bottom);
+            yield return new Vector2(Left, Bottom);
         }
 
         /// <summary>
@@ -436,7 +436,7 @@ namespace GP.Utils.Mathematics
         /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture, "X: {0}, Y: {1}, W: {2}, Height: {3}", position.X, position.Y, size.X, size.Y);
+            return string.Format(CultureInfo.InvariantCulture, "X: {0}, Y: {1}, W: {2}, H: {3}", position.X, position.Y, size.X, size.Y);
         }
     }
 }

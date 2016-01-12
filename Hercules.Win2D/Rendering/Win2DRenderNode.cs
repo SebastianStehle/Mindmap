@@ -23,7 +23,7 @@ namespace Hercules.Win2D.Rendering
         private IBodyGeometry bodyGeometry;
         private IPathGeometry pathGeometry;
         private IHullGeometry hullGeometry;
-        private Vector2 animationTargetPosition = MathHelper.PositiveInfinityVector;
+        private Vector2 animationTargetPosition = MathHelper.PositiveInfinityVector2;
         private Vector2 layoutPosition;
         private Vector2 targetLayoutPosition;
         private Rect2 renderBoundsWithParent;
@@ -74,7 +74,7 @@ namespace Hercules.Win2D.Rendering
             {
                 isVisible = false;
 
-                animationTargetPosition = MathHelper.PositiveInfinityVector;
+                animationTargetPosition = MathHelper.PositiveInfinityVector2;
             }
         }
 
@@ -84,7 +84,7 @@ namespace Hercules.Win2D.Rendering
             {
                 isVisible = true;
 
-                animationTargetPosition = MathHelper.PositiveInfinityVector;
+                animationTargetPosition = MathHelper.PositiveInfinityVector2;
             }
         }
 
@@ -147,7 +147,7 @@ namespace Hercules.Win2D.Rendering
         {
             if (IsVisible)
             {
-                if (isAnimating && animationTargetPosition != MathHelper.PositiveInfinityVector)
+                if (isAnimating && animationTargetPosition != MathHelper.PositiveInfinityVector2)
                 {
                     if (animationTargetPosition != targetLayoutPosition)
                     {
@@ -178,7 +178,7 @@ namespace Hercules.Win2D.Rendering
                 return !MathHelper.AboutEqual(targetLayoutPosition, RenderPosition);
             }
 
-            animationTargetPosition = MathHelper.PositiveInfinityVector;
+            animationTargetPosition = MathHelper.PositiveInfinityVector2;
 
             return true;
         }

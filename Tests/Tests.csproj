@@ -88,9 +88,12 @@
     <Compile Include="Facts\LimitedConcurrencyLevelTaskSchedulerTest.cs" />
     <Compile Include="Facts\LocalizationManagerTest.cs" />
     <Compile Include="Facts\MathHelperTest.cs" />
+    <Compile Include="Facts\PropertiesBagTest.cs" />
     <Compile Include="Facts\Rect2Test.cs" />
     <Compile Include="Facts\UndoRedoManagerTests.cs" />
+    <Compile Include="Facts\VisibilityUpdaterTest.cs" />
     <Compile Include="Given\DisposableMockup.cs" />
+    <Compile Include="Given\GivenLocalization.cs" />
     <Compile Include="Given\GivenMocks.cs" />
     <Compile Include="Mockups\MockupAction.cs" />
     <Compile Include="Mockups\MockupModel.cs" />

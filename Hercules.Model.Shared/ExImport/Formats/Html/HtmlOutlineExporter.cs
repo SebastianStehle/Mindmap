@@ -40,12 +40,12 @@ namespace Hercules.Model.ExImport.Formats.Html
             Guard.NotNull(renderer, nameof(renderer));
             Guard.NotNull(stream, nameof(stream));
 
-            bool useColors = properties == null || !properties.HasProperty("HasColors") || properties["HasColors"].ToBoolean(CultureInfo.InvariantCulture);
+            bool useColors = properties == null || !properties.Contains("HasColors") || properties["HasColors"].ToBoolean(CultureInfo.InvariantCulture);
 
             string noTextPlaceholder =
                 properties != null &&
-                properties.HasProperty("NoTextPlaceholder") ?
-                properties.HasProperty("NoTextPlaceholder").ToString() :
+                properties.Contains("NoTextPlaceholder") ?
+                properties["NoTextPlaceholder"].ToString() :
                 NoTextDefault;
 
             return WriteOutlineAsync(document, renderer, stream, useColors, noTextPlaceholder);

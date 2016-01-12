@@ -36,11 +36,6 @@ namespace Hercules.Model
             get { return internalDictionary[key]; }
         }
 
-        public bool HasProperty(string propertyName)
-        {
-            return internalDictionary.ContainsKey(propertyName);
-        }
-
         public bool Contains(string propertyName)
         {
             Guard.NotNullOrEmpty(propertyName, nameof(propertyName));
@@ -62,7 +57,7 @@ namespace Hercules.Model
             return internalDictionary.Remove(propertyName);
         }
 
-        public void Rename(string oldPropertyName, string newPropertyName)
+        public bool Rename(string oldPropertyName, string newPropertyName)
         {
             Guard.NotNullOrEmpty(oldPropertyName, nameof(oldPropertyName));
             Guard.NotNullOrEmpty(newPropertyName, nameof(newPropertyName));
@@ -83,7 +78,11 @@ namespace Hercules.Model
             {
                 internalDictionary[newPropertyName] = property;
                 internalDictionary.Remove(oldPropertyName);
+
+                return true;
             }
+
+            return false;
         }
     }
 }

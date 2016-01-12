@@ -41,18 +41,18 @@ namespace Hercules.Model.ExImport.Formats.XMind
             }
         }
 
-        private static void ReadNode(XElement topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById)
+        private static void ReadNode(this XElement topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById)
         {
-            List<NodeBase> children = new List<NodeBase>();
-
             ReadTitle(topic, node);
-            ReadStyle(topic, node, stylesById);
-            ReadChilds(topic, node, stylesById, children);
-            ReadBounds(topic, children);
-            ReadCollapse(topic, node);
+
+            ReadVisuals(topic, node, stylesById);
+
+            ReadBranch(topic, node);
+
+            ReadChilds(topic, node, stylesById);
         }
 
-        private static void ReadTitle(XContainer topic, NodeBase node)
+        private static void ReadTitle(this XContainer topic, NodeBase node)
         {
             string title = topic.ElementValue(Namespaces.Content("title"));
 
@@ -62,24 +62,15 @@ namespace Hercules.Model.ExImport.Formats.XMind
             }
         }
 
-        private static void ReadChilds(XContainer topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById, ICollection<NodeBase> children)
+        private static void ReadBranch(this XElement topic, NodeBase node)
         {
-            XElement topics = topic.Element(Namespaces.Content("children"))?.Element(Namespaces.Content("topics"));
-
-            if (topics != null && topics.IsAttributeEquals("type", "attached"))
+            if (topic.IsAttributeEquals("branch", "folded"))
             {
-                foreach (XElement subtopic in topics.Elements(Namespaces.Content("topic")))
-                {
-                    NodeBase child = node.AddChildTransactional();
-
-                    ReadNode(subtopic, child, stylesById);
-
-                    children.Add(child);
-                }
+                node.ToggleCollapseTransactional();
             }
         }
 
-        private static void ReadStyle(XElement topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById)
+        private static void ReadVisuals(this XElement topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById)
         {
             string styleId = topic.AttributeValue("style-id");
 
@@ -94,7 +85,28 @@ namespace Hercules.Model.ExImport.Formats.XMind
             }
         }
 
-        private static void ReadBounds(XContainer topic, IReadOnlyList<NodeBase> children)
+        private static void ReadChilds(this XContainer topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById)
+        {
+            List<NodeBase> children = new List<NodeBase>();
+
+            XElement topics = topic.Element(Namespaces.Content("children"))?.Element(Namespaces.Content("topics"));
+
+            if (topics != null && topics.IsAttributeEquals("type", "attached"))
+            {
+                foreach (XElement subtopic in topics.Elements(Namespaces.Content("topic")))
+                {
+                    NodeBase child = node.AddChildTransactional();
+
+                    ReadNode(subtopic, child, stylesById);
+
+                    children.Add(child);
+                }
+            }
+
+            ReadBounds(topic, children);
+        }
+
+        private static void ReadBounds(this XContainer topic, IReadOnlyList<NodeBase> children)
         {
             XElement boundaries = topic.Element(Namespaces.Content("boundaries"));
 
@@ -126,14 +138,6 @@ namespace Hercules.Model.ExImport.Formats.XMind
                         }
                     }
                 }
-            }
-        }
-
-        private static void ReadCollapse(XElement topic, NodeBase node)
-        {
-            if (topic.IsAttributeEquals("branch", "folded"))
-            {
-                node.ToggleCollapseTransactional();
             }
         }
     }

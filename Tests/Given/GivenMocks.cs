@@ -11,7 +11,7 @@ using Rhino.Mocks;
 
 namespace Tests.Given
 {
-    public abstract class GivenMocks
+    public abstract class GivenMocks : GivenLocalization
     {
         private readonly MockRepository mocks = new MockRepository();
 

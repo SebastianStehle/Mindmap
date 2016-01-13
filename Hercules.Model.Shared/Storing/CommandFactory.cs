@@ -14,7 +14,7 @@ using System.Reflection;
 
 namespace Hercules.Model.Storing
 {
-    internal static class CommandFactory
+    public static class CommandFactory
     {
         private const string Suffix = "Command";
         private const string ModelAssemblyNew = "Hercules.Model.Shared,";

@@ -36,6 +36,8 @@ namespace Hercules.Model.Storing
 
         public DocumentRef Rename(string name)
         {
+            Guard.NotNullOrEmpty(name, nameof(name));
+
             documentName = name;
 
             return this;

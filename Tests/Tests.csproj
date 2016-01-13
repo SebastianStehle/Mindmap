@@ -78,8 +78,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Facts\ColorsHelperTest.cs" />
+    <Compile Include="Facts\CommandFactoryTest.cs" />
     <Compile Include="Facts\ConvexHullTest.cs" />
     <Compile Include="Facts\DisposableObjectTest.cs" />
+    <Compile Include="Facts\DocumentStoreTypesTest.cs" />
     <Compile Include="Facts\DocumentTest.cs" />
     <Compile Include="Facts\ExtensionsTest.cs" />
     <Compile Include="Facts\GuardTest.cs" />

@@ -3,7 +3,6 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
-    xmlns:m="using:Hercules.App.Modules.Mindmaps.Views"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:gpi="using:GP.Utils.UI.Interactivity"
     xmlns:controls="using:Hercules.App.Controls"
@@ -16,7 +15,7 @@
 
         <CommandBar.Content>
             <StackPanel Orientation="Horizontal">
-                <AppBarButton x:Uid="AppBarButton_ListMindmaps" Icon="List" Click="ListAppBarButton_Click" IsCompact="True" Label="Mindmaps">
+                <AppBarButton x:Uid="AppBarButton_ListMindmaps" Icon="List" Click="ListAppBarButton_Click" IsCompact="True" Label="RecentFiles">
                     <i:Interaction.Behaviors>
                         <gpi:ShortcutBehavior RequiresControlModifier="True" Key="L" Invoked="ListAppBarButton_Click" />
                     </i:Interaction.Behaviors>
@@ -41,15 +40,6 @@
 
                         <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{Binding PrintCommand}" />
                     </MenuFlyout>
-                </AppBarButton.Flyout>
-            </AppBarButton>
-
-            <AppBarButton x:Uid="AppBarButton_AddMindmap" IsCompact="True" Label="Remove" Icon="Add" 
-                DataContext="{Binding Mindmaps, Source={StaticResource ViewModelLocator}}">
-                <AppBarButton.Flyout>
-                    <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyleSimple}">
-                        <m:EnterNameView />
-                    </controls:MindmapFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
         </CommandBar.PrimaryCommands>

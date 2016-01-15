@@ -9,16 +9,17 @@
 using System.IO;
 using Windows.UI.Xaml;
 using Hercules.App.Components;
+using Hercules.Model.Storing;
 
 namespace Hercules.App.Modules.Mindmaps.Views
 {
     public sealed partial class RenameView
     {
         public static readonly DependencyProperty MindmapItemProperty =
-            DependencyProperty.Register(nameof(MindmapItem), typeof(MindmapRef), typeof(RenameView), new PropertyMetadata(null));
-        public MindmapRef MindmapItem
+            DependencyProperty.Register(nameof(MindmapItem), typeof(DocumentFile), typeof(RenameView), new PropertyMetadata(null));
+        public DocumentFile MindmapItem
         {
-            get { return (MindmapRef)GetValue(MindmapItemProperty); }
+            get { return (DocumentFile)GetValue(MindmapItemProperty); }
             set { SetValue(MindmapItemProperty, value); }
         }
 

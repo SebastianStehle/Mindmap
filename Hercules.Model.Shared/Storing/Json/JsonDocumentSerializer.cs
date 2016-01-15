@@ -33,38 +33,41 @@ namespace Hercules.Model.Storing.Json
             HistorySerializerSettings.Formatting = Formatting.Indented;
         }
 
-        public static void SerializeToStream(Stream stream, Document document)
+        public static byte[] Serialize(JsonHistory history)
         {
-            Guard.NotNull(stream, nameof(stream));
-            Guard.NotNull(document, nameof(document));
+            Guard.NotNull(history, nameof(history));
 
-            JsonHistory history = new JsonHistory(document);
+            using (MemoryStream stream = new MemoryStream())
+            {
+                Serialize(history, stream);
 
-            SerializeToStream(stream, history);
+                return stream.ToArray();
+            }
         }
 
-        public static void SerializeToStream(Stream stream, JsonHistory history)
+        public static void Serialize(JsonHistory history, Stream stream)
         {
-            Guard.NotNull(stream, nameof(stream));
             Guard.NotNull(history, nameof(history));
+            Guard.NotNull(stream, nameof(stream));
 
             JsonStreamConvert.SerializeAsJson(history, stream, HistorySerializerSettings);
         }
 
-        public static JsonHistory DeserializeHistoryFromStream(Stream stream)
+        public static Document Deserialize(byte[] contents)
+        {
+            Guard.NotNull(contents, nameof(contents));
+
+            using (MemoryStream stream = new MemoryStream())
+            {
+                return Deserialize(stream);
+            }
+        }
+
+        public static Document Deserialize(Stream stream)
         {
             Guard.NotNull(stream, nameof(stream));
 
             JsonHistory history = JsonStreamConvert.DeserializeAsJson<JsonHistory>(stream, HistorySerializerSettings);
-
-            return history;
-        }
-
-        public static Document DeserializeDocumentFromStream(Stream stream)
-        {
-            Guard.NotNull(stream, nameof(stream));
-
-            JsonHistory history = DeserializeHistoryFromStream(stream);
 
             return history.ToDocument();
         }

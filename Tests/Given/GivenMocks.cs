@@ -8,7 +8,6 @@
 
 using System;
 using Rhino.Mocks;
-using Xunit;
 
 namespace Tests.Given
 {

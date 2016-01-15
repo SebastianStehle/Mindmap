@@ -8,13 +8,16 @@
 
 using System;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
+using Windows.Storage;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using GalaSoft.MvvmLight.Messaging;
 using Hercules.App.Messages;
+using Hercules.Model.Storing;
 using Microsoft.ApplicationInsights;
 
 namespace Hercules.App
@@ -34,6 +37,23 @@ namespace Hercules.App
 
         protected override void OnLaunched(LaunchActivatedEventArgs args)
         {
+            ShowUI(args.Arguments);
+        }
+
+        protected override void OnFileActivated(FileActivatedEventArgs args)
+        {
+            ShowUI(args);
+
+            StorageFile file = args.Files[0] as StorageFile;
+
+            if (file != null)
+            {
+                DocumentFile.OpenAsync(file).ContinueWith(t => Messenger.Default.Send(new OpenMindmapMessage(t.Result)), TaskContinuationOptions.OnlyOnRanToCompletion);
+            }
+        }
+
+        private void ShowUI(object arguments)
+        {
 #if DEBUG
             DebugSettings.EnableFrameRateCounter |= Debugger.IsAttached;
 #endif
@@ -50,7 +70,7 @@ namespace Hercules.App
 
             if (rootFrame.Content == null)
             {
-                rootFrame.Navigate(typeof(MainPage), args.Arguments);
+                rootFrame.Navigate(typeof(MainPage), arguments);
             }
 
             Window.Current.Activate();

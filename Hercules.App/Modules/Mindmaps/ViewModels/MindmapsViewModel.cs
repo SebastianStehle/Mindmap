@@ -8,15 +8,16 @@
 
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
 using System.Threading.Tasks;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
+using GalaSoft.MvvmLight.Messaging;
 using GP.Utils;
 using GP.Utils.Mvvm;
 using Hercules.App.Components;
 using Hercules.App.Messages;
 using Hercules.Model.ExImport;
+using Hercules.Model.Storing;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
 
@@ -26,13 +27,16 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
     public sealed class MindmapsViewModel : ViewModelBase
     {
         private readonly IMindmapStore mindmapStore;
-        private RelayCommand<MindmapRef> deleteCommand;
+        private RelayCommand openCommand;
+        private RelayCommand saveCommand;
+        private RelayCommand saveAsCommand;
+        private RelayCommand createCommand;
 
-        public ObservableCollection<MindmapRef> Mindmaps
+        public ObservableCollection<DocumentFile> RecentFiles
         {
             get
             {
-                return mindmapStore.AllMindmaps;
+                return mindmapStore.AllDocuments;
             }
         }
 
@@ -40,7 +44,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         public bool IsLoaded { get; set; }
 
         [NotifyUI]
-        public MindmapRef SelectedMindmap { get; set; }
+        public DocumentFile SelectedFile { get; set; }
 
         [Dependency]
         public IProcessManager ProcessManager { get; set; }
@@ -48,34 +52,67 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         [Dependency]
         public IMessageDialogService MessageDialogService { get; set; }
 
-        public RelayCommand<MindmapRef> DeleteCommand
+        public RelayCommand OpenCommand
         {
             get
             {
-                return deleteCommand ?? (deleteCommand = new RelayCommand<MindmapRef>(async item =>
+                return openCommand ?? (openCommand = new RelayCommand(() =>
                 {
-                    string content = LocalizationManager.GetString("DeleteMindmap_Content");
-                    string message = LocalizationManager.GetString("DeleteMindmap_Heading");
+                    mindmapStore.OpenAsync().Forget();
+                }));
+            }
+        }
 
-                    if (await MessageDialogService.ConfirmAsync(content, message))
-                    {
-                        await mindmapStore.DeleteAsync(item);
-                    }
+        public RelayCommand SaveCommand
+        {
+            get
+            {
+                return saveCommand ?? (saveCommand = new RelayCommand(() =>
+                {
+                    mindmapStore.SaveAsync().Forget();
+                }));
+            }
+        }
+
+        public RelayCommand SaveAsCommand
+        {
+            get
+            {
+                return saveAsCommand ?? (saveAsCommand = new RelayCommand(() =>
+                {
+                    mindmapStore.SaveToFileAsync().Forget();
+                }));
+            }
+        }
+
+        public RelayCommand CreateCommand
+        {
+            get
+            {
+                return createCommand ?? (createCommand = new RelayCommand(() =>
+                {
+                    mindmapStore.CreateAsync().Forget();
                 }));
             }
         }
 
         public MindmapsViewModel()
         {
-            MessengerInstance.Register<ImportMessage>(this, OnImport);
         }
 
-        public MindmapsViewModel(IMindmapStore mindmapStore)
-            : this()
+        public MindmapsViewModel(IMindmapStore mindmapStore, IMessenger messenger)
         {
             this.mindmapStore = mindmapStore;
 
             mindmapStore.DocumentLoaded += MindmapStore_DocumentLoaded;
+
+            messenger.Register<ImportMessage>(this, OnImport);
+
+            messenger.Register<OpenMindmapMessage>(this, OnOpen);
+        }
+
+        public void OnOpen(OpenMindmapMessage message)
+        {
         }
 
         public void OnImport(ImportMessage message)
@@ -95,10 +132,10 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                     {
                         foreach (var result in results)
                         {
-                            await mindmapStore.AddAsync(result.Name, result.Document);
-                            await mindmapStore.LoadAsync(mindmapStore.AllMindmaps[0]);
+                            //await mindmapStore.AddAsync(result.Name, result.Document);
+                            //await mindmapStore.LoadAsync(mindmapStore.AllDocuments[0]);
 
-                            SelectedMindmap = mindmapStore.AllMindmaps[0];
+                            //SelectedMindmap = mindmapStore.AllDocuments[0];
                         }
                     }
                 }
@@ -112,39 +149,16 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             }).Forget();
         }
 
-        private void MindmapStore_DocumentLoaded(object sender, DocumentLoadedEventArgs e)
+        private void MindmapStore_DocumentLoaded(object sender, DocumentFileEventArgs e)
         {
-            if (e.Document == null)
-            {
-                SelectedMindmap = null;
-            }
-        }
-
-        public async void OnSelectedMindmapChanged()
-        {
-            if (SelectedMindmap != null)
-            {
-                await mindmapStore.LoadAsync(SelectedMindmap);
-            }
-        }
-
-        public bool IsValidMindmapName(string name)
-        {
-            return mindmapStore.IsValidMindmapName(name);
-        }
-
-        public async Task CreateNewMindmapAsync(string name)
-        {
-            await mindmapStore.CreateAsync(name);
-
-            SelectedMindmap = mindmapStore.AllMindmaps.FirstOrDefault();
+            SelectedFile = e.File;
         }
 
         public async Task LoadAsync()
         {
-            await mindmapStore.LoadAllAsync();
+            await mindmapStore.LoadRecentAsync();
 
-            SelectedMindmap = mindmapStore.AllMindmaps.FirstOrDefault();
+            SelectedFile = mindmapStore.LoadedDocument;
         }
     }
 }

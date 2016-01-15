@@ -7,22 +7,22 @@
 // ==========================================================================
 
 using System;
-using Hercules.Model;
+using Hercules.Model.Storing;
 
 namespace Hercules.App.Components
 {
-    public sealed class DocumentLoadedEventArgs : EventArgs
+    public sealed class DocumentFileEventArgs : EventArgs
     {
-        private readonly Document document;
+        private readonly DocumentFile file;
 
-        public Document Document
+        public DocumentFile File
         {
-            get { return document; }
+            get { return file; }
         }
 
-        public DocumentLoadedEventArgs(Document document)
+        public DocumentFileEventArgs(DocumentFile file)
         {
-            this.document = document;
+            this.file = file;
         }
     }
 }

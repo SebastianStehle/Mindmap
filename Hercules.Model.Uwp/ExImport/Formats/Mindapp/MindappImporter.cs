@@ -36,7 +36,7 @@ namespace Hercules.Model.ExImport.Formats.Mindapp
 
                 if (!string.IsNullOrWhiteSpace(name))
                 {
-                    Document document = JsonDocumentSerializer.DeserializeDocumentFromStream(stream);
+                    Document document = JsonDocumentSerializer.Deserialize(stream);
 
                     result.Add(new ImportResult(document, name));
                 }

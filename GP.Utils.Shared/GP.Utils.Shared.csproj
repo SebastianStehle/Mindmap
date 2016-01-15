@@ -45,9 +45,12 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ExcludeFromCodeCoverageAttribute.cs" />
+    <Compile Include="CodeAnalysis\ExcludeFromCodeCoverageAttribute.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ILocalizationProvider.cs" />
+    <Compile Include="IO\IFile.cs" />
+    <Compile Include="IO\IFolder.cs" />
+    <Compile Include="IO\IFileSystem.cs" />
     <Compile Include="LimitedConcurrencyLevelTaskScheduler.cs" />
     <Compile Include="LocalizationManager.cs" />
     <Compile Include="Mathematics\ColorsVectorHelper.cs" />

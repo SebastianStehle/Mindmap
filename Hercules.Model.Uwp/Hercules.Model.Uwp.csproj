@@ -115,9 +115,7 @@
     <Compile Include="ImageSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\IPrintableRenderer.cs" />
-    <Compile Include="Storing\Json\JsonDocumentFileSerializer.cs" />
-    <Compile Include="Storing\Json\JsonDocumentStore.cs" />
-    <Compile Include="Storing\Utils\FileExtensions.cs" />
+    <Compile Include="Storing\DocumentFile.cs" />
     <EmbeddedResource Include="Properties\Hercules.Model.Uwp.rd.xml" />
   </ItemGroup>
   <ItemGroup>

@@ -19,11 +19,11 @@
 
         <Border Grid.Row="0" BorderBrush="{ThemeResource SystemControlHighlightListLowBrush}" BorderThickness="0,0,0,1" Padding="10,0,0,6">
             <TextBlock x:Uid="Mindmaps_Header" Foreground="Black" Text="Mindmaps"
-                FontSize="20" 
+                FontSize="18" 
                 FontWeight="Bold" />
         </Border>
 
-        <ListBox Grid.Row="1" ItemContainerStyle="{StaticResource BorderedListBoxItemStyle}" SelectedItem="{Binding SelectedMindmap, Mode=TwoWay}" ItemsSource="{Binding Mindmaps}" HorizontalContentAlignment="Stretch">
+        <ListBox Grid.Row="1" ItemContainerStyle="{StaticResource BorderedListBoxItemStyle}" SelectedItem="{Binding SelectedFile, Mode=TwoWay}" ItemsSource="{Binding RecentFiles}" HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <Grid x:Name="Root" HorizontalAlignment="Stretch" Background="Transparent">

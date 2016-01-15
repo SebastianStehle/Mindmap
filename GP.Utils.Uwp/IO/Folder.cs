@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// DocumentNotFoundException.cs
+// StorageFolder.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -7,23 +7,23 @@
 // ==========================================================================
 
 using System;
+using System.Threading.Tasks;
+using Windows.Storage;
 
-namespace Hercules.Model.Storing
+namespace GP.Utils.IO
 {
-    public sealed class DocumentNotFoundException : Exception
+    internal sealed class Folder : FolderBase
     {
-        public DocumentNotFoundException()
+        private readonly string path;
+
+        public Folder(string path)
         {
+            this.path = path;
         }
 
-        public DocumentNotFoundException(string message)
-            : base(message)
+        public override async Task<StorageFolder> GetFolderAsync()
         {
-        }
-
-        public DocumentNotFoundException(string message, Exception inner)
-            : base(message, inner)
-        {
+            return await StorageFolder.GetFolderFromPathAsync(path);
         }
     }
 }

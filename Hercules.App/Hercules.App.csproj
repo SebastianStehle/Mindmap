@@ -108,10 +108,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Assets\AssetProvider.cs" />
-    <Compile Include="Components\DocumentLoadedEventArgs.cs" />
+    <Compile Include="Components\DocumentFileEventArgs.cs" />
     <Compile Include="Components\IMindmapStore.cs" />
     <Compile Include="Components\Implementations\DefaultSettingsProvider.cs" />
-    <Compile Include="Components\MindmapRef.cs" />
     <Compile Include="Components\Implementations\MindmapStore.cs" />
     <Compile Include="Components\Implementations\MindmapPrintService.cs" />
     <Compile Include="Components\IMindmapPrintService.cs" />
@@ -129,6 +128,7 @@
     <Compile Include="Controls\NodeMovingOperation.cs" />
     <Compile Include="Controls\TextEditor.cs" />
     <Compile Include="Messages\ImportMessage.cs" />
+    <Compile Include="Messages\OpenMindmapMessage.cs" />
     <Compile Include="Messages\SaveMindmapMessage.cs" />
     <Compile Include="Modules\Editor\ViewModels\DocumentViewModelBase.cs" />
     <Compile Include="Modules\Editor\ViewModels\EditorPropertiesViewModel.cs" />
@@ -159,9 +159,6 @@
     </Compile>
     <Compile Include="Modules\Mindmaps\Views\RenameView.xaml.cs">
       <DependentUpon>RenameView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Modules\Mindmaps\Views\EnterNameView.xaml.cs">
-      <DependentUpon>EnterNameView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Modules\MvvmExtension.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -309,10 +306,6 @@
     <Page Include="Modules\Mindmaps\Views\RenameView.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Modules\Mindmaps\Views\EnterNameView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>

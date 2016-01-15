@@ -88,11 +88,7 @@ namespace GP.Utils
         /// </summary>
         /// <param name="target">The target stream where to write the source stream to. Cannot be null.</param>
         /// <param name="source">The source stream to write to the target stream. Cannot be null.</param>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="target"/> is null.
-        ///     - or -
-        ///     <paramref name="source"/> is null.
-        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="target"/> is null.</exception>
         public static void Write(this Stream target, Stream source)
         {
             Guard.NotNull(source, nameof(source));
@@ -136,11 +132,7 @@ namespace GP.Utils
         /// <typeparam name="T">The type of the items in the enumerable.</typeparam>
         /// <param name="items">The enumerable that is iterated through this method. Cannot be null.</param>
         /// <param name="action">The action to invoke foreach item. Cannot be null.</param>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="items"/> is null.
-        ///     - or -
-        ///     <paramref name="action"/> is null.
-        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="action"/> is null.</exception>
         public static void Foreach<T>(this IEnumerable<T> items, Action<T> action)
         {
             Guard.NotNull(items, nameof(items));
@@ -158,11 +150,7 @@ namespace GP.Utils
         /// <typeparam name="TItem">The type of the items in the source and target.</typeparam>
         /// <param name="target">The target, where the items should be inserted to. Cannot be null.</param>
         /// <param name="elements">The elements to add to the collection. Cannot be null.</param>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="target"/> is null.
-        ///     - or -
-        ///     <paramref name="elements"/> is null.
-        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="elements"/> is null.</exception>
         public static void AddRange<TItem>(this Collection<TItem> target, IEnumerable<TItem> elements)
         {
             Guard.NotNull(target, nameof(target));
@@ -223,6 +211,18 @@ namespace GP.Utils
             }
 
             return value;
+        }
+
+        /// <summary>
+        /// Gets or sets a value indicating if the the name is a valid file name.
+        /// </summary>
+        /// <param name="name">The file name to check.</param>
+        /// <returns>
+        /// True, if the name is a valid file name; false otherwise.
+        /// </returns>
+        public static bool IsValidFileName(this string name)
+        {
+            return !string.IsNullOrWhiteSpace(name) && !name.Intersect(Path.GetInvalidFileNameChars()).Any();
         }
 
         /// <summary>

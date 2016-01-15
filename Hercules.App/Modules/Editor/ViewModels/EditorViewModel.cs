@@ -115,7 +115,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return exportCommand ?? (exportCommand = new RelayCommand<ExportModel>(async x =>
                 {
-                    await ProcessManager.RunMainProcessAsync(this, () => x.Target.ExportAsync(MindmapStore.LoadedMindmap.Name, Document, x.Exporter, RendererProvider.Current));
+                    await ProcessManager.RunMainProcessAsync(this, () => x.Target.ExportAsync(MindmapStore.LoadedDocument.Name, Document, x.Exporter, RendererProvider.Current));
                 },
                 x => Document != null).DependentOn(this, nameof(Document)));
             }
@@ -245,7 +245,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
         private async void OnSaveMindmap(SaveMindmapMessage message)
         {
-            await MindmapStore.SaveAsync();
+            //await MindmapStore.SaveAsync();
 
             message.Callback();
         }

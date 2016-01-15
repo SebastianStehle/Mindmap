@@ -6,10 +6,13 @@
 // All rights reserved.
 // ==========================================================================
 
+using System.Threading.Tasks;
 using Windows.ApplicationModel;
+using Windows.System.Threading;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using GP.Utils;
+using GP.Utils.IO;
 using GP.Utils.Mvvm;
 using Hercules.App.Components;
 using Hercules.App.Components.Implementations;
@@ -60,6 +63,13 @@ namespace Hercules.App.Modules
             {
                 IUnityContainer unityContainer = new UnityContainer();
 
+                unityContainer.RegisterInstance(
+                    new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1, s => ThreadPool.RunAsync(t => s()).Forget())),
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterInstance<IMessenger>(Messenger.Default,
+                    new ContainerControlledLifetimeManager());
+                unityContainer.RegisterType<IFileSystem, StorageFileSystem>(
+                    new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IMessenger, Messenger>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IDocumentStore, JsonDocumentStore>(

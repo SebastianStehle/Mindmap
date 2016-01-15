@@ -67,9 +67,9 @@ namespace Hercules.App.Modules.Editor.ViewModels
             Renderer = rendererProvider.Current;
         }
 
-        private void MindmapStore_DocumentLoaded(object sender, DocumentLoadedEventArgs e)
+        private void MindmapStore_DocumentLoaded(object sender, DocumentFileEventArgs e)
         {
-            Document = e.Document;
+            Document = e.File.Document;
         }
 
         public void OnPropertyChanged(string propertyName, object before, object after)

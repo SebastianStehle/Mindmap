@@ -82,11 +82,8 @@ namespace GP.Utils.UI
         /// <param name="scrollViewer">The scrollviewer. Cannot be null.</param>
         /// <param name="eventArgs">The <see cref="InputPaneVisibilityEventArgs" /> instance containing the event data. Cannot be null.</param>
         /// <returns>A value indicating if a child element was occluded.</returns>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="scrollViewer"/> is null.
-        ///     - or -
-        ///     <paramref name="eventArgs"/> is null.
-        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="scrollViewer"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="eventArgs"/> is null.</exception>
         public static bool BringChildElementIntoView(this ScrollViewer scrollViewer, InputPaneVisibilityEventArgs eventArgs)
         {
             Guard.NotNull(scrollViewer, nameof(scrollViewer));
@@ -178,24 +175,18 @@ namespace GP.Utils.UI
         /// <summary>
         /// Determines whether the specified child is child control of the target object.
         /// </summary>
-        /// <param name="target">The target object, which is a possible parent
-        /// of the child object. Cannot be null.</param>
+        /// <param name="target">The target object, which is a possible parent of the child object.</param>
         /// <param name="child">The child object to check. Cannot be null.</param>
         /// <returns>
         /// <c>true</c> if the target is parent of the child control; otherwise, <c>false</c>.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="target"/> is null.
-        ///     - or -
-        ///     <paramref name="child"/> is null.
-        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="child"/> is null.</exception>
         public static bool IsChild(this DependencyObject target, DependencyObject child)
         {
+            Guard.NotNull(child, nameof(child));
+
             while (true)
             {
-                Guard.NotNull(target, nameof(target));
-                Guard.NotNull(child, nameof(child));
-
                 DependencyObject parent = VisualTreeHelper.GetParent(child);
 
                 if (parent == target)

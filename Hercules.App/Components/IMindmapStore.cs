@@ -9,38 +9,28 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Hercules.Model;
+using Hercules.Model.Storing;
 
 namespace Hercules.App.Components
 {
     public interface IMindmapStore
     {
-        event EventHandler<DocumentLoadedEventArgs> DocumentLoaded;
+        event EventHandler<DocumentFileEventArgs> DocumentLoaded;
 
-        event EventHandler MindmapUpdated;
+        ObservableCollection<DocumentFile> AllDocuments { get; }
 
-        ObservableCollection<MindmapRef> AllMindmaps { get; }
+        DocumentFile LoadedDocument { get; }
 
-        Document LoadedDocument { get; }
+        Task LoadRecentAsync();
 
-        MindmapRef LoadedMindmap { get; }
+        Task CreateAsync();
 
-        bool IsValidMindmapName(string name);
+        Task OpenAsync(DocumentFile file);
 
-        Task CreateAsync(string name);
+        Task OpenAsync();
 
         Task SaveAsync();
 
-        Task SaveAsync(MindmapRef mindmap, Document document);
-
-        Task LoadAsync(MindmapRef mindmap);
-
-        Task LoadAllAsync();
-
-        Task RenameAsync(MindmapRef mindmap, string newName);
-
-        Task DeleteAsync(MindmapRef mindmap);
-
-        Task AddAsync(string name, Document document);
+        Task SaveToFileAsync();
     }
 }

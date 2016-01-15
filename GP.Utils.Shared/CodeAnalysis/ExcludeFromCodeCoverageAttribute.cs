@@ -17,7 +17,7 @@ namespace System.Diagnostics.CodeAnalysis
     /// available to portable class libraries. Marked internal to avoid reuse
     /// outside this specific library.
     /// </remarks>
-    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, AllowMultiple = false, Inherited = false)]
+    [AttributeUsage(AttributeTargets.Class | AttributeTargets.Struct | AttributeTargets.Constructor | AttributeTargets.Method | AttributeTargets.Property | AttributeTargets.Event, Inherited = false)]
     internal sealed class ExcludeFromCodeCoverageAttribute : Attribute
     {
     }

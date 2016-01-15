@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// FileExtensions.cs
+// StorageExtensions.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -9,37 +9,26 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
+using Windows.Foundation;
 using Windows.Storage;
-using GP.Utils;
+using Windows.Storage.Search;
 
-namespace Hercules.Model.Storing.Utils
+namespace GP.Utils.IO
 {
-    internal static class FileExtensions
+    internal static class StorageExtensions
     {
-        public static Task<List<StorageFile>> GetFilesAsync(this StorageFolder localFolder, FileExtension extension)
+        public static IAsyncOperation<IReadOnlyList<StorageFile>> GetFilesAsync(this IStorageFolderQueryOperations folder, FileExtension extension)
         {
-            return localFolder.GetFilesAsync(extension.Extension);
-        }
+            QueryOptions options = new QueryOptions(CommonFileQuery.DefaultQuery,
+                new[]
+                {
+                    extension.Extension
+                });
 
-        public static string NameWithoutExtension(this StorageFile file, FileExtension extension)
-        {
-            string name = file.Name;
+            StorageFileQueryResult results = folder.CreateFileQueryWithOptions(options);
 
-            if (name.EndsWith(extension.ToString(), StringComparison.OrdinalIgnoreCase))
-            {
-                name = name.Substring(0, name.Length - extension.ToString().Length);
-            }
-
-            return name;
-        }
-
-        public static async Task<List<StorageFile>> GetFilesAsync(this StorageFolder localFolder, string extension)
-        {
-            IEnumerable<StorageFile> files = await localFolder.GetFilesAsync();
-
-            return files.Where(file => file.FileType.Equals(extension, StringComparison.OrdinalIgnoreCase)).ToList();
+            return results.GetFilesAsync();
         }
 
         public static async Task<StorageFolder> GetOrCreateFolderAsync(this StorageFolder localFolder, string name)

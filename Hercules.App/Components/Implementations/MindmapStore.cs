@@ -9,16 +9,14 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
-using Windows.UI.Xaml;
-using GalaSoft.MvvmLight;
+using Windows.Storage;
+using Windows.Storage.Pickers;
+using Windows.Storage.Search;
 using GP.Utils;
 using GP.Utils.Mvvm;
-using Hercules.Model;
 using Hercules.Model.Storing;
-using Microsoft.ApplicationInsights.DataContracts;
+using Hercules.Model.Storing.Json;
 using PropertyChanged;
 
 // ReSharper disable ImplicitlyCapturedClosure
@@ -26,297 +24,146 @@ using PropertyChanged;
 namespace Hercules.App.Components.Implementations
 {
     [ImplementPropertyChanged]
-    public sealed class MindmapStore : ViewModelBase, IMindmapStore
+    public sealed class MindmapStore : IMindmapStore
     {
-        private readonly ObservableCollection<MindmapRef> allMindmaps = new ObservableCollection<MindmapRef>();
-        private readonly DispatcherTimer autosaveTimer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(5) };
-        private readonly IDocumentStore documentStore;
+        private readonly ObservableCollection<DocumentFile> allDocuments = new ObservableCollection<DocumentFile>();
         private readonly IProcessManager processManager;
-        private readonly ISettingsProvider settingsProvider;
-        private readonly IMessageDialogService dialogService;
-        private bool isLoaded;
+        private DocumentFile loadedDocument;
 
-        public event EventHandler<DocumentLoadedEventArgs> DocumentLoaded;
+        public event EventHandler<DocumentFileEventArgs> DocumentLoaded;
 
-        public event EventHandler MindmapUpdated;
-
-        public ObservableCollection<MindmapRef> AllMindmaps
+        public ObservableCollection<DocumentFile> AllDocuments
         {
-            get { return allMindmaps; }
+            get { return allDocuments; }
         }
 
-        [NotifyUI]
-        public Document LoadedDocument { get; private set; }
-
-        [NotifyUI]
-        public MindmapRef LoadedMindmap { get; private set; }
-
-        public MindmapStore(IDocumentStore documentStore, IProcessManager processManager, ISettingsProvider settingsProvider, IMessageDialogService dialogService)
+        public DocumentFile LoadedDocument
         {
-            Guard.NotNull(documentStore, nameof(documentStore));
-            Guard.NotNull(dialogService, nameof(dialogService));
-            Guard.NotNull(processManager, nameof(processManager));
-            Guard.NotNull(settingsProvider, nameof(settingsProvider));
+            get { return loadedDocument; }
+        }
 
-            this.dialogService = dialogService;
-            this.documentStore = documentStore;
+        public MindmapStore(IProcessManager processManager)
+        {
             this.processManager = processManager;
-            this.settingsProvider = settingsProvider;
-
-            StartTimer();
         }
 
-        private void StartTimer()
+        public async Task LoadRecentAsync()
         {
-            autosaveTimer.Tick += autosaveTimer_Tick;
+            List<DocumentFile> documentFiles = await DocumentFile.QueryRecentFilesAsync();
 
-            autosaveTimer.Start();
-        }
+            allDocuments.Clear();
 
-        private void autosaveTimer_Tick(object sender, object e)
-        {
-            if (LoadedMindmap != null && LoadedDocument != null)
+            documentFiles.Foreach(x => allDocuments.Add(x));
+
+            if (documentFiles.Count > 0)
             {
-                documentStore.StoreAsync(LoadedMindmap.DocumentRef, LoadedDocument).Forget();
+                await OpenAsync(documentFiles[0]);
             }
         }
 
-        public bool IsValidMindmapName(string name)
+        public Task OpenAsync(DocumentFile file)
         {
-            return !string.IsNullOrWhiteSpace(name) && name == name.Trim() && !name.Intersect(Path.GetInvalidFileNameChars()).Any();
-        }
+            Guard.NotNull(file, nameof(file));
 
-        public async Task LoadAllAsync()
-        {
-            if (!isLoaded)
+            return processManager.RunMainProcessAsync(this, async () =>
             {
-                isLoaded = true;
-
-                await DoAsync(async () =>
+                if (loadedDocument != null)
                 {
-                    if (settingsProvider.IsAlreadyStarted)
-                    {
-                        IEnumerable<DocumentRef> documents = await documentStore.LoadAllAsync();
+                    await loadedDocument.SaveAsync();
 
-                        foreach (MindmapRef mindmapRef in documents.Select(documentRef => new MindmapRef(documentRef, this)))
-                        {
-                            allMindmaps.Add(mindmapRef);
-                        }
-                    }
-                    else
-                    {
-                        settingsProvider.IsAlreadyStarted = true;
+                    loadedDocument.Close();
+                }
 
-                        await CreateAsync(LocalizationManager.GetString("MyMindmap"));
-                    }
-                });
-            }
-        }
+                await file.OpenAsync();
 
-        public Task CreateAsync(string name)
-        {
-            Guard.ValidFileName(name, nameof(name));
+                loadedDocument = file;
 
-            return DoAsync(async () =>
-            {
-                Document document = new Document(Guid.NewGuid());
-
-                document.Root.ChangeTextTransactional(name);
-
-                await AddAsync(name, document);
-            });
-        }
-
-        public Task AddAsync(string name, Document document)
-        {
-            Guard.ValidFileName(name, nameof(name));
-            Guard.NotNull(document, nameof(document));
-
-            return DoAsync(async () =>
-            {
-                DocumentRef documentRef = await documentStore.CreateAsync(name, document);
-
-                allMindmaps.Insert(0, new MindmapRef(documentRef, this));
+                OnDocumentLoaded(file);
             });
         }
 
         public Task SaveAsync()
         {
-            return DoAsync(LoadedMindmap, LoadedDocument, async (m, d) =>
+            return processManager.RunMainProcessAsync(this, async () =>
             {
-                await documentStore.StoreAsync(m.DocumentRef, d);
-            });
-        }
-
-        public Task RenameAsync(MindmapRef mindmap, string newName)
-        {
-            Guard.NotNull(mindmap, nameof(mindmap));
-            Guard.ValidFileName(newName, nameof(newName));
-
-            return DoAsync(mindmap, async m =>
-            {
-                await documentStore.RenameAsync(m.DocumentRef, newName);
-
-                OnMindmapUpdated();
-            });
-        }
-
-        public Task SaveAsync(MindmapRef mindmap, Document document)
-        {
-            Guard.NotNull(mindmap, nameof(mindmap));
-            Guard.NotNull(document, nameof(document));
-
-            return DoAsync(mindmap, document, async (m, d) =>
-            {
-                await documentStore.StoreAsync(m.DocumentRef, d);
-
-                OnMindmapUpdated();
-            });
-        }
-
-        public Task LoadAsync(MindmapRef mindmap)
-        {
-            Guard.NotNull(mindmap, nameof(mindmap));
-
-            return DoAsync(mindmap, async m =>
-            {
-                if (LoadedMindmap != null && LoadedDocument != null)
+                if (loadedDocument != null)
                 {
-                    await LoadedMindmap.SaveAsync(LoadedDocument);
-                }
-
-                try
-                {
-                    LoadedMindmap = m;
-                    LoadedDocument = await documentStore.LoadAsync(m.DocumentRef);
-
-                    OnDocumentLoaded(LoadedDocument);
-                }
-                catch (DocumentNotFoundException e)
-                {
-                    ShowNotFoundErrorDialog(e);
-
-                    UnloadMindmap(mindmap);
-                }
-                catch (Exception e)
-                {
-                    UnloadMindmap(m);
-
-                    ShowLoadingErrorDialog(e);
+                    await loadedDocument.SaveAsync();
                 }
             });
         }
 
-        public Task DeleteAsync(MindmapRef mindmap)
+        public async Task OpenAsync()
         {
-            Guard.NotNull(mindmap, nameof(mindmap));
+            StorageFile file = await PickOpenAsync(JsonDocumentSerializer.FileExtension.Extension);
 
-            return DoAsync(mindmap, async m =>
+            if (file != null)
             {
-                await documentStore.DeleteAsync(m.DocumentRef);
+                DocumentFile document = await DocumentFile.OpenAsync(file);
 
-                UnloadMindmap(m);
-            });
-        }
+                document.AddToRecentList();
 
-        private async Task DoAsync(Func<Task> action)
-        {
-            if (isLoaded)
-            {
-                try
-                {
-                    await processManager.RunMainProcessAsync(this, action);
-                }
-                catch (DocumentNotFoundException e)
-                {
-                    ShowNotFoundErrorDialog(e);
-                }
+                await OpenAsync(document);
             }
         }
 
-        private async Task DoAsync(MindmapRef mindmap, Func<MindmapRef, Task> action)
+        public async Task CreateAsync()
         {
-            if (isLoaded && mindmap?.DocumentRef != null)
-            {
-                try
-                {
-                    await processManager.RunMainProcessAsync(this, () => action(mindmap));
-                }
-                catch (DocumentNotFoundException e)
-                {
-                    ShowNotFoundErrorDialog(e);
+            StorageFile file = await PickSaveAsync(JsonDocumentSerializer.FileExtension.Extension);
 
-                    UnloadMindmap(mindmap);
-                }
-                finally
-                {
-                    mindmap.RefreshProperties();
-                }
+            if (file != null)
+            {
+                DocumentFile document = DocumentFile.CreateNew(file);
+
+                document.AddToRecentList();
+
+                await document.SaveAsync();
+
+                await OpenAsync(document);
             }
         }
 
-        private async Task DoAsync(MindmapRef mindmap, Document document, Func<MindmapRef, Document, Task> action)
+        public async Task SaveToFileAsync()
         {
-            if (isLoaded && mindmap?.DocumentRef != null && document != null)
-            {
-                try
-                {
-                    await processManager.RunMainProcessAsync(this, () => action(mindmap, document));
-                }
-                catch (DocumentNotFoundException e)
-                {
-                    ShowNotFoundErrorDialog(e);
+            StorageFile file = await PickSaveAsync(JsonDocumentSerializer.FileExtension.Extension);
 
-                    UnloadMindmap(mindmap);
-                }
-                finally
+            if (file != null)
+            {
+                await processManager.RunMainProcessAsync(this, async () =>
                 {
-                    mindmap.RefreshProperties();
-                }
+                    if (loadedDocument != null)
+                    {
+                        await loadedDocument.SaveAsAsync(file);
+                    }
+                });
             }
         }
 
-        private void ShowLoadingErrorDialog(Exception e)
+        private static async Task<StorageFile> PickSaveAsync(string extension)
         {
-            string content = LocalizationManager.GetString("MindmapLoadingFailed_Content");
-            string heading = LocalizationManager.GetString("MindmapLoadingFailed_Heading");
+            FileSavePicker fileSavePicker = new FileSavePicker { DefaultFileExtension = JsonDocumentSerializer.FileExtension.Extension };
 
-            dialogService.AlertAsync(content, heading).Forget();
+            fileSavePicker.FileTypeChoices.Add(extension, new List<string> { extension });
 
-            App.TelemetryClient?.TrackException(new ExceptionTelemetry(e));
+            StorageFile file = await fileSavePicker.PickSaveFileAsync();
+
+            return file;
         }
 
-        private void ShowNotFoundErrorDialog(Exception e)
+        private static async Task<StorageFile> PickOpenAsync(string extension)
         {
-            string content = LocalizationManager.GetString("MindmapDeleted_Content");
-            string heading = LocalizationManager.GetString("MindmapDeleted_Heading");
+            FileOpenPicker fileOpenPicker = new FileOpenPicker();
 
-            dialogService.AlertAsync(content, heading).Forget();
+            fileOpenPicker.FileTypeFilter.Add(extension);
 
-            App.TelemetryClient?.TrackException(new ExceptionTelemetry(e));
+            StorageFile file = await fileOpenPicker.PickSingleFileAsync();
+
+            return file;
         }
 
-        private void UnloadMindmap(MindmapRef mindmap)
+        private void OnDocumentLoaded(DocumentFile file)
         {
-            allMindmaps.Remove(mindmap);
-
-            if (LoadedMindmap == mindmap)
-            {
-                LoadedMindmap = null;
-                LoadedDocument = null;
-
-                OnDocumentLoaded(null);
-            }
-        }
-
-        private void OnMindmapUpdated()
-        {
-            MindmapUpdated?.Invoke(this, EventArgs.Empty);
-        }
-
-        private void OnDocumentLoaded(Document document)
-        {
-            DocumentLoaded?.Invoke(this, new DocumentLoadedEventArgs(document));
+            DocumentLoaded?.Invoke(this, new DocumentFileEventArgs(file));
         }
     }
 }

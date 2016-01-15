@@ -8,7 +8,6 @@
     xmlns:im="using:Microsoft.Xaml.Interactions.Media"
     xmlns:e="using:Hercules.App.Modules.Editor.Views"
     xmlns:m="using:Hercules.App.Modules.Mindmaps.Views"
-    xmlns:controls="using:Hercules.App.Controls"
     mc:Ignorable="d"
     IsTabStop="False"
     IsEnabled="{Binding ProcessManager.IsMainProcessRunning, Source={StaticResource ViewModelLocator}, Converter={StaticResource TrueWhenFalseConverter}}"
@@ -88,22 +87,19 @@
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                    <Button x:Uid="Mindmaps_AddButton" TabIndex="-1" Padding="0,10,0,10" Margin="0,20,0,20" HorizontalAlignment="Stretch" HorizontalContentAlignment="Left" VerticalAlignment="Top" Style="{StaticResource ThemeButton}">
-                        <StackPanel Orientation="Horizontal">
-                            <Grid>
-                                <Viewbox Width="64" Height="26">
-                                    <SymbolIcon Symbol="Add" />
-                                </Viewbox>
-                            </Grid>
+                <StackPanel Orientation="Horizontal" Margin="0,40,0,20">
+                    <AppBarButton Icon="Add" Label="New" Foreground="{StaticResource ThemeMainBrush}" Command="{Binding CreateCommand}">
+                    </AppBarButton>
+                    <AppBarButton Icon="Save" Label="Save" Foreground="{StaticResource ThemeMainBrush}" Command="{Binding SaveCommand}">
 
-                            <TextBlock x:Uid="Mindmaps_AddButtonText" Margin="5,0,0,0" FontSize="16" Text="Add Mindmap" />
-                        </StackPanel>
-                        <Button.Flyout>
-                            <controls:MindmapFlyout>
-                                <m:EnterNameView x:Name="EnterNameView" />
-                            </controls:MindmapFlyout>
-                        </Button.Flyout>
-                    </Button>
+                    </AppBarButton>
+                    <AppBarButton Icon="Save" Label="Save As" Foreground="{StaticResource ThemeMainBrush}" Command="{Binding SaveAsCommand}">
+
+                    </AppBarButton>
+                    <AppBarButton Icon="OpenFile" Label="Open" Foreground="{StaticResource ThemeMainBrush}" Command="{Binding OpenCommand}">
+
+                    </AppBarButton>
+                    </StackPanel>
 
                     <m:ListView x:Name="MindmapsContainer" Grid.Row="1" Margin="0,5,0,0" />
                 </Grid>

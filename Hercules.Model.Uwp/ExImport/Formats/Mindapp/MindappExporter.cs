@@ -40,7 +40,7 @@ namespace Hercules.Model.ExImport.Formats.Mindapp
 
             return Task.Run(() =>
             {
-                JsonDocumentSerializer.SerializeToStream(stream, document);
+                JsonDocumentSerializer.Serialize(new JsonHistory(document), stream);
             });
         }
     }

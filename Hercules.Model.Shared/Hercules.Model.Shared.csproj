@@ -112,10 +112,11 @@
     <Compile Include="Rendering\IRenderScene.cs" />
     <Compile Include="RootNode.cs" />
     <Compile Include="Storing\CommandFactory.cs" />
-    <Compile Include="Storing\DocumentNotFoundException.cs" />
-    <Compile Include="Storing\DocumentRef.cs" />
+    <Compile Include="Storing\IDocumentRef.cs" />
     <Compile Include="Storing\IDocumentStore.cs" />
+    <Compile Include="Storing\Json\JsonDocumentRef.cs" />
     <Compile Include="Storing\Json\JsonDocumentSerializer.cs" />
+    <Compile Include="Storing\Json\JsonDocumentStore.cs" />
     <Compile Include="Storing\Json\JsonHistory.cs" />
     <Compile Include="Storing\Json\JsonHistoryStep.cs" />
     <Compile Include="Storing\Json\JsonHistoryStepsCommand.cs" />

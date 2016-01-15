@@ -6,15 +6,19 @@
 // All rights reserved.
 // ==========================================================================
 
-using System;
+using System.ComponentModel;
+using Windows.ApplicationModel.Core;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using GP.Utils;
+using Hercules.Model.Storing;
 
 namespace Hercules.App.Components
 {
     public sealed class TitleBarUpdater
     {
         private readonly IMindmapStore store;
+        private DocumentFile currentFile;
 
         public TitleBarUpdater(IMindmapStore store)
         {
@@ -23,22 +27,54 @@ namespace Hercules.App.Components
             this.store = store;
 
             store.DocumentLoaded += Store_DocumentLoaded;
-            store.MindmapUpdated += Store_MindmapUpdated;
         }
 
-        private void Store_MindmapUpdated(object sender, EventArgs e)
+        private void Store_DocumentLoaded(object sender, DocumentFileEventArgs e)
         {
-            UpdateTitle();
+            UpdateTitle(e.File);
+
+            if (currentFile != null)
+            {
+                currentFile.PropertyChanged -= CurrentFile_PropertyChanged;
+            }
+
+            currentFile = e.File;
+
+            if (currentFile != null)
+            {
+                currentFile.PropertyChanged += CurrentFile_PropertyChanged;
+            }
         }
 
-        private void Store_DocumentLoaded(object sender, DocumentLoadedEventArgs e)
+        private void CurrentFile_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            UpdateTitle();
+            UpdateTitle(currentFile);
         }
 
-        private void UpdateTitle()
+        private static void UpdateTitle(DocumentFile file)
         {
-            ApplicationView.GetForCurrentView().Title = store.LoadedMindmap != null ? store.LoadedMindmap.Name : string.Empty;
+            string name = string.Empty;
+
+            if (file != null)
+            {
+                name = file.Name;
+
+                if (file.HasChanges)
+                {
+                    name += "*";
+                }
+            }
+
+            CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                CoreDispatcherPriority.Normal, () =>
+                {
+                    ApplicationView view = ApplicationView.GetForCurrentView();
+
+                    if (view != null)
+                    {
+                        view.Title = name;
+                    }
+                }).Forget();
         }
     }
 }

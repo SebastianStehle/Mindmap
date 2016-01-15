@@ -71,9 +71,9 @@ namespace Tests.Facts
         {
             byte[] file = Resources.Format2;
 
-            Document document = JsonDocumentSerializer.DeserializeDocumentFromStream(new MemoryStream(file));
+            Document document = JsonDocumentSerializer.Deserialize(file);
 
-            JsonDocumentSerializer.SerializeToStream(new MemoryStream(), document);
+            JsonDocumentSerializer.Serialize(new JsonHistory(document));
         }
 
         [Fact]
@@ -90,7 +90,7 @@ namespace Tests.Facts
             {
                 byte[] file = Resources.Format2;
 
-                Document document = JsonDocumentSerializer.DeserializeDocumentFromStream(new MemoryStream(file));
+                Document document = JsonDocumentSerializer.Deserialize(file);
 
                 XMindExporter exporter = new XMindExporter();
                 XMindImporter importer = new XMindImporter();
@@ -114,7 +114,7 @@ namespace Tests.Facts
 
         private static void TestFileLoading(byte[] file)
         {
-            Document document = JsonDocumentSerializer.DeserializeDocumentFromStream(new MemoryStream(file));
+            Document document = JsonDocumentSerializer.Deserialize(file);
 
             AssertDocument(document);
         }

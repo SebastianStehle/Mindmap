@@ -93,8 +93,6 @@ namespace Hercules.App.Modules
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IExporter, XMindExporter>("XMind",
                     new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IExporter, MindappExporter>("Mindapp",
-                    new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IExporter, HtmlOutlineExporter>("HtmlOutline",
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<MindmapsViewModel>(

@@ -34,7 +34,6 @@ namespace Hercules.App.Controls
         private const string TextBoxPart = "PART_TextBox";
         private const string ScrollViewerPart = "PART_ScrollViewer";
         private IWin2DRendererProvider lastWin2DRendererProvider;
-        private float displayDpi;
         private ScrollViewer scrollViewer;
         private Win2DRenderer renderer;
         private CanvasControlWrapper canvasControl;
@@ -108,31 +107,10 @@ namespace Hercules.App.Controls
         protected override void OnApplyTemplate()
         {
             BindCanvasControl();
-            BindDisplay();
             BindTextEditor();
             BindScrollViewer();
 
             InitializeRenderer();
-        }
-
-        private void BindDisplay()
-        {
-            if (!DesignMode.DesignModeEnabled)
-            {
-                DisplayInformation display = DisplayInformation.GetForCurrentView();
-
-                if (display != null)
-                {
-                    display.DpiChanged += Display_DpiChanged;
-
-                    displayDpi = display.LogicalDpi;
-                }
-            }
-        }
-
-        private void Display_DpiChanged(DisplayInformation sender, object args)
-        {
-            displayDpi = sender.LogicalDpi;
         }
 
         private void BindTextEditor()
@@ -180,11 +158,10 @@ namespace Hercules.App.Controls
 
         private void UpdateScale()
         {
-            if (canvasControl != null && displayDpi > 0)
+            if (canvasControl != null)
             {
-                float dpiAdjustment = 96 / displayDpi;
+                float dpiScale = scrollViewer.ZoomFactor;
 
-                float dpiScale = dpiAdjustment * scrollViewer.ZoomFactor;
                 float dpiRatio = canvasControl.DpiScale / dpiScale;
 
                 if (dpiRatio <= 0.8 || dpiRatio >= 1.25)

@@ -9,6 +9,7 @@
 using System;
 using Windows.Foundation;
 using Windows.UI.Core;
+using Windows.UI.Xaml;
 using GP.Utils;
 using GP.Utils.Mathematics;
 using GP.Utils.UI.Controls;
@@ -98,6 +99,13 @@ namespace Hercules.App.Controls
                     OnAfterDraw();
                 }
             };
+
+            Application.Current.Resuming += Current_Resuming;
+        }
+
+        private void Current_Resuming(object sender, object e)
+        {
+            Invalidate();
         }
 
         public int ConvertDipsToPixels(float dips, CanvasDpiRounding dpiRounding)

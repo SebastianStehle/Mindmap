@@ -67,8 +67,6 @@ namespace Hercules.App.Modules
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterInstance(Messenger.Default,
                     new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IMessenger, Messenger>(
-                    new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<ISettingsProvider, DefaultSettingsProvider>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IProcessManager, ProcessManager>(

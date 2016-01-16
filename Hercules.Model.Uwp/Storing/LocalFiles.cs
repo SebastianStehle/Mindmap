@@ -25,7 +25,7 @@ namespace Hercules.Model.Storing
             {
                 StorageFolder localFolder = ApplicationData.Current.LocalFolder;
 
-                StorageFolder mindmaps = null;
+                StorageFolder mindmaps;
                 try
                 {
                     mindmaps = await localFolder.GetFolderAsync("Mindapp");

@@ -7,20 +7,19 @@
 // ==========================================================================
 
 using System;
-using Hercules.Model.Storing;
 
 namespace Hercules.App.Components
 {
     public sealed class DocumentFileEventArgs : EventArgs
     {
-        private readonly DocumentFile file;
+        private readonly DocumentFileModel file;
 
-        public DocumentFile File
+        public DocumentFileModel File
         {
             get { return file; }
         }
 
-        public DocumentFileEventArgs(DocumentFile file)
+        public DocumentFileEventArgs(DocumentFileModel file)
         {
             this.file = file;
         }

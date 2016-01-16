@@ -23,22 +23,32 @@
             </StackPanel>
         </CommandBar.Content>
         <CommandBar.PrimaryCommands>
-            <AppBarButton x:Uid="AppBarButton_Share" Icon="Download" IsCompact="True" Label="Export"
-                DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
+            <AppBarButton x:Uid="AppBarButton_Export" Label="Export" DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}" IsEnabled="{Binding Document, Converter={StaticResource TrueWhenNotNullConverter}}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE898;"/>
+                </AppBarButton.Icon>
                 <AppBarButton.Flyout>
                     <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
-                        <MenuFlyoutSubItem x:Uid="AppBarButton_Export" Text="Export">
+                        <MenuFlyoutSubItem x:Uid="AppBarButton_ExportItem" Text="Export">
                             <i:Interaction.Behaviors>
                                 <controls:ExportGeneratorBehavior EditorViewModel="{Binding}" />
                             </i:Interaction.Behaviors>
                         </MenuFlyoutSubItem>
-                        <MenuFlyoutSubItem x:Uid="AppBarButton_Import" Text="Import">
-                            <i:Interaction.Behaviors>
-                                <controls:ImportGeneratorBehavior EditorViewModel="{Binding}" />
-                            </i:Interaction.Behaviors>
-                        </MenuFlyoutSubItem>
 
                         <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{Binding PrintCommand}" />
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+
+            <AppBarButton x:Uid="AppBarButton_Import" Label="Import" DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
+                <AppBarButton.Icon>
+                    <FontIcon Glyph="&#xE896;"/>
+                </AppBarButton.Icon>
+                <AppBarButton.Flyout>
+                    <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
+                        <i:Interaction.Behaviors>
+                            <controls:ImportGeneratorBehavior EditorViewModel="{Binding}" />
+                        </i:Interaction.Behaviors>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>

@@ -15,7 +15,7 @@ namespace GP.Utils.Mvvm
     /// <summary>
     /// MVVM service to show dialogs.
     /// </summary>
-    public interface IMessageDialogService
+    public interface IDialogService
     {
         /// <summary>
         /// Opens a dialog to save a file.
@@ -42,17 +42,6 @@ namespace GP.Utils.Mvvm
         Task OpenFileDialogAsync(string[] extensions, Func<string, Stream, Task> open);
 
         /// <summary>
-        /// Shows an confirm dialog.
-        /// </summary>
-        /// <param name="content">The content to show. Cannot be null or empty.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="content"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="content"/> is empty or contains only whitespaces.</exception>
-        /// <returns>
-        /// The task for synchronization with a boolean indicating if the user pressed OK.
-        /// </returns>
-        Task<bool> ConfirmAsync(string content);
-
-        /// <summary>
         /// Shows an confirm dialog with the optional title.
         /// </summary>
         /// <param name="content">The content to show. Cannot be null or empty.</param>
@@ -62,18 +51,19 @@ namespace GP.Utils.Mvvm
         /// <returns>
         /// The task for synchronization with a boolean indicating if the user pressed OK.
         /// </returns>
-        Task<bool> ConfirmAsync(string content, string title);
+        Task<bool> ConfirmAsync(string content, string title = null);
 
         /// <summary>
-        /// Shows an alert dialog.
+        /// Shows an confirm dialog with the optional title.
         /// </summary>
-        /// <param name="content">The content to show. Cannot be null or empty.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="content"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="content"/> is empty or contains only whitespaces.</exception>
+        /// <param name="contentKey">The content to show. Cannot be null or empty.</param>
+        /// <param name="titleKey">The optional title.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="contentKey"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="contentKey"/> is empty or contains only whitespaces.</exception>
         /// <returns>
-        /// The task for synchronization.
+        /// The task for synchronization with a boolean indicating if the user pressed OK.
         /// </returns>
-        Task AlertAsync(string content);
+        Task<bool> ConfirmLocalizedAsync(string contentKey, string titleKey = null);
 
         /// <summary>
         /// Shows an alert dialog with the optional title.
@@ -85,6 +75,18 @@ namespace GP.Utils.Mvvm
         /// <returns>
         /// The task for synchronization.
         /// </returns>
-        Task AlertAsync(string content, string title);
+        Task AlertAsync(string content, string title = null);
+
+        /// <summary>
+        /// Shows an alert dialog with the optional title.
+        /// </summary>
+        /// <param name="contentKey">The content to show. Cannot be null or empty.</param>
+        /// <param name="titleKey">The optional title.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="contentKey"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="contentKey"/> is empty or contains only whitespaces.</exception>
+        /// <returns>
+        /// The task for synchronization.
+        /// </returns>
+        Task AlertLocalizedAsync(string contentKey, string titleKey = null);
     }
 }

@@ -118,14 +118,8 @@
     <None Include="project.json" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IO\LocalFolder.cs" />
-    <Compile Include="IO\File.cs" />
-    <Compile Include="IO\Folder.cs" />
-    <Compile Include="IO\FolderBase.cs" />
-    <Compile Include="IO\StorageExtensions.cs" />
-    <Compile Include="IO\StorageFileSystem.cs" />
     <Compile Include="Mvvm\ProcessManager.cs" />
-    <Compile Include="Mvvm\MessageDialogService.cs" />
+    <Compile Include="Mvvm\DialogService.cs" />
     <Compile Include="ResourceLocalizationProvider.cs" />
     <Compile Include="UI\Controls\AdvancedTextBox.cs" />
     <Compile Include="UI\Controls\BoundedCanvasDrawEventArgs.cs" />

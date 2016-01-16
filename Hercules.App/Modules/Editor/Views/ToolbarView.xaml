@@ -36,6 +36,7 @@
                         <Setter Target="CompactButtonUndo.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonExportSeparator.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonExport.(UIElement.Visibility)" Value="Collapsed"/>
+                        <Setter Target="CompactButtonImport.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonHelpSeparator.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonHelp.(UIElement.Visibility)" Value="Collapsed"/>
                     </VisualState.Setters>
@@ -45,11 +46,11 @@
                 </VisualState>
             </VisualStateGroup>
         </VisualStateManager.VisualStateGroups>
-        
+
         <i:Interaction.Behaviors>
             <gpi:AppBarButtonsBehavior />
         </i:Interaction.Behaviors>
-        
+
         <CommandBar.Content>
             <StackPanel Orientation="Horizontal">
                 <AppBarButton x:Name="PrimaryListButton" x:Uid="AppBarButton_ListMindmaps" Icon="List" Click="ListAppBarButton_Click" IsCompact="True" Label="Mindmaps" Visibility="Collapsed">
@@ -58,61 +59,70 @@
                     </i:Interaction.Behaviors>
                 </AppBarButton>
 
-                <StackPanel Orientation="Horizontal" Visibility="{Binding Document, Converter={StaticResource VisibleWhenNotNullConverter}, FallbackValue=Visible}">
-                    <StackPanel x:Name="PrimaryAdvancedButtons" Visibility="Collapsed" Orientation="Horizontal">
-                        <AppBarSeparator />
+                <StackPanel x:Name="PrimaryAdvancedButtons" Visibility="Collapsed" Orientation="Horizontal">
+                    <AppBarSeparator />
 
-                        <AppBarButton x:Uid="AppBarButton_Help" Icon="Help" IsCompact="True" Label="Help">
-                            <AppBarButton.Flyout>
-                                <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
-                                    <e:HelpView MaxHeight="350" />
-                                </controls:MindmapFlyout>
-                            </AppBarButton.Flyout>
-                            <i:Interaction.Behaviors>
-                                <gpi:FlyoutShortcutBehavior RequiresControlModifier="True" Key="H" />
-                                <gpi:FlyoutShortcutBehavior RequiresControlModifier="False" Key="F1" />
-                            </i:Interaction.Behaviors>
-                        </AppBarButton>
+                    <AppBarButton x:Uid="AppBarButton_Help" Icon="Help" IsCompact="True" Label="Help">
+                        <AppBarButton.Flyout>
+                            <controls:MindmapFlyout FlyoutPresenterStyle="{StaticResource LightFlyoutPresenterStyle}">
+                                <e:HelpView MaxHeight="350" />
+                            </controls:MindmapFlyout>
+                        </AppBarButton.Flyout>
+                        <i:Interaction.Behaviors>
+                            <gpi:FlyoutShortcutBehavior RequiresControlModifier="True" Key="H" />
+                            <gpi:FlyoutShortcutBehavior RequiresControlModifier="False" Key="F1" />
+                        </i:Interaction.Behaviors>
+                    </AppBarButton>
 
-                        <AppBarSeparator />
+                    <AppBarSeparator />
 
-                        <AppBarButton x:Uid="AppBarButton_Share" Icon="Download" IsCompact="True" Label="Export">
-                            <AppBarButton.Flyout>
-                                <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
-                                    <MenuFlyoutSubItem x:Uid="AppBarButton_Export" Text="Export">
-                                        <i:Interaction.Behaviors>
-                                            <controls:ExportGeneratorBehavior EditorViewModel="{Binding}" />
-                                        </i:Interaction.Behaviors>
-                                    </MenuFlyoutSubItem>
-                                    <MenuFlyoutSubItem x:Uid="AppBarButton_Import" Text="Import">
-                                        <i:Interaction.Behaviors>
-                                            <controls:ImportGeneratorBehavior EditorViewModel="{Binding}" />
-                                        </i:Interaction.Behaviors>
-                                    </MenuFlyoutSubItem>
+                    <AppBarButton x:Uid="AppBarButton_Export" IsCompact="True" Label="Export" IsEnabled="{Binding Document, Converter={StaticResource TrueWhenNotNullConverter}}">
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xE898;"/>
+                        </AppBarButton.Icon>
+                        <AppBarButton.Flyout>
+                            <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
+                                <MenuFlyoutSubItem x:Uid="AppBarButton_ExportItem" Text="Export">
+                                    <i:Interaction.Behaviors>
+                                        <controls:ExportGeneratorBehavior EditorViewModel="{Binding}" />
+                                    </i:Interaction.Behaviors>
+                                </MenuFlyoutSubItem>
 
-                                    <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{Binding PrintCommand}" />
-                                </MenuFlyout>
-                            </AppBarButton.Flyout>
-                        </AppBarButton>
+                                <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{Binding PrintCommand}" />
+                            </MenuFlyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
 
-                        <AppBarSeparator />
-                    </StackPanel>
+                    <AppBarButton x:Uid="AppBarButton_Import" IsCompact="True" Label="Import">
+                        <AppBarButton.Icon>
+                            <FontIcon Glyph="&#xE896;"/>
+                        </AppBarButton.Icon>
+                        <AppBarButton.Flyout>
+                            <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
+                                <i:Interaction.Behaviors>
+                                    <controls:ImportGeneratorBehavior EditorViewModel="{Binding}" />
+                                </i:Interaction.Behaviors>
+                            </MenuFlyout>
+                        </AppBarButton.Flyout>
+                    </AppBarButton>
 
-                    <StackPanel x:Name="PrimaryUndoRedoButtons" Visibility="Collapsed" Orientation="Horizontal">
-                        <AppBarButton x:Uid="AppBarButton_Undo" Icon="Undo" IsCompact="True" Label="Undo"
+                    <AppBarSeparator />
+                </StackPanel>
+
+                <StackPanel x:Name="PrimaryUndoRedoButtons" Visibility="Collapsed" Orientation="Horizontal">
+                    <AppBarButton x:Uid="AppBarButton_Undo" Icon="Undo" IsCompact="True" Label="Undo"
                             Command="{Binding UndoCommand}">
-                            <i:Interaction.Behaviors>
-                                <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
-                            </i:Interaction.Behaviors>
-                        </AppBarButton>
+                        <i:Interaction.Behaviors>
+                            <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
+                        </i:Interaction.Behaviors>
+                    </AppBarButton>
 
-                        <AppBarButton x:Uid="AppBarButton_Redo" Icon="Redo" IsCompact="True" Label="Redo"
+                    <AppBarButton x:Uid="AppBarButton_Redo" Icon="Redo" IsCompact="True" Label="Redo"
                             Command="{Binding RedoCommand}">
-                            <i:Interaction.Behaviors>
-                                <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Y" />
-                            </i:Interaction.Behaviors>
-                        </AppBarButton>
-                    </StackPanel>
+                        <i:Interaction.Behaviors>
+                            <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Y" />
+                        </i:Interaction.Behaviors>
+                    </AppBarButton>
                 </StackPanel>
             </StackPanel>
         </CommandBar.Content>
@@ -142,7 +152,7 @@
             </AppBarButton>
 
             <AppBarSeparator x:Name="PrimaryPropertiesButtonSeparator" Visibility="Collapsed" />
-            
+
             <AppBarButton x:Uid="AppBarButton_ToggleProperties" IsCompact="True" Label="Properties" Click="PropertiesButton_Click">
                 <TextBlock TextAlignment="Center" FontSize="20" Text="&#xE2B1;" FontFamily="Segoe MDL2 Assets" />
             </AppBarButton>
@@ -163,26 +173,30 @@
             </AppBarButton>
 
             <AppBarSeparator x:Name="CompactButtonExportSeparator" />
-
-            <AppBarButton x:Name="CompactButtonExport" x:Uid="AppBarButton_Share" Icon="Download" Label="Export">
+            
+            <AppBarButton x:Name="CompactButtonImport" x:Uid="AppBarButton_Import" Label="Import">
                 <AppBarButton.Flyout>
                     <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource DarkMenuFlyoutPresenterStyle}">
-                        <MenuFlyoutSubItem x:Uid="AppBarButton_Export" Text="Export">
+                        <i:Interaction.Behaviors>
+                            <controls:ImportGeneratorBehavior EditorViewModel="{Binding}" />
+                        </i:Interaction.Behaviors>
+                    </MenuFlyout>
+                </AppBarButton.Flyout>
+            </AppBarButton>
+            <AppBarButton x:Name="CompactButtonExport" x:Uid="AppBarButton_Share" Label="Export">
+                <AppBarButton.Flyout>
+                    <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource DarkMenuFlyoutPresenterStyle}">
+                        <MenuFlyoutSubItem x:Uid="AppBarButton_ExportItem" Text="Export">
                             <i:Interaction.Behaviors>
                                 <controls:ExportGeneratorBehavior EditorViewModel="{Binding}" />
                             </i:Interaction.Behaviors>
                         </MenuFlyoutSubItem>
-                        <MenuFlyoutSubItem x:Uid="AppBarButton_Import" Text="Import">
-                            <i:Interaction.Behaviors>
-                                <controls:ImportGeneratorBehavior EditorViewModel="{Binding}" />
-                            </i:Interaction.Behaviors>
-                        </MenuFlyoutSubItem>
-
+                        
                         <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{Binding PrintCommand}" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
-            
+
             <AppBarSeparator x:Name="CompactButtonHelpSeparator" />
 
             <AppBarButton x:Name="CompactButtonHelp" x:Uid="AppBarButton_Help" Icon="Help" Label="Help">

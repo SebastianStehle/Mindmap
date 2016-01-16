@@ -43,7 +43,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
         public IProcessManager ProcessManager { get; set; }
 
         [Dependency]
-        public IMessageDialogService MessageDialogService { get; set; }
+        public IDialogService MessageDialogService { get; set; }
 
         public ObservableCollection<INodeColor> CustomColors
         {

@@ -10,5 +10,7 @@ namespace Hercules.App.Components
     public interface ISettingsProvider
     {
         bool IsAlreadyStarted { get; set; }
+
+        bool HasFilesCopied { get; set; }
     }
 }

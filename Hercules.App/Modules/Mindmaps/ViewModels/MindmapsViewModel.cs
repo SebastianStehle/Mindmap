@@ -17,7 +17,6 @@ using GP.Utils.Mvvm;
 using Hercules.App.Components;
 using Hercules.App.Messages;
 using Hercules.Model.ExImport;
-using Hercules.Model.Storing;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
 
@@ -31,12 +30,13 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         private RelayCommand saveCommand;
         private RelayCommand saveAsCommand;
         private RelayCommand createCommand;
+        private RelayCommand<DocumentFileModel> removeCommand;
 
-        public ObservableCollection<DocumentFile> RecentFiles
+        public ObservableCollection<DocumentFileModel> RecentFiles
         {
             get
             {
-                return mindmapStore.AllDocuments;
+                return mindmapStore.AllFiles;
             }
         }
 
@@ -44,13 +44,24 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         public bool IsLoaded { get; set; }
 
         [NotifyUI]
-        public DocumentFile SelectedFile { get; set; }
+        public DocumentFileModel SelectedFile { get; set; }
 
         [Dependency]
         public IProcessManager ProcessManager { get; set; }
 
         [Dependency]
-        public IMessageDialogService MessageDialogService { get; set; }
+        public IDialogService MessageDialogService { get; set; }
+
+        public RelayCommand<DocumentFileModel> RemoveCommand
+        {
+            get
+            {
+                return removeCommand ?? (removeCommand = new RelayCommand<DocumentFileModel>(x =>
+                {
+                    mindmapStore.RemoveAsync(x).Forget();
+                }, x => x != null));
+            }
+        }
 
         public RelayCommand OpenCommand
         {
@@ -58,7 +69,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             {
                 return openCommand ?? (openCommand = new RelayCommand(() =>
                 {
-                    mindmapStore.OpenAsync().Forget();
+                    mindmapStore.OpenFromFileAsync().Forget();
                 }));
             }
         }
@@ -80,7 +91,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             {
                 return saveAsCommand ?? (saveAsCommand = new RelayCommand(() =>
                 {
-                    mindmapStore.SaveToFileAsync().Forget();
+                    mindmapStore.SaveAsAsync().Forget();
                 }));
             }
         }
@@ -104,15 +115,23 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         {
             this.mindmapStore = mindmapStore;
 
-            mindmapStore.DocumentLoaded += MindmapStore_DocumentLoaded;
+            mindmapStore.FileLoaded += MindmapStore_FileLoaded;
 
             messenger.Register<ImportMessage>(this, OnImport);
 
             messenger.Register<OpenMindmapMessage>(this, OnOpen);
         }
 
+        public async Task LoadAsync()
+        {
+            await mindmapStore.LoadRecentsAsync();
+
+            SelectedFile = mindmapStore.SelectedFile;
+        }
+
         public void OnOpen(OpenMindmapMessage message)
         {
+            mindmapStore.OpenAsync(message.File).Forget();
         }
 
         public void OnImport(ImportMessage message)
@@ -120,24 +139,19 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             ImportAsync(message.Content);
         }
 
+        public void OnSelectedFileChanged()
+        {
+            mindmapStore.OpenAsync(SelectedFile).Forget();
+        }
+
         private void ImportAsync(ImportModel model)
         {
             ProcessManager.RunMainProcessAsync(mindmapStore, async () =>
             {
+                List<ImportResult> results = null;
                 try
                 {
-                    List<ImportResult> results = await model.Source.ImportAsync(model.Importer);
-
-                    if (results.Count > 0)
-                    {
-                        foreach (var result in results)
-                        {
-                            //await mindmapStore.AddAsync(result.Name, result.Document);
-                            //await mindmapStore.LoadAsync(mindmapStore.AllDocuments[0]);
-
-                            //SelectedMindmap = mindmapStore.AllDocuments[0];
-                        }
-                    }
+                    results = await model.Source.ImportAsync(model.Importer);
                 }
                 catch
                 {
@@ -146,19 +160,22 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
                     await MessageDialogService.AlertAsync(content, heading);
                 }
+
+                if (results?.Count > 0)
+                {
+                    foreach (var result in results)
+                    {
+                        mindmapStore.Add(result.Name, result.Document);
+
+                        await mindmapStore.OpenRecentAsync();
+                    }
+                }
             }).Forget();
         }
 
-        private void MindmapStore_DocumentLoaded(object sender, DocumentFileEventArgs e)
+        private void MindmapStore_FileLoaded(object sender, DocumentFileEventArgs e)
         {
             SelectedFile = e.File;
-        }
-
-        public async Task LoadAsync()
-        {
-            await mindmapStore.LoadRecentAsync();
-
-            SelectedFile = mindmapStore.LoadedDocument;
         }
     }
 }

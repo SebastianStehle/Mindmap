@@ -8,7 +8,6 @@
 
 using System;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using Windows.ApplicationModel;
 using Windows.ApplicationModel.Activation;
 using Windows.Storage;
@@ -17,7 +16,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using GalaSoft.MvvmLight.Messaging;
 using Hercules.App.Messages;
-using Hercules.Model.Storing;
 using Microsoft.ApplicationInsights;
 
 namespace Hercules.App
@@ -48,7 +46,7 @@ namespace Hercules.App
 
             if (file != null)
             {
-                DocumentFile.OpenAsync(file).ContinueWith(t => Messenger.Default.Send(new OpenMindmapMessage(t.Result)), TaskContinuationOptions.OnlyOnRanToCompletion);
+                Messenger.Default.Send(new OpenMindmapMessage(file));
             }
         }
 

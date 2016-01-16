@@ -15,7 +15,6 @@ using Hercules.App.Components;
 using Hercules.App.Messages;
 using Hercules.Model;
 using Hercules.Model.ExImport;
-using Hercules.Model.Storing;
 using Hercules.Win2D.Rendering;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
@@ -45,9 +44,6 @@ namespace Hercules.App.Modules.Editor.ViewModels
         public IMindmapPrintService PrintService { get; set; }
 
         [Dependency]
-        public IDocumentStore DocumentStore { get; set; }
-
-        [Dependency]
         public IOutlineGenerator OutlineGenerator { get; set; }
 
         [Dependency]
@@ -63,10 +59,13 @@ namespace Hercules.App.Modules.Editor.ViewModels
         public IImporter[] Importers { get; set; }
 
         [Dependency]
+        public IMessenger Messenger { get; set; }
+
+        [Dependency]
         public IProcessManager ProcessManager { get; set; }
 
         [Dependency]
-        public IMessageDialogService MessageDialogService { get; set; }
+        public IDialogService MessageDialogService { get; set; }
 
         public RelayCommand<ImportModel> ImportCommand
         {
@@ -74,7 +73,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return importCommand ?? (importCommand = new RelayCommand<ImportModel>(x =>
                 {
-                    MessengerInstance.Send(new ImportMessage(x));
+                    Messenger.Send(new ImportMessage(x));
                 }));
             }
         }
@@ -115,7 +114,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return exportCommand ?? (exportCommand = new RelayCommand<ExportModel>(async x =>
                 {
-                    await ProcessManager.RunMainProcessAsync(this, () => x.Target.ExportAsync(MindmapStore.LoadedDocument.Name, Document, x.Exporter, RendererProvider.Current));
+                    await ProcessManager.RunMainProcessAsync(this, () => x.Target.ExportAsync(MindmapStore.SelectedFile.Name, Document, x.Exporter, RendererProvider.Current));
                 },
                 x => Document != null).DependentOn(this, nameof(Document)));
             }
@@ -219,13 +218,12 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
         public EditorViewModel()
         {
-            Messenger.Default.Register<SaveMindmapMessage>(this, OnSaveMindmap);
         }
 
-        public EditorViewModel(IMindmapStore mindmapStore, IWin2DRendererProvider rendererProvider)
+        public EditorViewModel(IMessenger messenger, IMindmapStore mindmapStore, IWin2DRendererProvider rendererProvider)
             : base(mindmapStore, rendererProvider)
         {
-            Messenger.Default.Register<SaveMindmapMessage>(this, OnSaveMindmap);
+            messenger.Register<SaveMindmapMessage>(this, OnSaveMindmap);
         }
 
         protected override void OnDocumentChanged(Document oldDocument, Document newDocument)
@@ -245,7 +243,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
         private async void OnSaveMindmap(SaveMindmapMessage message)
         {
-            //await MindmapStore.SaveAsync();
+            await MindmapStore.SaveAsync();
 
             message.Callback();
         }

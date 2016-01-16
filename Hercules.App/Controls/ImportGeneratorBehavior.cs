@@ -17,7 +17,7 @@ using Hercules.Model.ExImport;
 
 namespace Hercules.App.Controls
 {
-    public sealed class ImportGeneratorBehavior : Behavior<MenuFlyoutSubItem>
+    public sealed class ImportGeneratorBehavior : Behavior<MenuFlyout>
     {
         public static readonly DependencyProperty EditorViewModelProperty =
             DependencyProperty.Register("EditorViewModel", typeof(EditorViewModel), typeof(ImportGeneratorBehavior), new PropertyMetadata(null, (d, e) => ((ImportGeneratorBehavior)d).OnEditorViewModelChanged()));

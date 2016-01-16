@@ -36,27 +36,45 @@
                         <Grid RightTapped="Mindmap_RightTapped" Background="Transparent">
                             <FlyoutBase.AttachedFlyout>
                                 <MenuFlyout>
-                                    <MenuFlyoutItem x:Uid="Mindmaps_RenameMenuItem" Text="Delete" Click="Mindmap_RenameClicked"
+                                    <MenuFlyoutItem x:Uid="Mindmaps_RenameMenuItem" Text="Rename" Click="Mindmap_RenameClicked"
                                         DataContext="{Binding ElementName=Root}" x:Name="RenameButton" />
                                     <MenuFlyoutSeparator />
                                     
-                                    <MenuFlyoutItem x:Uid="Mindmaps_DeleteMenuItem" Text="Rename"
-                                        Command="{Binding Path=Mindmaps.DeleteCommand, Source={StaticResource ViewModelLocator}, ElementName=List}" 
+                                    <MenuFlyoutItem x:Uid="Mindmaps_RemoveMenuItem" Text="Delete"
+                                        Command="{Binding Path=Mindmaps.RemoveCommand, Source={StaticResource ViewModelLocator}, ElementName=List}" 
                                         CommandParameter="{Binding}" />
                                 </MenuFlyout>
                             </FlyoutBase.AttachedFlyout>
 
                             <StackPanel Margin="12">
-                                <TextBlock Text="{Binding Path=Name}" FontSize="15" TextTrimming="WordEllipsis" />
-
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock Text="*" Visibility="{Binding Path=HasChanges, Converter={StaticResource VisibleWhenTrueConverter}}"
+                                        FontSize="15"
+                                        FontWeight="Bold"
+                                        Margin="0,0,10,0" />
+                                    <TextBlock Text="{Binding Path=Name}" FontSize="15" TextTrimming="WordEllipsis" />
+                                </StackPanel>
+                                
                                 <StackPanel Orientation="Horizontal" Opacity="0.8" Margin="0,2">
                                     <TextBlock x:Uid="Mindmaps_LastUpdate" FontSize="13"
                                         Text="Modified:"
                                         TextAlignment="Left"
                                         TextWrapping="NoWrap" Margin="0,0,4,0" />
                                     <TextBlock FontSize="13"
-                                        Text="{Binding LastUpdateText}" 
+                                        Text="{Binding Path=ModifiedUtc}" 
                                         TextAlignment="Left"
+                                        TextWrapping="NoWrap" />
+                                </StackPanel>
+                                
+                                <StackPanel Orientation="Horizontal" Opacity="0.8" Margin="0,2">
+                                    <TextBlock x:Uid="Mindmaps_Path" FontSize="11"
+                                        Text="Path:"
+                                        TextAlignment="Left"
+                                        TextWrapping="NoWrap" Margin="0,0,4,0" />
+                                    <TextBlock FontSize="11"
+                                        Text="{Binding Path=Path}" 
+                                        TextAlignment="Left"
+                                        TextTrimming="CharacterEllipsis"
                                         TextWrapping="NoWrap" />
                                 </StackPanel>
                             </StackPanel>

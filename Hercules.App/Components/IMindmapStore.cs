@@ -9,28 +9,37 @@
 using System;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
-using Hercules.Model.Storing;
+using Windows.Storage;
+using Hercules.Model;
 
 namespace Hercules.App.Components
 {
     public interface IMindmapStore
     {
-        event EventHandler<DocumentFileEventArgs> DocumentLoaded;
+        event EventHandler<DocumentFileEventArgs> FileLoaded;
 
-        ObservableCollection<DocumentFile> AllDocuments { get; }
+        ObservableCollection<DocumentFileModel> AllFiles { get; }
 
-        DocumentFile LoadedDocument { get; }
+        DocumentFileModel SelectedFile { get; }
 
-        Task LoadRecentAsync();
+        void Add(string name, Document document);
+
+        Task LoadRecentsAsync();
 
         Task CreateAsync();
 
-        Task OpenAsync(DocumentFile file);
+        Task OpenAsync(StorageFile file);
 
-        Task OpenAsync();
+        Task OpenAsync(DocumentFileModel file);
 
-        Task SaveAsync();
+        Task OpenRecentAsync();
 
-        Task SaveToFileAsync();
+        Task OpenFromFileAsync();
+
+        Task SaveAsAsync();
+
+        Task SaveAsync(bool hideDialogs = false);
+
+        Task RemoveAsync(DocumentFileModel file);
     }
 }

@@ -48,9 +48,6 @@
     <Compile Include="CodeAnalysis\ExcludeFromCodeCoverageAttribute.cs" />
     <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="ILocalizationProvider.cs" />
-    <Compile Include="IO\IFile.cs" />
-    <Compile Include="IO\IFolder.cs" />
-    <Compile Include="IO\IFileSystem.cs" />
     <Compile Include="LimitedConcurrencyLevelTaskScheduler.cs" />
     <Compile Include="LocalizationManager.cs" />
     <Compile Include="Mathematics\ColorsVectorHelper.cs" />
@@ -64,7 +61,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Guard.cs" />
-    <Compile Include="Mvvm\IMessageDialogService.cs" />
+    <Compile Include="Mvvm\IDialogService.cs" />
     <Compile Include="Mvvm\IProcessManager.cs" />
     <Compile Include="NoopLocalizationProvider.cs" />
     <Compile Include="NotifyUIAttribute.cs" />

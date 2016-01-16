@@ -11,14 +11,13 @@ using Windows.ApplicationModel.Core;
 using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using GP.Utils;
-using Hercules.Model.Storing;
 
 namespace Hercules.App.Components
 {
     public sealed class TitleBarUpdater
     {
         private readonly IMindmapStore store;
-        private DocumentFile currentFile;
+        private DocumentFileModel currentFile;
 
         public TitleBarUpdater(IMindmapStore store)
         {
@@ -26,10 +25,10 @@ namespace Hercules.App.Components
 
             this.store = store;
 
-            store.DocumentLoaded += Store_DocumentLoaded;
+            store.FileLoaded += Store_FileLoaded;
         }
 
-        private void Store_DocumentLoaded(object sender, DocumentFileEventArgs e)
+        private void Store_FileLoaded(object sender, DocumentFileEventArgs e)
         {
             UpdateTitle(e.File);
 
@@ -51,7 +50,7 @@ namespace Hercules.App.Components
             UpdateTitle(currentFile);
         }
 
-        private static void UpdateTitle(DocumentFile file)
+        private static void UpdateTitle(DocumentFileModel file)
         {
             string name = string.Empty;
 

@@ -7,44 +7,47 @@
 // ==========================================================================
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Globalization;
 using System.IO;
-using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.Storage.AccessCache;
 using Windows.Storage.FileProperties;
 using Windows.Storage.Streams;
 using GP.Utils;
 using Hercules.Model.Storing.Json;
+
+// ReSharper disable PossibleNullReferenceException
 // ReSharper disable SuggestBaseTypeForParameter
 
 namespace Hercules.Model.Storing
 {
-    public class DocumentFile : INotifyPropertyChanged
+    public class DocumentFile
     {
         private StorageFile file;
         private DateTimeOffset modifiedUtc = DateTimeOffset.UtcNow;
         private Document document;
         private bool hasChanges;
+        private string name;
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public event EventHandler Changed;
 
         public string Name
         {
-            get { return file?.Name; }
+            get { return name; }
         }
 
-        public string ModifiedUtcText
+        public string Path
         {
-            get { return ModifiedUtc.ToString("g", CultureInfo.CurrentCulture); }
+            get { return file?.Path; }
         }
 
         public bool HasChanges
         {
             get { return hasChanges; }
+        }
+
+        public StorageFile File
+        {
+            get { return file; }
         }
 
         public Document Document
@@ -57,153 +60,177 @@ namespace Hercules.Model.Storing
             get { return modifiedUtc; }
         }
 
-        private DocumentFile(StorageFile file, DateTimeOffset modifiedUtc)
+        public static string Extension
+        {
+            get { return JsonDocumentSerializer.FileExtension.Extension; }
+        }
+
+        private DocumentFile(string name)
+        {
+            this.name = name;
+        }
+
+        private DocumentFile(StorageFile file, BasicProperties properties)
+            : this(file.DisplayName)
         {
             this.file = file;
 
-            this.modifiedUtc = modifiedUtc;
+            modifiedUtc = properties.DateModified.UtcDateTime;
         }
 
-        private DocumentFile(StorageFile file)
+        private DocumentFile(Document document, string name, bool initialize)
+            : this(name)
         {
-            OpenInternal(new Document(Guid.NewGuid()));
+            OpenInternal(document);
 
-            document.Root.ChangeTextTransactional(file.DisplayName);
+            hasChanges = true;
+
+            if (initialize)
+            {
+                document.Root.ChangeTextTransactional(name);
+            }
+        }
+
+        public static DocumentFile Create(string name, Document document)
+        {
+            Guard.ValidFileName(name, nameof(name));
+
+            return new DocumentFile(document, name, false);
+        }
+
+        public static DocumentFile CreateNew(string name)
+        {
+            Guard.ValidFileName(name, nameof(name));
+
+            return new DocumentFile(new Document(Guid.NewGuid()), name, true);
         }
 
         public static async Task<DocumentFile> OpenAsync(StorageFile file)
         {
             Guard.NotNull(file, nameof(file));
 
-            return new DocumentFile(file, (await file.GetBasicPropertiesAsync()).DateModified);
+            return new DocumentFile(file, await file.GetBasicPropertiesAsync());
         }
 
-        public static DocumentFile CreateNew(StorageFile file)
-        {
-            Guard.NotNull(file, nameof(file));
-
-            return new DocumentFile(file);
-        }
-
-        public static async Task<List<DocumentFile>> QueryRecentFilesAsync()
-        {
-            List<DocumentFile> files = new List<DocumentFile>();
-
-            AccessListEntryView entries = StorageApplicationPermissions.MostRecentlyUsedList.Entries;
-
-            foreach (AccessListEntry entry in entries)
-            {
-                StorageFile file = await StorageApplicationPermissions.MostRecentlyUsedList.GetFileAsync(entry.Token);
-
-                if (file != null)
-                {
-                    files.Add(await OpenAsync(file));
-                }
-            }
-
-            return files;
-        }
-
-        public void AddToRecentList()
-        {
-            if (file == null)
-            {
-                return;
-            }
-
-            StorageApplicationPermissions.MostRecentlyUsedList.Add(file);
-        }
-
-        public async Task RenameAsync(string newName)
+        public async Task<bool> RenameAsync(string newName)
         {
             Guard.ValidFileName(newName, nameof(newName));
 
-            if (file == null)
+            bool hasRenamed = false;
+
+            if (file != null)
             {
-                return;
+                try
+                {
+                    await FileQueue.EnqueueAsync(() => file.RenameAsync(newName + JsonDocumentSerializer.FileExtension, NameCollisionOption.GenerateUniqueName).AsTask());
+
+                    name = newName;
+
+                    hasRenamed = true;
+                }
+                catch (FileNotFoundException)
+                {
+                    hasChanges = true;
+
+                    file = null;
+                    throw;
+                }
             }
 
-            await file.RenameAsync(newName + JsonDocumentSerializer.FileExtension, NameCollisionOption.GenerateUniqueName);
-
-            OnPropertyChanged(nameof(Name));
+            return hasRenamed;
         }
 
-        public async Task OpenAsync()
+        public async Task<bool> OpenAsync()
         {
-            if (document != null || file == null)
-            {
-                return;
-            }
-
-            using (IRandomAccessStream stream = await file.OpenReadAsync())
-            {
-                OpenInternal(JsonDocumentSerializer.Deserialize(stream.AsStreamForRead()));
-            }
-        }
-
-        public async Task SaveAsAsync(StorageFile newFile)
-        {
-            Guard.NotNull(newFile, nameof(newFile));
+            bool hasOpened = false;
 
             if (document == null)
             {
-                return;
+                Document newDocument = null;
+
+                await FileQueue.EnqueueAsync(async () =>
+                {
+                    using (IRandomAccessStream stream = await file.OpenReadAsync())
+                    {
+                        if (stream.Size > 0)
+                        {
+                            newDocument = JsonDocumentSerializer.Deserialize(stream.AsStreamForRead());
+                        }
+                    }
+                });
+
+                hasChanges = newDocument == null;
+
+                if (newDocument == null)
+                {
+                    newDocument = new Document(Guid.NewGuid());
+
+                    newDocument.Root.ChangeTextTransactional(file.DisplayName);
+                }
+
+                OpenInternal(newDocument);
+
+                hasOpened = true;
             }
 
-            await SaveAsync(newFile);
-
-            file = newFile;
+            return hasOpened;
         }
 
-        public async Task SaveNewAsync()
+        public Task<bool> SaveAsAsync(StorageFile newFile)
         {
-            if (file == null)
+            return SaveAsync(newFile);
+        }
+
+        public Task<bool> SaveAsync()
+        {
+            return SaveAsync(file);
+        }
+
+        private async Task<bool> SaveAsync(StorageFile targetFile)
+        {
+            bool hasSucceeded = false;
+
+            if (document != null && targetFile != null)
             {
-                return;
+                try
+                {
+                    JsonHistory history = new JsonHistory(document);
+
+                    await FileQueue.EnqueueAsync(async () =>
+                    {
+                        using (StorageStreamTransaction transaction = await targetFile.OpenTransactedWriteAsync())
+                        {
+                            JsonDocumentSerializer.Serialize(history, transaction.Stream.AsStreamForWrite());
+
+                            await transaction.CommitAsync();
+                        }
+                    });
+
+                    modifiedUtc = DateTime.UtcNow;
+
+                    hasSucceeded = true;
+                    hasChanges = false;
+
+                    file = targetFile;
+                }
+                catch (FileNotFoundException)
+                {
+                    hasChanges = true;
+
+                    file = null;
+
+                    throw;
+                }
             }
 
-            OpenInternal(new Document(Guid.NewGuid()));
-
-            await SaveAsync(file);
-        }
-
-        public async Task SaveAsync()
-        {
-            if (document == null || file == null)
-            {
-                return;
-            }
-
-            await SaveAsync(file);
-        }
-
-        private async Task SaveAsync(StorageFile targetFile)
-        {
-            JsonHistory history = new JsonHistory(document);
-
-            using (StorageStreamTransaction transaction = await targetFile.OpenTransactedWriteAsync())
-            {
-                JsonDocumentSerializer.Serialize(history, transaction.Stream.AsStreamForWrite());
-
-                await transaction.CommitAsync();
-            }
-
-            modifiedUtc = DateTime.UtcNow;
-
-            hasChanges = true;
-
-            OnPropertyChanged(nameof(ModifiedUtcText));
-            OnPropertyChanged(nameof(HasChanges));
-        }
-
-        public bool CanRenameTo(string newName)
-        {
-            return newName.IsValidFileName();
+            return hasSucceeded;
         }
 
         public void Close()
         {
             CloseInternal();
+
+            hasChanges = false;
         }
 
         private void OpenInternal(Document newDocument)
@@ -230,12 +257,7 @@ namespace Hercules.Model.Storing
         {
             hasChanges = true;
 
-            OnPropertyChanged(nameof(HasChanges));
-        }
-
-        protected virtual void OnPropertyChanged([CallerMemberName] string propertyName = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            Changed?.Invoke(this, e);
         }
     }
 }

@@ -58,7 +58,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
             if (mindmapStore != null)
             {
-                mindmapStore.DocumentLoaded += MindmapStore_DocumentLoaded;
+                mindmapStore.FileLoaded += MindmapStore_FileLoaded;
             }
         }
 
@@ -67,9 +67,9 @@ namespace Hercules.App.Modules.Editor.ViewModels
             Renderer = rendererProvider.Current;
         }
 
-        private void MindmapStore_DocumentLoaded(object sender, DocumentFileEventArgs e)
+        private void MindmapStore_FileLoaded(object sender, DocumentFileEventArgs e)
         {
-            Document = e.File.Document;
+            Document = e.File?.Document;
         }
 
         public void OnPropertyChanged(string propertyName, object before, object after)

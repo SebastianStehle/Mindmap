@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Windows.ApplicationModel.Resources;
 using Windows.Storage;
 using Windows.Storage.Pickers;
 using Windows.UI.Popups;
@@ -20,7 +19,7 @@ namespace GP.Utils.Mvvm
     /// <summary>
     /// MVVM service to show dialogs.
     /// </summary>
-    public sealed class MessageDialogService : IMessageDialogService
+    public sealed class DialogService : IDialogService
     {
         /// <summary>
         /// Opens a dialog to open a file.
@@ -109,17 +108,28 @@ namespace GP.Utils.Mvvm
         }
 
         /// <summary>
-        /// Shows an alert dialog.
+        /// Shows an alert dialog with the optional title.
         /// </summary>
-        /// <param name="content">The content to show. Cannot be null or empty.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="content"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="content"/> is empty or contains only whitespaces.</exception>
+        /// <param name="contentKey">The content to show. Cannot be null or empty.</param>
+        /// <param name="titleKey">The optional title.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="contentKey"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="contentKey"/> is empty or contains only whitespaces.</exception>
         /// <returns>
         /// The task for synchronization.
         /// </returns>
-        public Task AlertAsync(string content)
+        public Task AlertLocalizedAsync(string contentKey, string titleKey = null)
         {
-            return AlertAsync(content, null);
+            Guard.NotNullOrEmpty(contentKey, nameof(contentKey));
+
+            string content = GetString(contentKey);
+            string title = null;
+
+            if (!string.IsNullOrWhiteSpace(titleKey))
+            {
+                title = GetString(titleKey);
+            }
+
+            return AlertAsync(content, title);
         }
 
         /// <summary>
@@ -132,7 +142,7 @@ namespace GP.Utils.Mvvm
         /// <returns>
         /// The task for synchronization.
         /// </returns>
-        public async Task AlertAsync(string content, string title)
+        public async Task AlertAsync(string content, string title = null)
         {
             Guard.NotNullOrEmpty(content, nameof(content));
 
@@ -147,17 +157,28 @@ namespace GP.Utils.Mvvm
         }
 
         /// <summary>
-        /// Shows an confirm dialog.
+        /// Shows an confirm dialog with the optional title.
         /// </summary>
-        /// <param name="content">The content to show. Cannot be null or empty.</param>
-        /// <exception cref="ArgumentNullException"><paramref name="content"/> is null.</exception>
-        /// <exception cref="ArgumentException"><paramref name="content"/> is empty or contains only whitespaces.</exception>
+        /// <param name="contentKey">The content to show. Cannot be null or empty.</param>
+        /// <param name="titleKey">The optional title.</param>
+        /// <exception cref="ArgumentNullException"><paramref name="contentKey"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="contentKey"/> is empty or contains only whitespaces.</exception>
         /// <returns>
         /// The task for synchronization with a boolean indicating if the user pressed OK.
         /// </returns>
-        public Task<bool> ConfirmAsync(string content)
+        public Task<bool> ConfirmLocalizedAsync(string contentKey, string titleKey = null)
         {
-            return ConfirmAsync(content, null);
+            Guard.NotNullOrEmpty(contentKey, nameof(contentKey));
+
+            string content = GetString(contentKey);
+            string title = null;
+
+            if (!string.IsNullOrWhiteSpace(titleKey))
+            {
+                title = GetString(titleKey);
+            }
+
+            return ConfirmAsync(content, title);
         }
 
         /// <summary>
@@ -199,9 +220,7 @@ namespace GP.Utils.Mvvm
 
         private static string GetString(string key)
         {
-            ResourceLoader resourceLoader = new ResourceLoader();
-
-            string result = resourceLoader.GetString(key);
+            string result = LocalizationManager.GetString(key);
 
             if (string.IsNullOrWhiteSpace(result))
             {

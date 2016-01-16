@@ -44,7 +44,7 @@
                 <VisualState x:Name="Tablet">
                     <VisualState.Setters>
                         <Setter Target="InnerSplitView.(SplitView.DisplayMode)" Value="Inline"/>
-                        <Setter Target="OuterSplitView.(SplitView.DisplayMode)" Value="CompactOverlay"/>
+                        <Setter Target="OuterSplitView.(SplitView.DisplayMode)" Value="CompactInline"/>
                         <Setter Target="InnerSplitView.(SplitView.OpenPaneLength)" Value="320"/>
                         <Setter Target="OuterSplitView.(SplitView.OpenPaneLength)" Value="320"/>
                         <Setter Target="BottomToolBar.(UIElement.Visibility)" Value="Collapsed"/>

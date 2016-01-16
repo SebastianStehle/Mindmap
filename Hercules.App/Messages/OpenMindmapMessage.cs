@@ -6,21 +6,21 @@
 // All rights reserved.
 // ==========================================================================
 
+using Windows.Storage;
 using GalaSoft.MvvmLight.Messaging;
-using Hercules.Model.Storing;
 
 namespace Hercules.App.Messages
 {
     public sealed class OpenMindmapMessage : MessageBase
     {
-        private readonly DocumentFile file;
+        private readonly StorageFile file;
 
-        public DocumentFile File
+        public StorageFile File
         {
             get { return file; }
         }
 
-        public OpenMindmapMessage(DocumentFile file)
+        public OpenMindmapMessage(StorageFile file)
         {
             this.file = file;
         }

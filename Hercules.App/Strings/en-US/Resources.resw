@@ -153,24 +153,6 @@
   <data name="AppBarButton_AddMindmap.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Create a new Mindmap</value>
   </data>
-  <data name="AppBarButton_ExportHtml.Text" xml:space="preserve">
-    <value>Export as Html (Outline)</value>
-  </data>
-  <data name="AppBarButton_ExportHtml.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Export Html</value>
-  </data>
-  <data name="AppBarButton_ExportHtml.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Export mindmap to HTML</value>
-  </data>
-  <data name="AppBarButton_ExportImage.Text" xml:space="preserve">
-    <value>Export Image (.png)</value>
-  </data>
-  <data name="AppBarButton_ExportImage.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Export Image</value>
-  </data>
-  <data name="AppBarButton_ExportImage.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Export mindmap as PNG</value>
-  </data>
   <data name="AppBarButton_Help.Label" xml:space="preserve">
     <value>Help</value>
   </data>
@@ -179,15 +161,6 @@
   </data>
   <data name="AppBarButton_Help.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Show Help (CTRL + H)</value>
-  </data>
-  <data name="AppBarButton_ImportXMind.Text" xml:space="preserve">
-    <value>Import from XMind (.xmind)</value>
-  </data>
-  <data name="AppBarButton_ImportXMind.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Import from XMind</value>
-  </data>
-  <data name="AppBarButton_ImportXMind.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Import Mindmaps from XMind</value>
   </data>
   <data name="AppBarButton_ListMindmaps.Label" xml:space="preserve">
     <value>Mindmaps</value>
@@ -225,14 +198,14 @@
   <data name="AppBarButton_RemoveNode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Remove selected root (DELETE)</value>
   </data>
-  <data name="AppBarButton_Share.Label" xml:space="preserve">
+  <data name="AppBarButton_Export.Label" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="AppBarButton_Export.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Ex-Import</value>
   </data>
-  <data name="AppBarButton_Share.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Ex-Import</value>
-  </data>
-  <data name="AppBarButton_Share.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Export current mindmap or import mindmaps</value>
+  <data name="AppBarButton_Export.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Export current mindmap or print it.</value>
   </data>
   <data name="AppBarButton_Undo.Label" xml:space="preserve">
     <value>Undo</value>
@@ -300,14 +273,14 @@
   <data name="Mindmaps_AddButtonText.Text" xml:space="preserve">
     <value>New Mindmap</value>
   </data>
-  <data name="Mindmaps_DeleteMenuItem.Text" xml:space="preserve">
-    <value>Delete</value>
+  <data name="Mindmaps_RemoveMenuItem.Text" xml:space="preserve">
+    <value>Remove</value>
   </data>
-  <data name="Mindmaps_DeleteMenuItem.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Delete Mindmap</value>
+  <data name="Mindmaps_RemoveMenuItem.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Remove Mindmap</value>
   </data>
-  <data name="Mindmaps_DeleteMenuItem.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Delete this mindmap</value>
+  <data name="Mindmaps_RemoveMenuItem.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Remove this mindmap</value>
   </data>
   <data name="Mindmaps_Header.Text" xml:space="preserve">
     <value>My Mindmaps</value>
@@ -407,12 +380,6 @@ I want to share my mindmap for you. You can download it here: {0}. The download 
   <data name="Importer_Mindapp" xml:space="preserve">
     <value>Mindapp (.mmd)</value>
   </data>
-  <data name="MindmapDeleted_Content" xml:space="preserve">
-    <value>The mindmap has been deleted in the meantime.</value>
-  </data>
-  <data name="MindmapDeleted_Heading" xml:space="preserve">
-    <value>Mindmap has been deleted.</value>
-  </data>
   <data name="Properties_AddIonButton.Content" xml:space="preserve">
     <value>Add Icon from File</value>
   </data>
@@ -426,10 +393,10 @@ The maximum allowed size is a 200x200 pixels.</value>
   <data name="LoadingIconFailed_Heading" xml:space="preserve">
     <value>Invalid Image</value>
   </data>
-  <data name="MindmapLoadingFailed_Content" xml:space="preserve">
+  <data name="Mindmap_OpeningFailed_Unknown_Content" xml:space="preserve">
     <value>Sorry, the app cannot load the mindmap. There might be compatibility issues. Please write me a mail to mail2stehle@gmail.com, if you want to restore the mindmap.</value>
   </data>
-  <data name="MindmapLoadingFailed_Heading" xml:space="preserve">
+  <data name="Mindmap_OpeningFailed_Heading" xml:space="preserve">
     <value>Loading the mindmap failed</value>
   </data>
   <data name="Naming_NameError.Text" xml:space="preserve">
@@ -482,5 +449,44 @@ The maximum allowed size is a 200x200 pixels.</value>
   </data>
   <data name="Properties_ColorPickerButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Select a custom Color</value>
+  </data>
+  <data name="Mindmaps_Path.Text" xml:space="preserve">
+    <value>Path:</value>
+  </data>
+  <data name="Mindmap_OpeningFailed_NotFound_Content" xml:space="preserve">
+    <value>Cannot open the mindmap, the file has been deleted in the meantime.</value>
+  </data>
+  <data name="Mindmap_Remove_Content" xml:space="preserve">
+    <value>The mindmap has unsaved changes. Do you really want to remove it?</value>
+  </data>
+  <data name="Mindmap_Remove_Heading" xml:space="preserve">
+    <value>Remove mindmap</value>
+  </data>
+  <data name="Mindmap_RenamingFailed_Heading" xml:space="preserve">
+    <value>Renaming failed</value>
+  </data>
+  <data name="Mindmap_RenamingFailed_NotFound_Content" xml:space="preserve">
+    <value>Cannot rename the mindmap, the file has been deleted in the meantime. Please use 'Save As'.</value>
+  </data>
+  <data name="Mindmap_SavingFailed_Heading" xml:space="preserve">
+    <value>Saving failed</value>
+  </data>
+  <data name="Mindmap_SavingFailed_NotFound_Content" xml:space="preserve">
+    <value>Cannot save the mindmap, the file has been deleted in the meantime. Please use 'Save As'.</value>
+  </data>
+  <data name="Mindmap_SavingFailed_Unknown_Content" xml:space="preserve">
+    <value>Cannot save the mindmap, it has been failed because of unknown reasons.</value>
+  </data>
+  <data name="AppBarButton_ExportItem" xml:space="preserve">
+    <value>Export</value>
+  </data>
+  <data name="AppBarButton_Import.Label" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="AppBarButton_Import.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
+    <value>Import</value>
+  </data>
+  <data name="AppBarButton_Import.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Import a mindmap</value>
   </data>
 </root>

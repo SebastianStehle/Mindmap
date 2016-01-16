@@ -7,16 +7,16 @@
 // ==========================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Pickers;
-using Windows.Storage.Search;
+using Windows.UI.Xaml;
 using GP.Utils;
 using GP.Utils.Mvvm;
+using Hercules.Model;
 using Hercules.Model.Storing;
-using Hercules.Model.Storing.Json;
 using PropertyChanged;
 
 // ReSharper disable ImplicitlyCapturedClosure
@@ -26,144 +26,203 @@ namespace Hercules.App.Components.Implementations
     [ImplementPropertyChanged]
     public sealed class MindmapStore : IMindmapStore
     {
-        private readonly ObservableCollection<DocumentFile> allDocuments = new ObservableCollection<DocumentFile>();
+        private readonly DocumentFileRecentList recentList = new DocumentFileRecentList();
+        private readonly ObservableCollection<DocumentFileModel> allFiles = new ObservableCollection<DocumentFileModel>();
+        private readonly DispatcherTimer autoSaveTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(30) };
+        private readonly IDialogService dialogService;
         private readonly IProcessManager processManager;
-        private DocumentFile loadedDocument;
+        private readonly ISettingsProvider settingsProvider;
+        private DocumentFileModel selectedFile;
 
-        public event EventHandler<DocumentFileEventArgs> DocumentLoaded;
+        public event EventHandler<DocumentFileEventArgs> FileLoaded;
 
-        public ObservableCollection<DocumentFile> AllDocuments
+        public ObservableCollection<DocumentFileModel> AllFiles
         {
-            get { return allDocuments; }
+            get { return allFiles; }
         }
 
-        public DocumentFile LoadedDocument
+        public DocumentFileModel SelectedFile
         {
-            get { return loadedDocument; }
+            get { return selectedFile; }
         }
 
-        public MindmapStore(IProcessManager processManager)
+        public MindmapStore(IDialogService dialogService, IProcessManager processManager, ISettingsProvider settingsProvider)
         {
+            this.dialogService = dialogService;
             this.processManager = processManager;
+            this.settingsProvider = settingsProvider;
+
+            autoSaveTimer.Tick += AutoSaveTimer_Tick;
+            autoSaveTimer.Start();
         }
 
-        public async Task LoadRecentAsync()
+        private void AutoSaveTimer_Tick(object sender, object e)
         {
-            List<DocumentFile> documentFiles = await DocumentFile.QueryRecentFilesAsync();
-
-            allDocuments.Clear();
-
-            documentFiles.Foreach(x => allDocuments.Add(x));
-
-            if (documentFiles.Count > 0)
+            if (selectedFile != null)
             {
-                await OpenAsync(documentFiles[0]);
+                selectedFile.SaveAsync(true).Forget();
             }
         }
 
-        public Task OpenAsync(DocumentFile file)
+        public async Task LoadRecentsAsync()
         {
-            Guard.NotNull(file, nameof(file));
-
-            return processManager.RunMainProcessAsync(this, async () =>
+            if (!settingsProvider.IsAlreadyStarted)
             {
-                if (loadedDocument != null)
-                {
-                    await loadedDocument.SaveAsync();
+                await CreateAsync();
 
-                    loadedDocument.Close();
+                settingsProvider.IsAlreadyStarted = true;
+            }
+
+            if (!settingsProvider.HasFilesCopied)
+            {
+                await LocalFiles.CopyToDocumentsAsync(recentList);
+
+                settingsProvider.HasFilesCopied = true;
+            }
+
+            await recentList.LoadAsync();
+
+            recentList.Files.Foreach(x => allFiles.Add(new DocumentFileModel(x, dialogService)));
+
+            if (allFiles.Count > 0 && selectedFile == null)
+            {
+                await OpenAsync(allFiles[0]);
+            }
+        }
+
+        public async Task OpenRecentAsync()
+        {
+            if (allFiles.Count > 0)
+            {
+                await OpenAsync(allFiles[0]);
+            }
+        }
+
+        public async Task OpenFromFileAsync()
+        {
+            StorageFile file = await OpenFileAsync(DocumentFile.Extension);
+
+            await OpenAsync(file);
+        }
+
+        public async Task OpenAsync(StorageFile file)
+        {
+            if (file != null)
+            {
+                DocumentFileModel fileModel = allFiles.FirstOrDefault(x => string.Equals(x.Path, file.Path, StringComparison.OrdinalIgnoreCase));
+
+                if (fileModel == null)
+                {
+                    fileModel = new DocumentFileModel(await DocumentFile.OpenAsync(file), dialogService);
+
+                    Add(fileModel);
                 }
 
-                await file.OpenAsync();
-
-                loadedDocument = file;
-
-                OnDocumentLoaded(file);
-            });
-        }
-
-        public Task SaveAsync()
-        {
-            return processManager.RunMainProcessAsync(this, async () =>
-            {
-                if (loadedDocument != null)
-                {
-                    await loadedDocument.SaveAsync();
-                }
-            });
-        }
-
-        public async Task OpenAsync()
-        {
-            StorageFile file = await PickOpenAsync(JsonDocumentSerializer.FileExtension.Extension);
-
-            if (file != null)
-            {
-                DocumentFile document = await DocumentFile.OpenAsync(file);
-
-                document.AddToRecentList();
-
-                await OpenAsync(document);
+                await OpenAsync(fileModel);
             }
         }
 
-        public async Task CreateAsync()
+        public async Task OpenAsync(DocumentFileModel file)
         {
-            StorageFile file = await PickSaveAsync(JsonDocumentSerializer.FileExtension.Extension);
-
-            if (file != null)
-            {
-                DocumentFile document = DocumentFile.CreateNew(file);
-
-                document.AddToRecentList();
-
-                await document.SaveAsync();
-
-                await OpenAsync(document);
-            }
-        }
-
-        public async Task SaveToFileAsync()
-        {
-            StorageFile file = await PickSaveAsync(JsonDocumentSerializer.FileExtension.Extension);
-
-            if (file != null)
+            if (file != null && file != selectedFile)
             {
                 await processManager.RunMainProcessAsync(this, async () =>
                 {
-                    if (loadedDocument != null)
+                    if (await file.OpenAsync())
                     {
-                        await loadedDocument.SaveAsAsync(file);
+                        if (selectedFile != null && !selectedFile.HasChanges)
+                        {
+                            selectedFile.Close();
+                        }
+
+                        selectedFile = file;
+
+                        recentList.Add(file.File);
+
+                        OnFileLoaded(new DocumentFileEventArgs(file));
                     }
                 });
             }
         }
 
-        private static async Task<StorageFile> PickSaveAsync(string extension)
+        public void Add(string name, Document document)
         {
-            FileSavePicker fileSavePicker = new FileSavePicker { DefaultFileExtension = JsonDocumentSerializer.FileExtension.Extension };
-
-            fileSavePicker.FileTypeChoices.Add(extension, new List<string> { extension });
-
-            StorageFile file = await fileSavePicker.PickSaveFileAsync();
-
-            return file;
+            Add(DocumentFile.Create(name, document));
         }
 
-        private static async Task<StorageFile> PickOpenAsync(string extension)
+        public void Add(DocumentFile file)
+        {
+            Add(new DocumentFileModel(file, dialogService));
+        }
+
+        public void Add(DocumentFileModel file)
+        {
+            allFiles.Insert(0, file);
+        }
+
+        public Task CreateAsync()
+        {
+            DocumentFile file = DocumentFile.CreateNew(LocalizationManager.GetString("MyMindmap"));
+
+            Add(file);
+
+            return OpenRecentAsync();
+        }
+
+        public async Task SaveAsAsync()
+        {
+            if (selectedFile != null)
+            {
+                if (await selectedFile.SaveAsAsync())
+                {
+                    recentList.Add(selectedFile.File);
+                }
+            }
+        }
+
+        public async Task SaveAsync(bool hideDialogs = false)
+        {
+            if (selectedFile != null)
+            {
+                if (await selectedFile.SaveAsync(hideDialogs))
+                {
+                    recentList.Add(selectedFile.File);
+                }
+            }
+        }
+
+        public async Task RemoveAsync(DocumentFileModel file)
+        {
+            if (file != null)
+            {
+                if (await file.RemoveAsync())
+                {
+                    allFiles.Remove(file);
+
+                    recentList.Remove(file.File);
+
+                    if (selectedFile == file)
+                    {
+                        selectedFile = null;
+
+                        OnFileLoaded(new DocumentFileEventArgs(null));
+                    }
+                }
+            }
+        }
+
+        private void OnFileLoaded(DocumentFileEventArgs e)
+        {
+            FileLoaded?.Invoke(this, e);
+        }
+
+        private static Task<StorageFile> OpenFileAsync(string extension)
         {
             FileOpenPicker fileOpenPicker = new FileOpenPicker();
 
             fileOpenPicker.FileTypeFilter.Add(extension);
 
-            StorageFile file = await fileOpenPicker.PickSingleFileAsync();
-
-            return file;
-        }
-
-        private void OnDocumentLoaded(DocumentFile file)
-        {
-            DocumentLoaded?.Invoke(this, new DocumentFileEventArgs(file));
+            return fileOpenPicker.PickSingleFileAsync().AsTask();
         }
     }
 }

@@ -20,14 +20,14 @@ namespace Hercules.Model.ExImport.Channels.Email
 {
     public sealed class EmailExportTarget : IExportTarget
     {
-        private readonly IMessageDialogService dialogService;
+        private readonly IDialogService dialogService;
 
         public string NameKey
         {
             get { return "Email"; }
         }
 
-        public EmailExportTarget(IMessageDialogService dialogService)
+        public EmailExportTarget(IDialogService dialogService)
         {
             Guard.NotNull(dialogService, nameof(dialogService));
 

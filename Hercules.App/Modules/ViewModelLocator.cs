@@ -12,7 +12,6 @@ using Windows.System.Threading;
 using GalaSoft.MvvmLight.Messaging;
 using GalaSoft.MvvmLight.Views;
 using GP.Utils;
-using GP.Utils.IO;
 using GP.Utils.Mvvm;
 using Hercules.App.Components;
 using Hercules.App.Components.Implementations;
@@ -26,8 +25,6 @@ using Hercules.Model.ExImport.Formats.Html;
 using Hercules.Model.ExImport.Formats.Image;
 using Hercules.Model.ExImport.Formats.Mindapp;
 using Hercules.Model.ExImport.Formats.XMind;
-using Hercules.Model.Storing;
-using Hercules.Model.Storing.Json;
 using Hercules.Win2D.Rendering;
 using Hercules.Win2D.Rendering.Themes.ModernPastel;
 using Microsoft.Practices.Unity;
@@ -66,13 +63,11 @@ namespace Hercules.App.Modules
                 unityContainer.RegisterInstance(
                     new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1, s => ThreadPool.RunAsync(t => s()).Forget())),
                     new ContainerControlledLifetimeManager());
-                unityContainer.RegisterInstance<IMessenger>(Messenger.Default,
+                unityContainer.RegisterType<GP.Utils.Mvvm.IDialogService, GP.Utils.Mvvm.DialogService>(
                     new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IFileSystem, StorageFileSystem>(
+                unityContainer.RegisterInstance(Messenger.Default,
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IMessenger, Messenger>(
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IDocumentStore, JsonDocumentStore>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<ISettingsProvider, DefaultSettingsProvider>(
                     new ContainerControlledLifetimeManager());
@@ -86,15 +81,11 @@ namespace Hercules.App.Modules
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IMindmapStore, MindmapStore>(
                     new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IMessageDialogService, MessageDialogService>(
-                    new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IWin2DRendererProvider, ModernPastelRendererProvider>(
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IImportSource, FileImportSource>("File",
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IImporter, XMindImporter>("XMind",
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IImporter, MindappImporter>("Mindapp",
                     new ContainerControlledLifetimeManager());
                 unityContainer.RegisterType<IExportTarget, FileExportTarget>("File",
                     new ContainerControlledLifetimeManager());

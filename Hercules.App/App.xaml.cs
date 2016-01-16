@@ -46,7 +46,7 @@ namespace Hercules.App
 
             if (file != null)
             {
-                Messenger.Default.Send(new OpenMindmapMessage(file));
+                Messenger.Default.Send(new OpenMessage(file));
             }
         }
 
@@ -83,7 +83,7 @@ namespace Hercules.App
         {
             SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
 
-            Messenger.Default.Send(new SaveMindmapMessage(deferral.Complete));
+            Messenger.Default.Send(new SaveMessage(deferral.Complete));
         }
     }
 }

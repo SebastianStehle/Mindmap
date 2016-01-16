@@ -29,7 +29,7 @@
                     <Grid x:Name="Root" HorizontalAlignment="Stretch" Background="Transparent">
                         <FlyoutBase.AttachedFlyout>
                             <controls:MindmapFlyout Placement="Bottom">
-                                <m:RenameView MindmapItem="{Binding}" />
+                                <m:RenameView DocumentFile="{Binding}" />
                             </controls:MindmapFlyout>
                         </FlyoutBase.AttachedFlyout>
 

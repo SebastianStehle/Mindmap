@@ -81,7 +81,7 @@
                             <FontIcon Glyph="&#xE898;"/>
                         </AppBarButton.Icon>
                         <AppBarButton.Flyout>
-                            <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
+                            <MenuFlyout>
                                 <MenuFlyoutSubItem x:Uid="AppBarButton_ExportItem" Text="Export">
                                     <i:Interaction.Behaviors>
                                         <controls:ExportGeneratorBehavior EditorViewModel="{Binding}" />
@@ -98,7 +98,7 @@
                             <FontIcon Glyph="&#xE896;"/>
                         </AppBarButton.Icon>
                         <AppBarButton.Flyout>
-                            <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource LightMenuFlyoutPresenterStyle}">
+                            <MenuFlyout>
                                 <i:Interaction.Behaviors>
                                     <controls:ImportGeneratorBehavior EditorViewModel="{Binding}" />
                                 </i:Interaction.Behaviors>

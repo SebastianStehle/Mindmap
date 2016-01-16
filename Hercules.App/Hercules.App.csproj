@@ -129,8 +129,8 @@
     <Compile Include="Controls\NodeMovingOperation.cs" />
     <Compile Include="Controls\TextEditor.cs" />
     <Compile Include="Messages\ImportMessage.cs" />
-    <Compile Include="Messages\OpenMindmapMessage.cs" />
-    <Compile Include="Messages\SaveMindmapMessage.cs" />
+    <Compile Include="Messages\OpenMessage.cs" />
+    <Compile Include="Messages\SaveMessage.cs" />
     <Compile Include="Modules\Editor\ViewModels\DocumentViewModelBase.cs" />
     <Compile Include="Modules\Editor\ViewModels\EditorPropertiesViewModel.cs" />
     <Compile Include="GlobalSuppressions.cs" />

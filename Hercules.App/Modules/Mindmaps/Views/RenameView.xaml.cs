@@ -14,12 +14,12 @@ namespace Hercules.App.Modules.Mindmaps.Views
 {
     public sealed partial class RenameView
     {
-        public static readonly DependencyProperty MindmapItemProperty =
-            DependencyProperty.Register(nameof(MindmapItem), typeof(DocumentFileModel), typeof(RenameView), new PropertyMetadata(null));
-        public DocumentFileModel MindmapItem
+        public static readonly DependencyProperty DocumentFileProperty =
+            DependencyProperty.Register(nameof(DocumentFile), typeof(DocumentFileModel), typeof(RenameView), new PropertyMetadata(null));
+        public DocumentFileModel DocumentFile
         {
-            get { return (DocumentFileModel)GetValue(MindmapItemProperty); }
-            set { SetValue(MindmapItemProperty, value); }
+            get { return (DocumentFileModel)GetValue(DocumentFileProperty); }
+            set { SetValue(DocumentFileProperty, value); }
         }
 
         public RenameView()
@@ -31,12 +31,12 @@ namespace Hercules.App.Modules.Mindmaps.Views
         {
             ErrorTextBlock.Opacity = 0;
 
-            NameTextBox.Text = MindmapItem.Name;
+            NameTextBox.Text = DocumentFile.Name;
         }
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!MindmapItem.CanRenameTo(NameTextBox.Text))
+            if (!DocumentFile.CanRenameTo(NameTextBox.Text))
             {
                 ErrorTextBlock.Opacity = 1;
             }
@@ -44,7 +44,7 @@ namespace Hercules.App.Modules.Mindmaps.Views
             {
                 try
                 {
-                    await MindmapItem.RenameAsync(NameTextBox.Text);
+                    await DocumentFile.RenameAsync(NameTextBox.Text);
                 }
                 catch (FileNotFoundException)
                 {

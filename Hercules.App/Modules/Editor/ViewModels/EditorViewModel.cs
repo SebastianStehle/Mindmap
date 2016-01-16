@@ -220,10 +220,9 @@ namespace Hercules.App.Modules.Editor.ViewModels
         {
         }
 
-        public EditorViewModel(IMessenger messenger, IMindmapStore mindmapStore, IWin2DRendererProvider rendererProvider)
+        public EditorViewModel(IMindmapStore mindmapStore, IWin2DRendererProvider rendererProvider)
             : base(mindmapStore, rendererProvider)
         {
-            messenger.Register<SaveMindmapMessage>(this, OnSaveMindmap);
         }
 
         protected override void OnDocumentChanged(Document oldDocument, Document newDocument)
@@ -239,13 +238,6 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
 
             UpdateUndoRedo();
-        }
-
-        private async void OnSaveMindmap(SaveMindmapMessage message)
-        {
-            await MindmapStore.SaveAsync();
-
-            message.Callback();
         }
 
         private void UndoRedoManager_StateChanged(object sender, EventArgs e)

@@ -81,7 +81,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                 return saveCommand ?? (saveCommand = new RelayCommand(() =>
                 {
                     mindmapStore.SaveAsync().Forget();
-                }));
+                }, () => SelectedFile != null).DependentOn(this, nameof(SelectedFile)));
             }
         }
 
@@ -92,7 +92,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                 return saveAsCommand ?? (saveAsCommand = new RelayCommand(() =>
                 {
                     mindmapStore.SaveAsAsync().Forget();
-                }));
+                }, () => SelectedFile != null).DependentOn(this, nameof(SelectedFile)));
             }
         }
 
@@ -117,9 +117,9 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
             mindmapStore.FileLoaded += MindmapStore_FileLoaded;
 
+            messenger.Register<SaveMessage>(this, OnSave);
+            messenger.Register<OpenMessage>(this, OnOpen);
             messenger.Register<ImportMessage>(this, OnImport);
-
-            messenger.Register<OpenMindmapMessage>(this, OnOpen);
         }
 
         public async Task LoadAsync()
@@ -129,7 +129,14 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             SelectedFile = mindmapStore.SelectedFile;
         }
 
-        public void OnOpen(OpenMindmapMessage message)
+        private async void OnSave(SaveMessage message)
+        {
+            await mindmapStore.SaveAsync();
+
+            message.Callback();
+        }
+
+        public void OnOpen(OpenMessage message)
         {
             mindmapStore.OpenAsync(message.File).Forget();
         }

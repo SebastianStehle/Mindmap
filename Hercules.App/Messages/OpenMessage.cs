@@ -1,28 +1,28 @@
 ﻿// ==========================================================================
-// SaveMindmapMessage.cs
+// OpenMessage.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
-using System;
+using Windows.Storage;
 using GalaSoft.MvvmLight.Messaging;
 
 namespace Hercules.App.Messages
 {
-    public sealed class SaveMindmapMessage : MessageBase
+    public sealed class OpenMessage : MessageBase
     {
-        private readonly Action callback;
+        private readonly StorageFile file;
 
-        public Action Callback
+        public StorageFile File
         {
-            get { return callback; }
+            get { return file; }
         }
 
-        public SaveMindmapMessage(Action callback)
+        public OpenMessage(StorageFile file)
         {
-            this.callback = callback;
+            this.file = file;
         }
     }
 }

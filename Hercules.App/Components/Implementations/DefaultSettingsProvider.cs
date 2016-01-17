@@ -18,11 +18,11 @@ namespace Hercules.App.Components.Implementations
         {
             get
             {
-                return GetBoolean("IsAlreadyStarted");
+                return GetBoolean(nameof(IsAlreadyStarted));
             }
             set
             {
-                SetBoolean("IsAlreadyStarted", value);
+                SetBoolean(nameof(IsAlreadyStarted), value);
             }
         }
 
@@ -30,11 +30,11 @@ namespace Hercules.App.Components.Implementations
         {
             get
             {
-                return GetBoolean("HasFilesCopied");
+                return GetBoolean(nameof(HasFilesCopied));
             }
             set
             {
-                SetBoolean("HasFilesCopied", value);
+                SetBoolean(nameof(HasFilesCopied), value);
             }
         }
 

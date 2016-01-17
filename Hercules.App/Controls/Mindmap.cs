@@ -8,8 +8,6 @@
 
 using System;
 using System.Numerics;
-using Windows.ApplicationModel;
-using Windows.Graphics.Display;
 using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -19,6 +17,7 @@ using Hercules.Model.Layouting;
 using Hercules.Win2D.Rendering;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 
+// ReSharper disable InvertIf
 // ReSharper disable LoopCanBeConvertedToQuery
 // ReSharper disable SuggestBaseTypeForParameter
 // ReSharper disable LoopCanBePartlyConvertedToQuery

@@ -14,6 +14,7 @@ using GP.Utils.UI;
 using GP.Utils.UI.Interactivity;
 using Hercules.Win2D.Rendering;
 
+// ReSharper disable InvertIf
 // ReSharper disable LoopCanBeConvertedToQuery
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 
@@ -98,14 +99,16 @@ namespace Hercules.App.Controls
         {
             Mindmap mindmap = AssociatedElement.FindParent<Mindmap>();
 
-            if (mindmap?.Renderer != null)
+            if (mindmap?.Renderer == null)
             {
-                foreach (Win2DRenderNode renderNode in mindmap.Scene.DiagramNodes)
+                return null;
+            }
+
+            foreach (Win2DRenderNode renderNode in mindmap.Scene.DiagramNodes)
+            {
+                if (renderNode.HitTest(position) && renderNode != mindmap.TextEditingNode)
                 {
-                    if (renderNode.HitTest(position) && renderNode != mindmap.TextEditingNode)
-                    {
-                        return NodeMovingOperation.Start(mindmap, renderNode);
-                    }
+                    return NodeMovingOperation.Start(mindmap, renderNode);
                 }
             }
 

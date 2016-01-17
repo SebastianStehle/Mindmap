@@ -55,23 +55,25 @@ namespace Hercules.App.Controls
 
         private void UpdateColor()
         {
-            if (border != null && Color != null)
+            if (border == null || Color == null)
             {
-                ThemeColor themeColor = Color as ThemeColor;
-
-                Color color;
-
-                if (themeColor != null)
-                {
-                    color = Renderer.Resources.Colors[themeColor.Index].Normal.ToColor();
-                }
-                else
-                {
-                    color = ColorsHelper.ConvertToColor(((ValueColor)Color).Color);
-                }
-
-                border.Background = new SolidColorBrush(color);
+                return;
             }
+
+            ThemeColor themeColor = Color as ThemeColor;
+
+            Color color;
+
+            if (themeColor != null)
+            {
+                color = Renderer.Resources.Colors[themeColor.Index].Normal.ToColor();
+            }
+            else
+            {
+                color = ColorsHelper.ConvertToColor(((ValueColor)Color).Color);
+            }
+
+            border.Background = new SolidColorBrush(color);
         }
     }
 }

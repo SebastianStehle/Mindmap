@@ -41,35 +41,39 @@ namespace Hercules.App.Controls
         {
             EditorViewModel viewModel = EditorViewModel;
 
-            if (viewModel != null)
+            if (viewModel == null)
             {
-                var items = AssociatedElement.Items;
+                return;
+            }
 
-                if (items != null)
+            var items = AssociatedElement.Items;
+
+            if (items == null)
+            {
+                return;
+            }
+
+            foreach (IExportTarget target in viewModel.ExportTargets)
+            {
+                string text = LocalizationManager.GetString($"ExportTarget_{target.NameKey}");
+
+                MenuFlyoutSubItem targetItem = new MenuFlyoutSubItem { Text = text };
+
+                foreach (IExporter exporter in viewModel.Exporters)
                 {
-                    foreach (IExportTarget target in viewModel.ExportTargets)
-                    {
-                        string text = LocalizationManager.GetString($"ExportTarget_{target.NameKey}");
+                    text = LocalizationManager.GetString($"Exporter_{exporter.NameKey}");
 
-                        MenuFlyoutSubItem targetItem = new MenuFlyoutSubItem { Text = text };
+                    var viewModelParameter = new ExportModel { Target = target, Exporter = exporter };
 
-                        foreach (IExporter exporter in viewModel.Exporters)
-                        {
-                            text = LocalizationManager.GetString($"Exporter_{exporter.NameKey}");
+                    MenuFlyoutItem exportButton =
+                        VisualTreeExtensions.CreateMenuItem(text,
+                            viewModel.ExportCommand,
+                            viewModelParameter);
 
-                            var viewModelParameter = new ExportModel { Target = target, Exporter = exporter };
-
-                            MenuFlyoutItem exportButton =
-                                VisualTreeExtensions.CreateMenuItem(text,
-                                    viewModel.ExportCommand,
-                                    viewModelParameter);
-
-                            targetItem.Items?.Add(exportButton);
-                        }
-
-                        items.Add(targetItem);
-                    }
+                    targetItem.Items?.Add(exportButton);
                 }
+
+                items.Add(targetItem);
             }
         }
     }

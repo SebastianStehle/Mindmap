@@ -23,7 +23,6 @@ using Hercules.Model.ExImport.Channels.Email;
 using Hercules.Model.ExImport.Channels.File;
 using Hercules.Model.ExImport.Formats.Html;
 using Hercules.Model.ExImport.Formats.Image;
-using Hercules.Model.ExImport.Formats.Mindapp;
 using Hercules.Model.ExImport.Formats.XMind;
 using Hercules.Win2D.Rendering;
 using Hercules.Win2D.Rendering.Themes.ModernPastel;

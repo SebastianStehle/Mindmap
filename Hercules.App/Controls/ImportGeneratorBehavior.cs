@@ -41,35 +41,39 @@ namespace Hercules.App.Controls
         {
             EditorViewModel viewModel = EditorViewModel;
 
-            if (viewModel != null)
+            if (viewModel == null)
             {
-                var items = AssociatedElement.Items;
+                return;
+            }
 
-                if (items != null)
+            var items = AssociatedElement.Items;
+
+            if (items == null)
+            {
+                return;
+            }
+
+            foreach (IImportSource source in viewModel.ImportSources)
+            {
+                string text = LocalizationManager.GetString($"ImportSource_{source.NameKey}");
+
+                MenuFlyoutSubItem targetItem = new MenuFlyoutSubItem { Text = text };
+
+                foreach (IImporter importer in viewModel.Importers)
                 {
-                    foreach (IImportSource source in viewModel.ImportSources)
-                    {
-                        string text = LocalizationManager.GetString($"ImportSource_{source.NameKey}");
+                    text = LocalizationManager.GetString($"Importer_{importer.NameKey}");
 
-                        MenuFlyoutSubItem targetItem = new MenuFlyoutSubItem { Text = text };
+                    var viewModelParameter = new ImportModel { Source = source, Importer = importer };
 
-                        foreach (IImporter importer in viewModel.Importers)
-                        {
-                            text = LocalizationManager.GetString($"Importer_{importer.NameKey}");
+                    MenuFlyoutItem importButton =
+                        VisualTreeExtensions.CreateMenuItem(text,
+                            viewModel.ImportCommand,
+                            viewModelParameter);
 
-                            var viewModelParameter = new ImportModel { Source = source, Importer = importer };
-
-                            MenuFlyoutItem importButton =
-                                VisualTreeExtensions.CreateMenuItem(text,
-                                    viewModel.ImportCommand,
-                                    viewModelParameter);
-
-                            targetItem.Items?.Add(importButton);
-                        }
-
-                        items.Add(targetItem);
-                    }
+                    targetItem.Items?.Add(importButton);
                 }
+
+                items.Add(targetItem);
             }
         }
     }

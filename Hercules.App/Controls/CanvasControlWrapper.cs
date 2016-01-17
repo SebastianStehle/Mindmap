@@ -84,20 +84,22 @@ namespace Hercules.App.Controls
 
             inner.RegionsInvalidated += (sender, args) =>
             {
-                if (args.InvalidatedRegions.Length > 0)
+                if (args.InvalidatedRegions.Length <= 0)
                 {
-                    OnBeforeDraw();
-
-                    foreach (Rect region in args.InvalidatedRegions)
-                    {
-                        using (CanvasDrawingSession session = canvasControl.CreateDrawingSession(region))
-                        {
-                            OnDraw(new BoundedCanvasDrawEventArgs(session, region.ToRect2()));
-                        }
-                    }
-
-                    OnAfterDraw();
+                    return;
                 }
+
+                OnBeforeDraw();
+
+                foreach (Rect region in args.InvalidatedRegions)
+                {
+                    using (CanvasDrawingSession session = canvasControl.CreateDrawingSession(region))
+                    {
+                        OnDraw(new BoundedCanvasDrawEventArgs(session, region.ToRect2()));
+                    }
+                }
+
+                OnAfterDraw();
             };
 
             Application.Current.Resuming += Current_Resuming;

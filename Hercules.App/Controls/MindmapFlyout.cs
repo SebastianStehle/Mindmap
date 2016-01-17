@@ -8,6 +8,8 @@
 
 using Windows.UI.Xaml.Controls;
 
+// ReSharper disable InvertIf
+
 namespace Hercules.App.Controls
 {
     public class MindmapFlyout : Flyout

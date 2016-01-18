@@ -57,7 +57,7 @@ namespace Hercules.Model.Storing.Json
         {
             Guard.NotNull(contents, nameof(contents));
 
-            using (MemoryStream stream = new MemoryStream())
+            using (MemoryStream stream = new MemoryStream(contents))
             {
                 return Deserialize(stream);
             }

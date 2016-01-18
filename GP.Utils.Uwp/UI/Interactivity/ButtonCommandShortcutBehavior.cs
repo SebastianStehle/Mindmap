@@ -23,19 +23,23 @@ namespace GP.Utils.UI.Interactivity
         {
             Button associatedButton = AssociatedElement as Button;
 
-            if (associatedButton != null)
+            if (associatedButton == null)
             {
-                ICommand command = associatedButton.Command;
+                return;
+            }
 
-                if (command != null)
-                {
-                    object parameter = associatedButton.CommandParameter;
+            ICommand command = associatedButton.Command;
 
-                    if (command.CanExecute(parameter))
-                    {
-                        command.Execute(parameter);
-                    }
-                }
+            if (command == null)
+            {
+                return;
+            }
+
+            object parameter = associatedButton.CommandParameter;
+
+            if (command.CanExecute(parameter))
+            {
+                command.Execute(parameter);
             }
         }
     }

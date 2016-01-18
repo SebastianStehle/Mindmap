@@ -53,12 +53,14 @@ namespace GP.Utils.UI.Interactivity
         {
             object parameter = CommandParameter;
 
-            if (Command != null)
+            if (Command == null)
             {
-                if (Command.CanExecute(parameter))
-                {
-                    Command.Execute(parameter);
-                }
+                return;
+            }
+
+            if (Command.CanExecute(parameter))
+            {
+                Command.Execute(parameter);
             }
         }
     }

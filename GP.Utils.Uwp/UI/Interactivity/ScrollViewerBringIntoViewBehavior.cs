@@ -39,35 +39,37 @@ namespace GP.Utils.UI.Interactivity
         {
             ScrollViewer parent = AssociatedObject.FindParent<ScrollViewer>();
 
-            if (parent != null)
+            if (parent == null)
             {
-                Rect visibleBounds = AssociatedElement.TransformToVisual(Window.Current.Content).TransformBounds(new Rect(new Point(0, 0), AssociatedElement.RenderSize));
+                return;
+            }
 
-                if (AssociatedElement.RenderSize.Width < parent.RenderSize.Width && AssociatedElement.RenderSize.Height < parent.RenderSize.Height)
+            Rect visibleBounds = AssociatedElement.TransformToVisual(Window.Current.Content).TransformBounds(new Rect(new Point(0, 0), AssociatedElement.RenderSize));
+
+            if (AssociatedElement.RenderSize.Width < parent.RenderSize.Width && AssociatedElement.RenderSize.Height < parent.RenderSize.Height)
+            {
+                double dx = 0;
+                double dy = 0;
+
+                if (visibleBounds.Left < 0)
                 {
-                    double dx = 0;
-                    double dy = 0;
-
-                    if (visibleBounds.Left < 0)
-                    {
-                        dx = visibleBounds.Left;
-                    }
-                    else if (visibleBounds.Right > parent.RenderSize.Width)
-                    {
-                        dx = visibleBounds.Right - parent.RenderSize.Width;
-                    }
-
-                    if (visibleBounds.Top < 0)
-                    {
-                        dy = visibleBounds.Top;
-                    }
-                    else if (visibleBounds.Bottom > parent.RenderSize.Height)
-                    {
-                        dy = visibleBounds.Bottom - parent.RenderSize.Height;
-                    }
-
-                    parent.ChangeView(parent.VerticalOffset + dy, parent.HorizontalOffset + dx, null, false);
+                    dx = visibleBounds.Left;
                 }
+                else if (visibleBounds.Right > parent.RenderSize.Width)
+                {
+                    dx = visibleBounds.Right - parent.RenderSize.Width;
+                }
+
+                if (visibleBounds.Top < 0)
+                {
+                    dy = visibleBounds.Top;
+                }
+                else if (visibleBounds.Bottom > parent.RenderSize.Height)
+                {
+                    dy = visibleBounds.Bottom - parent.RenderSize.Height;
+                }
+
+                parent.ChangeView(parent.VerticalOffset + dy, parent.HorizontalOffset + dx, null, false);
             }
         }
     }

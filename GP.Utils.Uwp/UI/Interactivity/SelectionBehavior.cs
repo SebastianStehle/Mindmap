@@ -100,17 +100,19 @@ namespace GP.Utils.UI.Interactivity
 
         private void AssociatedElement_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (AssociatedElement.SelectedIndex >= 0)
+            if (AssociatedElement.SelectedIndex < 0)
             {
-                if (SelectedItemCommand?.CanExecute(AssociatedElement.SelectedItem) == true)
-                {
-                    SelectedItemCommand.Execute(AssociatedElement.SelectedItem);
-                }
+                return;
+            }
 
-                if (SelectedIndexCommand?.CanExecute(AssociatedElement.SelectedIndex) == true)
-                {
-                    SelectedIndexCommand.Execute(AssociatedElement.SelectedIndex);
-                }
+            if (SelectedItemCommand?.CanExecute(AssociatedElement.SelectedItem) == true)
+            {
+                SelectedItemCommand.Execute(AssociatedElement.SelectedItem);
+            }
+
+            if (SelectedIndexCommand?.CanExecute(AssociatedElement.SelectedIndex) == true)
+            {
+                SelectedIndexCommand.Execute(AssociatedElement.SelectedIndex);
             }
         }
     }

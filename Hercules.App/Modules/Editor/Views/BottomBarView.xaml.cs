@@ -13,7 +13,7 @@ namespace Hercules.App.Modules.Editor.Views
 {
     public sealed partial class BottomBarView
     {
-        public event EventHandler ListButtonClicked;
+        public event EventHandler<RoutedEventArgs> ListButtonClicked;
 
         public BottomBarView()
         {
@@ -22,7 +22,7 @@ namespace Hercules.App.Modules.Editor.Views
 
         private void ListAppBarButton_Click(object sender, RoutedEventArgs e)
         {
-            ListButtonClicked?.Invoke(sender, EventArgs.Empty);
+            ListButtonClicked?.Invoke(sender, new RoutedEventArgs());
         }
     }
 }

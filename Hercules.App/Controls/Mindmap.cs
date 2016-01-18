@@ -218,18 +218,6 @@ namespace Hercules.App.Controls
             }
         }
 
-        protected override void OnKeyUp(KeyRoutedEventArgs e)
-        {
-            if (e.Key == VirtualKey.Space)
-            {
-                EditText();
-
-                e.Handled = true;
-            }
-
-            base.OnKeyUp(e);
-        }
-
         private void TextEditor_EditingEnded(object sender, EventArgs e)
         {
             Focus(FocusState.Programmatic);

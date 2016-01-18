@@ -37,6 +37,10 @@
                             <RowDefinition />
                             <RowDefinition />
                             <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
+                            <RowDefinition />
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Style="{StaticResource HelpH1Style}" Text="When Editor has focus" />
@@ -68,38 +72,47 @@
 
                         <TextBlock Grid.Row="10" Style="{StaticResource HelpH1Style}" Text="Global shortcuts" Margin="0,15,0,0" />
 
-                        <TextBlock Grid.Row="11" Style="{StaticResource HelpShortcutStyle}" Text="Control + H" />
+                        <TextBlock Grid.Row="11" Style="{StaticResource HelpShortcutStyle}" Text="Control + H, Control + F1, F1" />
                         <TextBlock Grid.Row="11" Style="{StaticResource HelpCommentStyle}" Text="Show Help" />
 
-                        <TextBlock Grid.Row="12" Style="{StaticResource HelpShortcutStyle}" Text="Control + I" />
-                        <TextBlock Grid.Row="12" Style="{StaticResource HelpCommentStyle}" Text="Show Icon Editor" />
+                        <TextBlock Grid.Row="12" Style="{StaticResource HelpShortcutStyle}" Text="Control + P" />
+                        <TextBlock Grid.Row="12" Style="{StaticResource HelpCommentStyle}" Text="Show Properties" />
 
-                        <TextBlock Grid.Row="13" Style="{StaticResource HelpShortcutStyle}" Text="Control + O" />
-                        <TextBlock Grid.Row="13" Style="{StaticResource HelpCommentStyle}" Text="Show Color Editor" />
+                        <TextBlock Grid.Row="13" Style="{StaticResource HelpShortcutStyle}" Text="Control + L" />
+                        <TextBlock Grid.Row="13" Style="{StaticResource HelpCommentStyle}" Text="Show Mindmap List" />
 
-                        <TextBlock Grid.Row="14" Style="{StaticResource HelpShortcutStyle}" Text="Control + P" />
-                        <TextBlock Grid.Row="14" Style="{StaticResource HelpCommentStyle}" Text="Print Document" />
+                        <TextBlock Grid.Row="14" Style="{StaticResource HelpShortcutStyle}" Text="Control + Z" />
+                        <TextBlock Grid.Row="14" Style="{StaticResource HelpCommentStyle}" Text="Undo" />
 
-                        <TextBlock Grid.Row="15" Style="{StaticResource HelpShortcutStyle}" Text="Control + Z" />
-                        <TextBlock Grid.Row="15" Style="{StaticResource HelpCommentStyle}" Text="Undo" />
+                        <TextBlock Grid.Row="15" Style="{StaticResource HelpShortcutStyle}" Text="Control + Y" />
+                        <TextBlock Grid.Row="15" Style="{StaticResource HelpCommentStyle}" Text="Redo" />
 
-                        <TextBlock Grid.Row="16" Style="{StaticResource HelpShortcutStyle}" Text="Control + Y" />
-                        <TextBlock Grid.Row="16" Style="{StaticResource HelpCommentStyle}" Text="Redo" />
+                        <TextBlock Grid.Row="16" Style="{StaticResource HelpShortcutStyle}" Text="Control + Space" />
+                        <TextBlock Grid.Row="16" Style="{StaticResource HelpCommentStyle}" Text="Start editing" />
 
-                        <TextBlock Grid.Row="17" Style="{StaticResource HelpShortcutStyle}" Text="Control + Space" />
-                        <TextBlock Grid.Row="17" Style="{StaticResource HelpCommentStyle}" Text="Start editing" />
+                        <TextBlock Grid.Row="17" Style="{StaticResource HelpShortcutStyle}" Text="Control + Tab" />
+                        <TextBlock Grid.Row="17" Style="{StaticResource HelpCommentStyle}" Text="Add child subtopic" />
 
-                        <TextBlock Grid.Row="18" Style="{StaticResource HelpShortcutStyle}" Text="Control + Tab" />
-                        <TextBlock Grid.Row="18" Style="{StaticResource HelpCommentStyle}" Text="Add child subtopic" />
+                        <TextBlock Grid.Row="18" Style="{StaticResource HelpShortcutStyle}" Text="Control + Enter" />
+                        <TextBlock Grid.Row="18" Style="{StaticResource HelpCommentStyle}" Text="Add sibling subtopic" />
 
-                        <TextBlock Grid.Row="19" Style="{StaticResource HelpShortcutStyle}" Text="Control + Enter" />
-                        <TextBlock Grid.Row="19" Style="{StaticResource HelpCommentStyle}" Text="Add sibling subtopic" />
+                        <TextBlock Grid.Row="19" Style="{StaticResource HelpShortcutStyle}" Text="Control + Delete, Control + Back" />
+                        <TextBlock Grid.Row="19" Style="{StaticResource HelpCommentStyle}" Text="Delete current subtopic" />
 
-                        <TextBlock Grid.Row="20" Style="{StaticResource HelpShortcutStyle}" Text="Control + Delete, Control + Back" />
-                        <TextBlock Grid.Row="20" Style="{StaticResource HelpCommentStyle}" Text="Delete current subtopic" />
+                        <TextBlock Grid.Row="20" Style="{StaticResource HelpShortcutStyle}" Text="Control + Arrow Keys" />
+                        <TextBlock Grid.Row="20" Style="{StaticResource HelpCommentStyle}" Text="Change selection" />
 
-                        <TextBlock Grid.Row="21" Style="{StaticResource HelpShortcutStyle}" Text="Control + Arrow Keys" />
-                        <TextBlock Grid.Row="21" Style="{StaticResource HelpCommentStyle}" Text="Change selection" />
+                        <TextBlock Grid.Row="21" Style="{StaticResource HelpShortcutStyle}" Text="Control + N" />
+                        <TextBlock Grid.Row="21" Style="{StaticResource HelpCommentStyle}" Text="Create new mindmap" />
+
+                        <TextBlock Grid.Row="22" Style="{StaticResource HelpShortcutStyle}" Text="Control + S" />
+                        <TextBlock Grid.Row="22" Style="{StaticResource HelpCommentStyle}" Text="Save current mindmap" />
+
+                        <TextBlock Grid.Row="23" Style="{StaticResource HelpShortcutStyle}" Text="Control + Shift + S" />
+                        <TextBlock Grid.Row="23" Style="{StaticResource HelpCommentStyle}" Text="Save current mindmap to file" />
+
+                        <TextBlock Grid.Row="24" Style="{StaticResource HelpShortcutStyle}" Text="Control + O" />
+                        <TextBlock Grid.Row="24" Style="{StaticResource HelpCommentStyle}" Text="Open mindmap" />
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

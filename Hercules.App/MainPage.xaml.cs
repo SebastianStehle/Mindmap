@@ -49,7 +49,7 @@ namespace Hercules.App
             titleBar.ButtonPressedForegroundColor = Colors.Black;
         }
 
-        private void Toolbars_ListButtonClicked(object sender, EventArgs e)
+        private void Toolbars_ListButtonClicked(object sender, RoutedEventArgs e)
         {
             OuterSplitView.IsPaneOpen = !OuterSplitView.IsPaneOpen;
 
@@ -64,7 +64,7 @@ namespace Hercules.App
             }
         }
 
-        private void Toolbars_PropertiesButtonClicked(object sender, EventArgs e)
+        private void Toolbars_PropertiesButtonClicked(object sender, RoutedEventArgs e)
         {
             InnerSplitView.IsPaneOpen = !InnerSplitView.IsPaneOpen;
 

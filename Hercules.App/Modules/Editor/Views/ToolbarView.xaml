@@ -53,11 +53,7 @@
 
         <CommandBar.Content>
             <StackPanel Orientation="Horizontal">
-                <AppBarButton x:Name="PrimaryListButton" x:Uid="AppBarButton_ListMindmaps" Icon="List" Click="ListAppBarButton_Click" IsCompact="True" Label="Mindmaps" Visibility="Collapsed">
-                    <i:Interaction.Behaviors>
-                        <gpi:ShortcutBehavior RequiresControlModifier="True" Key="L" Invoked="ListAppBarButton_Click" />
-                    </i:Interaction.Behaviors>
-                </AppBarButton>
+                <AppBarButton x:Name="PrimaryListButton" x:Uid="AppBarButton_ListMindmaps" Icon="List" Click="ListAppBarButton_Click" IsCompact="True" Label="Mindmaps" Visibility="Collapsed" />
 
                 <StackPanel x:Name="PrimaryAdvancedButtons" Visibility="Collapsed" Orientation="Horizontal">
                     <AppBarSeparator />
@@ -69,8 +65,15 @@
                             </controls:MindmapFlyout>
                         </AppBarButton.Flyout>
                         <i:Interaction.Behaviors>
-                            <gpi:FlyoutShortcutBehavior RequiresControlModifier="True" Key="H" />
-                            <gpi:FlyoutShortcutBehavior RequiresControlModifier="False" Key="F1" />
+                            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="H">
+                                <gpi:ShowFlyoutAction />
+                            </gpi:GlobalShortcutTriggerBehavior>
+                            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="F1">
+                                <gpi:ShowFlyoutAction />
+                            </gpi:GlobalShortcutTriggerBehavior>
+                            <gpi:GlobalShortcutTriggerBehavior Key="F1">
+                                <gpi:ShowFlyoutAction />
+                            </gpi:GlobalShortcutTriggerBehavior>
                         </i:Interaction.Behaviors>
                     </AppBarButton>
 
@@ -111,44 +114,26 @@
 
                 <StackPanel x:Name="PrimaryUndoRedoButtons" Visibility="Collapsed" Orientation="Horizontal">
                     <AppBarButton x:Uid="AppBarButton_Undo" Icon="Undo" IsCompact="True" Label="Undo"
-                            Command="{Binding UndoCommand}">
-                        <i:Interaction.Behaviors>
-                            <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
-                        </i:Interaction.Behaviors>
-                    </AppBarButton>
+                        Command="{Binding UndoCommand}" />
 
                     <AppBarButton x:Uid="AppBarButton_Redo" Icon="Redo" IsCompact="True" Label="Redo"
-                            Command="{Binding RedoCommand}">
-                        <i:Interaction.Behaviors>
-                            <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Y" />
-                        </i:Interaction.Behaviors>
-                    </AppBarButton>
+                        Command="{Binding RedoCommand}" />
                 </StackPanel>
             </StackPanel>
         </CommandBar.Content>
         <CommandBar.PrimaryCommands>
-            <AppBarButton x:Uid="AppBarButton_RemoveNode" IsCompact="True" Label="Remove" Icon="Delete"
+            <AppBarButton x:Uid="AppBarButton_RemoveNode" IsCompact="True" Label="Remove" Icon="Delete" 
                 Command="{Binding RemoveCommand}">
-                <i:Interaction.Behaviors>
-                    <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Delete" />
-                    <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Back" />
-                </i:Interaction.Behaviors>
             </AppBarButton>
 
             <AppBarSeparator x:Name="PrimaryRemoveButtonSeparator" Visibility="Collapsed" />
 
-            <AppBarButton x:Uid="AppBarButton_AddSibling" Style="{StaticResource AppBarButtonStyleSibling}" IsCompact="True" Label="Sibling" 
+            <AppBarButton x:Uid="AppBarButton_AddSibling" Style="{StaticResource AppBarButtonStyleSibling}" IsCompact="True" Label="Sibling"
                 Command="{Binding AddSiblingCommand}">
-                <i:Interaction.Behaviors>
-                    <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Enter" />
-                </i:Interaction.Behaviors>
             </AppBarButton>
 
             <AppBarButton x:Uid="AppBarButton_AddChild" Style="{StaticResource AppBarButtonStyleChild}" IsCompact="True" Label="Child"
-                Command="{Binding AddChildCommand}" >
-                <i:Interaction.Behaviors>
-                    <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Tab" />
-                </i:Interaction.Behaviors>
+                Command="{Binding AddChildCommand}">
             </AppBarButton>
 
             <AppBarSeparator x:Name="PrimaryPropertiesButtonSeparator" Visibility="Collapsed" />
@@ -160,16 +145,10 @@
         <CommandBar.SecondaryCommands>
             <AppBarButton x:Name="CompactButtonUndo" x:Uid="AppBarButton_Undo" Icon="Undo" Label="Undo"
                 Command="{Binding UndoCommand}">
-                <i:Interaction.Behaviors>
-                    <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Z" />
-                </i:Interaction.Behaviors>
             </AppBarButton>
 
             <AppBarButton x:Name="CompactButtonRedo" x:Uid="AppBarButton_Redo" Icon="Redo" Label="Redo"
                 Command="{Binding RedoCommand}">
-                <i:Interaction.Behaviors>
-                    <gpi:ButtonCommandShortcutBehavior RequiresControlModifier="True" Key="Y" />
-                </i:Interaction.Behaviors>
             </AppBarButton>
 
             <AppBarSeparator x:Name="CompactButtonExportSeparator" />

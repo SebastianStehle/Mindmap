@@ -4,6 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
+    xmlns:ic="using:Microsoft.Xaml.Interactions.Core"
     xmlns:gpc="using:GP.Utils.UI.Controls"
     xmlns:gpi="using:GP.Utils.UI.Interactivity"
     xmlns:controls="using:Hercules.App.Controls"
@@ -15,14 +16,38 @@
 
     <Grid>
         <i:Interaction.Behaviors>
-            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Up" Command="{Binding SelectTopCommand}" />
-            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Left" Command="{Binding SelectLeftCommand}" />
-            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Down" Command="{Binding SelectBottomCommand}" />
-            <gpi:CommandShortcutBehavior RequiresControlModifier="True" Key="Right" Command="{Binding SelectRightCommand}" />
-
-            <gpi:ShortcutBehavior RequiresControlModifier="True" Key="T" Invoked="EditTextCommand_Invoked" />
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Tab">
+                <ic:InvokeCommandAction Command="{Binding AddChildCommand}" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Enter">
+                <ic:InvokeCommandAction Command="{Binding AddSiblingCommand}" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Back">
+                <ic:InvokeCommandAction Command="{Binding RemoveCommand}" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Delete">
+                <ic:InvokeCommandAction Command="{Binding RemoveCommand}" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Up">
+                <ic:InvokeCommandAction Command="{Binding SelectTopCommand}" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Left">
+                <ic:InvokeCommandAction Command="{Binding SelectLeftCommand}" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Down">
+                <ic:InvokeCommandAction Command="{Binding SelectBottomCommand}" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Down">
+                <ic:InvokeCommandAction Command="{Binding SelectRightCommand}" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Z">
+                <ic:InvokeCommandAction Command="{Binding UndoCommand}" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Y">
+                <ic:InvokeCommandAction Command="{Binding RedoCommand}" />
+            </gpi:GlobalShortcutTriggerBehavior>
         </i:Interaction.Behaviors>
-
+        
         <gpc:TiledBackground TileSize="60" />
 
         <controls:Mindmap Document="{Binding Document}" RendererProvider="{Binding RendererProvider}" x:Name="Mindmap">
@@ -31,14 +56,40 @@
             </controls:Mindmap.Layout>
             <i:Interaction.Behaviors>
                 <controls:NodeMovingBehavior />
-                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Tab" Command="{Binding AddChildCommand}" />
-                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Back" Command="{Binding RemoveCommand}" />
-                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Enter" Command="{Binding AddSiblingCommand}" />
-                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Delete" Command="{Binding RemoveCommand}" />
-                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Up" Command="{Binding SelectTopCommand}" />
-                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Left" Command="{Binding SelectLeftCommand}" />
-                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Down" Command="{Binding SelectBottomCommand}" />
-                <gpi:CommandShortcutBehavior ListenToControl="True" Key="Right" Command="{Binding SelectRightCommand}" />
+
+                <gpi:ControlShortcutTriggerBehavior Key="Tab">
+                    <ic:InvokeCommandAction Command="{Binding AddChildCommand}" />
+                </gpi:ControlShortcutTriggerBehavior>
+                <gpi:ControlShortcutTriggerBehavior Key="Enter">
+                    <ic:InvokeCommandAction Command="{Binding AddSiblingCommand}" />
+                </gpi:ControlShortcutTriggerBehavior>
+                <gpi:ControlShortcutTriggerBehavior Key="Back">
+                    <ic:InvokeCommandAction Command="{Binding RemoveCommand}" />
+                </gpi:ControlShortcutTriggerBehavior>
+                <gpi:ControlShortcutTriggerBehavior Key="Delete">
+                    <ic:InvokeCommandAction Command="{Binding RemoveCommand}" />
+                </gpi:ControlShortcutTriggerBehavior>
+                <gpi:ControlShortcutTriggerBehavior Key="Up">
+                    <ic:InvokeCommandAction Command="{Binding SelectTopCommand}" />
+                </gpi:ControlShortcutTriggerBehavior>
+                <gpi:ControlShortcutTriggerBehavior Key="Left">
+                    <ic:InvokeCommandAction Command="{Binding SelectLeftCommand}" />
+                </gpi:ControlShortcutTriggerBehavior>
+                <gpi:ControlShortcutTriggerBehavior Key="Up">
+                    <ic:InvokeCommandAction Command="{Binding SelectTopCommand}" />
+                </gpi:ControlShortcutTriggerBehavior>
+                <gpi:ControlShortcutTriggerBehavior Key="Down">
+                    <ic:InvokeCommandAction Command="{Binding SelectBottomCommand}" />
+                </gpi:ControlShortcutTriggerBehavior>
+                <gpi:ControlShortcutTriggerBehavior Key="Right">
+                    <ic:InvokeCommandAction Command="{Binding SelectRightCommand}" />
+                </gpi:ControlShortcutTriggerBehavior>
+                <gpi:ControlShortcutTriggerBehavior Key="Space">
+                    <gpi:EventAction Invoked="EditTextCommand_Invoked" />
+                </gpi:ControlShortcutTriggerBehavior>
+                <gpi:ControlShortcutTriggerBehavior Key="T">
+                    <gpi:EventAction Invoked="EditTextCommand_Invoked" />
+                </gpi:ControlShortcutTriggerBehavior>
             </i:Interaction.Behaviors>
         </controls:Mindmap>
 

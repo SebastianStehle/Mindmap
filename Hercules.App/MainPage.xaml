@@ -8,6 +8,7 @@
     xmlns:im="using:Microsoft.Xaml.Interactions.Media"
     xmlns:e="using:Hercules.App.Modules.Editor.Views"
     xmlns:m="using:Hercules.App.Modules.Mindmaps.Views"
+    xmlns:gpi="using:GP.Utils.UI.Interactivity"
     mc:Ignorable="d"
     IsTabStop="False"
     IsEnabled="{Binding ProcessManager.IsMainProcessRunning, Source={StaticResource ViewModelLocator}, Converter={StaticResource TrueWhenFalseConverter}}"
@@ -39,6 +40,24 @@
     </Page.Resources>
 
     <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+        <i:Interaction.Behaviors>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="P">
+                <gpi:EventAction Invoked="Toolbars_PropertiesButtonClicked" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="L">
+                <gpi:EventAction Invoked="Toolbars_ListButtonClicked" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="P">
+                <ic:InvokeCommandAction Command="{Binding SaveCommand}"  />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" RequiresShiftModifier="True" Key="S">
+                <ic:InvokeCommandAction Command="{Binding SaveAsCommand}"  />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="O">
+                <ic:InvokeCommandAction Command="{Binding OpenCommand}"  />
+            </gpi:GlobalShortcutTriggerBehavior>
+        </i:Interaction.Behaviors>
+        
         <VisualStateManager.VisualStateGroups>
             <VisualStateGroup x:Name="ResponsiveStates">
                 <VisualState x:Name="Tablet">
@@ -82,23 +101,35 @@
 
             <SplitView.Pane>
                 <Grid DataContext="{Binding Mindmaps, Source={StaticResource ViewModelLocator}}">
+                    <i:Interaction.Behaviors>
+                        <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="N">
+                            <ic:InvokeCommandAction Command="{Binding CreateCommand}"  />
+                        </gpi:GlobalShortcutTriggerBehavior>
+                        <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="S">
+                            <ic:InvokeCommandAction Command="{Binding SaveCommand}"  />
+                        </gpi:GlobalShortcutTriggerBehavior>
+                        <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" RequiresShiftModifier="True" Key="S">
+                            <ic:InvokeCommandAction Command="{Binding SaveAsCommand}"  />
+                        </gpi:GlobalShortcutTriggerBehavior>
+                        <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="O">
+                            <ic:InvokeCommandAction Command="{Binding OpenCommand}"  />
+                        </gpi:GlobalShortcutTriggerBehavior>
+                    </i:Interaction.Behaviors>
+                    
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
 
-                <StackPanel Orientation="Horizontal" Margin="0,40,0,20">
-                    <AppBarButton Icon="Add" Label="New" Foreground="{StaticResource ThemeMainBrush}" Command="{Binding CreateCommand}">
-                    </AppBarButton>
-                    <AppBarButton Icon="Save" Label="Save" Foreground="{StaticResource ThemeMainBrush}" Command="{Binding SaveCommand}">
-
-                    </AppBarButton>
-                    <AppBarButton Icon="Save" Label="Save As" Foreground="{StaticResource ThemeMainBrush}" Command="{Binding SaveAsCommand}">
-
-                    </AppBarButton>
-                    <AppBarButton Icon="OpenFile" Label="Open" Foreground="{StaticResource ThemeMainBrush}" Command="{Binding OpenCommand}">
-
-                    </AppBarButton>
+                    <StackPanel Orientation="Horizontal" Margin="0,40,0,20">
+                        <AppBarButton x:Uid="Mindmaps_AddButton" Icon="Add" Label="New" Foreground="{StaticResource ThemeMainBrush}" 
+                            Command="{Binding CreateCommand}" />
+                        <AppBarButton x:Uid="Mindmaps_SaveButton" Icon="Save" Label="Save" Foreground="{StaticResource ThemeMainBrush}" 
+                            Command="{Binding SaveCommand}" />
+                        <AppBarButton x:Uid="Mindmaps_SaveAsButton" Icon="Save" Label="Save As" Foreground="{StaticResource ThemeMainBrush}" 
+                            Command="{Binding SaveAsCommand}" />
+                        <AppBarButton x:Uid="Mindmaps_OpenButton" Icon="OpenFile" Label="Open" Foreground="{StaticResource ThemeMainBrush}" 
+                            Command="{Binding OpenCommand}" />
                     </StackPanel>
 
                     <m:ListView x:Name="MindmapsContainer" Grid.Row="1" Margin="0,5,0,0" />

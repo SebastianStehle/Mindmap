@@ -15,11 +15,7 @@
 
         <CommandBar.Content>
             <StackPanel Orientation="Horizontal">
-                <AppBarButton x:Uid="AppBarButton_ListMindmaps" Icon="List" Click="ListAppBarButton_Click" IsCompact="True" Label="RecentFiles">
-                    <i:Interaction.Behaviors>
-                        <gpi:ShortcutBehavior RequiresControlModifier="True" Key="L" Invoked="ListAppBarButton_Click" />
-                    </i:Interaction.Behaviors>
-                </AppBarButton>
+                <AppBarButton x:Uid="AppBarButton_ListMindmaps" Icon="List" Click="ListAppBarButton_Click" IsCompact="True" Label="RecentFiles" />
             </StackPanel>
         </CommandBar.Content>
         <CommandBar.PrimaryCommands>

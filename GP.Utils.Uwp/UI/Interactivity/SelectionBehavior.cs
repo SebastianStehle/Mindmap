@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -21,7 +22,8 @@ namespace GP.Utils.UI.Interactivity
         /// Defines the <see cref="SelectedItemCommand"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedItemCommandProperty =
-            DependencyProperty.Register(nameof(SelectedItemCommand), typeof(ICommand), typeof(SelectionBehavior), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(SelectedItemCommand), typeof(ICommand), typeof(SelectionBehavior), new PropertyMetadata(null, (d, e) => ((SelectionBehavior)d).OnCommandChanged(e)));
+
         /// <summary>
         /// Gets or sets the command to invoke.
         /// </summary>
@@ -36,7 +38,7 @@ namespace GP.Utils.UI.Interactivity
         /// Defines the <see cref="SelectedIndexCommand"/> dependency property.
         /// </summary>
         public static readonly DependencyProperty SelectedIndexCommandProperty =
-            DependencyProperty.Register(nameof(SelectedIndexCommand), typeof(ICommand), typeof(SelectionBehavior), new PropertyMetadata(null));
+            DependencyProperty.Register(nameof(SelectedIndexCommand), typeof(ICommand), typeof(SelectionBehavior), new PropertyMetadata(null, (d, e) => ((SelectionBehavior)d).OnCommandChanged(e)));
         /// <summary>
         /// Gets or sets the command to invoke.
         /// </summary>
@@ -114,6 +116,46 @@ namespace GP.Utils.UI.Interactivity
             {
                 SelectedIndexCommand.Execute(AssociatedElement.SelectedIndex);
             }
+        }
+        private void OnCommandChanged(DependencyPropertyChangedEventArgs d)
+        {
+            ICommand oldCommand = d.OldValue as ICommand;
+
+            if (oldCommand != null)
+            {
+                oldCommand.CanExecuteChanged -= Command_CanExecuteChanged;
+            }
+
+            ICommand newCommand = d.NewValue as ICommand;
+
+            if (newCommand != null)
+            {
+                newCommand.CanExecuteChanged += Command_CanExecuteChanged;
+            }
+
+            UpdateIsEnabled();
+        }
+
+        private void Command_CanExecuteChanged(object sender, EventArgs e)
+        {
+            UpdateIsEnabled();
+        }
+
+        private void UpdateIsEnabled()
+        {
+            bool isEnabled = false;
+
+            if (SelectedIndexCommand != null)
+            {
+                isEnabled = SelectedIndexCommand.CanExecute(AssociatedElement.SelectedIndex);
+            }
+
+            if (SelectedItemCommand != null)
+            {
+                isEnabled = SelectedItemCommand.CanExecute(AssociatedElement.SelectedItem);
+            }
+
+            AssociatedElement.IsEnabled = isEnabled;
         }
     }
 }

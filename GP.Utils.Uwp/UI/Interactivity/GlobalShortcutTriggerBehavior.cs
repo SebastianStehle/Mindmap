@@ -1,21 +1,21 @@
 ﻿// ==========================================================================
-// SwallowKeyArrowEventsBehavior.cs
+// GlobalShortcutTriggerBehavior.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
+using Windows.ApplicationModel;
 using Windows.System;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Markup;
 
 namespace GP.Utils.UI.Interactivity
 {
-    /// <summary>
-    /// An event that swallows all key arrow events.
-    /// </summary>
-    public sealed class SwallowKeyArrowEventsBehavior : Behavior<FrameworkElement>
+    [ContentProperty(Name = nameof(Actions))]
+    public sealed class GlobalShortcutTriggerBehavior : ShortcutTriggerBehaviorBase
     {
         /// <summary>
         /// Called after the behavior is attached to an AssociatedObject.
@@ -23,8 +23,15 @@ namespace GP.Utils.UI.Interactivity
         /// <remarks>Override this to hook up functionality to the AssociatedObject.</remarks>
         protected override void OnAttached()
         {
-            AssociatedElement.KeyDown += AssociatedObject_KeyDown;
-            AssociatedElement.KeyUp += AssociatedObject_KeyUp;
+            if (DesignMode.DesignModeEnabled)
+            {
+                return;
+            }
+
+            CoreWindow currentWindow = Window.Current.CoreWindow;
+
+            currentWindow.KeyDown += corewWindow_KeyDown;
+            currentWindow.KeyUp += corewWindow_KeyUp;
         }
 
         /// <summary>
@@ -33,21 +40,34 @@ namespace GP.Utils.UI.Interactivity
         /// <remarks>Override this to unhook functionality from the AssociatedObject.</remarks>
         protected override void OnDetaching()
         {
-            AssociatedElement.KeyDown -= AssociatedObject_KeyDown;
-            AssociatedElement.KeyUp -= AssociatedObject_KeyUp;
+            if (DesignMode.DesignModeEnabled)
+            {
+                return;
+            }
+
+            CoreWindow currentWindow = Window.Current.CoreWindow;
+
+            currentWindow.KeyDown -= corewWindow_KeyDown;
+            currentWindow.KeyUp -= corewWindow_KeyUp;
         }
 
-        private static void AssociatedObject_KeyDown(object sender, KeyRoutedEventArgs e)
+        private void corewWindow_KeyUp(CoreWindow sender, KeyEventArgs e)
         {
-            if (e.Key >= VirtualKey.Left && e.Key <= VirtualKey.Down)
+            VirtualKey key = e.VirtualKey;
+
+            if (IsCorrectKey(key))
             {
+                Execute(this, null);
+
                 e.Handled = true;
             }
         }
 
-        private static void AssociatedObject_KeyUp(object sender, KeyRoutedEventArgs e)
+        private void corewWindow_KeyDown(CoreWindow sender, KeyEventArgs e)
         {
-            if (e.Key >= VirtualKey.Left && e.Key <= VirtualKey.Down)
+            VirtualKey key = e.VirtualKey;
+
+            if (IsCorrectKey(key))
             {
                 e.Handled = true;
             }

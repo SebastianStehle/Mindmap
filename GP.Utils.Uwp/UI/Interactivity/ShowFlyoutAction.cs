@@ -31,7 +31,7 @@ namespace GP.Utils.UI.Interactivity
 
             if (element == null)
             {
-                IBehavior behavior = sender as IBehavior; ;
+                IBehavior behavior = sender as IBehavior;
 
                 if (behavior != null)
                 {

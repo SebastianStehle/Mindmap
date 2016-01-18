@@ -11,7 +11,6 @@ using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 
 namespace GP.Utils.UI.Interactivity
@@ -24,7 +23,7 @@ namespace GP.Utils.UI.Interactivity
         /// <remarks>Override this to hook up functionality to the AssociatedObject.</remarks>
         protected override void OnAttached()
         {
-            UIElement element = AssociatedElement as FrameworkElement; ;
+            UIElement element = AssociatedElement as FrameworkElement;
 
             if (element != null)
             {
@@ -40,7 +39,7 @@ namespace GP.Utils.UI.Interactivity
         /// <remarks>Override this to unhook functionality from the AssociatedObject.</remarks>
         protected override void OnDetaching()
         {
-            UIElement element = AssociatedElement as FrameworkElement; ;
+            UIElement element = AssociatedElement as FrameworkElement;
 
             if (element != null)
             {

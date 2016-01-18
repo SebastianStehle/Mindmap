@@ -10,6 +10,7 @@ using System;
 using System.Windows.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+// ReSharper disable SuggestBaseTypeForParameter
 
 namespace GP.Utils.UI.Interactivity
 {

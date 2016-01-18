@@ -8,7 +8,6 @@
 
 using System;
 using System.Numerics;
-using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;

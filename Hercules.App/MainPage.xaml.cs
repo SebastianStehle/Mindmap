@@ -6,7 +6,6 @@
 // All rights reserved.
 // ==========================================================================
 
-using System;
 using Windows.ApplicationModel;
 using Windows.UI;
 using Windows.UI.ViewManagement;

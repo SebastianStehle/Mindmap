@@ -16,8 +16,8 @@ namespace GP.Utils.UI.Interactivity
     /// </summary>
     public sealed class CenterScrollViewerWhenExtendSizeChanged : Behavior<ScrollViewer>
     {
-        private DependencyPropertyListener contentListener;
         private FrameworkElement content;
+        private long callbackToken;
 
         /// <summary>
         /// Called after the behavior is attached to an AssociatedObject.
@@ -25,13 +25,11 @@ namespace GP.Utils.UI.Interactivity
         /// <remarks>Override this to hook up functionality to the AssociatedObject.</remarks>
         protected override void OnAttached()
         {
-            contentListener = new DependencyPropertyListener(AssociatedElement, "Content", ContentChanged);
+            callbackToken = AssociatedElement.RegisterPropertyChangedCallback(ContentControl.ContentProperty, ContentChanged);
 
             Initialize();
 
             Center();
-
-            base.OnAttached();
         }
 
         /// <summary>
@@ -40,14 +38,12 @@ namespace GP.Utils.UI.Interactivity
         /// <remarks>Override this to unhook functionality from the AssociatedObject.</remarks>
         protected override void OnDetaching()
         {
-            contentListener.Release();
+            AssociatedElement.UnregisterPropertyChangedCallback(ContentControl.ContentProperty, callbackToken);
 
             Release();
-
-            base.OnDetaching();
         }
 
-        private void ContentChanged()
+        private void ContentChanged(DependencyObject sender, DependencyProperty property)
         {
             Release();
 

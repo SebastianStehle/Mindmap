@@ -125,7 +125,6 @@
     <Compile Include="UI\Controls\BoundedCanvasDrawEventArgs.cs" />
     <Compile Include="UI\Controls\ColorPicker.cs" />
     <Compile Include="UI\Controls\ColorPickerButton.cs" />
-    <Compile Include="UI\DependencyPropertyListener.cs" />
     <Compile Include="PlattformExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="UI\ColorsHelper.cs" />
@@ -143,7 +142,6 @@
     <Compile Include="UI\Interactivity\ShortcutInvokingEventHandler.cs" />
     <Compile Include="UI\Interactivity\ShortcutBehaviorBase.cs" />
     <Compile Include="UI\Interactivity\ButtonCommandShortcutBehavior.cs" />
-    <Compile Include="UI\Interactivity\KeepAppBarOpenBehavior.cs" />
     <Compile Include="UI\Interactivity\ScrollViewerBringIntoViewBehavior.cs" />
     <Compile Include="UI\Interactivity\ScrollViewerBringIntoViewInputPaneBehavior.cs" />
     <Compile Include="UI\Interactivity\SwallowKeyArrowEventsBehavior.cs" />

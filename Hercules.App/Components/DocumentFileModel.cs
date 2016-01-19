@@ -56,6 +56,19 @@ namespace Hercules.App.Components
             get { return documentFile; }
         }
 
+        public string DisplayPath
+        {
+            get
+            {
+                if (documentFile.IsLocalFolder)
+                {
+                    return string.Concat(LocalizationManager.GetString("Paths_AppFolder"), "\\", Name);
+                }
+
+                return Path;
+            }
+        }
+
         public DocumentFileModel(DocumentFile documentFile, IDialogService dialogService)
         {
             this.documentFile = documentFile;
@@ -211,6 +224,7 @@ namespace Hercules.App.Components
         {
             RaisePropertyChanged(nameof(Name));
             RaisePropertyChanged(nameof(Path));
+            RaisePropertyChanged(nameof(DisplayPath));
             RaisePropertyChanged(nameof(ModifiedUtc));
             RaisePropertyChanged(nameof(HasChanges));
         }
@@ -229,7 +243,7 @@ namespace Hercules.App.Components
                 fileSavePicker.DefaultFileExtension = extensions[0];
             }
 
-            if (documentFile.File != null)
+            if (documentFile.File != null && !documentFile.IsLocalFolder)
             {
                 fileSavePicker.SuggestedSaveFile = documentFile.File;
             }

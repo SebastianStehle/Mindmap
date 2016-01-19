@@ -120,16 +120,10 @@
   <data name="AppBarButton_AddChild.Label" xml:space="preserve">
     <value>Add Child</value>
   </data>
-  <data name="AppBarButton_AddChild.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Add Child</value>
-  </data>
   <data name="AppBarButton_AddChild.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Add children to selected subtopic (CTRL + TAB)</value>
   </data>
   <data name="AppBarButton_AddSibling.Label" xml:space="preserve">
-    <value>Add Sibling</value>
-  </data>
-  <data name="AppBarButton_AddSibling.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Add Sibling</value>
   </data>
   <data name="AppBarButton_AddSibling.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
@@ -138,17 +132,11 @@
   <data name="AppBarButton_ToggleProperties.Label" xml:space="preserve">
     <value>Properties</value>
   </data>
-  <data name="AppBarButton_ToggleProperties.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Properties</value>
-  </data>
   <data name="AppBarButton_ToggleProperties.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Show or hide the properties pane</value>
   </data>
   <data name="AppBarButton_AddMindmap.Label" xml:space="preserve">
     <value>Mindmap </value>
-  </data>
-  <data name="AppBarButton_AddMindmap.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Adds Mindmap</value>
   </data>
   <data name="AppBarButton_AddMindmap.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Create a new Mindmap</value>
@@ -156,16 +144,10 @@
   <data name="AppBarButton_Help.Label" xml:space="preserve">
     <value>Help</value>
   </data>
-  <data name="AppBarButton_Help.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Show Help</value>
-  </data>
   <data name="AppBarButton_Help.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Show Help (CTRL + H)</value>
   </data>
   <data name="AppBarButton_ListMindmaps.Label" xml:space="preserve">
-    <value>Mindmaps</value>
-  </data>
-  <data name="AppBarButton_ListMindmaps.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Mindmaps</value>
   </data>
   <data name="AppBarButton_ListMindmaps.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
@@ -174,16 +156,10 @@
   <data name="AppBarButton_Print.Text" xml:space="preserve">
     <value>Print</value>
   </data>
-  <data name="AppBarButton_Print.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Print Mindmap</value>
-  </data>
   <data name="AppBarButton_Print.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Print to paper or export as PDF (CNTRL + P)</value>
   </data>
   <data name="AppBarButton_Redo.Label" xml:space="preserve">
-    <value>Redo</value>
-  </data>
-  <data name="AppBarButton_Redo.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Redo</value>
   </data>
   <data name="AppBarButton_Redo.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
@@ -192,25 +168,16 @@
   <data name="AppBarButton_RemoveNode.Label" xml:space="preserve">
     <value>Delete Node</value>
   </data>
-  <data name="AppBarButton_RemoveNode.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Remove</value>
-  </data>
   <data name="AppBarButton_RemoveNode.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Remove selected root (DELETE)</value>
   </data>
   <data name="AppBarButton_Export.Label" xml:space="preserve">
     <value>Export</value>
   </data>
-  <data name="AppBarButton_Export.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Ex-Import</value>
-  </data>
   <data name="AppBarButton_Export.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Export current mindmap or print it.</value>
   </data>
   <data name="AppBarButton_Undo.Label" xml:space="preserve">
-    <value>Undo</value>
-  </data>
-  <data name="AppBarButton_Undo.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Undo</value>
   </data>
   <data name="AppBarButton_Undo.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
@@ -237,9 +204,6 @@
   <data name="Properties_HullButton.Content" xml:space="preserve">
     <value>Show Hull</value>
   </data>
-  <data name="Properties_HullButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Show Hull</value>
-  </data>
   <data name="Properties_HullButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Show hull around subtopic and children</value>
   </data>
@@ -264,20 +228,14 @@
   <data name="ImportSource_File" xml:space="preserve">
     <value>File</value>
   </data>
-  <data name="Mindmaps_AddButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>New mindmap</value>
-  </data>
   <data name="Mindmaps_AddButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>New mindmap (CTRL + SHIFT + N)</value>
+    <value>New mindmap (CTRL + N)</value>
   </data>
   <data name="Mindmaps_AddButtonText.Text" xml:space="preserve">
     <value>New Mindmap</value>
   </data>
   <data name="Mindmaps_RemoveMenuItem.Text" xml:space="preserve">
     <value>Remove</value>
-  </data>
-  <data name="Mindmaps_RemoveMenuItem.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Remove Mindmap</value>
   </data>
   <data name="Mindmaps_RemoveMenuItem.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Remove this mindmap</value>
@@ -291,28 +249,13 @@
   <data name="Mindmaps_RenameMenuItem.Text" xml:space="preserve">
     <value>Rename</value>
   </data>
-  <data name="Mindmaps_RenameMenuItem.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Rename mindmap</value>
-  </data>
   <data name="Mindmaps_RenameMenuItem.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Rename this mindmap</value>
   </data>
   <data name="MyMindmap" xml:space="preserve">
     <value>My Mindmap</value>
   </data>
-  <data name="Naming_CreateButton.Content" xml:space="preserve">
-    <value>Create</value>
-  </data>
-  <data name="Naming_CreateButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Create</value>
-  </data>
-  <data name="Naming_CreateButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Create new mindmap</value>
-  </data>
   <data name="Naming_SaveButton.Content" xml:space="preserve">
-    <value>Save</value>
-  </data>
-  <data name="Naming_SaveButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
     <value>Save</value>
   </data>
   <data name="Naming_SaveButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
@@ -432,9 +375,6 @@ The maximum allowed size is a 200x200 pixels.</value>
   <data name="Properties_AddIconButton.Content" xml:space="preserve">
     <value>Add Icon</value>
   </data>
-  <data name="Properties_AddIconButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Add Icon</value>
-  </data>
   <data name="Properties_AddIconButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Add a custom icon from your file system.</value>
   </data>
@@ -443,9 +383,6 @@ The maximum allowed size is a 200x200 pixels.</value>
   </data>
   <data name="Properties_ColorPickerButton.SelectionButtonContent" xml:space="preserve">
     <value>Select this Color</value>
-  </data>
-  <data name="Properties_ColorPickerButton.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Select a custom Color</value>
   </data>
   <data name="Properties_ColorPickerButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Select a custom Color</value>
@@ -483,10 +420,31 @@ The maximum allowed size is a 200x200 pixels.</value>
   <data name="AppBarButton_Import.Label" xml:space="preserve">
     <value>Import</value>
   </data>
-  <data name="AppBarButton_Import.[using:Windows.UI.Xaml.Automation]AutomationProperties.Name" xml:space="preserve">
-    <value>Import</value>
-  </data>
   <data name="AppBarButton_Import.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Import a mindmap</value>
+  </data>
+  <data name="Mindmaps_OpenButton.Label" xml:space="preserve">
+    <value>Open</value>
+  </data>
+  <data name="Mindmaps_OpenButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Open a mindmap (CTRL + O)</value>
+  </data>
+  <data name="Mindmaps_SaveAsButton.Label" xml:space="preserve">
+    <value>Save As</value>
+  </data>
+  <data name="Mindmaps_SaveAsButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Save the current Mindmap to a selected file (CTRL + SHIFT + S)</value>
+  </data>
+  <data name="Mindmaps_SaveButton.Label" xml:space="preserve">
+    <value>Label</value>
+  </data>
+  <data name="Mindmaps_SaveButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Save the current Mindmap (CTRL + S)</value>
+  </data>
+  <data name="Paths_AppFolder" xml:space="preserve">
+    <value>App Folder</value>
+  </data>
+  <data name="Paths_Documents" xml:space="preserve">
+    <value>My Documents</value>
   </data>
 </root>

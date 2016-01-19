@@ -160,13 +160,15 @@ namespace Hercules.App.Components.Implementations
             allFiles.Insert(0, file);
         }
 
-        public Task CreateAsync()
+        public async Task CreateAsync()
         {
             DocumentFile file = DocumentFile.CreateNew(LocalizationManager.GetString("MyMindmap"));
 
+            await file.SaveToAsync(ApplicationData.Current.LocalFolder);
+
             Add(file);
 
-            return OpenRecentAsync();
+            await OpenRecentAsync();
         }
 
         public async Task SaveAsAsync()

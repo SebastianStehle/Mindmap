@@ -91,6 +91,18 @@ namespace Hercules.Model
             root.LinkToDocument(this);
         }
 
+        public static Document CreateNew(string name)
+        {
+            Document document = new Document(Guid.NewGuid());
+
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                document.Root.ChangeTextTransactional(name);
+            }
+
+            return document;
+        }
+
         internal void Add(Node newNode)
         {
             if (nodes.Add(newNode))

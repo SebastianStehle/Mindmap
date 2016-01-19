@@ -32,6 +32,7 @@
                         <Setter Target="PrimaryUndoRedoButtons.(UIElement.Visibility)" Value="Visible"/>
                         <Setter Target="PrimaryAdvancedButtons.(UIElement.Visibility)" Value="Visible"/>
                         <Setter Target="PrimaryRemoveButtonSeparator.(UIElement.Visibility)" Value="Visible"/>
+                        <Setter Target="PrimaryPropertiesButtonSeparator.(UIElement.Visibility)" Value="Visible"/> 
                         <Setter Target="CompactButtonRedo.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonUndo.(UIElement.Visibility)" Value="Collapsed"/>
                         <Setter Target="CompactButtonExportSeparator.(UIElement.Visibility)" Value="Collapsed"/>

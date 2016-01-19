@@ -72,7 +72,7 @@
                                         TextAlignment="Left"
                                         TextWrapping="NoWrap" Margin="0,0,4,0" />
                                     <TextBlock FontSize="11"
-                                        Text="{Binding Path=Path}" 
+                                        Text="{Binding Path=DisplayPath}" 
                                         TextAlignment="Left"
                                         TextTrimming="CharacterEllipsis"
                                         TextWrapping="NoWrap" />

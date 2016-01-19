@@ -11,10 +11,10 @@ using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.FileProperties;
-using Windows.Storage.Streams;
 using GP.Utils;
 using Hercules.Model.Storing.Json;
 
+// ReSharper disable InvertIf
 // ReSharper disable PossibleNullReferenceException
 // ReSharper disable SuggestBaseTypeForParameter
 
@@ -38,6 +38,11 @@ namespace Hercules.Model.Storing
         public string Path
         {
             get { return file?.Path; }
+        }
+
+        public bool IsLocalFolder
+        {
+            get { return IsInFolder(ApplicationData.Current.LocalFolder); }
         }
 
         public bool HasChanges
@@ -78,31 +83,10 @@ namespace Hercules.Model.Storing
             modifiedUtc = properties.DateModified.UtcDateTime;
         }
 
-        private DocumentFile(Document document, string name, bool initialize)
+        private DocumentFile(Document document, string name)
             : this(name)
         {
             OpenInternal(document);
-
-            hasChanges = true;
-
-            if (initialize)
-            {
-                document.Root.ChangeTextTransactional(name);
-            }
-        }
-
-        public static DocumentFile Create(string name, Document document)
-        {
-            Guard.ValidFileName(name, nameof(name));
-
-            return new DocumentFile(document, name, false);
-        }
-
-        public static DocumentFile CreateNew(string name)
-        {
-            Guard.ValidFileName(name, nameof(name));
-
-            return new DocumentFile(new Document(Guid.NewGuid()), name, true);
         }
 
         public static async Task<DocumentFile> OpenAsync(StorageFile file)
@@ -112,68 +96,50 @@ namespace Hercules.Model.Storing
             return new DocumentFile(file, await file.GetBasicPropertiesAsync());
         }
 
-        public async Task<bool> RenameAsync(string newName)
+        public static DocumentFile CreateNew(string name)
+        {
+            Guard.ValidFileName(name, nameof(name));
+
+            return new DocumentFile(Document.CreateNew(name), name);
+        }
+
+        public static DocumentFile Create(string name, Document document)
+        {
+            Guard.ValidFileName(name, nameof(name));
+
+            return new DocumentFile(document, name);
+        }
+
+        public bool IsInFolder(StorageFolder folder)
+        {
+            return file != null && folder != null && file.Path.StartsWith(folder.Path, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public Task<bool> RenameAsync(string newName)
         {
             Guard.ValidFileName(newName, nameof(newName));
 
-            bool hasRenamed = false;
-
-            if (file != null)
+            return DoAsync(() => file != null, async () =>
             {
-                try
-                {
-                    await FileQueue.EnqueueAsync(() => file.RenameAsync(newName + JsonDocumentSerializer.FileExtension, NameCollisionOption.GenerateUniqueName).AsTask());
+                await FileQueue.RenameAsync(file, newName, Extension);
 
-                    name = newName;
-
-                    hasRenamed = true;
-                }
-                catch (FileNotFoundException)
-                {
-                    hasChanges = true;
-
-                    file = null;
-                    throw;
-                }
-            }
-
-            return hasRenamed;
+                name = newName;
+            });
         }
 
-        public async Task<bool> OpenAsync()
+        public Task<bool> OpenAsync()
         {
-            bool hasOpened = false;
-
-            if (document == null)
+            return DoAsync(() => document == null, async () =>
             {
-                Document newDocument = null;
-
-                await FileQueue.EnqueueAsync(async () =>
-                {
-                    using (IRandomAccessStream stream = await file.OpenReadAsync())
-                    {
-                        if (stream.Size > 0)
-                        {
-                            newDocument = JsonDocumentSerializer.Deserialize(stream.AsStreamForRead());
-                        }
-                    }
-                });
-
-                hasChanges = newDocument == null;
-
-                if (newDocument == null)
-                {
-                    newDocument = new Document(Guid.NewGuid());
-
-                    newDocument.Root.ChangeTextTransactional(file.DisplayName);
-                }
+                Document newDocument = await FileQueue.OpenAsync(file);
 
                 OpenInternal(newDocument);
+            });
+        }
 
-                hasOpened = true;
-            }
-
-            return hasOpened;
+        public async Task<bool> SaveToAsync(StorageFolder folder)
+        {
+            return folder != null && await SaveAsync(await folder.CreateFileAsync(name + Extension, CreationCollisionOption.GenerateUniqueName));
         }
 
         public Task<bool> SaveAsAsync(StorageFile newFile)
@@ -186,37 +152,35 @@ namespace Hercules.Model.Storing
             return SaveAsync(file);
         }
 
-        private async Task<bool> SaveAsync(StorageFile targetFile)
+        private Task<bool> SaveAsync(StorageFile targetFile)
+        {
+            return DoAsync(() => document != null && targetFile != null, async () =>
+            {
+                await FileQueue.SaveAsync(document, targetFile);
+
+                file = targetFile;
+
+                name = file.Name;
+            });
+        }
+
+        private async Task<bool> DoAsync(Func<bool> predicate, Func<Task> action)
         {
             bool hasSucceeded = false;
 
-            if (document != null && targetFile != null)
+            if (predicate())
             {
                 try
                 {
-                    JsonHistory history = new JsonHistory(document);
-
-                    await FileQueue.EnqueueAsync(async () =>
-                    {
-                        using (StorageStreamTransaction transaction = await targetFile.OpenTransactedWriteAsync())
-                        {
-                            JsonDocumentSerializer.Serialize(history, transaction.Stream.AsStreamForWrite());
-
-                            await transaction.CommitAsync();
-                        }
-                    });
+                    await action();
 
                     modifiedUtc = DateTime.UtcNow;
 
                     hasSucceeded = true;
                     hasChanges = false;
-
-                    file = targetFile;
                 }
                 catch (FileNotFoundException)
                 {
-                    hasChanges = true;
-
                     file = null;
 
                     throw;

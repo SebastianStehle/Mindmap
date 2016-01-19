@@ -164,7 +164,7 @@ namespace Hercules.App.Components.Implementations
         {
             DocumentFile file = DocumentFile.CreateNew(LocalizationManager.GetString("MyMindmap"));
 
-            await file.SaveToAsync(ApplicationData.Current.LocalFolder);
+            await file.SaveToAsync(KnownFolders.DocumentsLibrary);
 
             Add(file);
 

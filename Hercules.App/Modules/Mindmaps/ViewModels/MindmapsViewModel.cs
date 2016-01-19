@@ -162,10 +162,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                 }
                 catch
                 {
-                    string content = LocalizationManager.GetString("ImportFailed_Content");
-                    string heading = LocalizationManager.GetString("ImportFailed_Heading");
-
-                    await MessageDialogService.AlertAsync(content, heading);
+                    await MessageDialogService.AlertLocalizedAsync("ImportFailed_Alert");
                 }
 
                 if (results?.Count > 0)

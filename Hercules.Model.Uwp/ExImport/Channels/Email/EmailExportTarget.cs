@@ -49,7 +49,7 @@ namespace Hercules.Model.ExImport.Channels.Email
 
                 string downloadUri = await UploadAsync(name, extension, buffer);
 
-                string subj = LocalizationManager.GetString("Export_EmailSubject");
+                string subj = LocalizationManager.GetFormattedString("Export_EmailSubject");
                 string body = LocalizationManager.GetFormattedString("Export_EmailBody", downloadUri);
 
                 EmailMessage message = new EmailMessage { Subject = subj, Body = body };

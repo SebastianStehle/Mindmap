@@ -79,10 +79,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                         }
                         else
                         {
-                            string content = LocalizationManager.GetString("LoadingIconFailed_Content");
-                            string heading = LocalizationManager.GetString("LoadingIconFailed_Heading");
-
-                            MessageDialogService.AlertAsync(content, heading).Forget();
+                            MessageDialogService.AlertLocalizedAsync("Properties_LoadingIconFailed_Alert").Forget();
                         }
                     });
                 },

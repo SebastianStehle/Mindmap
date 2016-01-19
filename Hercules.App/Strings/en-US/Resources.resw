@@ -192,12 +192,6 @@
   <data name="Common_Yes" xml:space="preserve">
     <value>Yes</value>
   </data>
-  <data name="DeleteMindmap_Content" xml:space="preserve">
-    <value>Do you really want to delete the mindmap? It is not possible to restore a deleted mindmap.</value>
-  </data>
-  <data name="DeleteMindmap_Heading" xml:space="preserve">
-    <value>Delete Mindmap?</value>
-  </data>
   <data name="Editor_Busy.Text" xml:space="preserve">
     <value>Working hard...</value>
   </data>
@@ -219,11 +213,8 @@
   <data name="Importer_XMind" xml:space="preserve">
     <value>XMind (.xmind)</value>
   </data>
-  <data name="ImportFailed_Content" xml:space="preserve">
+  <data name="ImportFailed_Alert" xml:space="preserve">
     <value>Sorry, we failed to import your mindmaps. Please send us an bug report.</value>
-  </data>
-  <data name="ImportFailed_Heading" xml:space="preserve">
-    <value>Importing mindmap failed.</value>
   </data>
   <data name="ImportSource_File" xml:space="preserve">
     <value>File</value>
@@ -260,12 +251,6 @@
   </data>
   <data name="Naming_SaveButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Rename the mindmap</value>
-  </data>
-  <data name="Naming_HeadingError.Text" xml:space="preserve">
-    <value>Name cannot be empty!</value>
-  </data>
-  <data name="Naming_HeadingLabel.Text" xml:space="preserve">
-    <value>Mindmap Name:</value>
   </data>
   <data name="Outline_NoText" xml:space="preserve">
     <value>[No Text]</value>
@@ -330,17 +315,11 @@ I want to share my mindmap for you. You can download it here: {0}. The download 
     <value>Select a png or jpeg image from your device.
 The maximum allowed size is a 200x200 pixels.</value>
   </data>
-  <data name="LoadingIconFailed_Content" xml:space="preserve">
+  <data name="Properties_LoadingIconFailed_Alert" xml:space="preserve">
     <value>The image is not valid or is too large (the maximum size is 80x80 pixels).</value>
   </data>
-  <data name="LoadingIconFailed_Heading" xml:space="preserve">
-    <value>Invalid Image</value>
-  </data>
-  <data name="Mindmap_OpeningFailed_Unknown_Content" xml:space="preserve">
+  <data name="Mindmap_OpeningFailed_Unknown_Alert" xml:space="preserve">
     <value>Sorry, the app cannot load the mindmap. There might be compatibility issues. Please write me a mail to mail2stehle@gmail.com, if you want to restore the mindmap.</value>
-  </data>
-  <data name="Mindmap_OpeningFailed_Heading" xml:space="preserve">
-    <value>Loading the mindmap failed</value>
   </data>
   <data name="Naming_NameError.Text" xml:space="preserve">
     <value>Invalid name for a mindmap!</value>
@@ -390,28 +369,19 @@ The maximum allowed size is a 200x200 pixels.</value>
   <data name="Mindmaps_Path.Text" xml:space="preserve">
     <value>Path:</value>
   </data>
-  <data name="Mindmap_OpeningFailed_NotFound_Content" xml:space="preserve">
+  <data name="Mindmap_OpeningFailed_NotFound_Alert" xml:space="preserve">
     <value>Cannot open the mindmap, the file has been deleted in the meantime.</value>
   </data>
-  <data name="Mindmap_Remove_Content" xml:space="preserve">
+  <data name="Mindmap_Remove_Confirm" xml:space="preserve">
     <value>The mindmap has unsaved changes. Do you really want to remove it?</value>
   </data>
-  <data name="Mindmap_Remove_Heading" xml:space="preserve">
-    <value>Remove mindmap</value>
-  </data>
-  <data name="Mindmap_RenamingFailed_Heading" xml:space="preserve">
-    <value>Renaming failed</value>
-  </data>
-  <data name="Mindmap_RenamingFailed_NotFound_Content" xml:space="preserve">
+  <data name="Mindmap_RenamingFailed_NotFound_Alert" xml:space="preserve">
     <value>Cannot rename the mindmap, the file has been deleted in the meantime. Please use 'Save As'.</value>
   </data>
-  <data name="Mindmap_SavingFailed_Heading" xml:space="preserve">
-    <value>Saving failed</value>
-  </data>
-  <data name="Mindmap_SavingFailed_NotFound_Content" xml:space="preserve">
+  <data name="Mindmap_SavingFailed_NotFound_Alert" xml:space="preserve">
     <value>Cannot save the mindmap, the file has been deleted in the meantime. Please use 'Save As'.</value>
   </data>
-  <data name="Mindmap_SavingFailed_Unknown_Content" xml:space="preserve">
+  <data name="Mindmap_SavingFailed_Unknown_Alert" xml:space="preserve">
     <value>Cannot save the mindmap, it has been failed because of unknown reasons.</value>
   </data>
   <data name="AppBarButton_ExportItem" xml:space="preserve">
@@ -446,5 +416,8 @@ The maximum allowed size is a 200x200 pixels.</value>
   </data>
   <data name="Paths_Documents" xml:space="preserve">
     <value>My Documents</value>
+  </data>
+  <data name="Mindmap_RenamingFailed_Unknown_Alert" xml:space="preserve">
+    <value>Cannot rename the mindmap, an unknown error occured.</value>
   </data>
 </root>

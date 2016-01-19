@@ -19,12 +19,28 @@ using GP.Utils.Mvvm;
 using Hercules.Model;
 using Hercules.Model.Storing;
 
+// ReSharper disable InvertIf
+// ReSharper disable ConvertIfStatementToReturnStatement
+
 namespace Hercules.App.Components
 {
     public sealed class DocumentFileModel : ViewModelBase
     {
         private readonly IDialogService dialogService;
         private readonly DocumentFile documentFile;
+
+        public string DisplayPath
+        {
+            get
+            {
+                if (documentFile.IsLocalFolder)
+                {
+                    return string.Concat(LocalizationManager.GetString("Paths_AppFolder"), "\\", Name);
+                }
+
+                return Path;
+            }
+        }
 
         public string Name
         {
@@ -54,19 +70,6 @@ namespace Hercules.App.Components
         public DocumentFile File
         {
             get { return documentFile; }
-        }
-
-        public string DisplayPath
-        {
-            get
-            {
-                if (documentFile.IsLocalFolder)
-                {
-                    return string.Concat(LocalizationManager.GetString("Paths_AppFolder"), "\\", Name);
-                }
-
-                return Path;
-            }
         }
 
         public DocumentFileModel(DocumentFile documentFile, IDialogService dialogService)
@@ -116,82 +119,42 @@ namespace Hercules.App.Components
             return documentFile.File == null ? SaveAsAsync(hideDialogs) : SaveInternalAsync(hideDialogs, () => documentFile.SaveAsync());
         }
 
-        private async Task<bool> SaveInternalAsync(bool hideDialogs, Func<Task<bool>> save)
+        private Task<bool> SaveInternalAsync(bool hideDialogs, Func<Task<bool>> save)
+        {
+            return DoAsync("Saving", save, hideDialogs);
+        }
+
+        public Task<bool> OpenAsync(bool hideDialogs = false)
+        {
+            return DoAsync("Opening", () => documentFile.OpenAsync(), hideDialogs);
+        }
+
+        public Task<bool> RenameAsync(string newName, bool hideDialogs = false)
+        {
+            return DoAsync("Renaming", () => documentFile.RenameAsync(newName), hideDialogs);
+        }
+
+        private async Task<bool> DoAsync(string actionName, Func<Task<bool>> action, bool hideDialogs = false)
         {
             try
             {
-                return await save();
+                return await action();
             }
             catch (FileNotFoundException)
             {
                 if (!hideDialogs)
                 {
-                    await dialogService.AlertLocalizedAsync("Mindmap_SavingFailed_NotFound_Content", "Mindmap_SavingFailed_Heading");
+                    await dialogService.AlertLocalizedAsync($"Mindmap_{actionName}Failed_NotFound_Alert");
                 }
             }
             catch (Exception e)
             {
                 if (!hideDialogs)
                 {
-                    await dialogService.AlertLocalizedAsync("Mindmap_SavingFailed_Unknown_Content", "Mindmap_SavingFailed_Heading");
+                    await dialogService.AlertLocalizedAsync($"Mindmap_{actionName}Failed_Unknown_Alert");
                 }
 
                 App.TelemetryClient?.TrackException(e);
-            }
-            finally
-            {
-                RaisePropertiesChanged();
-            }
-
-            return false;
-        }
-
-        public async Task<bool> OpenAsync(bool hideDialogs = false)
-        {
-            try
-            {
-                await documentFile.OpenAsync();
-
-                return true;
-            }
-            catch (FileNotFoundException)
-            {
-                if (!hideDialogs)
-                {
-                    await dialogService.AlertLocalizedAsync("Mindmap_OpeningFailed_NotFound_Content", "Mindmap_OpeningFailed_Heading");
-                }
-            }
-            catch (Exception e)
-            {
-                if (!hideDialogs)
-                {
-                    await dialogService.AlertLocalizedAsync("Mindmap_OpeningFailed_Unknown_Content", "Mindmap_OpeningFailed_Heading");
-                }
-
-                App.TelemetryClient?.TrackException(e);
-            }
-            finally
-            {
-                RaisePropertiesChanged();
-            }
-
-            return false;
-        }
-
-        public async Task<bool> RenameAsync(string newName, bool hideDialogs = false)
-        {
-            try
-            {
-                await documentFile.RenameAsync(newName);
-
-                return true;
-            }
-            catch (FileNotFoundException)
-            {
-                if (!hideDialogs)
-                {
-                    await dialogService.AlertLocalizedAsync("Mindmap_RenamingFailed_NotFound_Content", "Mindmap_RenamingFailed_Heading");
-                }
             }
             finally
             {
@@ -207,7 +170,7 @@ namespace Hercules.App.Components
 
             if (!canRemove)
             {
-                canRemove = await dialogService.ConfirmLocalizedAsync("Mindmap_Remove_Content", "Mindmap_Remove_Heading");
+                canRemove = await dialogService.ConfirmLocalizedAsync("Mindmap_Remove_Confirm");
             }
 
             if (canRemove)
@@ -233,7 +196,7 @@ namespace Hercules.App.Components
         {
             FileSavePicker fileSavePicker = new FileSavePicker();
 
-            if (extensions != null)
+            if (extensions != null && extensions.Length > 0)
             {
                 foreach (string extension in extensions)
                 {

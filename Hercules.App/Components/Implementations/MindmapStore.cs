@@ -60,7 +60,7 @@ namespace Hercules.App.Components.Implementations
         {
             if (selectedFile != null)
             {
-                selectedFile.SaveAsync(true).Forget();
+                selectedFile.SaveSilentAsync().Forget();
             }
         }
 
@@ -158,6 +158,11 @@ namespace Hercules.App.Components.Implementations
         public void Add(DocumentFileModel file)
         {
             allFiles.Insert(0, file);
+
+            if (file.File != null)
+            {
+                recentList.Add(file.File);
+            }
         }
 
         public async Task CreateAsync()

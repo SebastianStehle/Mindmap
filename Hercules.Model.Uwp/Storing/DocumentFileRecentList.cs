@@ -35,15 +35,20 @@ namespace Hercules.Model.Storing
 
                 List<DocumentFile> unsortedFiles = new List<DocumentFile>();
 
+                HashSet<string> filesHandled = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
                 foreach (AccessListEntry entry in recentList.Entries.ToList())
                 {
                     try
                     {
                         StorageFile file = await recentList.GetFileAsync(entry.Token);
 
-                        tokenMapping[file.Path] = entry.Token;
+                        if (filesHandled.Add(file.Path))
+                        {
+                            tokenMapping[file.Path] = entry.Token;
 
-                        unsortedFiles.Add(await DocumentFile.OpenAsync(file));
+                            unsortedFiles.Add(await DocumentFile.OpenAsync(file));
+                        }
                     }
                     catch (FileNotFoundException)
                     {

@@ -114,6 +114,11 @@ namespace Hercules.App.Components
             return file != null && await SaveInternalAsync(hideDialogs, () => documentFile.SaveAsAsync(file));
         }
 
+        public Task<bool> SaveSilentAsync()
+        {
+            return SaveInternalAsync(true, () => documentFile.SaveAsync());
+        }
+
         public Task<bool> SaveAsync(bool hideDialogs = false)
         {
             return documentFile.File == null ? SaveAsAsync(hideDialogs) : SaveInternalAsync(hideDialogs, () => documentFile.SaveAsync());

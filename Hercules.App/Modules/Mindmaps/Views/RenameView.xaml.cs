@@ -51,7 +51,7 @@ namespace Hercules.App.Modules.Mindmaps.Views
                     ErrorTextBlock.Opacity = 1;
                 }
 
-                Flyout.Hide();
+                Flyout?.Hide();
             }
         }
     }

@@ -406,7 +406,7 @@ The maximum allowed size is a 200x200 pixels.</value>
     <value>Save the current Mindmap to a selected file (CTRL + SHIFT + S)</value>
   </data>
   <data name="Mindmaps_SaveButton.Label" xml:space="preserve">
-    <value>Label</value>
+    <value>Save</value>
   </data>
   <data name="Mindmaps_SaveButton.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
     <value>Save the current Mindmap (CTRL + S)</value>

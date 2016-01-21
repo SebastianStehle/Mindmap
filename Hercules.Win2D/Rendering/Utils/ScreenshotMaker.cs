@@ -19,7 +19,7 @@ namespace Hercules.Win2D.Rendering.Utils
 {
     public static class ScreenshotMaker
     {
-        private const float MaxAllowedSize = 5000;
+        private const int MaxSize = 5000;
         private const float DpiWithPixelMapping = 96;
 
         public static async Task RenderScreenshotAsync(Win2DScene scene, ICanvasResourceCreator device, Stream stream, Vector3 background, float? dpi = null, float padding = 20)
@@ -38,9 +38,24 @@ namespace Hercules.Win2D.Rendering.Utils
 
             float dpiFactor = dpiValue / DpiWithPixelMapping;
 
-            if (w * dpiFactor > MaxAllowedSize || h * dpiFactor > MaxAllowedSize)
+            int wPixels = (int)(w * dpiFactor);
+            int hPixels = (int)(h * dpiFactor);
+
+            int maxPixels = Math.Min(MaxSize, device.Device.MaximumBitmapSizeInPixels - 100);
+
+            int wDiff = wPixels - maxPixels;
+            int hDiff = hPixels - maxPixels;
+
+            if (wDiff > maxPixels || hDiff > maxPixels)
             {
-                dpiValue = DpiWithPixelMapping;
+                if (wDiff > hDiff)
+                {
+                    dpiValue = (int)(dpiValue * ((float)maxPixels / wPixels));
+                }
+                else
+                {
+                    dpiValue = (int)(dpiValue * ((float)maxPixels / hPixels));
+                }
             }
 
             using (CanvasRenderTarget target = new CanvasRenderTarget(device, w, h, dpiValue))
@@ -54,7 +69,7 @@ namespace Hercules.Win2D.Rendering.Utils
                             -sceneBounds.Position.X + padding,
                             -sceneBounds.Position.Y + padding);
 
-                    scene.Render(session, true, Rect2.Infinite);
+                    scene.Render(session, false, Rect2.Infinite);
                 }
 
                 await target.SaveAsync(stream.AsRandomAccessStream(), CanvasBitmapFileFormat.Png).AsTask();

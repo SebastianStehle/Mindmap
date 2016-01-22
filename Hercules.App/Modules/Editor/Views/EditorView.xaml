@@ -8,7 +8,6 @@
     xmlns:gpc="using:GP.Utils.UI.Controls"
     xmlns:gpi="using:GP.Utils.UI.Interactivity"
     xmlns:controls="using:Hercules.App.Controls"
-    xmlns:modelLayout="using:Hercules.Model.Layouting.Default"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
@@ -51,12 +50,7 @@
         <gpc:TiledBackground TileSize="60" />
 
         <controls:Mindmap Document="{Binding Document}" RendererProvider="{Binding RendererProvider}" x:Name="Mindmap">
-            <controls:Mindmap.Layout>
-                <modelLayout:DefaultLayout ElementMargin="10" HorizontalMargin="50" />
-            </controls:Mindmap.Layout>
             <i:Interaction.Behaviors>
-                <controls:NodeMovingBehavior />
-
                 <gpi:ControlShortcutTriggerBehavior Key="Tab">
                     <ic:InvokeCommandAction Command="{Binding AddChildCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
@@ -90,6 +84,8 @@
                 <gpi:ControlShortcutTriggerBehavior Key="T">
                     <gpi:EventAction Invoked="EditTextCommand_Invoked" />
                 </gpi:ControlShortcutTriggerBehavior>
+                
+                <controls:NodeMovingBehavior />
             </i:Interaction.Behaviors>
         </controls:Mindmap>
 

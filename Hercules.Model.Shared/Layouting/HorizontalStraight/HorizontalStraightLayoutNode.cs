@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// DefaultLayoutNode.cs
+// HorizontalStraightLayoutNode.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -11,11 +11,11 @@ using Hercules.Model.Rendering;
 
 // ReSharper disable ArrangeThisQualifier
 
-namespace Hercules.Model.Layouting.Default
+namespace Hercules.Model.Layouting.HorizontalStraight
 {
-    internal sealed class DefaultLayoutNode
+    internal sealed class HorizontalStraightLayoutNode
     {
-        private readonly DefaultLayoutNode parent;
+        private readonly HorizontalStraightLayoutNode parent;
         private readonly Vector2 renderSize;
         private readonly IRenderNode renderNode;
 
@@ -33,7 +33,7 @@ namespace Hercules.Model.Layouting.Default
             get { return TreeSize.Y; }
         }
 
-        public DefaultLayoutNode Parent
+        public HorizontalStraightLayoutNode Parent
         {
             get { return parent; }
         }
@@ -53,16 +53,16 @@ namespace Hercules.Model.Layouting.Default
             get { return renderSize.Y; }
         }
 
-        public static DefaultLayoutNode AttachTo(NodeBase node, IRenderNode renderNode, DefaultLayoutNode parent)
+        public static HorizontalStraightLayoutNode AttachTo(NodeBase node, IRenderNode renderNode, HorizontalStraightLayoutNode parent)
         {
-            DefaultLayoutNode layoutNode = new DefaultLayoutNode(renderNode, parent);
+            HorizontalStraightLayoutNode layoutNode = new HorizontalStraightLayoutNode(renderNode, parent);
 
             node.LayoutData = layoutNode;
 
             return layoutNode;
         }
 
-        private DefaultLayoutNode(IRenderNode renderNode, DefaultLayoutNode parent)
+        private HorizontalStraightLayoutNode(IRenderNode renderNode, HorizontalStraightLayoutNode parent)
         {
             this.parent = parent;
             this.renderSize = renderNode.RenderSize;

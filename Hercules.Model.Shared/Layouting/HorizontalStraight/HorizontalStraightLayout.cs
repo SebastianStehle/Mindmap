@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// DefaultLayout.cs
+// HorizontalStraightLayout.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -9,27 +9,29 @@
 using GP.Utils.Mathematics;
 using Hercules.Model.Rendering;
 
-namespace Hercules.Model.Layouting.Default
+namespace Hercules.Model.Layouting.HorizontalStraight
 {
-    public sealed class DefaultLayout : ILayout
+    public sealed class HorizontalStraightLayout : ILayout
     {
-        public int HorizontalMargin { get; set; }
+        public static readonly HorizontalStraightLayout Instance = new HorizontalStraightLayout();
 
-        public int ElementMargin { get; set; }
+        public int HorizontalMargin { get; set; } = 10;
+
+        public int ElementMargin { get; set; } = 50;
 
         public void UpdateLayout(Document document, IRenderScene scene)
         {
-            new DefaultLayoutProcess(this, scene, document).UpdateLayout();
+            new HorizontalStraightLayoutProcess(this, scene, document).UpdateLayout();
         }
 
         public void UpdateVisibility(Document document, IRenderScene scene)
         {
-            new VisibilityUpdater<DefaultLayout>(this, scene, document).UpdateVisibility();
+            new VisibilityUpdater<HorizontalStraightLayout>(this, scene, document).UpdateVisibility();
         }
 
         public AttachTarget CalculateAttachTarget(Document document, IRenderScene scene, Node movingNode, Rect2 movementBounds)
         {
-            return new DefaultAttachTargetProcess(this, scene, document, movingNode, movementBounds).CalculateAttachTarget();
+            return new HorizontalStraightAttachTargetProcess(this, scene, document, movingNode, movementBounds).CalculateAttachTarget();
         }
     }
 }

@@ -31,7 +31,7 @@ namespace Hercules.Win2D.Rendering
         private readonly Win2DRenderNode previewNode;
         private readonly Document document;
         private Rect2 renderBounds;
-        private bool isLayoutInvalidated;
+        private bool isLayoutInvalidated = true;
 
         public Rect2 RenderBounds
         {

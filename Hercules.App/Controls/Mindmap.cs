@@ -67,21 +67,6 @@ namespace Hercules.App.Controls
             owner?.InitializeRenderer();
         }
 
-        public static readonly DependencyProperty LayoutProperty =
-            DependencyProperty.Register(nameof(Layout), typeof(ILayout), typeof(Mindmap), new PropertyMetadata(null, OnLayoutChanged));
-        public ILayout Layout
-        {
-            get { return (ILayout)GetValue(LayoutProperty); }
-            set { SetValue(LayoutProperty, value); }
-        }
-
-        private static void OnLayoutChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            var owner = o as Mindmap;
-
-            owner?.InitializeLayout();
-        }
-
         public static readonly DependencyProperty RendererProviderProperty =
             DependencyProperty.Register(nameof(RendererProvider), typeof(IWin2DRendererProvider), typeof(Mindmap), new PropertyMetadata(null, OnRendererChanged));
         public IWin2DRendererProvider RendererProvider
@@ -197,8 +182,6 @@ namespace Hercules.App.Controls
                 }
             }
 
-            InitializeLayout();
-
             if (renderer != null)
             {
                 UpdateScale();
@@ -206,14 +189,6 @@ namespace Hercules.App.Controls
             else if (canvasControl != null)
             {
                 canvasControl.Invalidate();
-            }
-        }
-
-        private void InitializeLayout()
-        {
-            if (renderer != null && Layout != null)
-            {
-                renderer.Layout = Layout;
             }
         }
 

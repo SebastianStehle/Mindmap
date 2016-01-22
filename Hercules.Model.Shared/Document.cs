@@ -10,6 +10,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Hercules.Model.Layouting;
+using Hercules.Model.Layouting.HorizontalStraight;
 
 namespace Hercules.Model
 {
@@ -19,6 +21,7 @@ namespace Hercules.Model
         private readonly HashSet<NodeBase> nodes = new HashSet<NodeBase>();
         private readonly RootNode root;
         private readonly IUndoRedoManager undoRedoManager = new UndoRedoManager();
+        private readonly ILayout layout = HorizontalStraightLayout.Instance;
         private readonly Vector2 size = new Vector2(20000, 12000);
         private CompositeUndoRedoAction transaction;
         private NodeBase selectedNode;
@@ -44,6 +47,11 @@ namespace Hercules.Model
         public IUndoRedoManager UndoRedoManager
         {
             get { return undoRedoManager; }
+        }
+
+        public ILayout Layout
+        {
+            get { return layout; }
         }
 
         public IEnumerable<NodeBase> Nodes

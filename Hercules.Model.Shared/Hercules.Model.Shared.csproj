@@ -85,10 +85,10 @@
     <Compile Include="IWritable.cs" />
     <Compile Include="KeyIcon.cs" />
     <Compile Include="Layouting\AttachTarget.cs" />
-    <Compile Include="Layouting\Default\DefaultAttachTargetProcess.cs" />
-    <Compile Include="Layouting\Default\DefaultLayout.cs" />
-    <Compile Include="Layouting\Default\DefaultLayoutNode.cs" />
-    <Compile Include="Layouting\Default\DefaultLayoutProcess.cs" />
+    <Compile Include="Layouting\HorizontalStraight\HorizontalStraightAttachTargetProcess.cs" />
+    <Compile Include="Layouting\HorizontalStraight\HorizontalStraightLayout.cs" />
+    <Compile Include="Layouting\HorizontalStraight\HorizontalStraightLayoutNode.cs" />
+    <Compile Include="Layouting\HorizontalStraight\HorizontalStraightLayoutProcess.cs" />
     <Compile Include="Layouting\ILayout.cs" />
     <Compile Include="Layouting\LayoutOperationBase.cs" />
     <Compile Include="Layouting\VisibilityUpdater.cs" />

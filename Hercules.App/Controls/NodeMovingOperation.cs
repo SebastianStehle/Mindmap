@@ -12,6 +12,7 @@ using Hercules.Model.Layouting;
 using Hercules.Model.Rendering;
 using Hercules.Win2D.Rendering;
 
+// ReSharper disable InvertIf
 // ReSharper disable ArrangeThisQualifier
 
 namespace Hercules.App.Controls
@@ -24,7 +25,6 @@ namespace Hercules.App.Controls
         private readonly Mindmap mindmap;
         private readonly Vector2 initialPosition;
         private readonly Node targetNode;
-        private readonly ILayout layout;
         private IAdornerRenderNode movingNode;
 
         public Mindmap Mindmap
@@ -41,7 +41,7 @@ namespace Hercules.App.Controls
             {
                 Node movingNode = renderNode.Node as Node;
 
-                if (movingNode != null && movingNode.IsSelected && mindmap.Layout != null && mindmap.Document != null)
+                if (movingNode != null && movingNode.IsSelected && mindmap.Document != null)
                 {
                     return new NodeMovingOperation(mindmap, renderNode, movingNode);
                 }
@@ -53,7 +53,6 @@ namespace Hercules.App.Controls
         internal NodeMovingOperation(Mindmap mindmap, Win2DRenderNode renderNode, Node targetNode)
         {
             this.mindmap = mindmap;
-            this.layout = mindmap.Layout;
             this.document = mindmap.Document;
             this.renderer = mindmap.Renderer;
             this.renderNode = renderNode;
@@ -75,7 +74,7 @@ namespace Hercules.App.Controls
             {
                 if (movingNode.RenderBounds.Width > 0 && movingNode.RenderBounds.Height > 0)
                 {
-                    AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.RenderBounds);
+                    AttachTarget target = document.Layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.RenderBounds);
 
                     if (target != null)
                     {
@@ -97,7 +96,7 @@ namespace Hercules.App.Controls
             {
                 if (movingNode != null && (initialPosition - movingNode.RenderPosition).LengthSquared() > 100)
                 {
-                    AttachTarget target = layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.RenderBounds);
+                    AttachTarget target = document.Layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.RenderBounds);
 
                     if (target != null)
                     {

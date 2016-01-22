@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// DefaultLayoutProcess.cs
+// HorizontalStraightLayoutProcess.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -11,11 +11,11 @@ using System.Collections.Generic;
 using System.Numerics;
 using Hercules.Model.Rendering;
 
-namespace Hercules.Model.Layouting.Default
+namespace Hercules.Model.Layouting.HorizontalStraight
 {
-    internal sealed class DefaultLayoutProcess : LayoutOperation<DefaultLayout>
+    internal sealed class HorizontalStraightLayoutProcess : LayoutOperation<HorizontalStraightLayout>
     {
-        public DefaultLayoutProcess(DefaultLayout layout, IRenderScene scene, Document document)
+        public HorizontalStraightLayoutProcess(HorizontalStraightLayout layout, IRenderScene scene, Document document)
             : base(layout, scene, document)
         {
         }
@@ -29,7 +29,7 @@ namespace Hercules.Model.Layouting.Default
 
         private void ArrangeRoot()
         {
-            DefaultLayoutNode rootLayoutNode = DefaultLayoutNode.AttachTo(Document.Root, Scene.FindRenderNode(Document.Root), null);
+            HorizontalStraightLayoutNode rootLayoutNode = HorizontalStraightLayoutNode.AttachTo(Document.Root, Scene.FindRenderNode(Document.Root), null);
 
             rootLayoutNode.MoveTo(MindmapCenter, NodeSide.Auto);
 
@@ -37,7 +37,7 @@ namespace Hercules.Model.Layouting.Default
             Arrange(rootLayoutNode, Document.Root.RightChildren, 1.0f, NodeSide.Left);
         }
 
-        private void Arrange(DefaultLayoutNode root, IReadOnlyCollection<Node> children, float factor, NodeSide anchor)
+        private void Arrange(HorizontalStraightLayoutNode root, IReadOnlyCollection<Node> children, float factor, NodeSide anchor)
         {
             UpdateSizeWithChildren(root, children, Document.Root.IsCollapsed);
 
@@ -49,7 +49,7 @@ namespace Hercules.Model.Layouting.Default
             ArrangeNodes(root, children, factor, anchor, Document.Root.IsCollapsed);
         }
 
-        private void ArrangeNodes(DefaultLayoutNode parent, IReadOnlyCollection<Node> children, float factor, NodeSide anchor, bool isCollapsed)
+        private void ArrangeNodes(HorizontalStraightLayoutNode parent, IReadOnlyCollection<Node> children, float factor, NodeSide anchor, bool isCollapsed)
         {
             if (children.Count > 0)
             {
@@ -65,7 +65,7 @@ namespace Hercules.Model.Layouting.Default
 
                 foreach (Node child in children)
                 {
-                    DefaultLayoutNode childLayout = (DefaultLayoutNode)child.LayoutData;
+                    HorizontalStraightLayoutNode childLayout = (HorizontalStraightLayoutNode)child.LayoutData;
 
                     if (!isCollapsed)
                     {
@@ -82,7 +82,7 @@ namespace Hercules.Model.Layouting.Default
             }
         }
 
-        private void UpdateSizeWithChildren(DefaultLayoutNode parent, IReadOnlyCollection<Node> children, bool isCollapsed)
+        private void UpdateSizeWithChildren(HorizontalStraightLayoutNode parent, IReadOnlyCollection<Node> children, bool isCollapsed)
         {
             float treeW = parent.RenderSize.X;
             float treeH = parent.RenderSize.Y;
@@ -93,7 +93,7 @@ namespace Hercules.Model.Layouting.Default
                 {
                     foreach (Node child in children)
                     {
-                        DefaultLayoutNode childData = DefaultLayoutNode.AttachTo(child, Scene.FindRenderNode(child), parent);
+                        HorizontalStraightLayoutNode childData = HorizontalStraightLayoutNode.AttachTo(child, Scene.FindRenderNode(child), parent);
 
                         UpdateSizeWithChildren(childData, child.Children, child.IsCollapsed);
                     }
@@ -105,7 +105,7 @@ namespace Hercules.Model.Layouting.Default
 
                     foreach (Node child in children)
                     {
-                        DefaultLayoutNode childData = DefaultLayoutNode.AttachTo(child, Scene.FindRenderNode(child), parent);
+                        HorizontalStraightLayoutNode childData = HorizontalStraightLayoutNode.AttachTo(child, Scene.FindRenderNode(child), parent);
 
                         UpdateSizeWithChildren(childData, child.Children, child.IsCollapsed);
 

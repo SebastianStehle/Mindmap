@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// DefaultAttachTargetProcess.cs
+// HorizontalStraightAttachTargetProcess.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -17,9 +17,9 @@ using Hercules.Model.Rendering;
 // ReSharper disable ArrangeThisQualifier
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 
-namespace Hercules.Model.Layouting.Default
+namespace Hercules.Model.Layouting.HorizontalStraight
 {
-    internal sealed class DefaultAttachTargetProcess : LayoutOperation<DefaultLayout>
+    internal sealed class HorizontalStraightAttachTargetProcess : LayoutOperation<HorizontalStraightLayout>
     {
         private readonly Node movingNode;
         private readonly Vector2 movementCenter;
@@ -32,7 +32,7 @@ namespace Hercules.Model.Layouting.Default
         private int renderIndex;
         private int? insertIndex;
 
-        public DefaultAttachTargetProcess(DefaultLayout layout, IRenderScene scene, Document document, Node movingNode, Rect2 movementBounds)
+        public HorizontalStraightAttachTargetProcess(HorizontalStraightLayout layout, IRenderScene scene, Document document, Node movingNode, Rect2 movementBounds)
             : base(layout, scene, document)
         {
             Guard.NotNull(movingNode, nameof(movingNode));

@@ -30,7 +30,6 @@ namespace Hercules.Win2D.Rendering
         private readonly Document document;
         private readonly Win2DScene scene;
         private readonly ICanvasControl canvas;
-        private ILayout layout;
 
         public Win2DScene Scene
         {
@@ -50,25 +49,6 @@ namespace Hercules.Win2D.Rendering
         public ICanvasControl Canvas
         {
             get { return canvas; }
-        }
-
-        public ILayout Layout
-        {
-            get
-            {
-                return layout;
-            }
-            set
-            {
-                Guard.NotNull(value, nameof(value));
-
-                if (layout != value)
-                {
-                    layout = value;
-
-                    Invalidate();
-                }
-            }
         }
 
         protected Win2DRenderer(Document document, ICanvasControl canvas)
@@ -188,6 +168,8 @@ namespace Hercules.Win2D.Rendering
 
         private void PrepareForUI(ICanvasResourceCreator resourceCreator)
         {
+            ILayout layout = Document?.Layout;
+
             if (layout != null)
             {
                 scene.UpdateLayout(resourceCreator, layout);
@@ -201,6 +183,8 @@ namespace Hercules.Win2D.Rendering
 
         private void RenderForUI(CanvasDrawingSession session, Rect2 visibleRect)
         {
+            ILayout layout = Document?.Layout;
+
             if (layout != null)
             {
                 scene.Render(session, true, visibleRect);

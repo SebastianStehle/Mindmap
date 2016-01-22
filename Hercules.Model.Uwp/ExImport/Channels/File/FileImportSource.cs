@@ -38,21 +38,23 @@ namespace Hercules.Model.ExImport.Channels.File
 
             StorageFile file = await filePicker.PickSingleFileAsync();
 
-            if (file != null)
+            if (file == null)
             {
-                using (Stream fileStream = await file.OpenStreamForReadAsync())
+                return result;
+            }
+
+            using (Stream fileStream = await file.OpenStreamForReadAsync())
+            {
+                string nameWithoutExtension = file.Name;
+
+                int lastDot = file.Name.LastIndexOf('.');
+
+                if (lastDot > 0)
                 {
-                    string nameWithoutExtension = file.Name;
-
-                    int lastDot = file.Name.LastIndexOf('.');
-
-                    if (lastDot > 0)
-                    {
-                        nameWithoutExtension = nameWithoutExtension.Substring(0, lastDot);
-                    }
-
-                    result = await importer.ImportAsync(fileStream, nameWithoutExtension);
+                    nameWithoutExtension = nameWithoutExtension.Substring(0, lastDot);
                 }
+
+                result = await importer.ImportAsync(fileStream, nameWithoutExtension);
             }
 
             return result;

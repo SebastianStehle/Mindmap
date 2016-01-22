@@ -14,6 +14,7 @@ using Windows.Storage.Streams;
 using Windows.System.Threading;
 using GP.Utils;
 using Hercules.Model.Storing.Json;
+// ReSharper disable ConvertIfStatementToReturnStatement
 
 namespace Hercules.Model.Storing
 {

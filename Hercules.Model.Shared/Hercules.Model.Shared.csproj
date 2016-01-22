@@ -55,6 +55,8 @@
     <Compile Include="DocumentObjectWithId.cs" />
     <Compile Include="ExImport\Formats\Html\HtmlOutlineExporter.cs" />
     <Compile Include="ExImport\Formats\Image\ImageExporter.cs" />
+    <Compile Include="ExImport\Formats\Mindapp\MindappExporter.cs" />
+    <Compile Include="ExImport\Formats\Mindapp\MindappImporter.cs" />
     <Compile Include="ExImport\Formats\XMind\ContentReader.cs" />
     <Compile Include="ExImport\Formats\XMind\ContentWriter.cs" />
     <Compile Include="ExImport\Formats\XMind\Extensions.cs" />

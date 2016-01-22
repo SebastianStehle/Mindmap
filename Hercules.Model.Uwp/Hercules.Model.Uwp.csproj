@@ -110,8 +110,6 @@
     <Compile Include="ExImport\Channels\Email\EmailExportTarget.cs" />
     <Compile Include="ExImport\Channels\File\FileExportTarget.cs" />
     <Compile Include="ExImport\Channels\File\FileImportSource.cs" />
-    <Compile Include="ExImport\Formats\Mindapp\MindappExporter.cs" />
-    <Compile Include="ExImport\Formats\Mindapp\MindappImporter.cs" />
     <Compile Include="ImageSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\IPrintableRenderer.cs" />

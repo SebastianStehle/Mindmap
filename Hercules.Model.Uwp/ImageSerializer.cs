@@ -42,11 +42,13 @@ namespace Hercules.Model
                 {
                     BitmapDecoder decoder = await BitmapDecoder.CreateAsync(decoderId, stream.AsRandomAccessStream()).AsTask().ConfigureAwait(false);
 
-                    if (decoder.PixelWidth <= AttachmentIcon.MaxSize && decoder.PixelHeight <= AttachmentIcon.MaxSize)
+                    if (!(decoder.PixelWidth <= AttachmentIcon.MaxSize) || !(decoder.PixelHeight <= AttachmentIcon.MaxSize))
                     {
-                        result = new AttachmentIcon(name, stream.ToArray(), (int)decoder.PixelWidth, (int)decoder.PixelHeight);
-                        break;
+                        continue;
                     }
+
+                    result = new AttachmentIcon(name, stream.ToArray(), (int)decoder.PixelWidth, (int)decoder.PixelHeight);
+                    break;
                 }
                 catch
                 {

@@ -32,7 +32,6 @@ namespace Hercules.App.Components.Implementations
         private readonly DispatcherTimer autoSaveTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(30) };
         private readonly IDialogService dialogService;
         private readonly IProcessManager processManager;
-        private readonly ISettingsProvider settingsProvider;
         private DocumentFileModel selectedFile;
 
         public event EventHandler<DocumentFileEventArgs> FileLoaded;
@@ -47,11 +46,10 @@ namespace Hercules.App.Components.Implementations
             get { return selectedFile; }
         }
 
-        public MindmapStore(IDialogService dialogService, IProcessManager processManager, ISettingsProvider settingsProvider)
+        public MindmapStore(IDialogService dialogService, IProcessManager processManager)
         {
             this.dialogService = dialogService;
             this.processManager = processManager;
-            this.settingsProvider = settingsProvider;
 
             autoSaveTimer.Tick += AutoSaveTimer_Tick;
             autoSaveTimer.Start();
@@ -67,25 +65,9 @@ namespace Hercules.App.Components.Implementations
 
         public async Task LoadRecentsAsync()
         {
-            if (!settingsProvider.IsAlreadyStarted)
-            {
-                await CreateAsync();
-
-                settingsProvider.IsAlreadyStarted = true;
-            }
-
-            if (!settingsProvider.HasFilesCopied)
-            {
-                await LocalFiles.CopyToDocumentsAsync(recentList);
-
-                settingsProvider.HasFilesCopied = true;
-            }
-
             await recentList.LoadAsync();
 
             recentList.Files.Foreach(x => allFiles.Add(new DocumentFileModel(x, dialogService)));
-
-            await OpenRecentAsync();
         }
 
         public async Task OpenRecentAsync()
@@ -113,7 +95,12 @@ namespace Hercules.App.Components.Implementations
                 {
                     model = new DocumentFileModel(await DocumentFile.OpenAsync(file), dialogService);
 
-                    Add(model);
+                    allFiles.Insert(0, model);
+
+                    if (model.File != null)
+                    {
+                        recentList.Add(model.File);
+                    }
                 }
 
                 await OpenAsync(model);
@@ -147,35 +134,20 @@ namespace Hercules.App.Components.Implementations
             });
         }
 
-        public void Add(string name, Document document)
+        public async Task AddAsync(string name, Document document = null)
         {
-            Add(DocumentFile.Create(name, document));
-        }
+            Guard.ValidFileName(name, nameof(name));
 
-        private void Add(DocumentFile file)
-        {
-            Add(new DocumentFileModel(file, dialogService));
-        }
+            DocumentFileModel model = new DocumentFileModel(DocumentFile.CreateNew(name, document), dialogService);
 
-        private void Add(DocumentFileModel file)
-        {
-            allFiles.Insert(0, file);
-
-            if (file.File != null)
+            if (await model.File.SaveToLocalFolderAsync())
             {
-                recentList.Add(file.File);
-            }
-        }
+                allFiles.Insert(0, model);
 
-        public async Task CreateAsync()
-        {
-            DocumentFile file = DocumentFile.CreateNew(LocalizationManager.GetString("MyMindmap"));
-
-            if (await file.SaveToAsync(KnownFolders.DocumentsLibrary))
-            {
-                Add(file);
-
-                await OpenRecentAsync();
+                if (model.File != null)
+                {
+                    recentList.Add(model.File);
+                }
             }
         }
 
@@ -183,6 +155,8 @@ namespace Hercules.App.Components.Implementations
         {
             if (selectedFile != null)
             {
+                recentList.Remove(selectedFile.File);
+
                 if (await selectedFile.SaveAsAsync())
                 {
                     recentList.Add(selectedFile.File);
@@ -194,6 +168,8 @@ namespace Hercules.App.Components.Implementations
         {
             if (selectedFile != null)
             {
+                recentList.Remove(selectedFile.File);
+
                 if (await selectedFile.SaveAsync(hideDialogs))
                 {
                     recentList.Add(selectedFile.File);
@@ -218,7 +194,7 @@ namespace Hercules.App.Components.Implementations
                     {
                         selectedFile = null;
 
-                        OnFileLoaded((IDocumentFileModel)null);
+                        OnFileLoaded(new DocumentFileEventArgs(null));
                     }
                 }
             });

@@ -22,11 +22,9 @@ namespace Hercules.App.Components
 
         IDocumentFileModel SelectedFile { get; }
 
-        void Add(string name, Document document);
+        Task AddAsync(string name, Document document = null);
 
         Task LoadRecentsAsync();
-
-        Task CreateAsync();
 
         Task OpenAsync(StorageFile file);
 

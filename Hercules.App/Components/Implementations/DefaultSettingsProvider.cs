@@ -26,18 +26,6 @@ namespace Hercules.App.Components.Implementations
             }
         }
 
-        public bool HasFilesCopied
-        {
-            get
-            {
-                return GetBoolean(nameof(HasFilesCopied));
-            }
-            set
-            {
-                SetBoolean(nameof(HasFilesCopied), value);
-            }
-        }
-
         private bool GetBoolean(string key)
         {
             return ToBoolean(settings.Values[key]);

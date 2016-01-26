@@ -96,11 +96,11 @@ namespace Hercules.Model.Storing
             return new DocumentFile(file, await file.GetBasicPropertiesAsync());
         }
 
-        public static DocumentFile CreateNew(string name)
+        public static DocumentFile CreateNew(string name, Document document = null)
         {
             Guard.ValidFileName(name, nameof(name));
 
-            return new DocumentFile(Document.CreateNew(name), name);
+            return new DocumentFile(document ?? Document.CreateNew(name), name);
         }
 
         public static DocumentFile Create(string name, Document document)
@@ -140,6 +140,11 @@ namespace Hercules.Model.Storing
 
                 OpenInternal(newDocument);
             });
+        }
+
+        public Task<bool> SaveToLocalFolderAsync()
+        {
+            return SaveToAsync(ApplicationData.Current.LocalFolder);
         }
 
         public async Task<bool> SaveToAsync(StorageFolder folder)

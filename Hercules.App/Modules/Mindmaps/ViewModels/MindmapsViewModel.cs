@@ -52,6 +52,9 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         public IProcessManager ProcessManager { get; set; }
 
         [Dependency]
+        public ISettingsProvider SettingsProvider { get; set; }
+
+        [Dependency]
         public IDialogService MessageDialogService { get; set; }
 
         public RelayCommand<IDocumentFileModel> RemoveCommand
@@ -104,7 +107,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             {
                 return createCommand ?? (createCommand = new RelayCommand(() =>
                 {
-                    mindmapStore.CreateAsync().Forget();
+                    mindmapStore.AddAsync(LocalizationManager.GetString("MyMindmap")).Forget();
                 }));
             }
         }
@@ -126,9 +129,23 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
         public async Task LoadAsync()
         {
-            await mindmapStore.LoadRecentsAsync();
+            try
+            {
+                if (SettingsProvider.IsAlreadyStarted)
+                {
+                    await mindmapStore.LoadRecentsAsync();
+                }
+                else
+                {
+                    await mindmapStore.AddAsync(LocalizationManager.GetString("MyMindmap"));
+                }
 
-            SelectedFile = mindmapStore.SelectedFile;
+                await mindmapStore.OpenRecentAsync();
+            }
+            finally
+            {
+                SettingsProvider.IsAlreadyStarted = true;
+            }
         }
 
         private async void OnSave(SaveMessage message)
@@ -171,7 +188,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                 {
                     foreach (var result in results)
                     {
-                        mindmapStore.Add(result.Name, result.Document);
+                        await mindmapStore.AddAsync(result.Name, result.Document);
                     }
 
                     await mindmapStore.OpenRecentAsync();

@@ -22,9 +22,9 @@ using Hercules.Model.Storing;
 // ReSharper disable InvertIf
 // ReSharper disable ConvertIfStatementToReturnStatement
 
-namespace Hercules.App.Components
+namespace Hercules.App.Components.Implementations
 {
-    public sealed class DocumentFileModel : ViewModelBase
+    public sealed class DocumentFileModel : ViewModelBase, IDocumentFileModel
     {
         private readonly IDialogService dialogService;
         private readonly DocumentFile documentFile;
@@ -52,9 +52,9 @@ namespace Hercules.App.Components
             get { return documentFile.Path; }
         }
 
-        public string ModifiedUtc
+        public string ModifiedLocal
         {
-            get { return documentFile.ModifiedUtc.ToString("g", CultureInfo.CurrentCulture); }
+            get { return documentFile.ModifiedUtc.ToLocalTime().ToString("g", CultureInfo.CurrentCulture); }
         }
 
         public bool HasChanges
@@ -88,11 +88,6 @@ namespace Hercules.App.Components
         private void DocumentFile_Changed(object sender, EventArgs e)
         {
             RaisePropertiesChanged();
-        }
-
-        public bool CanRenameTo(string newName)
-        {
-            return newName.IsValidFileName();
         }
 
         public void Close()
@@ -193,8 +188,8 @@ namespace Hercules.App.Components
             RaisePropertyChanged(nameof(Name));
             RaisePropertyChanged(nameof(Path));
             RaisePropertyChanged(nameof(DisplayPath));
-            RaisePropertyChanged(nameof(ModifiedUtc));
             RaisePropertyChanged(nameof(HasChanges));
+            RaisePropertyChanged(nameof(ModifiedLocal));
         }
 
         private async Task<StorageFile> PickSaveAsync(params string[] extensions)

@@ -134,7 +134,7 @@ namespace Hercules.Model.Storing
                 return Task.FromResult(true);
             }
 
-            return DoAsync(() => document == null, async () =>
+            return DoAsync(() => document == null && file != null, async () =>
             {
                 Document newDocument = await FileQueue.OpenAsync(file);
 

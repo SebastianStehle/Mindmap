@@ -1,27 +1,28 @@
 ﻿// ==========================================================================
-// DocumentLoadedEventArgs.cs
+// IDocumentFIleModel.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
-using System;
+using System.ComponentModel;
+using Hercules.Model;
 
 namespace Hercules.App.Components
 {
-    public sealed class DocumentFileEventArgs : EventArgs
+    public interface IDocumentFileModel : INotifyPropertyChanged
     {
-        private readonly IDocumentFileModel file;
+        string ModifiedLocal { get; }
 
-        public IDocumentFileModel File
-        {
-            get { return file; }
-        }
+        string DisplayPath { get; }
 
-        public DocumentFileEventArgs(IDocumentFileModel file)
-        {
-            this.file = file;
-        }
+        string Name { get; }
+
+        string Path { get; }
+
+        bool HasChanges { get; }
+
+        Document Document { get; }
     }
 }

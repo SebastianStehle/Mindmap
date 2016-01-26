@@ -18,9 +18,9 @@ namespace Hercules.App.Components
     {
         event EventHandler<DocumentFileEventArgs> FileLoaded;
 
-        ObservableCollection<DocumentFileModel> AllFiles { get; }
+        ObservableCollection<IDocumentFileModel> AllFiles { get; }
 
-        DocumentFileModel SelectedFile { get; }
+        IDocumentFileModel SelectedFile { get; }
 
         void Add(string name, Document document);
 
@@ -30,7 +30,7 @@ namespace Hercules.App.Components
 
         Task OpenAsync(StorageFile file);
 
-        Task OpenAsync(DocumentFileModel file);
+        Task OpenAsync(IDocumentFileModel file);
 
         Task OpenRecentAsync();
 
@@ -40,6 +40,8 @@ namespace Hercules.App.Components
 
         Task SaveAsync(bool hideDialogs = false);
 
-        Task RemoveAsync(DocumentFileModel file);
+        Task RemoveAsync(IDocumentFileModel file);
+
+        Task RenameAsync(IDocumentFileModel file, string newName);
     }
 }

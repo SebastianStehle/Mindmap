@@ -17,7 +17,7 @@ namespace Hercules.App.Components
     public sealed class TitleBarUpdater
     {
         private readonly IMindmapStore store;
-        private DocumentFileModel currentFile;
+        private IDocumentFileModel currentFile;
 
         public TitleBarUpdater(IMindmapStore store)
         {
@@ -50,7 +50,7 @@ namespace Hercules.App.Components
             UpdateTitle(currentFile);
         }
 
-        private static void UpdateTitle(DocumentFileModel file)
+        private static void UpdateTitle(IDocumentFileModel file)
         {
             string name = string.Empty;
 

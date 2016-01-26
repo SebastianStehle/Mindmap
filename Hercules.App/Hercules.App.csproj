@@ -109,7 +109,8 @@
     </Compile>
     <Compile Include="Assets\AssetProvider.cs" />
     <Compile Include="Components\DocumentFileEventArgs.cs" />
-    <Compile Include="Components\DocumentFileModel.cs" />
+    <Compile Include="Components\Implementations\DocumentFileModel.cs" />
+    <Compile Include="Components\IDocumentFIleModel.cs" />
     <Compile Include="Components\IMindmapStore.cs" />
     <Compile Include="Components\Implementations\DefaultSettingsProvider.cs" />
     <Compile Include="Components\Implementations\MindmapStore.cs" />

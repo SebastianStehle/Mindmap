@@ -30,21 +30,23 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         private RelayCommand saveCommand;
         private RelayCommand saveAsCommand;
         private RelayCommand createCommand;
-        private RelayCommand<DocumentFileModel> removeCommand;
+        private RelayCommand<IDocumentFileModel> removeCommand;
 
-        public ObservableCollection<DocumentFileModel> RecentFiles
+        public IMindmapStore MindmapStore
         {
-            get
-            {
-                return mindmapStore.AllFiles;
-            }
+            get { return mindmapStore; }
+        }
+
+        public ObservableCollection<IDocumentFileModel> RecentFiles
+        {
+            get { return mindmapStore.AllFiles; }
         }
 
         [NotifyUI]
         public bool IsLoaded { get; set; }
 
         [NotifyUI]
-        public DocumentFileModel SelectedFile { get; set; }
+        public IDocumentFileModel SelectedFile { get; set; }
 
         [Dependency]
         public IProcessManager ProcessManager { get; set; }
@@ -52,11 +54,11 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         [Dependency]
         public IDialogService MessageDialogService { get; set; }
 
-        public RelayCommand<DocumentFileModel> RemoveCommand
+        public RelayCommand<IDocumentFileModel> RemoveCommand
         {
             get
             {
-                return removeCommand ?? (removeCommand = new RelayCommand<DocumentFileModel>(x =>
+                return removeCommand ?? (removeCommand = new RelayCommand<IDocumentFileModel>(x =>
                 {
                     mindmapStore.RemoveAsync(x).Forget();
                 }, x => x != null));
@@ -170,9 +172,9 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                     foreach (var result in results)
                     {
                         mindmapStore.Add(result.Name, result.Document);
-
-                        await mindmapStore.OpenRecentAsync();
                     }
+
+                    await mindmapStore.OpenRecentAsync();
                 }
             }).Forget();
         }

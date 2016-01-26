@@ -29,7 +29,7 @@
                     <Grid x:Name="Root" HorizontalAlignment="Stretch" Background="Transparent">
                         <FlyoutBase.AttachedFlyout>
                             <controls:MindmapFlyout Placement="Bottom">
-                                <m:RenameView DocumentFile="{Binding}" />
+                                <m:RenameView MindmapStore="{Binding Path=Mindmaps.MindmapStore, Source={StaticResource ViewModelLocator}}" DocumentFile="{Binding}" />
                             </controls:MindmapFlyout>
                         </FlyoutBase.AttachedFlyout>
 
@@ -41,7 +41,7 @@
                                     <MenuFlyoutSeparator />
                                     
                                     <MenuFlyoutItem x:Uid="Mindmaps_RemoveMenuItem" Text="Delete"
-                                        Command="{Binding Path=Mindmaps.RemoveCommand, Source={StaticResource ViewModelLocator}, ElementName=List}" 
+                                        Command="{Binding Path=Mindmaps.RemoveCommand, Source={StaticResource ViewModelLocator}}" 
                                         CommandParameter="{Binding}" />
                                 </MenuFlyout>
                             </FlyoutBase.AttachedFlyout>
@@ -61,7 +61,7 @@
                                         TextAlignment="Left"
                                         TextWrapping="NoWrap" Margin="0,0,4,0" />
                                     <TextBlock FontSize="13"
-                                        Text="{Binding Path=ModifiedUtc}" 
+                                        Text="{Binding Path=ModifiedLocal}" 
                                         TextAlignment="Left"
                                         TextWrapping="NoWrap" />
                                 </StackPanel>

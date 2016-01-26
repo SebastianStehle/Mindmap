@@ -376,7 +376,7 @@ The maximum allowed size is a 200x200 pixels.</value>
     <value>The mindmap has unsaved changes. Do you really want to remove it?</value>
   </data>
   <data name="Mindmap_RenamingFailed_NotFound_Alert" xml:space="preserve">
-    <value>Cannot rename the mindmap, the file has been deleted in the meantime. Please use 'Save As'.</value>
+    <value>Cannot rename the mindmap, the file has been deleted in the meantime.</value>
   </data>
   <data name="Mindmap_SavingFailed_NotFound_Alert" xml:space="preserve">
     <value>Cannot save the mindmap, the file has been deleted in the meantime. Please use 'Save As'.</value>

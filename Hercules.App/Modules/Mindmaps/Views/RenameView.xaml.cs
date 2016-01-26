@@ -8,17 +8,26 @@
 
 using System.IO;
 using Windows.UI.Xaml;
+using GP.Utils;
 using Hercules.App.Components;
 
 namespace Hercules.App.Modules.Mindmaps.Views
 {
     public sealed partial class RenameView
     {
-        public static readonly DependencyProperty DocumentFileProperty =
-            DependencyProperty.Register(nameof(DocumentFile), typeof(DocumentFileModel), typeof(RenameView), new PropertyMetadata(null));
-        public DocumentFileModel DocumentFile
+        public static readonly DependencyProperty MindmapStoreProperty =
+            DependencyProperty.Register(nameof(MindmapStore), typeof(IMindmapStore), typeof(RenameView), new PropertyMetadata(null));
+        public IMindmapStore MindmapStore
         {
-            get { return (DocumentFileModel)GetValue(DocumentFileProperty); }
+            get { return (IMindmapStore)GetValue(MindmapStoreProperty); }
+            set { SetValue(MindmapStoreProperty, value); }
+        }
+
+        public static readonly DependencyProperty DocumentFileProperty =
+            DependencyProperty.Register(nameof(DocumentFile), typeof(IDocumentFileModel), typeof(RenameView), new PropertyMetadata(null));
+        public IDocumentFileModel DocumentFile
+        {
+            get { return (IDocumentFileModel)GetValue(DocumentFileProperty); }
             set { SetValue(DocumentFileProperty, value); }
         }
 
@@ -36,7 +45,7 @@ namespace Hercules.App.Modules.Mindmaps.Views
 
         private async void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            if (!DocumentFile.CanRenameTo(NameTextBox.Text))
+            if (!NameTextBox.Text.IsValidFileName())
             {
                 ErrorTextBlock.Opacity = 1;
             }
@@ -44,7 +53,7 @@ namespace Hercules.App.Modules.Mindmaps.Views
             {
                 try
                 {
-                    await DocumentFile.RenameAsync(NameTextBox.Text);
+                    await MindmapStore.RenameAsync(DocumentFile, NameTextBox.Text);
                 }
                 catch (FileNotFoundException)
                 {

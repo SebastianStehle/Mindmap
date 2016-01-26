@@ -19,6 +19,7 @@ using Hercules.Model;
 using Hercules.Model.Storing;
 using PropertyChanged;
 
+// ReSharper disable InvertIf
 // ReSharper disable ImplicitlyCapturedClosure
 
 namespace Hercules.App.Components.Implementations
@@ -26,8 +27,8 @@ namespace Hercules.App.Components.Implementations
     [ImplementPropertyChanged]
     public sealed class MindmapStore : IMindmapStore
     {
+        private readonly ObservableCollection<IDocumentFileModel> allFiles = new ObservableCollection<IDocumentFileModel>();
         private readonly DocumentFileRecentList recentList = new DocumentFileRecentList();
-        private readonly ObservableCollection<DocumentFileModel> allFiles = new ObservableCollection<DocumentFileModel>();
         private readonly DispatcherTimer autoSaveTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(30) };
         private readonly IDialogService dialogService;
         private readonly IProcessManager processManager;
@@ -36,12 +37,12 @@ namespace Hercules.App.Components.Implementations
 
         public event EventHandler<DocumentFileEventArgs> FileLoaded;
 
-        public ObservableCollection<DocumentFileModel> AllFiles
+        public ObservableCollection<IDocumentFileModel> AllFiles
         {
             get { return allFiles; }
         }
 
-        public DocumentFileModel SelectedFile
+        public IDocumentFileModel SelectedFile
         {
             get { return selectedFile; }
         }
@@ -84,10 +85,7 @@ namespace Hercules.App.Components.Implementations
 
             recentList.Files.Foreach(x => allFiles.Add(new DocumentFileModel(x, dialogService)));
 
-            if (allFiles.Count > 0 && selectedFile == null)
-            {
-                await OpenAsync(allFiles[0]);
-            }
+            await OpenRecentAsync();
         }
 
         public async Task OpenRecentAsync()
@@ -100,7 +98,7 @@ namespace Hercules.App.Components.Implementations
 
         public async Task OpenFromFileAsync()
         {
-            StorageFile file = await OpenFileAsync(DocumentFile.Extension);
+            StorageFile file = await PickFileAsync(DocumentFile.Extension);
 
             await OpenAsync(file);
         }
@@ -109,40 +107,44 @@ namespace Hercules.App.Components.Implementations
         {
             if (file != null)
             {
-                DocumentFileModel fileModel = allFiles.FirstOrDefault(x => string.Equals(x.Path, file.Path, StringComparison.OrdinalIgnoreCase));
+                DocumentFileModel model = allFiles.OfType<DocumentFileModel>().FirstOrDefault(x => string.Equals(x.Path, file.Path, StringComparison.OrdinalIgnoreCase));
 
-                if (fileModel == null)
+                if (model == null)
                 {
-                    fileModel = new DocumentFileModel(await DocumentFile.OpenAsync(file), dialogService);
+                    model = new DocumentFileModel(await DocumentFile.OpenAsync(file), dialogService);
 
-                    Add(fileModel);
+                    Add(model);
                 }
 
-                await OpenAsync(fileModel);
+                await OpenAsync(model);
             }
         }
 
-        public async Task OpenAsync(DocumentFileModel file)
+        public Task OpenAsync(IDocumentFileModel file)
         {
-            if (file != null && file != selectedFile)
+            return ForFileAsync(file, m => m != selectedFile, async model =>
             {
                 await processManager.RunMainProcessAsync(this, async () =>
                 {
-                    if (await file.OpenAsync())
+                    if (await model.OpenAsync())
                     {
                         if (selectedFile != null && !selectedFile.HasChanges)
                         {
                             selectedFile.Close();
                         }
 
-                        selectedFile = file;
+                        selectedFile = model;
 
-                        recentList.Add(file.File);
-
-                        OnFileLoaded(new DocumentFileEventArgs(file));
+                        recentList.Add(model.File);
                     }
+                    else
+                    {
+                        allFiles.Remove(file);
+                    }
+
+                    OnFileLoaded(selectedFile);
                 });
-            }
+            });
         }
 
         public void Add(string name, Document document)
@@ -150,12 +152,12 @@ namespace Hercules.App.Components.Implementations
             Add(DocumentFile.Create(name, document));
         }
 
-        public void Add(DocumentFile file)
+        private void Add(DocumentFile file)
         {
             Add(new DocumentFileModel(file, dialogService));
         }
 
-        public void Add(DocumentFileModel file)
+        private void Add(DocumentFileModel file)
         {
             allFiles.Insert(0, file);
 
@@ -169,11 +171,12 @@ namespace Hercules.App.Components.Implementations
         {
             DocumentFile file = DocumentFile.CreateNew(LocalizationManager.GetString("MyMindmap"));
 
-            await file.SaveToAsync(KnownFolders.DocumentsLibrary);
+            if (await file.SaveToAsync(KnownFolders.DocumentsLibrary))
+            {
+                Add(file);
 
-            Add(file);
-
-            await OpenRecentAsync();
+                await OpenRecentAsync();
+            }
         }
 
         public async Task SaveAsAsync()
@@ -198,24 +201,55 @@ namespace Hercules.App.Components.Implementations
             }
         }
 
-        public async Task RemoveAsync(DocumentFileModel file)
+        public Task RemoveAsync(IDocumentFileModel file)
         {
-            if (file != null)
+            return ForFileAsync(file, m => true, async model =>
             {
-                if (await file.RemoveAsync())
+                if (await model.RemoveAsync())
                 {
-                    allFiles.Remove(file);
+                    allFiles.Remove(model);
 
-                    recentList.Remove(file.File);
+                    if (model.File != null)
+                    {
+                        recentList.Remove(model.File);
+                    }
 
-                    if (selectedFile == file)
+                    if (selectedFile == model)
                     {
                         selectedFile = null;
 
-                        OnFileLoaded(new DocumentFileEventArgs(null));
+                        OnFileLoaded((IDocumentFileModel)null);
                     }
                 }
-            }
+            });
+        }
+
+        public Task RenameAsync(IDocumentFileModel file, string newName)
+        {
+            Guard.ValidFileName(newName, nameof(newName));
+
+            return ForFileAsync(file, m => true, async model =>
+            {
+                if (!await model.RenameAsync(newName))
+                {
+                    if (selectedFile != model)
+                    {
+                        allFiles.Remove(file);
+                    }
+                }
+            });
+        }
+
+        private static Task ForFileAsync(IDocumentFileModel file, Predicate<DocumentFileModel> predicate, Func<DocumentFileModel, Task> action)
+        {
+            DocumentFileModel model = file as DocumentFileModel;
+
+            return model != null && predicate(model) ? action(model) : Task.FromResult(false);
+        }
+
+        private void OnFileLoaded(IDocumentFileModel file)
+        {
+            OnFileLoaded(new DocumentFileEventArgs(file));
         }
 
         private void OnFileLoaded(DocumentFileEventArgs e)
@@ -223,7 +257,7 @@ namespace Hercules.App.Components.Implementations
             FileLoaded?.Invoke(this, e);
         }
 
-        private static Task<StorageFile> OpenFileAsync(string extension)
+        private static Task<StorageFile> PickFileAsync(string extension)
         {
             FileOpenPicker fileOpenPicker = new FileOpenPicker();
 

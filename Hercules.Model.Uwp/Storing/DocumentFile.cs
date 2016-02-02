@@ -40,7 +40,7 @@ namespace Hercules.Model.Storing
             get { return file?.Path; }
         }
 
-        public bool IsLocalFolder
+        public bool IsInLocalFolder
         {
             get { return IsInFolder(ApplicationData.Current.LocalFolder); }
         }
@@ -168,9 +168,25 @@ namespace Hercules.Model.Storing
             {
                 await FileQueue.SaveAsync(document, targetFile);
 
-                file = targetFile;
+                try
+                {
+                    if (file != null && !string.Equals(file.Path, targetFile.Path, StringComparison.OrdinalIgnoreCase))
+                    {
+                        if (IsInLocalFolder)
+                        {
+                            await file.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                        }
+                    }
+                }
+                finally
+                {
+                    file = targetFile;
 
-                name = file.DisplayName;
+                    if (file != targetFile)
+                    {
+                        name = file.DisplayName;
+                    }
+                }
             });
         }
 

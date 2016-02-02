@@ -435,7 +435,7 @@ namespace GP.Utils.Mathematics
         /// <filterpriority>2</filterpriority>
         public override string ToString()
         {
-            return string.Format(CultureInfo.InvariantCulture, "X: {0}, Y: {1}, W: {2}, H: {3}", position.X, position.Y, size.X, size.Y);
+            return $"X: {position.X}, Y: {position.Y}, W: {size.X}, H: {size.Y}";
         }
     }
 }

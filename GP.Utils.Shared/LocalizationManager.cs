@@ -207,21 +207,21 @@ namespace GP.Utils
 
             ILocalizationProvider provider = Provider;
 
-            if (provider != null)
+            if (provider == null)
             {
-                try
-                {
-                    string resourceString = provider.GetString(key, culture) ?? (fallback ?? key.SeparateByUpperLetters());
-
-                    return resourceString != null ? string.Format(CultureInfo.CurrentCulture, resourceString, args) : string.Empty;
-                }
-                catch
-                {
-                    return string.Empty;
-                }
+                return string.Empty;
             }
 
-            return string.Empty;
+            try
+            {
+                string resourceString = provider.GetString(key, culture) ?? (fallback ?? key.SeparateByUpperLetters());
+
+                return resourceString != null ? string.Format(CultureInfo.CurrentCulture, resourceString, args) : string.Empty;
+            }
+            catch
+            {
+                return string.Empty;
+            }
         }
     }
 }

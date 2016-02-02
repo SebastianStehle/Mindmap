@@ -48,8 +48,8 @@ namespace Tests.Facts
 
             Assert.False(rect.IsEmpty);
 
-            Assert.True(new Rect2(0, 0,-10, 10).IsEmpty);
-            Assert.True(new Rect2(0, 0, 10,-10).IsEmpty);
+            Assert.True(new Rect2(0, 0, -10, 10).IsEmpty);
+            Assert.True(new Rect2(0, 0, 10, -10).IsEmpty);
         }
 
         [Fact]

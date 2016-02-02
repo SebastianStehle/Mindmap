@@ -24,19 +24,21 @@ namespace Hercules.App.Components
 
         Task AddAsync(string name, Document document = null);
 
+        Task AddAsync(StorageFile file);
+
+        Task AddFromFileAsync();
+
         Task LoadRecentsAsync();
 
-        Task OpenAsync(StorageFile file);
+        Task OpenDocumentAsync(IDocumentFileModel file);
 
-        Task OpenAsync(IDocumentFileModel file);
-
-        Task OpenRecentAsync();
-
-        Task OpenFromFileAsync();
+        Task OpenDocumentRecentAsync();
 
         Task SaveAsAsync();
 
         Task SaveAsync(bool hideDialogs = false);
+
+        Task SaveRecentsAsync();
 
         Task RemoveAsync(IDocumentFileModel file);
 

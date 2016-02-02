@@ -33,7 +33,7 @@ namespace Hercules.App.Components.Implementations
         {
             get
             {
-                if (documentFile.IsLocalFolder)
+                if (documentFile.IsInLocalFolder)
                 {
                     return string.Concat(LocalizationManager.GetString("Paths_AppFolder"), "\\", Name);
                 }
@@ -206,7 +206,7 @@ namespace Hercules.App.Components.Implementations
                 fileSavePicker.DefaultFileExtension = extensions[0];
             }
 
-            if (documentFile.File != null && !documentFile.IsLocalFolder)
+            if (documentFile.File != null && !documentFile.IsInLocalFolder)
             {
                 fileSavePicker.SuggestedSaveFile = documentFile.File;
             }

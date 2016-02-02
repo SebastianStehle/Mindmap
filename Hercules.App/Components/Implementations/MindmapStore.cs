@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -65,27 +66,27 @@ namespace Hercules.App.Components.Implementations
 
         public async Task LoadRecentsAsync()
         {
-            await recentList.LoadAsync();
+            IEnumerable<DocumentFile> files = await recentList.LoadAsync();
 
-            recentList.Files.Foreach(x => allFiles.Add(new DocumentFileModel(x, dialogService)));
+            files.Foreach(x => allFiles.Add(new DocumentFileModel(x, dialogService)));
         }
 
-        public async Task OpenRecentAsync()
+        public async Task OpenDocumentRecentAsync()
         {
             if (allFiles.Count > 0)
             {
-                await OpenAsync(allFiles[0]);
+                await OpenDocumentAsync(allFiles[0]);
             }
         }
 
-        public async Task OpenFromFileAsync()
+        public async Task AddFromFileAsync()
         {
             StorageFile file = await PickFileAsync(DocumentFile.Extension);
 
-            await OpenAsync(file);
+            await AddAsync(file);
         }
 
-        public async Task OpenAsync(StorageFile file)
+        public async Task AddAsync(StorageFile file)
         {
             if (file != null)
             {
@@ -96,18 +97,13 @@ namespace Hercules.App.Components.Implementations
                     model = new DocumentFileModel(await DocumentFile.OpenAsync(file), dialogService);
 
                     allFiles.Insert(0, model);
-
-                    if (model.File != null)
-                    {
-                        recentList.Add(model.File);
-                    }
                 }
 
-                await OpenAsync(model);
+                await OpenDocumentAsync(model);
             }
         }
 
-        public Task OpenAsync(IDocumentFileModel file)
+        public Task OpenDocumentAsync(IDocumentFileModel file)
         {
             return ForFileAsync(file, m => m != selectedFile, async model =>
             {
@@ -121,8 +117,6 @@ namespace Hercules.App.Components.Implementations
                         }
 
                         selectedFile = model;
-
-                        recentList.Add(model.File);
                     }
                     else
                     {
@@ -143,24 +137,19 @@ namespace Hercules.App.Components.Implementations
             if (await model.File.SaveToLocalFolderAsync())
             {
                 allFiles.Insert(0, model);
-
-                if (model.File != null)
-                {
-                    recentList.Add(model.File);
-                }
             }
+        }
+
+        public Task SaveRecentsAsync()
+        {
+            return recentList.SaveAsync(allFiles.OfType<DocumentFileModel>().Select(x => x.File).ToList());
         }
 
         public async Task SaveAsAsync()
         {
             if (selectedFile != null)
             {
-                recentList.Remove(selectedFile.File);
-
-                if (await selectedFile.SaveAsAsync())
-                {
-                    recentList.Add(selectedFile.File);
-                }
+                await selectedFile.SaveAsAsync();
             }
         }
 
@@ -168,12 +157,7 @@ namespace Hercules.App.Components.Implementations
         {
             if (selectedFile != null)
             {
-                recentList.Remove(selectedFile.File);
-
-                if (await selectedFile.SaveAsync(hideDialogs))
-                {
-                    recentList.Add(selectedFile.File);
-                }
+                await selectedFile.SaveAsync(hideDialogs);
             }
         }
 
@@ -184,11 +168,6 @@ namespace Hercules.App.Components.Implementations
                 if (await model.RemoveAsync())
                 {
                     allFiles.Remove(model);
-
-                    if (model.File != null)
-                    {
-                        recentList.Remove(model.File);
-                    }
 
                     if (selectedFile == model)
                     {

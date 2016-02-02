@@ -93,7 +93,7 @@ namespace Tests.Facts
             float r = 60;
 
             Assert.Equal(l, MathHelper.Interpolate(-1, l, r));
-            Assert.Equal(r, MathHelper.Interpolate( 2, l, r));
+            Assert.Equal(r, MathHelper.Interpolate(+2, l, r));
             Assert.Equal(20, MathHelper.Interpolate(0.2f, l, r));
         }
 
@@ -104,7 +104,7 @@ namespace Tests.Facts
             double r = 60;
 
             Assert.Equal(l, MathHelper.Interpolate(-1, l, r));
-            Assert.Equal(r, MathHelper.Interpolate( 2, l, r));
+            Assert.Equal(r, MathHelper.Interpolate(+2, l, r));
 
             Assert.Equal(20, MathHelper.Interpolate(0.2, l, r));
         }
@@ -116,7 +116,7 @@ namespace Tests.Facts
             Vector2 r = new Vector2(60, 150);
 
             Assert.Equal(l, MathHelper.Interpolate(-1, l, r));
-            Assert.Equal(r, MathHelper.Interpolate( 2, l, r));
+            Assert.Equal(r, MathHelper.Interpolate(+2, l, r));
 
             Assert.Equal(new Vector2(20, 70), MathHelper.Interpolate(0.2f, l, r));
         }

@@ -74,7 +74,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             {
                 return openCommand ?? (openCommand = new RelayCommand(() =>
                 {
-                    mindmapStore.OpenFromFileAsync().Forget();
+                    mindmapStore.AddFromFileAsync().Forget();
                 }));
             }
         }
@@ -140,7 +140,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                     await mindmapStore.AddAsync(LocalizationManager.GetString("MyMindmap"));
                 }
 
-                await mindmapStore.OpenRecentAsync();
+                await mindmapStore.OpenDocumentRecentAsync();
             }
             finally
             {
@@ -151,13 +151,14 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         private async void OnSave(SaveMessage message)
         {
             await mindmapStore.SaveAsync();
+            await mindmapStore.SaveRecentsAsync();
 
             message.Callback();
         }
 
         public void OnOpen(OpenMessage message)
         {
-            mindmapStore.OpenAsync(message.File).Forget();
+            mindmapStore.AddAsync(message.File).Forget();
         }
 
         public void OnImport(ImportMessage message)
@@ -167,7 +168,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
 
         public void OnSelectedFileChanged()
         {
-            mindmapStore.OpenAsync(SelectedFile).Forget();
+            mindmapStore.OpenDocumentAsync(SelectedFile).Forget();
         }
 
         private void ImportAsync(ImportModel model)
@@ -191,7 +192,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                         await mindmapStore.AddAsync(result.Name, result.Document);
                     }
 
-                    await mindmapStore.OpenRecentAsync();
+                    await mindmapStore.OpenDocumentRecentAsync();
                 }
             }).Forget();
         }

@@ -13,6 +13,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
+using GP.Utils;
+
+// ReSharper disable LoopCanBePartlyConvertedToQuery
 
 namespace Hercules.Model.Storing
 {
@@ -22,76 +25,115 @@ namespace Hercules.Model.Storing
         private readonly Dictionary<string, string> tokenMapping = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         private readonly List<DocumentFile> files = new List<DocumentFile>();
 
-        public IReadOnlyList<DocumentFile> Files
+        public Task<IReadOnlyList<DocumentFile>> LoadAsync()
         {
-            get { return files; }
-        }
-
-        public Task LoadAsync()
-        {
-            return FileQueue.EnqueueAsync(async () =>
+            return FileQueue.EnqueueAsync<IReadOnlyList<DocumentFile>>(async () =>
             {
-                tokenMapping.Clear();
+                Dictionary<string, DocumentFile> unsortedFiles = new Dictionary<string, DocumentFile>(StringComparer.OrdinalIgnoreCase);
 
-                List<DocumentFile> unsortedFiles = new List<DocumentFile>();
-
-                HashSet<string> filesHandled = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-                foreach (AccessListEntry entry in recentList.Entries.ToList())
-                {
-                    try
-                    {
-                        StorageFile file = await recentList.GetFileAsync(entry.Token);
-
-                        if (filesHandled.Add(file.Path))
-                        {
-                            tokenMapping[file.Path] = entry.Token;
-
-                            unsortedFiles.Add(await DocumentFile.OpenAsync(file));
-                        }
-                    }
-                    catch (FileNotFoundException)
-                    {
-                        recentList.Remove(entry.Token);
-                    }
-                }
+                await AddFilesLocalAsync(unsortedFiles);
+                await AddFilesRecentAsync(unsortedFiles);
 
                 files.Clear();
 
-                foreach (DocumentFile sortedFile in unsortedFiles.OrderByDescending(x => x.ModifiedUtc))
+                foreach (DocumentFile sortedFile in unsortedFiles.Values.OrderByDescending(x => x.ModifiedUtc))
                 {
                     files.Add(sortedFile);
                 }
+
+                return files;
             });
         }
 
-        public void Add(DocumentFile file)
+        private static async Task AddFilesLocalAsync(IDictionary<string, DocumentFile> unsortedFiles)
         {
-            Add(file?.File);
-        }
-
-        public void Add(StorageFile storageFile)
-        {
-            if (storageFile?.Path != null)
+            StorageFolder mindmaps;
+            try
             {
-                string token = recentList.Add(storageFile);
+                mindmaps = await ApplicationData.Current.LocalFolder.GetFolderAsync("Mindapp");
+            }
+            catch (FileNotFoundException)
+            {
+                mindmaps = null;
+            }
 
-                tokenMapping[storageFile.Path] = token;
+            if (mindmaps == null)
+            {
+                return;
+            }
+
+            foreach (StorageFile file in await mindmaps.GetFilesAsync())
+            {
+                if (unsortedFiles.ContainsKey(file.Path))
+                {
+                    unsortedFiles.Add(file.Path, await DocumentFile.OpenAsync(file));
+                }
             }
         }
 
-        public void Remove(DocumentFile file)
+        private async Task AddFilesRecentAsync(IDictionary<string, DocumentFile> unsortedFiles)
         {
-            StorageFile storageFile = file?.File;
+            tokenMapping.Clear();
 
-            string token;
+            HashSet<string> filesHandled = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            if (storageFile?.Path != null && tokenMapping.TryGetValue(storageFile.Path, out token))
+            foreach (AccessListEntry entry in recentList.Entries.ToList())
             {
-                recentList.Remove(token);
+                try
+                {
+                    StorageFile file = await recentList.GetFileAsync(entry.Token);
 
-                tokenMapping.Remove(storageFile.Path);
+                    if (!filesHandled.Add(file.Path))
+                    {
+                        continue;
+                    }
+
+                    tokenMapping[file.Path] = entry.Token;
+
+                    if (unsortedFiles.ContainsKey(file.Path))
+                    {
+                        recentList.Remove(entry.Token);
+                    }
+                    else
+                    {
+                        unsortedFiles.Add(file.Path, await DocumentFile.OpenAsync(file));
+                    }
+                }
+                catch (FileNotFoundException)
+                {
+                    recentList.Remove(entry.Token);
+                }
             }
+        }
+
+        public Task SaveAsync(IEnumerable<DocumentFile> newFiles)
+        {
+            Guard.NotNull(newFiles, nameof(newFiles));
+
+            return FileQueue.EnqueueAsync(() =>
+            {
+                HashSet<string> handledPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                foreach (StorageFile file in newFiles.Where(x => !x.IsInLocalFolder && x.File != null).Select(x => x.File))
+                {
+                    if (!handledPaths.Add(file.Path))
+                    {
+                        continue;
+                    }
+
+                    if (!tokenMapping.Remove(file.Path))
+                    {
+                        recentList.Add(file);
+                    }
+                }
+
+                foreach (var token in tokenMapping.Values)
+                {
+                    recentList.Remove(token);
+                }
+
+                return Task.FromResult(true);
+            });
         }
     }
 }

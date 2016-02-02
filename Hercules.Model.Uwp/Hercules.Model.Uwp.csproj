@@ -116,7 +116,6 @@
     <Compile Include="Storing\DocumentFile.cs" />
     <Compile Include="Storing\DocumentFileRecentList.cs" />
     <Compile Include="Storing\FileQueue.cs" />
-    <Compile Include="Storing\LocalFiles.cs" />
     <EmbeddedResource Include="Properties\Hercules.Model.Uwp.rd.xml" />
   </ItemGroup>
   <ItemGroup>

@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -15,6 +16,7 @@ using System.Xml;
 using GP.Utils;
 using GP.Utils.Mathematics;
 using Hercules.Model.Rendering;
+// ReSharper disable InvertIf
 
 namespace Hercules.Model.ExImport.Formats.Html
 {
@@ -95,23 +97,25 @@ namespace Hercules.Model.ExImport.Formats.Html
         {
             WriteNode(xmlWriter, node, renderer, fontSize, useColors, noTextPlaceholder);
 
-            if (node.Children.Count > 0)
+            if (node.Children.Count <= 0)
             {
-                xmlWriter.WriteStartElement("ul");
-                xmlWriter.WriteAttributeString("style", ListStyle);
+                return;
+            }
 
-                foreach (Node child in node.Children)
-                {
-                    xmlWriter.WriteStartElement("li");
-                    xmlWriter.WriteAttributeString("style", ListItemStyle);
+            xmlWriter.WriteStartElement("ul");
+            xmlWriter.WriteAttributeString("style", ListStyle);
 
-                    WriteNodeWithChildren(xmlWriter, child, renderer, "1.em", useColors, noTextPlaceholder);
+            foreach (Node child in node.Children)
+            {
+                xmlWriter.WriteStartElement("li");
+                xmlWriter.WriteAttributeString("style", ListItemStyle);
 
-                    xmlWriter.WriteEndElement();
-                }
+                WriteNodeWithChildren(xmlWriter, child, renderer, "1.em", useColors, noTextPlaceholder);
 
                 xmlWriter.WriteEndElement();
             }
+
+            xmlWriter.WriteEndElement();
         }
 
         private static void WriteNode(XmlWriter xmlWriter, NodeBase nodeBase, IRenderer renderer, string fontSize, bool useColors, string noTextPlaceholder)
@@ -126,7 +130,7 @@ namespace Hercules.Model.ExImport.Formats.Html
             }
 
             xmlWriter.WriteStartElement("span");
-            xmlWriter.WriteAttributeString("style", string.Format(CultureInfo.InvariantCulture, "color:{0};font-size:{1};", color, fontSize));
+            xmlWriter.WriteAttributeString("style", FormattableString.Invariant($"color:{color}; font-size:{fontSize};"));
 
             xmlWriter.WriteValue(!string.IsNullOrWhiteSpace(nodeBase.Text) ? nodeBase.Text : noTextPlaceholder);
 

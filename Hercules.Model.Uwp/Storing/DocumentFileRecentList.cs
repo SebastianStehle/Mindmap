@@ -21,6 +21,7 @@ namespace Hercules.Model.Storing
 {
     public sealed class DocumentFileRecentList
     {
+        private const string DefaultSubfolder = "Mindapp";
         private readonly StorageItemMostRecentlyUsedList recentList = StorageApplicationPermissions.MostRecentlyUsedList;
         private readonly Dictionary<string, string> tokenMapping = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         private readonly List<DocumentFile> files = new List<DocumentFile>();
@@ -50,7 +51,7 @@ namespace Hercules.Model.Storing
             StorageFolder mindmaps;
             try
             {
-                mindmaps = await ApplicationData.Current.LocalFolder.GetFolderAsync("Mindapp");
+                mindmaps = await ApplicationData.Current.LocalFolder.GetFolderAsync(DefaultSubfolder);
             }
             catch (FileNotFoundException)
             {

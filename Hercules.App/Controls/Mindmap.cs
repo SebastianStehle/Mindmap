@@ -12,7 +12,6 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Hercules.Model;
-using Hercules.Model.Layouting;
 using Hercules.Win2D.Rendering;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 

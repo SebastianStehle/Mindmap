@@ -18,6 +18,7 @@ using Hercules.Model.Rendering;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
 
+// ReSharper disable InvertIf
 // ReSharper disable LoopCanBeConvertedToQuery
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 
@@ -147,20 +148,22 @@ namespace Hercules.Win2D.Rendering
                 adorner.Measure(resourceCreator);
             }
 
-            if (isLayoutInvalidated)
+            if (!isLayoutInvalidated)
             {
-                layout.UpdateLayout(document, this);
-
-                foreach (Win2DRenderNode renderNode in renderNodes.Values)
-                {
-                    if (renderNode.IsVisible)
-                    {
-                        renderNode.ComputeHull(resourceCreator);
-                    }
-                }
-
-                isLayoutInvalidated = false;
+                return;
             }
+
+            layout.UpdateLayout(document, this);
+
+            foreach (Win2DRenderNode renderNode in renderNodes.Values)
+            {
+                if (renderNode.IsVisible)
+                {
+                    renderNode.ComputeHull(resourceCreator);
+                }
+            }
+
+            isLayoutInvalidated = false;
         }
 
         public bool UpdateArrangement(ICanvasResourceCreator resourceCreator, bool animate)
@@ -181,23 +184,21 @@ namespace Hercules.Win2D.Rendering
 
             foreach (Win2DRenderNode renderNode in AllNodes)
             {
-                renderNode.ArrangeBodyAndButton(resourceCreator);
-
-                if (renderNode.IsVisible && renderNode != previewNode)
-                {
-                    Rect2 nodeBounds = renderNode.RenderBounds;
-
-                    minX = Math.Min(minX, nodeBounds.Left);
-                    minY = Math.Min(minY, nodeBounds.Top);
-                    maxX = Math.Max(maxX, nodeBounds.Right);
-                    maxY = Math.Max(maxY, nodeBounds.Bottom);
-                }
-            }
-
-            foreach (Win2DRenderNode renderNode in AllNodes)
-            {
                 renderNode.ArrangePath(resourceCreator);
                 renderNode.ArrangeHull(resourceCreator);
+                renderNode.ArrangeBody(resourceCreator);
+
+                if (!renderNode.IsVisible || renderNode == previewNode)
+                {
+                    continue;
+                }
+
+                Rect2 nodeBounds = renderNode.RenderBounds;
+
+                minX = Math.Min(minX, nodeBounds.Left);
+                minY = Math.Min(minY, nodeBounds.Top);
+                maxX = Math.Max(maxX, nodeBounds.Right);
+                maxY = Math.Max(maxY, nodeBounds.Bottom);
             }
 
             foreach (Win2DAdornerRenderNode adorner in adorners)

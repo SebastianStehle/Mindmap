@@ -420,4 +420,10 @@ The maximum allowed size is a 200x200 pixels.</value>
   <data name="Mindmap_RenamingFailed_Unknown_Alert" xml:space="preserve">
     <value>Cannot rename the mindmap, an unknown error occured.</value>
   </data>
+  <data name="TransactionName_ToggleCheckable" xml:space="preserve">
+    <value>Toggle Checkable</value>
+  </data>
+  <data name="TransactionName_ToggleChecked" xml:space="preserve">
+    <value>Toggle Checked</value>
+  </data>
 </root>

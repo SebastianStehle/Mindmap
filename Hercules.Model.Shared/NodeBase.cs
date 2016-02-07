@@ -24,6 +24,8 @@ namespace Hercules.Model
         private bool isShowingHull;
         private bool isCollapsed;
         private bool isSelected;
+        private bool isChecked;
+        private bool isCheckable = true;
 
         public object LayoutData { get; set; }
 
@@ -153,6 +155,38 @@ namespace Hercules.Model
             }
         }
 
+        public bool IsCheckable
+        {
+            get
+            {
+                return isCheckable;
+            }
+            protected set
+            {
+                if (!Equals(isCheckable, value))
+                {
+                    isCheckable = value;
+                    OnPropertyChanged(nameof(IsCheckable));
+                }
+            }
+        }
+
+        public bool IsChecked
+        {
+            get
+            {
+                return isChecked;
+            }
+            protected set
+            {
+                if (!Equals(isChecked, value))
+                {
+                    isChecked = value;
+                    OnPropertyChanged(nameof(IsChecked));
+                }
+            }
+        }
+
         public bool IsSelected
         {
             get
@@ -198,6 +232,16 @@ namespace Hercules.Model
         internal void ChangeIsCollapsed(bool newIsCollapsed)
         {
             IsCollapsed = newIsCollapsed;
+        }
+
+        internal void ChangeIsChecked(bool newIsChecked)
+        {
+            IsChecked = newIsChecked;
+        }
+
+        internal void ChangeIsCheckable(bool newIsCheckable)
+        {
+            IsCheckable = newIsCheckable;
         }
 
         internal void ChangeIsShowingHull(bool newIsShowingHull)

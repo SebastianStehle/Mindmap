@@ -123,6 +123,8 @@
     <Compile Include="Storing\Utils\JsonStreamConvert.cs" />
     <Compile Include="ThemeColor.cs" />
     <Compile Include="ToggleCollapseCommand.cs" />
+    <Compile Include="ToggleCheckableCommand.cs" />
+    <Compile Include="ToggleCheckedCommand.cs" />
     <Compile Include="ToggleHullCommand.cs" />
     <Compile Include="UndoRedoExtensions.cs" />
     <Compile Include="UndoRedoManager.cs" />

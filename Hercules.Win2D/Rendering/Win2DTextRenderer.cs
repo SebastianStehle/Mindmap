@@ -8,11 +8,14 @@
 
 using System;
 using System.Numerics;
+using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Text;
 using GP.Utils.Mathematics;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
+
+// ReSharper disable InvertIf
 
 namespace Hercules.Win2D.Rendering
 {
@@ -75,11 +78,8 @@ namespace Hercules.Win2D.Rendering
 
         public void ClearResources()
         {
-            if (textFormat != null)
-            {
-                textFormat.Dispose();
-                textFormat = null;
-            }
+            textFormat?.Dispose();
+            textFormat = null;
         }
 
         public void Measure(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
@@ -121,12 +121,14 @@ namespace Hercules.Win2D.Rendering
         public void Render(Win2DRenderable renderable, CanvasDrawingSession session)
         {
             string text = renderable.Node.Text;
+
+            Rect rect = RenderBounds.ToRect();
 #if DRAW_OUTLINE
-            session.DrawRectangle(RenderBounds.ToRect(), Colors.Red);
+            session.DrawRectangle(rect, Colors.Red);
 #endif
             if (!string.IsNullOrWhiteSpace(text))
             {
-                session.DrawText(text, RenderBounds.ToRect(), Colors.Black, TextFormat);
+                session.DrawText(text, rect, Colors.Black, TextFormat);
             }
         }
     }

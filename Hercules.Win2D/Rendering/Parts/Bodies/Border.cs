@@ -14,7 +14,7 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
-namespace Hercules.Win2D.Rendering.Geometries.Bodies
+namespace Hercules.Win2D.Rendering.Parts.Bodies
 {
     public sealed class Border : BodyBase
     {
@@ -66,13 +66,21 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             RenderIcon(renderable, session);
             RenderText(renderable, session);
 
-            if (renderControls && renderable.Node.IsSelected)
+            if (!renderControls)
+            {
+                return;
+            }
+
+            if (renderable.Node.IsSelected)
             {
                 session.DrawRoundedRectangle(renderable.RenderBounds.ToRect(), 5, 5, borderBrush, 2f, SelectionStrokeStyle);
             }
+
+            RenderCheckBox(renderable, session);
+            RenderButton(renderable, session);
         }
 
-        public override IBodyGeometry Clone()
+        public override IBodyPart Clone()
         {
             return new Border(pathColor);
         }

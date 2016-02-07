@@ -7,7 +7,6 @@
 // ==========================================================================
 
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
@@ -64,46 +63,54 @@ namespace Hercules.App.Components.Implementations
             }
         }
 
-        public async Task LoadRecentsAsync()
+        public Task StoreRecentsAsync()
         {
-            IEnumerable<DocumentFile> files = await recentList.LoadAsync();
-
-            files.Foreach(x => allFiles.Add(new DocumentFileModel(x, dialogService)));
+            return recentList.SaveAsync(allFiles.OfType<DocumentFileModel>().Select(x => x.File).ToList());
         }
 
-        public async Task OpenDocumentRecentAsync()
+        public Task LoadRecentsAsync()
         {
-            if (allFiles.Count > 0)
-            {
-                await OpenDocumentAsync(allFiles[0]);
-            }
+            return recentList.LoadAsync(allFiles, x => new DocumentFileModel(x, dialogService));
         }
 
-        public async Task AddFromFileAsync()
+        public async Task PickAndAddAsync()
         {
             StorageFile file = await PickFileAsync(DocumentFile.Extension);
 
             await AddAsync(file);
         }
 
-        public async Task AddAsync(StorageFile file)
+        public async Task AddAsync(string name, Document document = null)
         {
-            if (file != null)
+            Guard.ValidFileName(name, nameof(name));
+
+            DocumentFileModel model = new DocumentFileModel(DocumentFile.CreateNew(name, document), dialogService);
+
+            if (await model.SaveToLocalFolderAsync())
             {
-                DocumentFileModel model = allFiles.OfType<DocumentFileModel>().FirstOrDefault(x => string.Equals(x.Path, file.Path, StringComparison.OrdinalIgnoreCase));
-
-                if (model == null)
-                {
-                    model = new DocumentFileModel(await DocumentFile.OpenAsync(file), dialogService);
-
-                    allFiles.Insert(0, model);
-                }
-
-                await OpenDocumentAsync(model);
+                allFiles.Insert(0, model);
             }
+
+            await OpenAsync(model);
         }
 
-        public Task OpenDocumentAsync(IDocumentFileModel file)
+        public async Task AddAsync(StorageFile file)
+        {
+            Guard.NotNull(file, nameof(file));
+
+            DocumentFileModel model = allFiles.OfType<DocumentFileModel>().FirstOrDefault(x => string.Equals(x.Path, file.Path, StringComparison.OrdinalIgnoreCase));
+
+            if (model == null)
+            {
+                model = new DocumentFileModel(await DocumentFile.OpenAsync(file), dialogService);
+
+                allFiles.Insert(0, model);
+            }
+
+            await OpenAsync(model);
+        }
+
+        public Task OpenAsync(IDocumentFileModel file)
         {
             return ForFileAsync(file, m => m != selectedFile, async model =>
             {
@@ -128,37 +135,36 @@ namespace Hercules.App.Components.Implementations
             });
         }
 
-        public async Task AddAsync(string name, Document document = null)
+        public Task SaveAsAsync(IDocumentFileModel file)
         {
-            Guard.ValidFileName(name, nameof(name));
-
-            DocumentFileModel model = new DocumentFileModel(DocumentFile.CreateNew(name, document), dialogService);
-
-            if (await model.File.SaveToLocalFolderAsync())
+            return ForFileAsync(file, m => true, async model =>
             {
-                allFiles.Insert(0, model);
-            }
+                await model.SaveAsAsync();
+            });
         }
 
-        public Task SaveRecentsAsync()
+        public Task SaveAsync(IDocumentFileModel file)
         {
-            return recentList.SaveAsync(allFiles.OfType<DocumentFileModel>().Select(x => x.File).ToList());
+            return ForFileAsync(file, m => true, async model =>
+            {
+                await model.SaveAsync();
+            });
         }
 
-        public async Task SaveAsAsync()
+        public Task RenameAsync(IDocumentFileModel file, string newName)
         {
-            if (selectedFile != null)
-            {
-                await selectedFile.SaveAsAsync();
-            }
-        }
+            Guard.ValidFileName(newName, nameof(newName));
 
-        public async Task SaveAsync(bool hideDialogs = false)
-        {
-            if (selectedFile != null)
+            return ForFileAsync(file, m => true, async model =>
             {
-                await selectedFile.SaveAsync(hideDialogs);
-            }
+                if (!await model.RenameAsync(newName))
+                {
+                    if (selectedFile != model)
+                    {
+                        allFiles.Remove(file);
+                    }
+                }
+            });
         }
 
         public Task RemoveAsync(IDocumentFileModel file)
@@ -174,22 +180,6 @@ namespace Hercules.App.Components.Implementations
                         selectedFile = null;
 
                         OnFileLoaded(new DocumentFileEventArgs(null));
-                    }
-                }
-            });
-        }
-
-        public Task RenameAsync(IDocumentFileModel file, string newName)
-        {
-            Guard.ValidFileName(newName, nameof(newName));
-
-            return ForFileAsync(file, m => true, async model =>
-            {
-                if (!await model.RenameAsync(newName))
-                {
-                    if (selectedFile != model)
-                    {
-                        allFiles.Remove(file);
                     }
                 }
             });

@@ -47,12 +47,14 @@ namespace GP.Utils
         {
             lock (disposeLock)
             {
-                if (!isDisposed)
+                if (isDisposed)
                 {
-                    DisposeObject(disposing);
-
-                    isDisposed = true;
+                    return;
                 }
+
+                DisposeObject(disposing);
+
+                isDisposed = true;
             }
         }
 

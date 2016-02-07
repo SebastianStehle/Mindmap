@@ -11,17 +11,18 @@ using GP.Utils;
 using GP.Utils.Mathematics;
 using Hercules.Model;
 using Hercules.Model.Rendering;
+using Hercules.Win2D.Rendering.Parts;
 using Microsoft.Graphics.Canvas;
 
 namespace Hercules.Win2D.Rendering
 {
     public sealed class Win2DAdornerRenderNode : Win2DRenderable, IAdornerRenderNode
     {
-        private readonly IBodyGeometry geometry;
+        private readonly IBodyPart geometry;
         private bool needsArrange;
         private bool needsMeasure = true;
 
-        public Win2DAdornerRenderNode(NodeBase node, Win2DRenderer renderer, IBodyGeometry geometry, Rect2 bounds)
+        public Win2DAdornerRenderNode(NodeBase node, Win2DRenderer renderer, IBodyPart geometry, Rect2 bounds)
             : base(node, renderer)
         {
             Guard.NotNull(geometry, nameof(geometry));
@@ -53,22 +54,26 @@ namespace Hercules.Win2D.Rendering
 
         public void Measure(ICanvasResourceCreator resourceCreator)
         {
-            if (needsMeasure)
+            if (!needsMeasure)
             {
-                geometry.Measure(this, resourceCreator);
-
-                needsMeasure = false;
+                return;
             }
+
+            geometry.Measure(this, resourceCreator);
+
+            needsMeasure = false;
         }
 
         public void Arrange(ICanvasResourceCreator resourceCreator)
         {
-            if (needsArrange)
+            if (!needsArrange)
             {
-                geometry.Arrange(this, resourceCreator);
-
-                needsArrange = false;
+                return;
             }
+
+            geometry.Arrange(this, resourceCreator);
+
+            needsArrange = false;
         }
 
         public void Render(CanvasDrawingSession session)

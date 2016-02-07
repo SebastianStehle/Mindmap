@@ -142,14 +142,14 @@ namespace Hercules.Model.Storing
             });
         }
 
-        public Task<bool> SaveToLocalFolderAsync()
-        {
-            return SaveToAsync(ApplicationData.Current.LocalFolder);
-        }
-
         public async Task<bool> SaveToAsync(StorageFolder folder)
         {
             return folder != null && await SaveAsync(await folder.CreateFileAsync(name + Extension, CreationCollisionOption.GenerateUniqueName));
+        }
+
+        public async Task<bool> SaveToLocalFolderAsync()
+        {
+            return await SaveToAsync(await FileQueue.GetStorageFolderAsync());
         }
 
         public Task<bool> SaveAsAsync(StorageFile newFile)
@@ -182,10 +182,7 @@ namespace Hercules.Model.Storing
                 {
                     file = targetFile;
 
-                    if (file != targetFile)
-                    {
-                        name = file.DisplayName;
-                    }
+                    name = file.DisplayName;
                 }
             });
         }

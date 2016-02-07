@@ -8,7 +8,6 @@
 
 using System.Numerics;
 using Windows.UI;
-using GP.Utils;
 using GP.Utils.Mathematics;
 using Hercules.Model;
 using Microsoft.Graphics.Canvas;
@@ -19,19 +18,11 @@ namespace Hercules.Win2D.Rendering.Utils
 {
     public sealed class ExpandButton
     {
-        private readonly NodeBase node;
         private float renderRadius = 20;
         private Rect2 renderBounds;
         private Vector2 renderCenter;
 
-        public ExpandButton(NodeBase node)
-        {
-            Guard.NotNull(node, nameof(Node));
-
-            this.node = node;
-        }
-
-        public void Arrange(Vector2 center, float radius = 10)
+        public void Arrange(Vector2 center, float radius)
         {
             renderRadius = radius;
             renderCenter = center;
@@ -39,32 +30,29 @@ namespace Hercules.Win2D.Rendering.Utils
             renderBounds = Rect2.Inflate(new Rect2(center, Vector2.Zero), radius, radius);
         }
 
-        public bool HitTest(Vector2 mousePosition)
+        public bool HandleClick(Win2DRenderable renderable, Vector2 mousePosition)
         {
-            bool isHit = renderBounds.Contains(mousePosition) && node.HasChildren;
+            bool isHit = renderBounds.Contains(mousePosition);
 
             if (isHit)
             {
-                node.ToggleCollapseTransactional();
+                renderable.Node.ToggleCollapseTransactional();
             }
 
             return isHit;
         }
 
-        public void Render(CanvasDrawingSession session)
+        public void Render(Win2DRenderable renderable, CanvasDrawingSession session)
         {
-            if (node.HasChildren)
+            RenderCircle(session);
+
+            float halfRadius = 0.5f * renderRadius;
+
+            RenderHorizontal(session, halfRadius);
+
+            if (renderable.Node.IsCollapsed)
             {
-                RenderCircle(session);
-
-                float halfRadius = 0.5f * renderRadius;
-
-                RenderHorizontal(session, halfRadius);
-
-                if (node.IsCollapsed)
-                {
-                    RenderVertical(session, halfRadius);
-                }
+                RenderVertical(session, halfRadius);
             }
         }
 

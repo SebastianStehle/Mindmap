@@ -114,9 +114,14 @@ namespace Hercules.App.Components.Implementations
             return SaveInternalAsync(true, () => documentFile.SaveAsync());
         }
 
-        public Task<bool> SaveAsync(bool hideDialogs = false)
+        public Task<bool> SaveToLocalFolderAsync()
         {
-            return documentFile.File == null ? SaveAsAsync(hideDialogs) : SaveInternalAsync(hideDialogs, () => documentFile.SaveAsync());
+            return SaveInternalAsync(true, () => documentFile.SaveToLocalFolderAsync());
+        }
+
+        public Task<bool> SaveAsync()
+        {
+            return documentFile.File == null ? SaveAsAsync() : SaveInternalAsync(false, () => documentFile.SaveAsync());
         }
 
         private Task<bool> SaveInternalAsync(bool hideDialogs, Func<Task<bool>> save)

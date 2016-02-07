@@ -88,6 +88,32 @@ namespace Hercules.Model
             }
         }
 
+        public static void ToggleCheckedTransactional(this NodeBase node)
+        {
+            if (node?.Document != null)
+            {
+                string tansactionName = LocalizationManager.GetString("TransactionName_ToggleChecked");
+
+                node.Document.MakeTransaction(tansactionName, commands =>
+                {
+                    commands.Apply(new ToggleCheckedCommand(node));
+                });
+            }
+        }
+
+        public static void ToggleCheckableTransactional(this NodeBase node)
+        {
+            if (node?.Document != null)
+            {
+                string tansactionName = LocalizationManager.GetString("TransactionName_ToggleCheckable");
+
+                node.Document.MakeTransaction(tansactionName, commands =>
+                {
+                    commands.Apply(new ToggleCheckableCommand(node));
+                });
+            }
+        }
+
         public static void ToggleHullTransactional(this NodeBase node)
         {
             if (node?.Document != null)

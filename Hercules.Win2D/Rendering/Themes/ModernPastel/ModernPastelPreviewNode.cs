@@ -9,9 +9,12 @@
 using System.Numerics;
 using Windows.UI;
 using Hercules.Model;
-using Hercules.Win2D.Rendering.Geometries.Bodies;
-using Hercules.Win2D.Rendering.Geometries.Paths;
+using Hercules.Win2D.Rendering.Parts;
+using Hercules.Win2D.Rendering.Parts.Bodies;
+using Hercules.Win2D.Rendering.Parts.Paths;
 using Microsoft.Graphics.Canvas;
+
+// ReSharper disable InvertIf
 
 namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 {
@@ -24,31 +27,33 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
         {
         }
 
-        protected override IBodyGeometry CreateBody(ICanvasResourceCreator resourceCreator, IBodyGeometry current)
+        protected override IBodyPart CreateBody(ICanvasResourceCreator resourceCreator, IBodyPart current)
         {
             return current == null ? new SimpleRectangle(Size) : null;
         }
 
-        protected override IHullGeometry CreateHull(ICanvasResourceCreator resourceCreator, IHullGeometry current)
+        protected override IHullPart CreateHull(ICanvasResourceCreator resourceCreator, IHullPart current)
         {
             return null;
         }
 
-        protected override IPathGeometry CreatePath(ICanvasResourceCreator resourceCreator, IPathGeometry current)
+        protected override IPathPart CreatePath(ICanvasResourceCreator resourceCreator, IPathPart current)
         {
             NodeBase parentNode = Parent?.Node;
 
-            if (parentNode != null)
+            if (parentNode == null)
             {
-                if (current == null || (current is FilledPath && !(parentNode is RootNode)) || (current is LinePath && parentNode is RootNode))
-                {
-                    if (Parent.Node is RootNode)
-                    {
-                        return new FilledPath(Colors.Black, 0.5f);
-                    }
+                return null;
+            }
 
-                    return new LinePath(Colors.Black, 0.5f);
+            if (current == null || (current is FilledPath && !(parentNode is RootNode)) || (current is LinePath && parentNode is RootNode))
+            {
+                if (Parent.Node is RootNode)
+                {
+                    return new FilledPath(Colors.Black, 0.5f);
                 }
+
+                return new LinePath(Colors.Black, 0.5f);
             }
 
             return null;

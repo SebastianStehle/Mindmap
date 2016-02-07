@@ -1,25 +1,22 @@
 ﻿// ==========================================================================
-// RectangleNode.cs
+// Rectangle.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
-using Hercules.Model;
-
-namespace Hercules.Win2D.Rendering.Geometries
+namespace Hercules.Win2D.Rendering.Parts.Bodies
 {
-    public sealed class RectangleNode : RectangleNodeBase
+    public sealed class Rectangle : RectangleBase
     {
-        public RectangleNode(NodeBase node, Win2DRenderer renderer)
-            : base(node, renderer, 0)
+        public Rectangle()
+            : base(0)
         {
         }
 
-        protected override Win2DRenderNode CloneInternal()
+        public override IBodyPart Clone()
         {
-            return new RectangleNode(Node, Renderer);
+            return new Rectangle();
         }
     }
 }

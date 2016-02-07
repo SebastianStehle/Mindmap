@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// IBodyGeometry.cs
+// IMeasureablePart.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -9,20 +9,10 @@
 using System.Numerics;
 using Microsoft.Graphics.Canvas;
 
-namespace Hercules.Win2D.Rendering
+namespace Hercules.Win2D.Rendering.Parts
 {
-    public interface IBodyGeometry : IResourceHolder
+    public interface IMeasureablePart
     {
-        Win2DTextRenderer TextRenderer { get; }
-
-        float VerticalPathOffset { get; }
-
         Vector2 Measure(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator);
-
-        void Arrange(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator);
-
-        void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderSelection);
-
-        IBodyGeometry Clone();
     }
 }

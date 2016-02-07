@@ -8,12 +8,10 @@
 
 using System.Numerics;
 using Windows.UI;
+using GP.Utils.Mathematics;
 using GP.Utils.UI;
 using Hercules.Model;
 using Hercules.Model.Rendering;
-using GP.Utils.Mathematics;
-
-// ReSharper disable ArrangeThisQualifier
 
 namespace Hercules.Win2D.Rendering
 {
@@ -58,14 +56,14 @@ namespace Hercules.Win2D.Rendering
 
         public Win2DColor(Color normal, Color darker, Color lighter)
         {
-            this.normalValue = normal;
-            this.normalVector = normal.ToVector3();
+            normalValue = normal;
+            normalVector = normal.ToVector3();
 
-            this.darkerValue = darker;
-            this.darkerVector = darker.ToVector3();
+            darkerValue = darker;
+            darkerVector = darker.ToVector3();
 
-            this.lighterValue = lighter;
-            this.lighterVector = lighter.ToVector3();
+            lighterValue = lighter;
+            lighterVector = lighter.ToVector3();
         }
 
         public Win2DColor(ValueColor color)

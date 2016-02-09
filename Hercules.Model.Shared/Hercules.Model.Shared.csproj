@@ -40,12 +40,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AttachmentIcon.cs" />
+    <Compile Include="ChangeCheckableModeCommand.cs" />
     <Compile Include="ChangeColorCommand.cs" />
     <Compile Include="ChangeIconCommand.cs" />
     <Compile Include="ChangeIconPositionCommand.cs" />
     <Compile Include="ChangeIconSizeCommand.cs" />
     <Compile Include="ChangeShapeCommand.cs" />
     <Compile Include="ChangeTextCommand.cs" />
+    <Compile Include="CheckableMode.cs" />
     <Compile Include="ChildNodeCommandBase.cs" />
     <Compile Include="CommandBase.cs" />
     <Compile Include="CompositeUndoRedoAction.cs" />

@@ -52,27 +52,31 @@ namespace Hercules.App
         {
             OuterSplitView.IsPaneOpen = !OuterSplitView.IsPaneOpen;
 
-            if (OuterSplitView.IsPaneOpen)
+            if (!OuterSplitView.IsPaneOpen)
             {
-                if (InnerSplitView.DisplayMode == SplitViewDisplayMode.Overlay)
-                {
-                    InnerSplitView.IsPaneOpen = false;
-                }
-
-                MindmapsContainer.Focus(FocusState.Programmatic);
+                return;
             }
+
+            if (InnerSplitView.DisplayMode == SplitViewDisplayMode.Overlay)
+            {
+                InnerSplitView.IsPaneOpen = false;
+            }
+
+            MindmapsContainer.Focus(FocusState.Programmatic);
         }
 
         private void Toolbars_PropertiesButtonClicked(object sender, RoutedEventArgs e)
         {
             InnerSplitView.IsPaneOpen = !InnerSplitView.IsPaneOpen;
 
-            if (InnerSplitView.IsPaneOpen)
+            if (!InnerSplitView.IsPaneOpen)
             {
-                if (OuterSplitView.DisplayMode == SplitViewDisplayMode.Overlay)
-                {
-                    OuterSplitView.IsPaneOpen = false;
-                }
+                return;
+            }
+
+            if (OuterSplitView.DisplayMode == SplitViewDisplayMode.Overlay)
+            {
+                OuterSplitView.IsPaneOpen = false;
             }
         }
     }

@@ -12,7 +12,7 @@ namespace GP.Utils
     /// Interface for cloneable types.
     /// </summary>
     /// <typeparam name="T">The type of the cloning result.</typeparam>
-    public interface ICloneable<T>
+    public interface ICloneable<out T>
     {
         /// <summary>
         /// Clones the object.

@@ -235,11 +235,8 @@ namespace GP.Utils.UI
         /// <returns>
         /// The parent of the target object when such a parent exists or null otherwise.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="target"/> is null.
-        ///     - or -
-        ///     <paramref name="predicate"/> is null.
-        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="target"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="predicate"/> is null.</exception>
         public static T FindParent<T>(this DependencyObject target, Predicate<T> predicate) where T : class
         {
             Guard.NotNull(target, nameof(target));

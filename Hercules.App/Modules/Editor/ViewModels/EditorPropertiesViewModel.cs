@@ -21,6 +21,8 @@ using Hercules.Win2D.Rendering;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
 
+// ReSharper disable InvertIf
+
 namespace Hercules.App.Modules.Editor.ViewModels
 {
     [ImplementPropertyChanged]
@@ -36,6 +38,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
         private RelayCommand<int> changeIconPositionCommand;
         private RelayCommand<int> changeIconSizeCommand;
         private RelayCommand<int> changeShapeCommand;
+        private RelayCommand<int> changeCheckableModeCommand;
+        private RelayCommand toggleIsCheckableCommand;
         private RelayCommand toggleHullCommand;
         private RelayCommand addIconCommand;
 
@@ -44,6 +48,9 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
         [Dependency]
         public IDialogService MessageDialogService { get; set; }
+
+        [Dependency]
+        public ISettingsProvider SettingsProvider { get; set; }
 
         public ObservableCollection<INodeColor> CustomColors
         {
@@ -58,6 +65,70 @@ namespace Hercules.App.Modules.Editor.ViewModels
         public ObservableCollection<INodeIcon> CustomIcons
         {
             get { return customIcons; }
+        }
+
+        public bool ShowIconSection
+        {
+            get
+            {
+                return SettingsProvider?.ShowIconSection == true;
+            }
+            set
+            {
+                if (!Equals(SettingsProvider.ShowIconSection, value))
+                {
+                    SettingsProvider.ShowIconSection = value;
+                    RaisePropertyChanged(nameof(ShowIconSection));
+                }
+            }
+        }
+
+        public bool ShowColorSection
+        {
+            get
+            {
+                return SettingsProvider?.ShowColorSection == true;
+            }
+            set
+            {
+                if (!Equals(SettingsProvider.ShowColorSection, value))
+                {
+                    SettingsProvider.ShowColorSection = value;
+                    RaisePropertyChanged(nameof(ShowColorSection));
+                }
+            }
+        }
+
+        public bool ShowShapeSection
+        {
+            get
+            {
+                return SettingsProvider?.ShowShapeSection == true;
+            }
+            set
+            {
+                if (!Equals(SettingsProvider.ShowShapeSection, value))
+                {
+                    SettingsProvider.ShowShapeSection = value;
+                    RaisePropertyChanged(nameof(ShowShapeSection));
+                }
+            }
+        }
+
+        public bool ShowCheckBoxesSection
+        {
+            get
+            {
+                return SettingsProvider?.ShowCheckBoxesSection == true;
+            }
+            set
+            {
+                if (!Equals(SettingsProvider.ShowCheckBoxesSection, value))
+                {
+                    SettingsProvider.ShowCheckBoxesSection = value;
+                    RaisePropertyChanged(nameof(ShowCheckBoxesSection));
+                }
+            }
         }
 
         public ICommand AddIconCommand
@@ -112,16 +183,13 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 {
                     var node = SelectedNode as Node;
 
-                    if (node != null)
+                    if (x == 0)
                     {
-                        if (x == 0)
-                        {
-                            node.ChangeShapeTransactional(null);
-                        }
-                        else
-                        {
-                            node.ChangeShapeTransactional((NodeShape)(x - 1));
-                        }
+                        node?.ChangeShapeTransactional(null);
+                    }
+                    else
+                    {
+                        node?.ChangeShapeTransactional((NodeShape)(x - 1));
                     }
                 },
                 x => SelectedNode is Node)).DependentOn(this, nameof(SelectedNode));
@@ -152,6 +220,18 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
+        public ICommand ChangeCheckableModeCommand
+        {
+            get
+            {
+                return changeCheckableModeCommand ?? (changeCheckableModeCommand = new RelayCommand<int>(x =>
+                {
+                    SelectedNode.ChangeCheckableModeTransactional((CheckableMode)x);
+                },
+                x => SelectedNode != null).DependentOn(this, nameof(SelectedNode)));
+            }
+        }
+
         public ICommand ChangeIconPositionCommand
         {
             get
@@ -172,7 +252,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 {
                     SelectedNode.ChangeColorTransactional(x);
                 },
-                x => SelectedNode != null && x != null).DependentOn(this, nameof(SelectedNode)));
+                x => SelectedNode != null).DependentOn(this, nameof(SelectedNode)));
             }
         }
 
@@ -188,6 +268,18 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
+        public ICommand ToggleIsCheckableCommand
+        {
+            get
+            {
+                return toggleIsCheckableCommand ?? (toggleIsCheckableCommand = new RelayCommand(() =>
+                {
+                    Document.ToggleCheckableTransactional();
+                },
+                () => Document != null).DependentOn(this, nameof(Document)));
+            }
+        }
+
         public EditorPropertiesViewModel(IMindmapStore mindmapStore, IWin2DRendererProvider rendererProvider)
             : base(mindmapStore, rendererProvider)
         {
@@ -199,29 +291,31 @@ namespace Hercules.App.Modules.Editor.ViewModels
             customColors.Clear();
             customIcons.Clear();
 
-            if (newDocument != null)
+            if (newDocument == null)
             {
-                var recentColors =
-                    newDocument.UndoRedoManager.Commands()
-                        .OfType<ChangeColorCommand>().Select(x => x.NewColor)
-                        .OfType<ValueColor>()
-                        .Distinct();
+                return;
+            }
 
-                foreach (var recent in recentColors)
-                {
-                    customColors.Add(recent);
-                }
+            var recentColors =
+                newDocument.UndoRedoManager.Commands()
+                    .OfType<ChangeColorCommand>().Select(x => x.NewColor)
+                    .OfType<ValueColor>()
+                    .Distinct();
 
-                var recentIcons =
-                    newDocument.UndoRedoManager.Commands()
-                        .OfType<ChangeIconCommand>().Select(x => x.NewIcon)
-                        .OfType<AttachmentIcon>()
-                        .Distinct();
+            foreach (var recent in recentColors)
+            {
+                customColors.Add(recent);
+            }
 
-                foreach (var recent in recentIcons)
-                {
-                    customIcons.Add(recent);
-                }
+            var recentIcons =
+                newDocument.UndoRedoManager.Commands()
+                    .OfType<ChangeIconCommand>().Select(x => x.NewIcon)
+                    .OfType<AttachmentIcon>()
+                    .Distinct();
+
+            foreach (var recent in recentIcons)
+            {
+                customIcons.Add(recent);
             }
         }
 

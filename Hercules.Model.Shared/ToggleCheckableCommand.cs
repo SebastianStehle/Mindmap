@@ -5,33 +5,56 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
+using GP.Utils;
+
+// ReSharper disable UnusedParameter.Local
+
 namespace Hercules.Model
 {
-    public sealed class ToggleCheckableCommand : CommandBase<NodeBase>
+    public sealed class ToggleCheckableCommand : IUndoRedoCommand
     {
+        private readonly Document document;
+
         public ToggleCheckableCommand(PropertiesBag properties, Document document)
-            : base(properties, document)
+            : this(document)
         {
         }
 
-        public ToggleCheckableCommand(NodeBase node)
-            : base(node)
+        public ToggleCheckableCommand(Document document)
         {
+            Guard.NotNull(document, nameof(document));
+
+            this.document = document;
         }
 
-        protected override void Execute(bool isRedo)
+        private void Execute(bool isRedo)
         {
-            Node.ChangeIsCheckable(!Node.IsCheckable);
-
-            if (isRedo)
-            {
-                Node.Select();
-            }
+            document.ChangeIsCheckableDefault(!document.IsCheckableDefault);
         }
 
-        protected override void Revert()
+        private void Revert()
+        {
+            Execute(false);
+        }
+
+        public void Undo()
+        {
+            Revert();
+        }
+
+        public void Redo()
         {
             Execute(true);
+        }
+
+        public void Execute()
+        {
+            Execute(false);
+        }
+
+        public void Save(PropertiesBag properties)
+        {
         }
     }
 }

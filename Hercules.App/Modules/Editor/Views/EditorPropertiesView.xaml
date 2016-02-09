@@ -9,7 +9,7 @@
     xmlns:controls="using:Hercules.App.Controls"
     xmlns:assets="using:Hercules.App.Assets"
     mc:Ignorable="d"
-    d:DesignHeight="600"
+    d:DesignHeight="1000"
     d:DesignWidth="400"
     DataContext="{Binding EditorProperties, Source={StaticResource ViewModelLocator}}" SizeChanged="EditorPropertiesView_OnSizeChanged">
 
@@ -17,7 +17,26 @@
         <controls:NodeIconBitmapConverter x:Key="NodeIconBitmapConverter" />
         
         <assets:AssetProvider x:Key="AssetProvider" />
-
+        
+        <Style x:Key="PropertySelectionStyleAuto" TargetType="GridViewItem">
+            <Setter Property="MinWidth" Value="0" />
+            <Setter Property="MinHeight" Value="0" />
+            <Setter Property="Height" Value="40" />
+            <Setter Property="Width" Value="80" />
+            <Setter Property="Padding" Value="4" />
+            <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}" />
+            <Setter Property="BorderThickness" Value="2" />
+            <Setter Property="HorizontalContentAlignment" Value="Center" />
+            <Setter Property="VerticalContentAlignment" Value="Center" />
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="GridViewItem">
+                        <ListViewItemPresenter CheckBrush="{ThemeResource SystemControlForegroundBaseMediumHighBrush}" ContentMargin="{TemplateBinding Padding}" CheckMode="Overlay" ContentTransitions="{TemplateBinding ContentTransitions}" CheckBoxBrush="{ThemeResource SystemControlBackgroundChromeMediumBrush}" DragForeground="{ThemeResource ListViewItemDragForegroundThemeBrush}" DragOpacity="{ThemeResource ListViewItemDragThemeOpacity}" DragBackground="{ThemeResource ListViewItemDragBackgroundThemeBrush}" DisabledOpacity="{ThemeResource ListViewItemDisabledThemeOpacity}" FocusBorderBrush="{ThemeResource SystemControlForegroundAltHighBrush}" FocusSecondaryBorderBrush="{ThemeResource SystemControlForegroundBaseHighBrush}" HorizontalContentAlignment="{TemplateBinding HorizontalContentAlignment}" PointerOverForeground="{ThemeResource SystemControlForegroundBaseHighBrush}" PressedBackground="{ThemeResource SystemControlHighlightListMediumBrush}" PlaceholderBackground="{ThemeResource ListViewItemPlaceholderBackgroundThemeBrush}" PointerOverBackground="{ThemeResource SystemControlHighlightListLowBrush}" ReorderHintOffset="{ThemeResource GridViewItemReorderHintThemeOffset}" SelectedPressedBackground="{ThemeResource SystemControlHighlightListAccentHighBrush}" SelectionCheckMarkVisualEnabled="True" SelectedForeground="{ThemeResource SystemControlForegroundBaseHighBrush}" SelectedPointerOverBackground="{ThemeResource SystemControlHighlightListAccentMediumBrush}" SelectedBackground="{ThemeResource SystemControlHighlightAccentBrush}" VerticalContentAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+        
         <Style x:Key="PropertySelectionStyle" TargetType="GridViewItem">
             <Setter Property="MinWidth" Value="0" />
             <Setter Property="MinHeight" Value="0" />
@@ -57,16 +76,21 @@
             </Setter>
         </Style>
 
+        <Style x:Key="SeparatorStyle" TargetType="Border">
+            <Setter Property="Margin" Value="0,15,0,15" />
+            <Setter Property="BorderBrush" Value="#CCCCCC" />
+            <Setter Property="BorderThickness" Value="0,0,0,1" />
+        </Style>
+
         <Style x:Key="PropertyHeaderStyle" TargetType="TextBlock">
-            <Setter Property="FontSize" Value="18" />
+            <Setter Property="FontSize" Value="15" />
             <Setter Property="FontFamily" Value="{ThemeResource PivotHeaderItemFontFamily}" />
             <Setter Property="FontWeight" Value="{ThemeResource PivotHeaderItemThemeFontWeight}" />
             <Setter Property="CharacterSpacing" Value="{ThemeResource PivotHeaderItemCharacterSpacing}" />
             <Setter Property="Margin" Value="0,0,0,8" />
         </Style>
-
-        <Style x:Key="PropertySectionStyle" TargetType="Border">
-            <Setter Property="Padding" Value="15" />
+        
+        <Style x:Key="BorderedSection" TargetType="Control">
             <Setter Property="BorderBrush" Value="#CCCCCC" />
             <Setter Property="BorderThickness" Value="0,0,0,1" />
         </Style>
@@ -74,7 +98,7 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden">
         <StackPanel x:Name="Root">
-            <Border Style="{StaticResource PropertySectionStyle}">
+            <gpc:ExpandableContentControl x:Uid="Properties_ColorSection" Style="{StaticResource BorderedSection}" Header="Color"  IsExpanded="{Binding ShowColorSection, Mode=TwoWay}">
                 <StackPanel>
                     <GridView ItemsSource="{Binding ThemeColors}" Style="{StaticResource PropertyGridStyle}" MaxWidth="200" HorizontalAlignment="Left">
                         <i:Interaction.Behaviors>
@@ -99,12 +123,10 @@
 
                     <gpc:ColorPickerButton x:Uid="Properties_ColorPickerButton" Command="{Binding AddColorCommand}" ButtonContent="Add" SelectionButtonContent="Select" Margin="0,10,0,0" />
                 </StackPanel>
-            </Border>
+            </gpc:ExpandableContentControl>
 
-            <Border Style="{StaticResource PropertySectionStyle}" >
+            <gpc:ExpandableContentControl x:Uid="Properties_ShapeSection" Style="{StaticResource BorderedSection}" Header="Shape" IsExpanded="{Binding ShowCheckBoxesSection, Mode=TwoWay}">
                 <StackPanel>
-                    <TextBlock x:Uid="Properties_ShapesHeader" Text="Shape" Style="{StaticResource PropertyHeaderStyle}" />
-
                     <GridView ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
                             <gpi:SelectionBehavior SelectedIndexCommand="{Binding ChangeShapeCommand}" />
@@ -141,16 +163,16 @@
                             </StackPanel>
                         </GridView.Items>
                     </GridView>
-                </StackPanel>
-            </Border>
 
-            <Border Style="{StaticResource PropertySectionStyle}">
-                <StackPanel>
-                    <Button x:Uid="Properties_HullButton" Content="Toggle Hull" Command="{Binding ToggleHullCommand}" />
-                </StackPanel>
-            </Border>
+                    <Border Style="{StaticResource SeparatorStyle}" />
 
-            <Border Style="{StaticResource PropertySectionStyle}">
+                    <Button x:Uid="Properties_HullButton" 
+                        Content="Toggle Hull" 
+                        Command="{Binding ToggleHullCommand}" />
+                </StackPanel>
+            </gpc:ExpandableContentControl>
+
+            <gpc:ExpandableContentControl x:Uid="Properties_IconSection" Style="{StaticResource BorderedSection}" Header="Icon" IsExpanded="{Binding ShowIconSection, Mode=TwoWay}">
                 <StackPanel>
                     <GridView ItemsSource="{Binding Source={StaticResource AssetProvider}, Path=None}" SelectedIndex="0" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
@@ -191,15 +213,20 @@
                         </GridView.ItemTemplate>
                     </GridView>
 
-                    <Button x:Uid="Properties_AddIconButton" Content="Open File" Command="{Binding AddIconCommand}" Margin="0,10,0,0" />
+                    <Button x:Uid="Properties_AddIconButton" 
+                        Content="Open File" 
+                        Command="{Binding AddIconCommand}" Margin="0,10,0,0" />
 
-                    <TextBlock x:Uid="Properties_AddIconHint" Foreground="Gray" TextWrapping="Wrap" Margin="0,6,0,0" Text="Icons Hint" FontSize="12" LineHeight="16" />
-                </StackPanel>
-            </Border>
+                    <TextBlock x:Uid="Properties_AddIconHint" 
+                        Foreground="Gray"
+                        FontSize="12"
+                        TextWrapping="Wrap" Margin="0,6,0,0" 
+                        Text="Icons Hint" LineHeight="16" />
 
-            <Border Style="{StaticResource PropertySectionStyle}">
-                <StackPanel>
-                    <TextBlock x:Uid="Properties_IconPositionHeader" Text="Icon Placement" Style="{StaticResource PropertyHeaderStyle}" />
+                    <Border Style="{StaticResource SeparatorStyle}" />
+
+                    <TextBlock x:Uid="Properties_IconPositionHeader" Text="Icon Position" 
+                        Style="{StaticResource PropertyHeaderStyle}" />
 
                     <GridView SelectedIndex="{Binding SelectedNode.IconPosition, Converter={StaticResource ValueToIntConverter}, Mode=TwoWay}" ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
@@ -267,13 +294,12 @@
                             </Grid>
                         </GridView.Items>
                     </GridView>
-                </StackPanel>
-            </Border>
 
-            <Border Style="{StaticResource PropertySectionStyle}">
-                <StackPanel>
-                    <TextBlock x:Uid="Properties_IconSizeHeader" Text="Icon Size" Style="{StaticResource PropertyHeaderStyle}" />
+                    <Border Style="{StaticResource SeparatorStyle}" />
 
+                    <TextBlock x:Uid="Properties_IconSizeHeader" Text="Icon Size" 
+                        Style="{StaticResource PropertyHeaderStyle}" />
+                    
                     <GridView SelectedIndex="{Binding SelectedNode.IconSize, Converter={StaticResource ValueToIntConverter}, Mode=TwoWay}" ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
                             <gpi:SelectionBehavior SelectedIndexCommand="{Binding ChangeIconSizeCommand}" />
@@ -305,7 +331,36 @@
                         </GridView.Items>
                     </GridView>
                 </StackPanel>
-            </Border>
+            </gpc:ExpandableContentControl>
+            <gpc:ExpandableContentControl x:Uid="Properties_CheckBoxesSection" Header="Checkboxes" IsExpanded="{Binding ShowCheckBoxesSection, Mode=TwoWay}">
+                <StackPanel>
+                    <Button x:Uid="Properties_ToggleIsCheckableButton" 
+                        Content="Show/Hide Checkboxes" 
+                        Command="{Binding ToggleIsCheckableCommand}" />
+
+                    <Border Style="{StaticResource SeparatorStyle}" />
+
+                    <TextBlock x:Uid="Properties_ShowNodeCheckBoxes" Text="Node Checkboxes" 
+                        Style="{StaticResource PropertyHeaderStyle}" />
+
+                    <GridView SelectedIndex="{Binding SelectedNode.CheckableMode, Converter={StaticResource ValueToIntConverter}, Mode=TwoWay}" ItemContainerStyle="{StaticResource PropertySelectionStyleAuto}" Style="{StaticResource PropertyGridStyle}">
+                        <i:Interaction.Behaviors>
+                            <gpi:SelectionBehavior SelectedIndexCommand="{Binding ChangeCheckableModeCommand}" />
+                        </i:Interaction.Behaviors>
+                        <GridView.Items>
+                            <TextBlock x:Uid="Properties_CheckableDefault" Text="Default" />
+                            <TextBlock x:Uid="Properties_CheckableEnabled" Text="Enabled" />
+                            <TextBlock x:Uid="Properties_CheckableDisabled" Text="Disabled" />
+                        </GridView.Items>
+                    </GridView>
+
+                    <TextBlock x:Uid="Properties_CheckBoxesHint" 
+                        Foreground="Gray"
+                        FontSize="12"
+                        TextWrapping="Wrap" Margin="0,6,0,0" 
+                        Text="Icons Hint" LineHeight="16" />
+                </StackPanel>
+            </gpc:ExpandableContentControl>
         </StackPanel>
     </ScrollViewer>
 </UserControl>

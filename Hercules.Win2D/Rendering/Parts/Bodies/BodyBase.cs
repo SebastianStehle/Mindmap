@@ -23,7 +23,7 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
     {
         protected const float ButtonRadius = 10;
         protected const float CheckBoxSize = 20;
-        protected const float CheckBoxMargin = 4;
+        protected const float CheckBoxMargin = 6;
         protected const float MinHeight = 36;
         protected const float IconSizeLarge = 160;
         protected const float IconSizeMedium = 64;
@@ -237,7 +237,7 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
 
         private static bool MustRenderCheckBox(IRenderable renderable)
         {
-            return renderable.Node.IsCheckable;
+             return renderable.Node.IsCheckable;
         }
 
         private static bool MustRenderButton(IRenderable renderable)

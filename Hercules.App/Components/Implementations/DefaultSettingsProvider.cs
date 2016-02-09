@@ -26,9 +26,57 @@ namespace Hercules.App.Components.Implementations
             }
         }
 
-        private bool GetBoolean(string key)
+        public bool ShowIconSection
         {
-            return ToBoolean(settings.Values[key]);
+            get
+            {
+                return GetBoolean(nameof(ShowIconSection), true);
+            }
+            set
+            {
+                SetBoolean(nameof(ShowIconSection), value);
+            }
+        }
+
+        public bool ShowColorSection
+        {
+            get
+            {
+                return GetBoolean(nameof(ShowColorSection), true);
+            }
+            set
+            {
+                SetBoolean(nameof(ShowColorSection), value);
+            }
+        }
+
+        public bool ShowShapeSection
+        {
+            get
+            {
+                return GetBoolean(nameof(ShowShapeSection), true);
+            }
+            set
+            {
+                SetBoolean(nameof(ShowShapeSection), value);
+            }
+        }
+
+        public bool ShowCheckBoxesSection
+        {
+            get
+            {
+                return GetBoolean(nameof(ShowCheckBoxesSection), true);
+            }
+            set
+            {
+                SetBoolean(nameof(ShowCheckBoxesSection), value);
+            }
+        }
+
+        private bool GetBoolean(string key, bool defaultValue = false)
+        {
+            return ToBoolean(settings.Values[key], defaultValue);
         }
 
         private void SetBoolean(string key, bool value)
@@ -36,9 +84,9 @@ namespace Hercules.App.Components.Implementations
             settings.Values[key] = value;
         }
 
-        private static bool ToBoolean(object value)
+        private static bool ToBoolean(object value, bool defaultValue)
         {
-            return value != null && (bool)value;
+            return (bool?)value ?? defaultValue;
         }
     }
 }

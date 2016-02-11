@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using System.Linq;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GP.Utils;
@@ -39,6 +40,9 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
         [NotifyUI]
         public bool ShowHelp { get; set; }
+
+        [NotifyUI]
+        public string CheckedState { get; set; }
 
         [Dependency]
         public IMindmapPrintService PrintService { get; set; }
@@ -238,11 +242,41 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
 
             UpdateUndoRedo();
+            UpdateCheckedState();
         }
 
         private void UndoRedoManager_StateChanged(object sender, EventArgs e)
         {
             UpdateUndoRedo();
+            UpdateCheckedState();
+        }
+
+        private void UpdateCheckedState()
+        {
+            string text = null;
+
+            if (Document != null)
+            {
+                int checkableCount = 0;
+                int checkedCount = 0;
+
+                foreach (NodeBase node in Document.Nodes.Where(node => node.IsCheckable))
+                {
+                    checkableCount++;
+
+                    if (node.IsChecked)
+                    {
+                        checkedCount++;
+                    }
+                }
+
+                if (checkableCount > 0)
+                {
+                    text = LocalizationManager.TryGetFormattedString("Editor_Checked", checkedCount, checkableCount, (float)checkedCount / checkableCount);
+                }
+            }
+
+            CheckedState = text;
         }
 
         private void UpdateUndoRedo()

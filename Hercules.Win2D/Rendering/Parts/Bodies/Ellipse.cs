@@ -54,6 +54,8 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
             RenderIcon(renderable, session);
             RenderText(renderable, session);
 
+            RenderCheckBox(renderable, session);
+
             if (!renderControls)
             {
                 return;
@@ -71,7 +73,6 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
                     borderBrush, 2f, SelectionStrokeStyle);
             }
 
-            RenderCheckBox(renderable, session);
             RenderButton(renderable, session);
         }
 

@@ -462,4 +462,7 @@ The maximum allowed size is a 200x200 pixels.</value>
   <data name="TransactionName_ChangeCheckableMode" xml:space="preserve">
     <value>Change Checkable Mode</value>
   </data>
+  <data name="Editor_Checked" xml:space="preserve">
+    <value>{0} of {1} topics checked ({2:P})</value>
+  </data>
 </root>

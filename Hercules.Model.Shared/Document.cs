@@ -102,7 +102,7 @@ namespace Hercules.Model
             {
                 if (!Equals(isCheckableDefault, value))
                 {
-                    isCheckableDefault = true;
+                    isCheckableDefault = value;
                     OnPropertyChanged(nameof(IsCheckableDefault));
                 }
             }

@@ -26,7 +26,7 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
 
         protected override Vector2 CalculatePadding(Win2DRenderable renderable, Vector2 contentSize)
         {
-            return new Vector2(8, 4);
+            return new Vector2(12, 4);
         }
 
         public override void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderSelection)
@@ -56,6 +56,8 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
             RenderIcon(renderable, session);
             RenderText(renderable, session);
 
+            RenderCheckBox(renderable, session);
+
             if (!renderSelection)
             {
                 return;
@@ -75,7 +77,6 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
                 }
             }
 
-            RenderCheckBox(renderable, session);
             RenderButton(renderable, session);
         }
     }

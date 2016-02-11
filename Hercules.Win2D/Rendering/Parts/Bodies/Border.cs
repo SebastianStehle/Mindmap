@@ -66,6 +66,8 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
             RenderIcon(renderable, session);
             RenderText(renderable, session);
 
+            RenderCheckBox(renderable, session);
+
             if (!renderControls)
             {
                 return;
@@ -76,7 +78,6 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
                 session.DrawRoundedRectangle(renderable.RenderBounds.ToRect(), 5, 5, borderBrush, 2f, SelectionStrokeStyle);
             }
 
-            RenderCheckBox(renderable, session);
             RenderButton(renderable, session);
         }
 

@@ -52,7 +52,7 @@ namespace Hercules.Win2D.Rendering.Utils
 
         public void Render(Win2DRenderable renderable, CanvasDrawingSession session)
         {
-            using (session.Transform(Matrix3x2.CreateTranslation(renderPosition)))
+            using (session.StackTransform(Matrix3x2.CreateTranslation(renderPosition)))
             {
                 session.FillRectangle(0, 0, renderSize.X, renderSize.Y, Colors.White);
                 session.DrawRectangle(0, 0, renderSize.X, renderSize.Y, Colors.Black);

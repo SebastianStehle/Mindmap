@@ -26,8 +26,8 @@ exit /b %errorlevel%
 "%~dp0\packages\OpenCover.4.6.519\tools\OpenCover.Console.exe" ^
 -register:user ^
 -target:"%~dp0\packages\xunit.runner.console.2.1.0\tools\xunit.console.exe" ^
--targetargs:"Tests\bin\Debug\Tests.dll" ^
--filter:"+[GP*]* +[Hercules*]*" ^
+-targetargs:"Tests\bin\Debug\Tests.dll -noshadow" ^
+-filter:"+[GP*]* +[Hercules*]* -[*]*FileExtension*" ^
 -skipautoprops ^
 -output:"%~dp0\GeneratedReports\Mindapp.xml"
 exit /b %errorlevel%

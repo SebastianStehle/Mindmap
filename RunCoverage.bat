@@ -29,12 +29,12 @@ exit /b %errorlevel%
 -targetargs:"Tests\bin\Debug\Tests.dll" ^
 -filter:"+[GP*]* +[Hercules*]*" ^
 -skipautoprops ^
--output:"%~dp0\GeneratedReports\Minapp.xml"
+-output:"%~dp0\GeneratedReports\Mindapp.xml"
 exit /b %errorlevel%
 
 :RunReportGeneratorOutput
 "%~dp0packages\ReportGenerator.2.4.2.0\tools\ReportGenerator.exe" ^
--reports:"%~dp0\GeneratedReports\Minapp.xml" ^
+-reports:"%~dp0\GeneratedReports\Mindapp.xml" ^
 -targetdir:"%~dp0\GeneratedReports\Output"
 exit /b %errorlevel%
  

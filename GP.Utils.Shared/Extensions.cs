@@ -193,11 +193,8 @@ namespace GP.Utils
         /// <returns>
         /// The value from the dictionary.
         /// </returns>
-        /// <exception cref="ArgumentNullException">
-        ///     <paramref name="dictionary"/> is null.
-        ///     - or -
-        ///     <paramref name="function"/> is null.
-        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="dictionary"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="function"/> is null.</exception>
         public static TValue GetOrCreateDefault<TKey, TValue>(this Dictionary<TKey, TValue> dictionary, TKey key, Func<TValue> function)
         {
             Guard.NotNull(dictionary, nameof(dictionary));

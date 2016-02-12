@@ -1,22 +1,17 @@
 ﻿// ==========================================================================
-// Rectangle.cs
+// IClickablePart.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-namespace Hercules.Win2D.Rendering.Geometries.Bodies
-{
-    public sealed class Rectangle : RectangleBase
-    {
-        public Rectangle()
-            : base(0)
-        {
-        }
 
-        public override IBodyGeometry Clone()
-        {
-            return new Rectangle();
-        }
+using System.Numerics;
+
+namespace Hercules.Win2D.Rendering.Parts
+{
+    public interface IClickablePart
+    {
+        bool HandleClick(Win2DRenderable renderable, Vector2 hitPosition);
     }
 }

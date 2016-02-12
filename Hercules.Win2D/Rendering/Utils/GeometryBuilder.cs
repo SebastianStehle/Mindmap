@@ -31,25 +31,27 @@ namespace Hercules.Win2D.Rendering.Utils
 
             NodeBase node = renderNode.Node;
 
-            if (node.HasChildren && !node.IsCollapsed)
+            if (!node.HasChildren || node.IsCollapsed)
             {
-                IList<Rect2> childBounds =
-                    node.AllChildren()
-                        .Select(x => (Win2DRenderNode)scene.FindRenderNode(x)).Union(new[] { renderNode }).Where(x => x.IsVisible)
-                        .Select(x => Rect2.Inflate(new Rect2(x.TargetLayoutPosition, x.RenderSize), new Vector2(Padding, Padding)))
-                        .ToList();
-
-                if (childBounds.Count > 0)
-                {
-                    ConvexHull hull = ConvexHull.Compute(childBounds);
-
-                    List<Vector2> points = RoundCorners(hull);
-
-                    return BuildGeometry(resourceCreator, points);
-                }
+                return null;
             }
 
-            return null;
+            IList<Rect2> childBounds =
+                node.AllChildren()
+                    .Select(x => (Win2DRenderNode)scene.FindRenderNode(x)).Union(new[] { renderNode }).Where(x => x.IsVisible)
+                    .Select(x => Rect2.Inflate(new Rect2(x.TargetLayoutPosition, x.RenderSize), new Vector2(Padding, Padding)))
+                    .ToList();
+
+            if (childBounds.Count <= 0)
+            {
+                return null;
+            }
+
+            ConvexHull hull = ConvexHull.Compute(childBounds);
+
+            List<Vector2> points = RoundCorners(hull);
+
+            return BuildGeometry(resourceCreator, points);
         }
 
         private static List<Vector2> RoundCorners(ConvexHull hull)
@@ -109,34 +111,34 @@ namespace Hercules.Win2D.Rendering.Utils
             Guard.NotNull(target, nameof(target));
             Guard.NotNull(resourceCreator, nameof(resourceCreator));
 
-            if (parent != null && target.IsVisible)
+            if (parent == null || !target.IsVisible)
             {
-                Rect2 targetRect = target.RenderBounds;
-                Rect2 parentRect = parent.RenderBounds;
-
-                float targetOffset = target.VerticalPathRenderOffset;
-
-                Vector2 point1 = Vector2.Zero;
-                Vector2 point2 = Vector2.Zero;
-
-                CalculateCenter(parentRect, ref point1);
-
-                if (targetRect.CenterX > parentRect.CenterX)
-                {
-                    CalculateCenterL(targetRect, ref point2, targetOffset);
-                }
-                else
-                {
-                    CalculateCenterR(targetRect, ref point2, targetOffset);
-                }
-
-                MathHelper.Round(ref point1);
-                MathHelper.Round(ref point2);
-
-                return CreateFilledPath(resourceCreator, point1, point2);
+                return null;
             }
 
-            return null;
+            Rect2 targetRect = target.RenderBounds;
+            Rect2 parentRect = parent.RenderBounds;
+
+            float targetOffset = target.VerticalPathRenderOffset;
+
+            Vector2 point1 = Vector2.Zero;
+            Vector2 point2 = Vector2.Zero;
+
+            CalculateCenter(parentRect, ref point1);
+
+            if (targetRect.CenterX > parentRect.CenterX)
+            {
+                CalculateCenterL(targetRect, ref point2, targetOffset);
+            }
+            else
+            {
+                CalculateCenterR(targetRect, ref point2, targetOffset);
+            }
+
+            MathHelper.Round(ref point1);
+            MathHelper.Round(ref point2);
+
+            return CreateFilledPath(resourceCreator, point1, point2);
         }
 
         private static CanvasGeometry CreateFilledPath(ICanvasResourceCreator session, Vector2 point1, Vector2 point2)
@@ -168,35 +170,35 @@ namespace Hercules.Win2D.Rendering.Utils
             Guard.NotNull(target, nameof(target));
             Guard.NotNull(resourceCreator, nameof(resourceCreator));
 
-            if (parent != null && target.IsVisible)
+            if (parent == null || !target.IsVisible)
             {
-                Rect2 targetRect = target.RenderBounds;
-                Rect2 parentRect = parent.RenderBounds;
-
-                float targetOffset = target.VerticalPathRenderOffset;
-                float parentOffset = parent.VerticalPathRenderOffset;
-
-                Vector2 point1 = Vector2.Zero;
-                Vector2 point2 = Vector2.Zero;
-
-                if (targetRect.CenterX > parentRect.CenterX)
-                {
-                    CalculateCenterR(parentRect, ref point1, parentOffset);
-                    CalculateCenterL(targetRect, ref point2, targetOffset);
-                }
-                else
-                {
-                    CalculateCenterL(parentRect, ref point1, parentOffset);
-                    CalculateCenterR(targetRect, ref point2, targetOffset);
-                }
-
-                MathHelper.Round(ref point1);
-                MathHelper.Round(ref point2);
-
-                return CreateLinePath(resourceCreator, point1, point2);
+                return null;
             }
 
-            return null;
+            Rect2 targetRect = target.RenderBounds;
+            Rect2 parentRect = parent.RenderBounds;
+
+            float targetOffset = target.VerticalPathRenderOffset;
+            float parentOffset = parent.VerticalPathRenderOffset;
+
+            Vector2 point1 = Vector2.Zero;
+            Vector2 point2 = Vector2.Zero;
+
+            if (targetRect.CenterX > parentRect.CenterX)
+            {
+                CalculateCenterR(parentRect, ref point1, parentOffset);
+                CalculateCenterL(targetRect, ref point2, targetOffset);
+            }
+            else
+            {
+                CalculateCenterL(parentRect, ref point1, parentOffset);
+                CalculateCenterR(targetRect, ref point2, targetOffset);
+            }
+
+            MathHelper.Round(ref point1);
+            MathHelper.Round(ref point2);
+
+            return CreateLinePath(resourceCreator, point1, point2);
         }
 
         private static CanvasGeometry CreateLinePath(ICanvasResourceCreator resourceCreator, Vector2 point1, Vector2 point2)

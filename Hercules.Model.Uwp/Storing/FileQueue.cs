@@ -20,12 +20,35 @@ namespace Hercules.Model.Storing
 {
     internal static class FileQueue
     {
+        private const string FolderName = "Mindapp";
         private static readonly LimitedConcurrencyLevelTaskScheduler Scheduler = new LimitedConcurrencyLevelTaskScheduler(1, z => ThreadPool.RunAsync(x => z(), WorkItemPriority.Normal).Forget());
         private static readonly TaskFactory TaskFactory;
+        private static StorageFolder mindappsFolder;
 
         static FileQueue()
         {
             TaskFactory = new TaskFactory(Scheduler);
+        }
+
+        public static async Task<StorageFolder> GetStorageFolderAsync()
+        {
+            if (mindappsFolder != null)
+            {
+                return mindappsFolder;
+            }
+
+            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+
+            try
+            {
+                mindappsFolder = await localFolder.CreateFolderAsync(FolderName);
+            }
+            catch
+            {
+                mindappsFolder = await localFolder.GetFolderAsync(FolderName);
+            }
+
+            return mindappsFolder;
         }
 
         public static Task EnqueueAsync(Func<Task> action)

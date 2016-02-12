@@ -53,71 +53,79 @@ namespace Hercules.App.Controls
 
         public void BeginEdit(Win2DRenderNode renderNode)
         {
-            if (renderNode != null)
+            if (renderNode == null)
             {
-                if (editingNode != renderNode)
-                {
-                    EndEdit(false);
-
-                    editingNode = renderNode;
-                }
-
-                UpdateText();
-
-                Show();
+                return;
             }
+
+            if (editingNode != renderNode)
+            {
+                EndEdit(false);
+
+                editingNode = renderNode;
+            }
+
+            UpdateText();
+
+            Show();
         }
 
         public void EndEdit(bool invokeEvent)
         {
-            if (editingNode != null)
+            if (editingNode == null)
             {
-                try
-                {
-                    editingNode.Node.ChangeTextTransactional(Text);
-                }
-                finally
-                {
-                    CancelEdit(invokeEvent);
-                }
+                return;
+            }
+
+            try
+            {
+                editingNode.Node.ChangeTextTransactional(Text);
+            }
+            finally
+            {
+                CancelEdit(invokeEvent);
             }
         }
 
         public void CancelEdit(bool invokeEvent)
         {
-            if (editingNode != null)
+            if (editingNode == null)
             {
-                Hide();
+                return;
+            }
 
-                editingNode = null;
+            Hide();
 
-                if (invokeEvent)
-                {
-                    OnEditingEnded();
-                }
+            editingNode = null;
+
+            if (invokeEvent)
+            {
+                OnEditingEnded();
             }
         }
 
         public void Transform()
         {
-            if (editingNode != null)
+            if (editingNode == null)
             {
-                Vector2 position = editingNode.TextRenderer.RenderPosition;
-
-                renderTransform.X = position.X - Padding.Left - BorderThickness.Left;
-                renderTransform.Y = position.Y - Padding.Top  - BorderThickness.Top;
-
-                Vector2 renderSize = editingNode.TextRenderer.RenderSize;
-
-                MinWidth =
-                    renderSize.X +
-                    Padding.Left +
-                    Padding.Right +
-                    BorderThickness.Left +
-                    BorderThickness.Right;
-
-                MinHeight = renderSize.Y + Padding.Top + Padding.Bottom + BorderThickness.Top + BorderThickness.Bottom;
+                return;
             }
+
+            Vector2 position = editingNode.TextRenderer.RenderPosition;
+
+            renderTransform.X = position.X - Padding.Left - BorderThickness.Left;
+            renderTransform.Y = position.Y - Padding.Top  - BorderThickness.Top;
+
+            Vector2 renderSize = editingNode.TextRenderer.RenderSize;
+
+            MinWidth =
+                renderSize.X +
+                Padding.Left +
+                Padding.Right +
+                BorderThickness.Left +
+                BorderThickness.Right;
+
+            MinHeight = renderSize.Y + Padding.Top + Padding.Bottom + BorderThickness.Top + BorderThickness.Bottom;
         }
 
         private void UpdateText()

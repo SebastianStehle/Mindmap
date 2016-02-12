@@ -11,7 +11,7 @@ using System.Numerics;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 
-namespace Hercules.Win2D.Rendering.Geometries.Bodies
+namespace Hercules.Win2D.Rendering.Parts.Bodies
 {
     public sealed class Ellipse : BodyBase
     {
@@ -54,7 +54,14 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             RenderIcon(renderable, session);
             RenderText(renderable, session);
 
-            if (renderControls && renderable.Node.IsSelected)
+            RenderCheckBox(renderable, session);
+
+            if (!renderControls)
+            {
+                return;
+            }
+
+            if (renderable.Node.IsSelected)
             {
                 radiusX -= SelectionMargin.X;
                 radiusY -= SelectionMargin.Y;
@@ -65,9 +72,11 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
                     radiusY,
                     borderBrush, 2f, SelectionStrokeStyle);
             }
+
+            RenderButton(renderable, session);
         }
 
-        public override IBodyGeometry Clone()
+        public override IBodyPart Clone()
         {
             return new Ellipse();
         }

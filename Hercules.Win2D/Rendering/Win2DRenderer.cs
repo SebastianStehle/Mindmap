@@ -170,14 +170,16 @@ namespace Hercules.Win2D.Rendering
         {
             ILayout layout = Document?.Layout;
 
-            if (layout != null)
+            if (layout == null)
             {
-                scene.UpdateLayout(resourceCreator, layout);
+                return;
+            }
 
-                if (scene.UpdateArrangement(resourceCreator, true))
-                {
-                    canvas.Invalidate();
-                }
+            scene.UpdateLayout(resourceCreator, layout);
+
+            if (scene.UpdateArrangement(resourceCreator, true))
+            {
+                canvas.Invalidate();
             }
         }
 

@@ -12,7 +12,7 @@ using GP.Utils.Mathematics;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 
-namespace Hercules.Win2D.Rendering.Geometries.Bodies
+namespace Hercules.Win2D.Rendering.Parts.Bodies
 {
     public abstract class RectangleBase : BodyBase
     {
@@ -26,7 +26,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
 
         protected override Vector2 CalculatePadding(Win2DRenderable renderable, Vector2 contentSize)
         {
-            return new Vector2(8, 4);
+            return new Vector2(12, 4);
         }
 
         public override void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderSelection)
@@ -56,7 +56,14 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             RenderIcon(renderable, session);
             RenderText(renderable, session);
 
-            if (renderSelection && renderable.Node.IsSelected)
+            RenderCheckBox(renderable, session);
+
+            if (!renderSelection)
+            {
+                return;
+            }
+
+            if (renderable.Node.IsSelected)
             {
                 Rect rect = Rect2.Deflate(renderable.RenderBounds, SelectionMargin).ToRect();
 
@@ -69,6 +76,8 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
                     session.DrawRectangle(rect, borderBrush, 2f, SelectionStrokeStyle);
                 }
             }
+
+            RenderButton(renderable, session);
         }
     }
 }

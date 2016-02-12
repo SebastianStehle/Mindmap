@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// FilledPath.cs
+// LinePath.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -12,23 +12,23 @@ using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
-namespace Hercules.Win2D.Rendering.Geometries.Paths
+namespace Hercules.Win2D.Rendering.Parts.Paths
 {
-    public class FilledPath : GeometryPathBase
+    public class LinePath : GeometryPathBase
     {
-        public FilledPath(Color color, float opacity = 1)
-            : base(color, opacity)
+        public LinePath(Color strokeColor, float opacity = 1)
+            : base(strokeColor, opacity)
         {
         }
 
         protected override CanvasGeometry CreateGeometry(Win2DRenderNode renderNode, ICanvasResourceCreator resourceCreator)
         {
-            return GeometryBuilder.ComputeFilledPath(renderNode, renderNode.Parent, resourceCreator);
+            return GeometryBuilder.ComputeLinePath(renderNode, renderNode.Parent, resourceCreator);
         }
 
-        protected override void RenderGeometry(Win2DRenderable renderable, CanvasDrawingSession session, CanvasGeometry geometry, ICanvasBrush brush)
+        protected override void RenderInternal(Win2DRenderable renderable, CanvasDrawingSession session, CanvasGeometry geometry, ICanvasBrush brush)
         {
-            session.FillGeometry(geometry, brush);
+            session.DrawGeometry(geometry, brush, 2);
         }
     }
 }

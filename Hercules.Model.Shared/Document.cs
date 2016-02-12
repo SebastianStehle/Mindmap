@@ -13,6 +13,8 @@ using System.Numerics;
 using Hercules.Model.Layouting;
 using Hercules.Model.Layouting.HorizontalStraight;
 
+// ReSharper disable InvertIf
+
 namespace Hercules.Model
 {
     public sealed class Document : DocumentObject, IDocumentCommands
@@ -23,6 +25,7 @@ namespace Hercules.Model
         private readonly IUndoRedoManager undoRedoManager = new UndoRedoManager();
         private readonly ILayout layout = HorizontalStraightLayout.Instance;
         private readonly Vector2 size = new Vector2(20000, 12000);
+        private bool isCheckableDefault;
         private CompositeUndoRedoAction transaction;
         private NodeBase selectedNode;
 
@@ -89,6 +92,22 @@ namespace Hercules.Model
             get { return transaction != null; }
         }
 
+        public bool IsCheckableDefault
+        {
+            get
+            {
+                return isCheckableDefault;
+            }
+            private set
+            {
+                if (!Equals(isCheckableDefault, value))
+                {
+                    isCheckableDefault = value;
+                    OnPropertyChanged(nameof(IsCheckableDefault));
+                }
+            }
+        }
+
         public Document(Guid id)
         {
             root = new RootNode(id);
@@ -109,6 +128,11 @@ namespace Hercules.Model
             }
 
             return document;
+        }
+
+        internal void ChangeIsCheckableDefault(bool newIsCheckableDefault)
+        {
+            IsCheckableDefault = newIsCheckableDefault;
         }
 
         internal void Add(Node newNode)

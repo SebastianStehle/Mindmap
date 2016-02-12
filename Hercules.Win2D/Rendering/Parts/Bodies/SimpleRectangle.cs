@@ -12,7 +12,7 @@ using GP.Utils.Mathematics;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
 
-namespace Hercules.Win2D.Rendering.Geometries.Bodies
+namespace Hercules.Win2D.Rendering.Parts.Bodies
 {
     public sealed class SimpleRectangle : BodyBase
     {
@@ -49,7 +49,7 @@ namespace Hercules.Win2D.Rendering.Geometries.Bodies
             session.FillRectangle(renderable.RenderBounds.ToRect(), brush);
         }
 
-        public override IBodyGeometry Clone()
+        public override IBodyPart Clone()
         {
             return new SimpleRectangle(size);
         }

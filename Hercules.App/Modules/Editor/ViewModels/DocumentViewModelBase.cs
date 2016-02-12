@@ -14,6 +14,8 @@ using Hercules.Model;
 using Hercules.Win2D.Rendering;
 using PropertyChanged;
 
+// ReSharper disable InvertIf
+
 namespace Hercules.App.Modules.Editor.ViewModels
 {
     [ImplementPropertyChanged]
@@ -94,6 +96,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 oldDocument.NodeSelected -= Document_NodeSelected;
             }
+
             if (newDocument != null)
             {
                 newDocument.NodeSelected += Document_NodeSelected;

@@ -10,19 +10,16 @@ using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
 
-namespace Hercules.Win2D.Rendering.Geometries.Hulls
+namespace Hercules.Win2D.Rendering.Parts.Hulls
 {
-    public class RoundedPolygonHull : IHullGeometry
+    public class RoundedPolygonHull : IHullPart
     {
         private CanvasGeometry hullGeometry;
 
         public void ClearResources()
         {
-            if (hullGeometry != null)
-            {
-                hullGeometry.Dispose();
-                hullGeometry = null;
-            }
+            hullGeometry?.Dispose();
+            hullGeometry = null;
         }
 
         public void Arrange(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
@@ -37,14 +34,15 @@ namespace Hercules.Win2D.Rendering.Geometries.Hulls
             }
         }
 
-        public void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color)
+        public void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderControls)
         {
-            if (hullGeometry != null)
+            if (hullGeometry == null)
             {
-                session.DrawGeometry(hullGeometry, renderable.Resources.Brush(color.Normal, 1.0f), 1f);
-
-                session.FillGeometry(hullGeometry, renderable.Resources.Brush(color.Lighter, 0.5f));
+                return;
             }
+
+            session.DrawGeometry(hullGeometry, renderable.Resources.Brush(color.Normal, 1.0f), 1f);
+            session.FillGeometry(hullGeometry, renderable.Resources.Brush(color.Lighter, 0.5f));
         }
     }
 }

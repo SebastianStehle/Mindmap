@@ -1,23 +1,22 @@
 ﻿// ==========================================================================
-// ISettingsProvider.cs
+// RoundedRectangle.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
-namespace Hercules.App.Components
+namespace Hercules.Win2D.Rendering.Parts.Bodies
 {
-    public interface ISettingsProvider
+    public sealed class RoundedRectangle : RectangleBase
     {
-        bool IsAlreadyStarted { get; set; }
+        public RoundedRectangle()
+            : base(10)
+        {
+        }
 
-        bool ShowIconSection { get; set; }
-
-        bool ShowColorSection { get; set; }
-
-        bool ShowShapeSection { get; set; }
-
-        bool ShowCheckBoxesSection { get; set; }
+        public override IBodyPart Clone()
+        {
+            return new RoundedRectangle();
+        }
     }
 }

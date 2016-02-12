@@ -9,6 +9,8 @@
 using System;
 using System.Collections.Generic;
 
+// ReSharper disable InvertIf
+
 namespace Hercules.Model
 {
     public abstract class NodeBase : DocumentObjectWithId
@@ -16,6 +18,7 @@ namespace Hercules.Model
         private Document document;
         private NodeBase parent;
         private NodeSide nodeSide;
+        private CheckableMode checkableMode;
         private IconPosition iconPosition;
         private IconSize iconSize;
         private INodeIcon icon;
@@ -24,6 +27,7 @@ namespace Hercules.Model
         private bool isShowingHull;
         private bool isCollapsed;
         private bool isSelected;
+        private bool isChecked;
 
         public object LayoutData { get; set; }
 
@@ -137,6 +141,22 @@ namespace Hercules.Model
             }
         }
 
+        public CheckableMode CheckableMode
+        {
+            get
+            {
+                return checkableMode;
+            }
+            protected set
+            {
+                if (!Equals(checkableMode, value))
+                {
+                    checkableMode = value;
+                    OnPropertyChanged(nameof(CheckableMode));
+                }
+            }
+        }
+
         public bool IsCollapsed
         {
             get
@@ -149,6 +169,22 @@ namespace Hercules.Model
                 {
                     isCollapsed = value;
                     OnPropertyChanged(nameof(IsCollapsed));
+                }
+            }
+        }
+
+        public bool IsChecked
+        {
+            get
+            {
+                return isChecked;
+            }
+            protected set
+            {
+                if (!Equals(isChecked, value))
+                {
+                    isChecked = value;
+                    OnPropertyChanged(nameof(IsChecked));
                 }
             }
         }
@@ -185,6 +221,14 @@ namespace Hercules.Model
             }
         }
 
+        public bool IsCheckable
+        {
+            get
+            {
+                return (document?.IsCheckableDefault == true || CheckableMode == CheckableMode.Enabled) && CheckableMode != CheckableMode.Disabled;
+            }
+        }
+
         protected NodeBase(Guid id)
             : base(id)
         {
@@ -198,6 +242,11 @@ namespace Hercules.Model
         internal void ChangeIsCollapsed(bool newIsCollapsed)
         {
             IsCollapsed = newIsCollapsed;
+        }
+
+        internal void ChangeIsChecked(bool newIsChecked)
+        {
+            IsChecked = newIsChecked;
         }
 
         internal void ChangeIsShowingHull(bool newIsShowingHull)
@@ -223,6 +272,11 @@ namespace Hercules.Model
         public void ChangeIconPosition(IconPosition newIconPosition)
         {
             IconPosition = newIconPosition;
+        }
+
+        internal void ChangeCheckableMode(CheckableMode newCheckableMode)
+        {
+            CheckableMode = newCheckableMode;
         }
 
         internal void ChangeText(string newText)

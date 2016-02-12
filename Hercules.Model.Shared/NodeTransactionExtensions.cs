@@ -8,6 +8,8 @@
 
 using GP.Utils;
 
+// ReSharper disable InvertIf
+
 namespace Hercules.Model
 {
     public static class NodeTransactionExtensions
@@ -88,6 +90,19 @@ namespace Hercules.Model
             }
         }
 
+        public static void ToggleCheckedTransactional(this NodeBase node)
+        {
+            if (node?.Document != null)
+            {
+                string tansactionName = LocalizationManager.GetString("TransactionName_ToggleChecked");
+
+                node.Document.MakeTransaction(tansactionName, commands =>
+                {
+                    commands.Apply(new ToggleCheckedCommand(node));
+                });
+            }
+        }
+
         public static void ToggleHullTransactional(this NodeBase node)
         {
             if (node?.Document != null)
@@ -142,9 +157,9 @@ namespace Hercules.Model
 
         public static void ChangeColorTransactional(this NodeBase node, INodeColor color)
         {
-            if (node?.Document != null && !Equals(node.Color, color))
+            if (node?.Document != null && !Equals(node.Color, color) && color != null)
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_EditColor");
+                string transactionName = LocalizationManager.GetString("TransactionName_ChangeColor");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
@@ -157,7 +172,7 @@ namespace Hercules.Model
         {
             if (node?.Document != null && !Equals(node.Icon, icon))
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_EditIcon");
+                string transactionName = LocalizationManager.GetString("TransactionName_ChangeIcon");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
@@ -166,11 +181,24 @@ namespace Hercules.Model
             }
         }
 
+        public static void ChangeCheckableModeTransactional(this NodeBase node, CheckableMode checkableMode)
+        {
+            if (node?.Document != null && !Equals(node.CheckableMode, checkableMode))
+            {
+                string transactionName = LocalizationManager.GetString("TransactionName_ChangeCheckableMode");
+
+                node.Document.MakeTransaction(transactionName, commands =>
+                {
+                    commands.Apply(new ChangeCheckableModeCommand(node, checkableMode));
+                });
+            }
+        }
+
         public static void ChangeIconSizeTransactional(this NodeBase node, IconSize iconSize)
         {
             if (node?.Document != null && !Equals(node.IconSize, iconSize))
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_EditIconSize");
+                string transactionName = LocalizationManager.GetString("TransactionName_ChangeIconSize");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
@@ -183,7 +211,7 @@ namespace Hercules.Model
         {
             if (node?.Document != null && !Equals(node.IconPosition, iconPosition))
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_EditIconPosition");
+                string transactionName = LocalizationManager.GetString("TransactionName_ChangeIconPosition");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {

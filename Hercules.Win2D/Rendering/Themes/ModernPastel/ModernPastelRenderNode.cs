@@ -8,10 +8,13 @@
 
 using Windows.UI;
 using Hercules.Model;
-using Hercules.Win2D.Rendering.Geometries.Bodies;
-using Hercules.Win2D.Rendering.Geometries.Hulls;
-using Hercules.Win2D.Rendering.Geometries.Paths;
+using Hercules.Win2D.Rendering.Parts;
+using Hercules.Win2D.Rendering.Parts.Bodies;
+using Hercules.Win2D.Rendering.Parts.Hulls;
+using Hercules.Win2D.Rendering.Parts.Paths;
 using Microsoft.Graphics.Canvas;
+
+// ReSharper disable InvertIf
 
 namespace Hercules.Win2D.Rendering.Themes.ModernPastel
 {
@@ -22,9 +25,9 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
         {
         }
 
-        protected override IBodyGeometry CreateBody(ICanvasResourceCreator resourceCreator, IBodyGeometry current)
+        protected override IBodyPart CreateBody(ICanvasResourceCreator resourceCreator, IBodyPart current)
         {
-            IBodyGeometry geometry = null;
+            IBodyPart geometry = null;
 
             NodeShape nodeShape = CreateShapeFromNode(Node);
 
@@ -48,9 +51,9 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             return geometry;
         }
 
-        private static IBodyGeometry CreateBody(NodeShape shape)
+        private static IBodyPart CreateBody(NodeShape shape)
         {
-            IBodyGeometry result;
+            IBodyPart result;
 
             if (shape == NodeShape.Ellipse)
             {
@@ -72,7 +75,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             return result;
         }
 
-        private static NodeShape CreateShapeFromGeometry(IBodyGeometry current)
+        private static NodeShape CreateShapeFromGeometry(IBodyPart current)
         {
             if (current is Ellipse)
             {
@@ -119,7 +122,7 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             return shape;
         }
 
-        protected override IHullGeometry CreateHull(ICanvasResourceCreator resourceCreator, IHullGeometry current)
+        protected override IHullPart CreateHull(ICanvasResourceCreator resourceCreator, IHullPart current)
         {
             if (current == null && Node.IsShowingHull)
             {
@@ -129,21 +132,23 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
             return null;
         }
 
-        protected override IPathGeometry CreatePath(ICanvasResourceCreator resourceCreator, IPathGeometry current)
+        protected override IPathPart CreatePath(ICanvasResourceCreator resourceCreator, IPathPart current)
         {
             NodeBase parentNode = Parent?.Node;
 
-            if (parentNode != null)
+            if (parentNode == null)
             {
-                if (current == null || (current is FilledPath && !(parentNode is RootNode)) || (current is LinePath && parentNode is RootNode))
-                {
-                    if (Parent.Node is RootNode)
-                    {
-                        return new FilledPath(Colors.Black);
-                    }
+                return null;
+            }
 
-                    return new LinePath(Colors.Black);
+            if (current == null || (current is FilledPath && !(parentNode is RootNode)) || (current is LinePath && parentNode is RootNode))
+            {
+                if (Parent.Node is RootNode)
+                {
+                    return new FilledPath(Colors.Black);
                 }
+
+                return new LinePath(Colors.Black);
             }
 
             return null;

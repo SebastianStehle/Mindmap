@@ -1,19 +1,13 @@
 // ==========================================================================
-// IPathGeometry.cs
+// IHullPart.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
-
-using Microsoft.Graphics.Canvas;
-
-namespace Hercules.Win2D.Rendering
+namespace Hercules.Win2D.Rendering.Parts
 {
-    public interface IPathGeometry : IResourceHolder
+    public interface IHullPart : IGeometry
     {
-        void Arrange(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator);
-
-        void Render(Win2DRenderable renderable, CanvasDrawingSession session);
     }
 }

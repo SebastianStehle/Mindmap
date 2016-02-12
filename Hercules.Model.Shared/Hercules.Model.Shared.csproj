@@ -40,12 +40,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AttachmentIcon.cs" />
+    <Compile Include="ChangeCheckableModeCommand.cs" />
     <Compile Include="ChangeColorCommand.cs" />
     <Compile Include="ChangeIconCommand.cs" />
     <Compile Include="ChangeIconPositionCommand.cs" />
     <Compile Include="ChangeIconSizeCommand.cs" />
     <Compile Include="ChangeShapeCommand.cs" />
     <Compile Include="ChangeTextCommand.cs" />
+    <Compile Include="CheckableMode.cs" />
     <Compile Include="ChildNodeCommandBase.cs" />
     <Compile Include="CommandBase.cs" />
     <Compile Include="CompositeUndoRedoAction.cs" />
@@ -123,6 +125,8 @@
     <Compile Include="Storing\Utils\JsonStreamConvert.cs" />
     <Compile Include="ThemeColor.cs" />
     <Compile Include="ToggleCollapseCommand.cs" />
+    <Compile Include="ToggleCheckableCommand.cs" />
+    <Compile Include="ToggleCheckedCommand.cs" />
     <Compile Include="ToggleHullCommand.cs" />
     <Compile Include="UndoRedoExtensions.cs" />
     <Compile Include="UndoRedoManager.cs" />

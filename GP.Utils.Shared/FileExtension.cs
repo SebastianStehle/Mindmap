@@ -52,16 +52,10 @@ namespace GP.Utils
         /// </summary>
         /// <param name="extension">The extension. Cannot be null or empty.</param>
         /// <param name="mimeType">Type mime type. Cannot be null or empty.</param>
-        /// <exception cref="ArgumentNullException">
-        /// <paramref name="extension"/> is null.
-        /// - or -
-        /// <paramref name="mimeType"/> is null.
-        /// </exception>
-        /// <exception cref="ArgumentException">
-        /// <paramref name="extension"/> is empty or contains only whitespaces.
-        /// - or -
-        /// <paramref name="mimeType"/> is empty or contains only whitespaces.
-        /// </exception>
+        /// <exception cref="ArgumentNullException"><paramref name="extension"/> is null.</exception>
+        /// <exception cref="ArgumentNullException"><paramref name="mimeType"/> is null.</exception>
+        /// <exception cref="ArgumentException"><paramref name="extension"/> is empty or contains only whitespaces.</exception>
+        /// <exception cref="ArgumentException"><paramref name="mimeType"/> is empty or contains only whitespaces.</exception>
         public FileExtension(string extension, string mimeType)
         {
             Guard.NotNullOrEmpty(extension, "extension");

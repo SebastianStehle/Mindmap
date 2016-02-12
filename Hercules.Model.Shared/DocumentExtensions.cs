@@ -14,6 +14,19 @@ namespace Hercules.Model
 {
     public static class DocumentExtensions
     {
+        public static void ToggleCheckableTransactional(this Document document)
+        {
+            if (document != null)
+            {
+                string tansactionName = LocalizationManager.GetString("TransactionName_ToggleCheckable");
+
+                document.MakeTransaction(tansactionName, commands =>
+                {
+                    commands.Apply(new ToggleCheckableCommand(document));
+                });
+            }
+        }
+
         public static void RemoveSelectedNodeTransactional(this Document document)
         {
             document?.SelectedNode.RemoveTransactional();

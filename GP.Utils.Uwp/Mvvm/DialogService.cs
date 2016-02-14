@@ -81,13 +81,7 @@ namespace GP.Utils.Mvvm
         {
             FileOpenPicker filePicker = new FileOpenPicker();
 
-            if (extensions != null)
-            {
-                foreach (string extension in extensions)
-                {
-                    filePicker.FileTypeFilter.Add(extension);
-                }
-            }
+            extensions?.Foreach(x => filePicker.FileTypeFilter.Add(x));
 
             return filePicker;
         }
@@ -96,13 +90,7 @@ namespace GP.Utils.Mvvm
         {
             FileSavePicker filePicker = new FileSavePicker();
 
-            if (extensions != null)
-            {
-                foreach (string extension in extensions)
-                {
-                    filePicker.FileTypeChoices.Add(extension, new List<string> { extension });
-                }
-            }
+            extensions?.Foreach(x => filePicker.FileTypeChoices.Add(x, new List<string> { x }));
 
             return filePicker;
         }

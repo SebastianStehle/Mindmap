@@ -46,7 +46,7 @@ namespace Hercules.Model
         {
             Guard.NotNullOrEmpty(key, nameof(key));
 
-            this.key = key;
+            this.key = LegacyIconMapper.Map(key);
         }
 
         public void Save(PropertiesBag properties)
@@ -74,9 +74,21 @@ namespace Hercules.Model
             return null;
         }
 
-        public Task<Stream> OpenAsStreamAsync()
+        public async Task<Stream> OpenAsStreamAsync()
         {
-            return StreamProvider?.Invoke(Key);
+            try
+            {
+                if (StreamProvider != null)
+                {
+                    return await StreamProvider(key);
+                }
+
+                return null;
+            }
+            catch
+            {
+                return null;
+            }
         }
 
         public override bool Equals(object obj)

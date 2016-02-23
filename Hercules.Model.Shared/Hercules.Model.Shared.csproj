@@ -75,6 +75,7 @@
     <Compile Include="ExImport\ImportResult.cs" />
     <Compile Include="ExImport\IOutlineGenerator.cs" />
     <Compile Include="GlobalSuppressions.cs" />
+    <Compile Include="IconCategory.cs" />
     <Compile Include="IconPosition.cs" />
     <Compile Include="IconSize.cs" />
     <Compile Include="IDocumentCommands.cs" />
@@ -94,6 +95,7 @@
     <Compile Include="Layouting\ILayout.cs" />
     <Compile Include="Layouting\LayoutOperationBase.cs" />
     <Compile Include="Layouting\VisibilityUpdater.cs" />
+    <Compile Include="LegacyIconMapper.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="NodeBase.cs" />
     <Compile Include="NodeCache.cs" />
@@ -123,6 +125,7 @@
     <Compile Include="Storing\Json\PropertiesBagConverter.cs" />
     <Compile Include="Storing\LegacyNameAttribute.cs" />
     <Compile Include="Storing\Utils\JsonStreamConvert.cs" />
+    <Compile Include="SupportedIcons.cs" />
     <Compile Include="ThemeColor.cs" />
     <Compile Include="ToggleCollapseCommand.cs" />
     <Compile Include="ToggleCheckableCommand.cs" />

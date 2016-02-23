@@ -14,7 +14,5 @@ namespace Hercules.Model.Rendering
     public interface IRenderIcon
     {
         string Name { get; }
-
-        Task<Stream> ToStreamAsync();
     }
 }

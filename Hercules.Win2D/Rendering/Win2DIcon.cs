@@ -60,7 +60,12 @@ namespace Hercules.Win2D.Rendering
         {
             using (Stream stream = await icon.OpenAsStreamAsync())
             {
-                return await CanvasBitmap.LoadAsync(device, stream.AsRandomAccessStream()).AsTask();
+                if (stream != null)
+                {
+                    return await CanvasBitmap.LoadAsync(device, stream.AsRandomAccessStream()).AsTask();
+                }
+
+                return null;
             }
         }
 

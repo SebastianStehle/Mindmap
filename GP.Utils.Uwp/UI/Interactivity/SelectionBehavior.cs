@@ -73,6 +73,8 @@ namespace GP.Utils.UI.Interactivity
         protected override void OnAttached()
         {
             AssociatedElement.SelectionChanged += AssociatedElement_SelectionChanged;
+
+            UpdateIsEnabled();
         }
 
         /// <summary>
@@ -89,21 +91,9 @@ namespace GP.Utils.UI.Interactivity
             UpdateSelection();
         }
 
-        private void UpdateSelection()
-        {
-            int? index = AssociatedElement.Items?.IndexOf(SelectedItem);
-
-            if (!index.HasValue)
-            {
-                index = -1;
-            }
-
-            AssociatedElement.SelectedIndex = index.Value;
-        }
-
         private void AssociatedElement_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (AssociatedElement.SelectedIndex < 0)
+            if (AssociatedElement == null || AssociatedElement.SelectedIndex < 0)
             {
                 return;
             }
@@ -142,8 +132,30 @@ namespace GP.Utils.UI.Interactivity
             UpdateIsEnabled();
         }
 
+        private void UpdateSelection()
+        {
+            if (AssociatedElement == null)
+            {
+                return;
+            }
+
+            int? index = AssociatedElement.Items?.IndexOf(SelectedItem);
+
+            if (!index.HasValue)
+            {
+                index = -1;
+            }
+
+            AssociatedElement.SelectedIndex = index.Value;
+        }
+
         private void UpdateIsEnabled()
         {
+            if (AssociatedElement == null)
+            {
+                return;
+            }
+
             bool isEnabled = false;
 
             if (SelectedIndexCommand != null)

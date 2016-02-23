@@ -61,7 +61,7 @@ namespace Hercules.Model
 
         public static async Task<Stream> OpenKeyStreamAsync(string key)
         {
-            string uri = $"ms-appx://{key}";
+            string uri = $"ms-appx:///Assets/Icons/{key}.png";
 
             StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
 

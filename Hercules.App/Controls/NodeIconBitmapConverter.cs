@@ -27,12 +27,15 @@ namespace Hercules.App.Controls
 
             icon.OpenAsStreamAsync().ContinueWith(stream =>
             {
-                CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
-                    CoreDispatcherPriority.Normal,
-                    () =>
-                    {
-                        bitmapImage.SetSourceAsync(stream.Result.AsRandomAccessStream()).Forget();
-                    }).Forget();
+                if (stream.Result != null)
+                {
+                    CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                        CoreDispatcherPriority.Normal,
+                        () =>
+                        {
+                            bitmapImage.SetSourceAsync(stream.Result.AsRandomAccessStream()).Forget();
+                        }).Forget();
+                }
             });
 
             return bitmapImage;

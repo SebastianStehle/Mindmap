@@ -7,7 +7,7 @@
     xmlns:gpc="using:GP.Utils.UI.Controls"
     xmlns:gpi="using:GP.Utils.UI.Interactivity"
     xmlns:controls="using:Hercules.App.Controls"
-    xmlns:assets="using:Hercules.App.Assets"
+    xmlns:assets="using:Hercules.Model"
     mc:Ignorable="d"
     d:DesignHeight="1000"
     d:DesignWidth="400"
@@ -15,8 +15,8 @@
 
     <UserControl.Resources>
         <controls:NodeIconBitmapConverter x:Key="NodeIconBitmapConverter" />
-        
-        <assets:AssetProvider x:Key="AssetProvider" />
+
+        <assets:SupportedIcons x:Key="SupportedIcons" />
         
         <Style x:Key="PropertySelectionStyleAuto" TargetType="GridViewItem">
             <Setter Property="MinWidth" Value="0" />
@@ -100,23 +100,23 @@
         <StackPanel x:Name="Root">
             <gpc:ExpandableContentControl x:Uid="Properties_ColorSection" Style="{StaticResource BorderedSection}" Header="Color"  IsExpanded="{Binding ShowColorSection, Mode=TwoWay}">
                 <StackPanel>
-                    <GridView ItemsSource="{Binding ThemeColors}" Style="{StaticResource PropertyGridStyle}" MaxWidth="200" HorizontalAlignment="Left">
+                    <GridView ItemsSource="{Binding ThemeColors}" Style="{StaticResource PropertyGridStyle}" Width="240" HorizontalAlignment="Left">
                         <i:Interaction.Behaviors>
                             <gpi:SelectionBehavior SelectedItem="{Binding SelectedNode.Color}" SelectedItemCommand="{Binding ChangeColorCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <controls:ColorPresenter Color="{Binding}" Margin="2" Width="24" Height="24" Renderer="{Binding Path=DataContext.Renderer, ElementName=Root}" />
+                                <controls:ColorPresenter Color="{Binding}" Margin="2" Width="32" Height="32" Renderer="{Binding Path=DataContext.Renderer, ElementName=Root}" />
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
-                    <GridView ItemsSource="{Binding CustomColors}" Style="{StaticResource PropertyGridStyle}" MaxWidth="200" HorizontalAlignment="Left">
+                    <GridView ItemsSource="{Binding CustomColors}" Style="{StaticResource PropertyGridStyle}" Width="240" HorizontalAlignment="Left">
                         <i:Interaction.Behaviors>
                             <gpi:SelectionBehavior SelectedItem="{Binding SelectedNode.Color}" SelectedItemCommand="{Binding ChangeColorCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.ItemTemplate>
                             <DataTemplate>
-                                <controls:ColorPresenter Color="{Binding}" Margin="2" Width="24" Height="24" Renderer="{Binding Path=DataContext.Renderer, ElementName=Root}" />
+                                <controls:ColorPresenter Color="{Binding}" Margin="2" Width="32" Height="32" Renderer="{Binding Path=DataContext.Renderer, ElementName=Root}" />
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
@@ -125,7 +125,7 @@
                 </StackPanel>
             </gpc:ExpandableContentControl>
 
-            <gpc:ExpandableContentControl x:Uid="Properties_ShapeSection" Style="{StaticResource BorderedSection}" Header="Shape" IsExpanded="{Binding ShowCheckBoxesSection, Mode=TwoWay}">
+            <gpc:ExpandableContentControl x:Uid="Properties_ShapeSection" Style="{StaticResource BorderedSection}" Header="Shape" IsExpanded="{Binding ShowShapeSection, Mode=TwoWay}">
                 <StackPanel>
                     <GridView ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
@@ -174,40 +174,46 @@
 
             <gpc:ExpandableContentControl x:Uid="Properties_IconSection" Style="{StaticResource BorderedSection}" Header="Icon" IsExpanded="{Binding ShowIconSection, Mode=TwoWay}">
                 <StackPanel>
-                    <GridView ItemsSource="{Binding Source={StaticResource AssetProvider}, Path=None}" SelectedIndex="0" Style="{StaticResource PropertyGridStyle}">
+                    <GridView ItemsSource="{Binding Source={StaticResource SupportedIcons}, Path=None}" SelectedIndex="0" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
                             <gpi:SelectionBehavior SelectedItem="{Binding SelectedNode.Icon}" SelectedItemCommand="{Binding ChangeIconCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Margin="2">
-                                    <Border Width="24" Height="24" BorderBrush="Red" BorderThickness="2" Background="White">
-                                        <Line X1="0" X2="24" Y1="0" Y2="24" Stroke="Red" StrokeThickness="2" />
+                                    <Border Width="32" Height="32" BorderBrush="Red" BorderThickness="2" Background="White">
+                                        <Line X1="0" X2="32" Y1="0" Y2="32" Stroke="Red" StrokeThickness="2" />
                                     </Border>
                                 </Grid>
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
-                    <GridView ItemsSource="{Binding Source={StaticResource AssetProvider}, Path=Icons}" Style="{StaticResource PropertyGridStyle}">
-                        <i:Interaction.Behaviors>
-                            <gpi:SelectionBehavior SelectedItem="{Binding SelectedNode.Icon}" SelectedItemCommand="{Binding ChangeIconCommand}" />
-                        </i:Interaction.Behaviors>
-                        <GridView.ItemTemplate>
+                    <ItemsControl ItemsSource="{Binding Source={StaticResource SupportedIcons}, Path=Categories}" x:Name="AllIcons" HorizontalAlignment="Left" Width="240">
+                        <ItemsControl.ItemTemplate>
                             <DataTemplate>
-                                <Grid Background="Transparent" Margin="2">
-                                    <Image Source="{Binding Converter={StaticResource NodeIconBitmapConverter}}" Width="24" Height="24" />
-                                </Grid>
+                                <GridView Margin="0,0,0,10" ItemsSource="{Binding Path=Icons}" Style="{StaticResource PropertyGridStyle}">
+                                    <i:Interaction.Behaviors>
+                                        <gpi:SelectionBehavior SelectedItem="{Binding ElementName=AllIcons, Path=DataContext.SelectedNode.Icon}" SelectedItemCommand="{Binding ElementName=AllIcons, Path=DataContext.ChangeIconCommand}" />
+                                    </i:Interaction.Behaviors>
+                                    <GridView.ItemTemplate>
+                                        <DataTemplate>
+                                            <Grid Background="Transparent" Margin="2">
+                                                <Image Source="{Binding Converter={StaticResource NodeIconBitmapConverter}}" Width="32" Height="32" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridView.ItemTemplate>
+                                </GridView>
                             </DataTemplate>
-                        </GridView.ItemTemplate>
-                    </GridView>
-                    <GridView ItemsSource="{Binding CustomIcons}" Style="{StaticResource PropertyGridStyle}">
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl>
+                    <GridView ItemsSource="{Binding CustomIcons}" Style="{StaticResource PropertyGridStyle}" HorizontalAlignment="Left" Width="240">
                         <i:Interaction.Behaviors>
                             <gpi:SelectionBehavior SelectedItem="{Binding SelectedNode.Icon}" SelectedItemCommand="{Binding ChangeIconCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.ItemTemplate>
                             <DataTemplate>
                                 <Grid Background="Transparent" Margin="2">
-                                    <Image Source="{Binding Converter={StaticResource NodeIconBitmapConverter}}" Width="24" Height="24" />
+                                    <Image Source="{Binding Converter={StaticResource NodeIconBitmapConverter}}" Width="32" Height="32" />
                                 </Grid>
                             </DataTemplate>
                         </GridView.ItemTemplate>

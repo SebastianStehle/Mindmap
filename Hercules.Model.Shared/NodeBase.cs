@@ -8,32 +8,57 @@
 
 using System;
 using System.Collections.Generic;
+using GP.Utils;
+using PropertyChanged;
 
 // ReSharper disable InvertIf
 
 namespace Hercules.Model
 {
+    [ImplementPropertyChanged]
     public abstract class NodeBase : DocumentObjectWithId
     {
         private Document document;
         private NodeBase parent;
-        private NodeSide nodeSide;
-        private CheckableMode checkableMode;
-        private IconPosition iconPosition;
-        private IconSize iconSize;
-        private INodeIcon icon;
-        private INodeColor color = ThemeColor.Default;
-        private string text;
-        private bool isShowingHull;
-        private bool isCollapsed;
-        private bool isSelected;
-        private bool isChecked;
 
+        [DoNotNotify]
         public object LayoutData { get; set; }
 
+        [DoNotNotify]
         public object RenderData { get; set; }
 
-        public abstract bool HasChildren { get; }
+        [NotifyUI]
+        public string Text { get; protected set; }
+
+        [NotifyUI]
+        public INodeIcon Icon { get; protected set; }
+
+        [NotifyUI]
+        public INodeColor Color { get; protected set; } = ThemeColor.Default;
+
+        [NotifyUI]
+        public NodeSide NodeSide { get; protected set; }
+
+        [NotifyUI]
+        public IconSize IconSize { get; protected set; }
+
+        [NotifyUI]
+        public IconPosition IconPosition { get; protected set; }
+
+        [NotifyUI]
+        public CheckableMode CheckableMode { get; protected set; }
+
+        [NotifyUI]
+        public bool IsChecked { get; protected set; }
+
+        [NotifyUI]
+        public bool IsSelected { get; protected set; }
+
+        [NotifyUI]
+        public bool IsCollapsed { get; protected set; }
+
+        [NotifyUI]
+        public bool IsShowingHull { get; protected set; }
 
         public Document Document
         {
@@ -45,189 +70,12 @@ namespace Hercules.Model
             get { return parent; }
         }
 
-        public string Text
-        {
-            get
-            {
-                return text;
-            }
-            protected set
-            {
-                if (!Equals(text, value))
-                {
-                    text = value;
-                    OnPropertyChanged(nameof(Text));
-                }
-            }
-        }
-
-        public INodeColor Color
-        {
-            get
-            {
-                return color;
-            }
-            protected set
-            {
-                if (!Equals(color, value))
-                {
-                    color = value;
-                    OnPropertyChanged(nameof(Color));
-                }
-            }
-        }
-
-        public INodeIcon Icon
-        {
-            get
-            {
-                return icon;
-            }
-            protected set
-            {
-                if (!Equals(icon, value))
-                {
-                    icon = value;
-                    OnPropertyChanged(nameof(Icon));
-                }
-            }
-        }
-
-        public IconPosition IconPosition
-        {
-            get
-            {
-                return iconPosition;
-            }
-            protected set
-            {
-                if (!Equals(iconPosition, value))
-                {
-                    iconPosition = value;
-                    OnPropertyChanged(nameof(IconPosition));
-                }
-            }
-        }
-
-        public IconSize IconSize
-        {
-            get
-            {
-                return iconSize;
-            }
-            protected set
-            {
-                if (!Equals(iconSize, value))
-                {
-                    iconSize = value;
-                    OnPropertyChanged(nameof(IconSize));
-                }
-            }
-        }
-
-        public NodeSide NodeSide
-        {
-            get
-            {
-                return nodeSide;
-            }
-            protected set
-            {
-                if (!Equals(nodeSide, value))
-                {
-                    nodeSide = value;
-                    OnPropertyChanged(nameof(NodeSide));
-                }
-            }
-        }
-
-        public CheckableMode CheckableMode
-        {
-            get
-            {
-                return checkableMode;
-            }
-            protected set
-            {
-                if (!Equals(checkableMode, value))
-                {
-                    checkableMode = value;
-                    OnPropertyChanged(nameof(CheckableMode));
-                }
-            }
-        }
-
-        public bool IsCollapsed
-        {
-            get
-            {
-                return isCollapsed;
-            }
-            protected set
-            {
-                if (!Equals(isCollapsed, value))
-                {
-                    isCollapsed = value;
-                    OnPropertyChanged(nameof(IsCollapsed));
-                }
-            }
-        }
-
-        public bool IsChecked
-        {
-            get
-            {
-                return isChecked;
-            }
-            protected set
-            {
-                if (!Equals(isChecked, value))
-                {
-                    isChecked = value;
-                    OnPropertyChanged(nameof(IsChecked));
-                }
-            }
-        }
-
-        public bool IsSelected
-        {
-            get
-            {
-                return isSelected;
-            }
-            protected set
-            {
-                if (!Equals(isSelected, value))
-                {
-                    isSelected = value;
-                    OnPropertyChanged(nameof(isSelected));
-                }
-            }
-        }
-
-        public bool IsShowingHull
-        {
-            get
-            {
-                return isShowingHull;
-            }
-            protected set
-            {
-                if (!Equals(isShowingHull, value))
-                {
-                    isShowingHull = value;
-                    OnPropertyChanged(nameof(IsShowingHull));
-                }
-            }
-        }
-
         public bool IsCheckable
         {
-            get
-            {
-                return (document?.IsCheckableDefault == true || CheckableMode == CheckableMode.Enabled) && CheckableMode != CheckableMode.Disabled;
-            }
+            get { return (document?.IsCheckableDefault == true || CheckableMode == CheckableMode.Enabled) && CheckableMode != CheckableMode.Disabled; }
         }
+
+        public abstract bool HasChildren { get; }
 
         protected NodeBase(Guid id)
             : base(id)

@@ -9,13 +9,18 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using GP.Utils;
+using PropertyChanged;
 
 namespace Hercules.Model
 {
+    [ImplementPropertyChanged]
     public class Node : NodeBase
     {
         private readonly List<Node> children = new List<Node>();
-        private NodeShape? shape;
+
+        [NotifyUI]
+        public NodeShape? Shape { get; protected set; }
 
         public IReadOnlyList<Node> Children
         {
@@ -25,22 +30,6 @@ namespace Hercules.Model
         public override bool HasChildren
         {
             get { return children.Count > 0; }
-        }
-
-        public NodeShape? Shape
-        {
-            get
-            {
-                return shape;
-            }
-            protected set
-            {
-                if (!Equals(shape, value))
-                {
-                    shape = value;
-                    OnPropertyChanged(nameof(Shape));
-                }
-            }
         }
 
         public Node(Guid id)
@@ -57,7 +46,7 @@ namespace Hercules.Model
         {
             Add(children, child, index, NodeSide);
 
-            OnPropertyChanged("HasChildren");
+            OnPropertyChanged(nameof(HasChildren));
         }
 
         public override bool Remove(Node child, out int oldIndex)
@@ -66,7 +55,7 @@ namespace Hercules.Model
 
             if (isRemoved)
             {
-                OnPropertyChanged("HasChildren");
+                OnPropertyChanged(nameof(HasChildren));
             }
 
             return isRemoved;

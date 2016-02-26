@@ -10,13 +10,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using GP.Utils;
 using Hercules.Model.Layouting;
 using Hercules.Model.Layouting.HorizontalStraight;
+using PropertyChanged;
 
 // ReSharper disable InvertIf
 
 namespace Hercules.Model
 {
+    [ImplementPropertyChanged]
     public sealed class Document : DocumentObject, IDocumentCommands
     {
         private readonly NodeCache nodeCache = new NodeCache();
@@ -25,7 +28,6 @@ namespace Hercules.Model
         private readonly IUndoRedoManager undoRedoManager = new UndoRedoManager();
         private readonly ILayout layout = HorizontalStraightLayout.Instance;
         private readonly Vector2 size = new Vector2(20000, 12000);
-        private bool isCheckableDefault;
         private CompositeUndoRedoAction transaction;
         private NodeBase selectedNode;
 
@@ -46,6 +48,9 @@ namespace Hercules.Model
                 undoRedoManager.StateChanged -= value;
             }
         }
+
+        [NotifyUI]
+        public bool IsCheckableDefault { get; private set; }
 
         public IUndoRedoManager UndoRedoManager
         {
@@ -90,22 +95,6 @@ namespace Hercules.Model
         public bool IsChangeTracking
         {
             get { return transaction != null; }
-        }
-
-        public bool IsCheckableDefault
-        {
-            get
-            {
-                return isCheckableDefault;
-            }
-            private set
-            {
-                if (!Equals(isCheckableDefault, value))
-                {
-                    isCheckableDefault = value;
-                    OnPropertyChanged(nameof(IsCheckableDefault));
-                }
-            }
         }
 
         public Document(Guid id)
@@ -270,7 +259,7 @@ namespace Hercules.Model
                     selectedNode.ChangeIsSelected(true);
                 }
 
-                OnPropertyChanged("SelectedNode");
+                OnPropertyChanged(nameof(SelectedNode));
 
                 if (node != null)
                 {

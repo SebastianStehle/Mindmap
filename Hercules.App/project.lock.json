@@ -11,7 +11,7 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
         }
       },
-      "Fody/1.13.0": {},
+      "Fody/1.29.2": {},
       "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
@@ -307,15 +307,15 @@
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
-      "PropertyChanged.Fody/1.50.0": {
+      "PropertyChanged.Fody/1.50.4": {
         "dependencies": {
-          "Fody": "(, )"
+          "Fody": "[1.29.2, )"
         },
         "compile": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         },
         "runtime": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -1684,7 +1684,7 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
         }
       },
-      "Fody/1.13.0": {},
+      "Fody/1.29.2": {},
       "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
@@ -2023,15 +2023,15 @@
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
-      "PropertyChanged.Fody/1.50.0": {
+      "PropertyChanged.Fody/1.50.4": {
         "dependencies": {
-          "Fody": "(, )"
+          "Fody": "[1.29.2, )"
         },
         "compile": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         },
         "runtime": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -3450,7 +3450,7 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
         }
       },
-      "Fody/1.13.0": {},
+      "Fody/1.29.2": {},
       "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
@@ -3775,15 +3775,15 @@
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
-      "PropertyChanged.Fody/1.50.0": {
+      "PropertyChanged.Fody/1.50.4": {
         "dependencies": {
-          "Fody": "(, )"
+          "Fody": "[1.29.2, )"
         },
         "compile": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         },
         "runtime": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -5188,7 +5188,7 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
         }
       },
-      "Fody/1.13.0": {},
+      "Fody/1.29.2": {},
       "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
@@ -5532,15 +5532,15 @@
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
-      "PropertyChanged.Fody/1.50.0": {
+      "PropertyChanged.Fody/1.50.4": {
         "dependencies": {
-          "Fody": "(, )"
+          "Fody": "[1.29.2, )"
         },
         "compile": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         },
         "runtime": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -6959,7 +6959,7 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
         }
       },
-      "Fody/1.13.0": {},
+      "Fody/1.29.2": {},
       "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
@@ -7284,15 +7284,15 @@
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
-      "PropertyChanged.Fody/1.50.0": {
+      "PropertyChanged.Fody/1.50.4": {
         "dependencies": {
-          "Fody": "(, )"
+          "Fody": "[1.29.2, )"
         },
         "compile": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         },
         "runtime": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -8697,7 +8697,7 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
         }
       },
-      "Fody/1.13.0": {},
+      "Fody/1.29.2": {},
       "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
@@ -9041,15 +9041,15 @@
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
-      "PropertyChanged.Fody/1.50.0": {
+      "PropertyChanged.Fody/1.50.4": {
         "dependencies": {
-          "Fody": "(, )"
+          "Fody": "[1.29.2, )"
         },
         "compile": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         },
         "runtime": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -10468,7 +10468,7 @@
           "lib/portable-net4+sl5+netcore45+wpa81+wp8/Microsoft.Practices.ServiceLocation.dll": {}
         }
       },
-      "Fody/1.13.0": {},
+      "Fody/1.29.2": {},
       "Microsoft.ApplicationInsights/1.2.3": {
         "compile": {
           "lib/portable-win81+wpa81/Microsoft.ApplicationInsights.dll": {}
@@ -10793,15 +10793,15 @@
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
         }
       },
-      "PropertyChanged.Fody/1.50.0": {
+      "PropertyChanged.Fody/1.50.4": {
         "dependencies": {
-          "Fody": "(, )"
+          "Fody": "[1.29.2, )"
         },
         "compile": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         },
         "runtime": {
-          "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll": {}
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -12214,34 +12214,27 @@
         "package/services/metadata/core-properties/99be0c88b2fd41c8b07c42071005ee47.psmdcp"
       ]
     },
-    "Fody/1.13.0": {
-      "sha512": "fwVoDrF2Sjq8QgelRkaPX3ZNFutknPOYetFHXdx9yEJi93RgIh5l2E8hPZw2CflBcmK+K4aL+NnJ5pzMyGbuSA==",
+    "Fody/1.29.2": {
+      "sha512": "7SoewNkJQFedmOiJHD5P1akJ1fRow+tFjj/M4QlJ5M5RTHdnDXxEnuSKF2t22aSxTmn9+4wO3FbtOrJYy31xmA==",
       "type": "Package",
       "files": [
         "[Content_Types].xml",
         "_rels/.rels",
-        "Content/Fody_ToBeDeleted.txt",
+        "build/dotnet/Fody.targets",
+        "build/portable-net+sl+win+wpa+wp/Fody.targets",
         "Content/FodyWeavers.xml",
         "Fody.dll",
         "Fody.nuspec",
         "Fody.pdb",
-        "Fody.targets",
         "FodyCommon.dll",
         "FodyCommon.pdb",
         "FodyIsolated.dll",
         "FodyIsolated.pdb",
         "Mono.Cecil.dll",
         "Mono.Cecil.Mdb.dll",
-        "Mono.Cecil.Mdb.pdb",
-        "Mono.Cecil.pdb",
         "Mono.Cecil.Pdb.dll",
-        "Mono.Cecil.Pdb.pdb",
         "Mono.Cecil.Rocks.dll",
-        "Mono.Cecil.Rocks.pdb",
-        "package/services/metadata/core-properties/60f19ed357e64a229570ad0760e0e295.psmdcp",
-        "readme.txt",
-        "Tools/install.ps1",
-        "Tools/uninstall.ps1"
+        "package/services/metadata/core-properties/b094559303b349a78e387aa14ccb27d7.psmdcp"
       ]
     },
     "Microsoft.ApplicationInsights/1.2.3": {
@@ -13320,15 +13313,17 @@
         "tools/install.ps1"
       ]
     },
-    "PropertyChanged.Fody/1.50.0": {
-      "sha512": "JPVTGASVHR7eE9It2xXFf7Xn/h9gjknFvY7NbCyNsZ8AsXq/mAHYD6wq9BYM1cjYt7PGjBN5a0DCUXMJufvESA==",
+    "PropertyChanged.Fody/1.50.4": {
+      "sha512": "RcYoNikGPm9koqwsrffX5PS4dDxBTPHvpddzY+TXFgoHdbh6fKAsQTuIxIB2qklkTANPMMBRJ2K+6ehW+Ci8YQ==",
       "type": "Package",
       "files": [
         "[Content_Types].xml",
         "_rels/.rels",
+        "Lib/dotnet/PropertyChanged.dll",
+        "Lib/dotnet/PropertyChanged.xml",
         "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll",
         "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.xml",
-        "package/services/metadata/core-properties/0dddbd46607a411b809820a7f7612112.psmdcp",
+        "package/services/metadata/core-properties/4aaa1e89f960409c9283732f854ee889.psmdcp",
         "PropertyChanged.Fody.dll",
         "PropertyChanged.Fody.nuspec",
         "PropertyChanged.Fody.pdb",
@@ -16087,7 +16082,7 @@
       "Microsoft.ApplicationInsights.WindowsApps >= 1.1.1",
       "Microsoft.NETCore.UniversalWindowsPlatform >= 5.0.0",
       "MvvmLight >= 5.2.0",
-      "PropertyChanged.Fody >= 1.50.0",
+      "PropertyChanged.Fody >= 1.50.4",
       "Unity >= 3.5.1405-prerelease",
       "Win2D.uwp >= 1.11.0"
     ],

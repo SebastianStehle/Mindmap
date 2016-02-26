@@ -3,6 +3,7 @@
   "version": 1,
   "targets": {
     "UAP,Version=v10.0": {
+      "Fody/1.29.2": {},
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "dependencies": {
           "Microsoft.Net.Http": "[2.2.22, )",
@@ -245,6 +246,17 @@
         },
         "runtime": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        }
+      },
+      "PropertyChanged.Fody/1.50.4": {
+        "dependencies": {
+          "Fody": "[1.29.2, )"
+        },
+        "compile": {
+          "Lib/dotnet/PropertyChanged.dll": {}
+        },
+        "runtime": {
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -1592,6 +1604,7 @@
       }
     },
     "UAP,Version=v10.0/win10-arm": {
+      "Fody/1.29.2": {},
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "dependencies": {
           "Microsoft.Net.Http": "[2.2.22, )",
@@ -1877,6 +1890,17 @@
         },
         "runtime": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        }
+      },
+      "PropertyChanged.Fody/1.50.4": {
+        "dependencies": {
+          "Fody": "[1.29.2, )"
+        },
+        "compile": {
+          "Lib/dotnet/PropertyChanged.dll": {}
+        },
+        "runtime": {
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -3274,6 +3298,7 @@
       }
     },
     "UAP,Version=v10.0/win10-arm-aot": {
+      "Fody/1.29.2": {},
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "dependencies": {
           "Microsoft.Net.Http": "[2.2.22, )",
@@ -3545,6 +3570,17 @@
         },
         "runtime": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        }
+      },
+      "PropertyChanged.Fody/1.50.4": {
+        "dependencies": {
+          "Fody": "[1.29.2, )"
+        },
+        "compile": {
+          "Lib/dotnet/PropertyChanged.dll": {}
+        },
+        "runtime": {
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -4928,6 +4964,7 @@
       }
     },
     "UAP,Version=v10.0/win10-x64": {
+      "Fody/1.29.2": {},
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "dependencies": {
           "Microsoft.Net.Http": "[2.2.22, )",
@@ -5218,6 +5255,17 @@
         },
         "runtime": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        }
+      },
+      "PropertyChanged.Fody/1.50.4": {
+        "dependencies": {
+          "Fody": "[1.29.2, )"
+        },
+        "compile": {
+          "Lib/dotnet/PropertyChanged.dll": {}
+        },
+        "runtime": {
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -6615,6 +6663,7 @@
       }
     },
     "UAP,Version=v10.0/win10-x64-aot": {
+      "Fody/1.29.2": {},
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "dependencies": {
           "Microsoft.Net.Http": "[2.2.22, )",
@@ -6886,6 +6935,17 @@
         },
         "runtime": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        }
+      },
+      "PropertyChanged.Fody/1.50.4": {
+        "dependencies": {
+          "Fody": "[1.29.2, )"
+        },
+        "compile": {
+          "Lib/dotnet/PropertyChanged.dll": {}
+        },
+        "runtime": {
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -8269,6 +8329,7 @@
       }
     },
     "UAP,Version=v10.0/win10-x86": {
+      "Fody/1.29.2": {},
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "dependencies": {
           "Microsoft.Net.Http": "[2.2.22, )",
@@ -8559,6 +8620,17 @@
         },
         "runtime": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        }
+      },
+      "PropertyChanged.Fody/1.50.4": {
+        "dependencies": {
+          "Fody": "[1.29.2, )"
+        },
+        "compile": {
+          "Lib/dotnet/PropertyChanged.dll": {}
+        },
+        "runtime": {
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -9956,6 +10028,7 @@
       }
     },
     "UAP,Version=v10.0/win10-x86-aot": {
+      "Fody/1.29.2": {},
       "Microsoft.AspNet.WebApi.Client/5.2.3": {
         "dependencies": {
           "Microsoft.Net.Http": "[2.2.22, )",
@@ -10227,6 +10300,17 @@
         },
         "runtime": {
           "lib/portable-net45+wp80+win8+wpa81+dnxcore50/Newtonsoft.Json.dll": {}
+        }
+      },
+      "PropertyChanged.Fody/1.50.4": {
+        "dependencies": {
+          "Fody": "[1.29.2, )"
+        },
+        "compile": {
+          "Lib/dotnet/PropertyChanged.dll": {}
+        },
+        "runtime": {
+          "Lib/dotnet/PropertyChanged.dll": {}
         }
       },
       "System.AppContext/4.0.0": {
@@ -11611,6 +11695,29 @@
     }
   },
   "libraries": {
+    "Fody/1.29.2": {
+      "sha512": "7SoewNkJQFedmOiJHD5P1akJ1fRow+tFjj/M4QlJ5M5RTHdnDXxEnuSKF2t22aSxTmn9+4wO3FbtOrJYy31xmA==",
+      "type": "Package",
+      "files": [
+        "[Content_Types].xml",
+        "_rels/.rels",
+        "build/dotnet/Fody.targets",
+        "build/portable-net+sl+win+wpa+wp/Fody.targets",
+        "Content/FodyWeavers.xml",
+        "Fody.dll",
+        "Fody.nuspec",
+        "Fody.pdb",
+        "FodyCommon.dll",
+        "FodyCommon.pdb",
+        "FodyIsolated.dll",
+        "FodyIsolated.pdb",
+        "Mono.Cecil.dll",
+        "Mono.Cecil.Mdb.dll",
+        "Mono.Cecil.Pdb.dll",
+        "Mono.Cecil.Rocks.dll",
+        "package/services/metadata/core-properties/b094559303b349a78e387aa14ccb27d7.psmdcp"
+      ]
+    },
     "Microsoft.AspNet.WebApi.Client/5.2.3": {
       "sha512": "3kiI8peSXbXHDDrRuo+QaX0iCEVRe0nvn2dBDRw656uPX32UalbBlSIDUDlJxu05eau4tnuhsikiUuugvvoUoQ==",
       "type": "Package",
@@ -12486,6 +12593,24 @@
         "Newtonsoft.Json.nuspec",
         "package/services/metadata/core-properties/cc8c591d554640789c6a6ef6456f7772.psmdcp",
         "tools/install.ps1"
+      ]
+    },
+    "PropertyChanged.Fody/1.50.4": {
+      "sha512": "RcYoNikGPm9koqwsrffX5PS4dDxBTPHvpddzY+TXFgoHdbh6fKAsQTuIxIB2qklkTANPMMBRJ2K+6ehW+Ci8YQ==",
+      "type": "Package",
+      "files": [
+        "[Content_Types].xml",
+        "_rels/.rels",
+        "Lib/dotnet/PropertyChanged.dll",
+        "Lib/dotnet/PropertyChanged.xml",
+        "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.dll",
+        "Lib/portable-net4+sl4+wp8+win8+wpa81+MonoAndroid16+MonoTouch40/PropertyChanged.xml",
+        "package/services/metadata/core-properties/4aaa1e89f960409c9283732f854ee889.psmdcp",
+        "PropertyChanged.Fody.dll",
+        "PropertyChanged.Fody.nuspec",
+        "PropertyChanged.Fody.pdb",
+        "Tools/install.ps1",
+        "Tools/uninstall.ps1"
       ]
     },
     "System.AppContext/4.0.0": {

@@ -43,7 +43,7 @@ namespace Hercules.Model
 
             if (isRemoved)
             {
-                OnPropertyChanged("HasChildren");
+                OnPropertyChanged(nameof(HasChildren));
             }
 
             return isRemoved;
@@ -74,7 +74,7 @@ namespace Hercules.Model
                 }
             }
 
-            OnPropertyChanged("HasChildren");
+            OnPropertyChanged(nameof(HasChildren));
         }
 
         public override bool HasChild(Node child)

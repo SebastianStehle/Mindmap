@@ -117,7 +117,7 @@ namespace Hercules.Win2D.Rendering
 
         public ICanvasBrush Brush(Color color, float opacity)
         {
-            return cachedColors.GetOrCreateDefault(new Tuple<Color, float>(color, opacity), () =>
+            return cachedColors.GetOrAddDefault(new Tuple<Color, float>(color, opacity), () =>
             {
                 CanvasSolidColorBrush brush = new CanvasSolidColorBrush(canvas.Device, color) { Opacity = opacity };
 
@@ -129,12 +129,12 @@ namespace Hercules.Win2D.Rendering
         {
             Guard.NotNull(node, nameof(node));
 
-            return cachedIcons.GetOrCreateDefault(node.Icon, () => new Win2DIcon(node.Icon, canvas))?.Bitmap;
+            return cachedIcons.GetOrAddDefault(node.Icon, () => new Win2DIcon(node.Icon, canvas))?.Bitmap;
         }
 
         public Win2DIcon FindIcon(NodeBase node)
         {
-            return cachedIcons.GetOrCreateDefault(node.Icon, () => new Win2DIcon(node.Icon, canvas));
+            return cachedIcons.GetOrAddDefault(node.Icon, () => new Win2DIcon(node.Icon, canvas));
         }
 
         public Win2DColor FindColor(NodeBase node)

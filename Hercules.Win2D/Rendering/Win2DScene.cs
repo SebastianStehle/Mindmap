@@ -318,7 +318,7 @@ namespace Hercules.Win2D.Rendering
         {
             if (node != null)
             {
-                return renderNodes.GetOrCreateDefault(node, () =>
+                return renderNodes.GetOrAddDefault(node, () =>
                 {
                     Win2DRenderNode renderNode = nodeFactory(node);
 

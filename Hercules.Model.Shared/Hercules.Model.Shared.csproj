@@ -50,7 +50,6 @@
     <Compile Include="CheckableMode.cs" />
     <Compile Include="ChildNodeCommandBase.cs" />
     <Compile Include="CommandBase.cs" />
-    <Compile Include="CompositeUndoRedoAction.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="DocumentExtensions.cs" />
     <Compile Include="DocumentObject.cs" />
@@ -82,9 +81,7 @@
     <Compile Include="INodeColor.cs" />
     <Compile Include="INodeIcon.cs" />
     <Compile Include="InsertChildCommand.cs" />
-    <Compile Include="IUndoRedoAction.cs" />
     <Compile Include="IUndoRedoCommand.cs" />
-    <Compile Include="IUndoRedoManager.cs" />
     <Compile Include="IWritable.cs" />
     <Compile Include="KeyIcon.cs" />
     <Compile Include="Layouting\AttachTarget.cs" />
@@ -129,7 +126,6 @@
     <Compile Include="ToggleCheckedCommand.cs" />
     <Compile Include="ToggleHullCommand.cs" />
     <Compile Include="UndoRedoExtensions.cs" />
-    <Compile Include="UndoRedoManager.cs" />
     <Compile Include="ValueColor.cs" />
   </ItemGroup>
   <ItemGroup>

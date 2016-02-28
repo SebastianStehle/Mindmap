@@ -59,17 +59,17 @@ namespace Tests.Facts
             Assert.Equal(2, document.Root.RightChildren.Count);
             Assert.Equal(1, document.Root.LeftChildren.Count);
 
-            document.UndoRedoManager.Revert();
+            document.UndoRedoManager.Undo();
 
             Assert.Equal(1, document.Root.RightChildren.Count);
             Assert.Equal(1, document.Root.LeftChildren.Count);
 
-            document.UndoRedoManager.Revert();
+            document.UndoRedoManager.Undo();
 
             Assert.Equal(1, document.Root.RightChildren.Count);
             Assert.Equal(0, document.Root.LeftChildren.Count);
 
-            document.UndoRedoManager.Revert();
+            document.UndoRedoManager.Undo();
 
             Assert.Equal(0, document.Root.RightChildren.Count);
             Assert.Equal(0, document.Root.LeftChildren.Count);

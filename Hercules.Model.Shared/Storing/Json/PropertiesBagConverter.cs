@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using GP.Utils;
 using Newtonsoft.Json;
 
 namespace Hercules.Model.Storing.Json

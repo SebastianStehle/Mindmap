@@ -77,20 +77,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Facts\ColorsHelperTest.cs" />
     <Compile Include="Facts\CommandFactoryTest.cs" />
-    <Compile Include="Facts\ConvexHullTest.cs" />
-    <Compile Include="Facts\DisposableObjectTest.cs" />
     <Compile Include="Facts\DocumentTest.cs" />
-    <Compile Include="Facts\ExtensionsTest.cs" />
-    <Compile Include="Facts\GuardTest.cs" />
     <Compile Include="Facts\DocumentSerializerTest.cs" />
     <Compile Include="Facts\ImageExporterTest.cs" />
-    <Compile Include="Facts\LimitedConcurrencyLevelTaskSchedulerTest.cs" />
-    <Compile Include="Facts\LocalizationManagerTest.cs" />
-    <Compile Include="Facts\MathHelperTest.cs" />
-    <Compile Include="Facts\PropertiesBagTest.cs" />
-    <Compile Include="Facts\Rect2Test.cs" />
     <Compile Include="Facts\UndoRedoManagerTests.cs" />
     <Compile Include="Facts\VisibilityUpdaterTest.cs" />
     <Compile Include="Given\DisposableMockup.cs" />
@@ -115,7 +105,7 @@
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\GP.Utils.Shared\GP.Utils.Shared.csproj">
+    <ProjectReference Include="..\..\Utils\GP.Utils.Shared\GP.Utils.Shared.csproj">
       <Project>{1666ffbb-520f-466c-ba04-406968246bf6}</Project>
       <Name>GP.Utils.Shared</Name>
     </ProjectReference>

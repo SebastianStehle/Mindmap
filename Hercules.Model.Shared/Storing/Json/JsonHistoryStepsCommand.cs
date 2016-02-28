@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using GP.Utils;
 using Newtonsoft.Json;
 
 namespace Hercules.Model.Storing.Json

@@ -8,6 +8,7 @@
 
 using System;
 using System.IO;
+using GP.Utils;
 using Hercules.Model;
 using Hercules.Model.Storing;
 using Xunit;

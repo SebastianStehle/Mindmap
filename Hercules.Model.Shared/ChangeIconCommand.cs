@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using GP.Utils;
 using Hercules.Model.Storing;
 
 namespace Hercules.Model

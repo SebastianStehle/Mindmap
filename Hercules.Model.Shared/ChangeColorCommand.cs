@@ -5,6 +5,9 @@
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
+
+using GP.Utils;
+
 namespace Hercules.Model
 {
     public sealed class ChangeColorCommand : CommandBase<NodeBase>

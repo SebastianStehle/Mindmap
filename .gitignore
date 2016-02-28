@@ -15,6 +15,7 @@ AppPackages
 *.wadcfg
 *.ide
 *.bidx
+*.lock.json
 
 #node_modules
 /src/SR.BusPortal.Web2/SR.BusPortal.Web2/node_modules/**

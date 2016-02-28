@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System;
+using GP.Utils;
 
 namespace Hercules.Model
 {

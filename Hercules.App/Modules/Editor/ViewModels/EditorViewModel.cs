@@ -6,7 +6,6 @@
 // All rights reserved.
 // ==========================================================================
 
-using System;
 using System.Linq;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -37,6 +36,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
         private RelayCommand selectLeftCommand;
         private RelayCommand selectRightCommand;
         private RelayCommand selectBottomCommand;
+        private RelayCommand toggleNotesCommand;
 
         [NotifyUI]
         public bool ShowHelp { get; set; }
@@ -133,6 +133,18 @@ namespace Hercules.App.Modules.Editor.ViewModels
                     await ProcessManager.RunMainProcessAsync(this, () => PrintService.PrintAsync(Document, RendererProvider.Current));
                 },
                 () => Document != null).DependentOn(this, nameof(Document)));
+            }
+        }
+
+        public RelayCommand ToggleNotesCommand
+        {
+            get
+            {
+                return toggleNotesCommand ?? (toggleNotesCommand = new RelayCommand(() =>
+                {
+                    Document.SelectedNode.ToggleNotesTransactional();
+                },
+                () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
         }
 
@@ -245,7 +257,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             UpdateCheckedState();
         }
 
-        private void UndoRedoManager_StateChanged(object sender, EventArgs e)
+        private void UndoRedoManager_StateChanged(object sender, StateChangedEventArgs e)
         {
             UpdateUndoRedo();
             UpdateCheckedState();

@@ -31,6 +31,9 @@ namespace Hercules.Model
         public string Text { get; protected set; }
 
         [NotifyUI]
+        public string Notes { get; protected set; }
+
+        [NotifyUI]
         public INodeIcon Icon { get; protected set; }
 
         [NotifyUI]
@@ -60,6 +63,9 @@ namespace Hercules.Model
         [NotifyUI]
         public bool IsShowingHull { get; protected set; }
 
+        [NotifyUI]
+        public bool IsNotesEnabled { get; protected set; }
+
         public Document Document
         {
             get { return document; }
@@ -68,6 +74,11 @@ namespace Hercules.Model
         public NodeBase Parent
         {
             get { return parent; }
+        }
+
+        public bool HasNotes
+        {
+            get { return IsNotesEnabled && !string.IsNullOrWhiteSpace(Notes); }
         }
 
         public bool IsCheckable
@@ -102,6 +113,11 @@ namespace Hercules.Model
             IsShowingHull = newIsShowingHull;
         }
 
+        internal void ChangeIsNotesEnabled(bool newIsNotesEnabled)
+        {
+            IsNotesEnabled = newIsNotesEnabled;
+        }
+
         internal void ChangeColor(INodeColor newColor)
         {
             Color = newColor;
@@ -130,6 +146,11 @@ namespace Hercules.Model
         internal void ChangeText(string newText)
         {
             Text = newText;
+        }
+
+        internal void ChangeNotes(string newNotes)
+        {
+            Notes = newNotes;
         }
 
         internal void LinkToDocument(Document newDocument)

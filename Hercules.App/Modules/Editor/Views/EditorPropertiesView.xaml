@@ -22,7 +22,7 @@
             <Setter Property="MinWidth" Value="0" />
             <Setter Property="MinHeight" Value="0" />
             <Setter Property="Height" Value="40" />
-            <Setter Property="Width" Value="80" />
+            <Setter Property="Width" Value="60" />
             <Setter Property="Padding" Value="4" />
             <Setter Property="BorderBrush" Value="{ThemeResource SystemControlBackgroundBaseLowBrush}" />
             <Setter Property="BorderThickness" Value="2" />
@@ -346,7 +346,7 @@
 
                     <Border Style="{StaticResource SeparatorStyle}" />
 
-                    <TextBlock x:Uid="Properties_ShowNodeCheckBoxes" Text="Node Checkboxes" 
+                    <TextBlock x:Uid="Properties_ShowNodeCheckBoxes" Text="RenderNode Checkboxes" 
                         Style="{StaticResource PropertyHeaderStyle}" />
 
                     <GridView SelectedIndex="{Binding SelectedNode.CheckableMode, Converter={StaticResource ValueToIntConverter}, Mode=TwoWay}" ItemContainerStyle="{StaticResource PropertySelectionStyleAuto}" Style="{StaticResource PropertyGridStyle}">

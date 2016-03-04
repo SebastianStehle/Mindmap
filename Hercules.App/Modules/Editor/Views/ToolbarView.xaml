@@ -123,6 +123,10 @@
             </StackPanel>
         </CommandBar.Content>
         <CommandBar.PrimaryCommands>
+            <AppBarButton x:Uid="AppBarButton_ToggleNotes" IsCompact="True" Label="Notes" Icon="Edit"
+                Command="{Binding ToggleNotesCommand}">
+            </AppBarButton>
+            
             <AppBarButton x:Uid="AppBarButton_RemoveNode" IsCompact="True" Label="Remove" Icon="Delete" 
                 Command="{Binding RemoveCommand}">
             </AppBarButton>

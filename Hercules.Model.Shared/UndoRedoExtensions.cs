@@ -22,6 +22,13 @@ namespace Hercules.Model
 
         public static bool IsLastCommand<TCommand>(this IUndoRedoManager manager, Predicate<TCommand> predicate) where TCommand : class, IUndoRedoAction
         {
+            TCommand command = LastCommand(manager, predicate);
+
+            return command != null;
+        }
+
+        public static TCommand LastCommand<TCommand>(this IUndoRedoManager manager, Predicate<TCommand> predicate) where TCommand : class, IUndoRedoAction
+        {
             TCommand command = manager.History.FirstOrDefault() as TCommand;
 
             if (command == null)
@@ -34,7 +41,7 @@ namespace Hercules.Model
                 }
             }
 
-            return command != null && predicate(command);
+            return command != null && predicate(command) ? command : null;
         }
 
         public static IEnumerable<IUndoRedoCommand> Commands(this IUndoRedoManager manager)

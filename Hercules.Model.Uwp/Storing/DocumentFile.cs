@@ -240,7 +240,7 @@ namespace Hercules.Model.Storing
             document = null;
         }
 
-        private void Document_StateChanged(object sender, EventArgs e)
+        private void Document_StateChanged(object sender, StateChangedEventArgs e)
         {
             hasChanges = true;
 

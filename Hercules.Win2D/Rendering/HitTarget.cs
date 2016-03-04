@@ -1,15 +1,12 @@
 ﻿// ==========================================================================
-// IRenderIcon.cs
+// HitTarget.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
-namespace Hercules.Model.Rendering
+namespace Hercules.Win2D.Rendering
 {
-    public interface IRenderIcon
-    {
-        string Name { get; }
-    }
+    public enum HitTarget { Node, CheckBox, NotesButton, ExpandButton }
 }

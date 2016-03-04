@@ -73,7 +73,8 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
                     borderBrush, 2f, SelectionStrokeStyle);
             }
 
-            RenderButton(renderable, session);
+            RenderExpandButton(renderable, session);
+            RenderNotesButton(renderable, session);
         }
 
         public override IBodyPart Clone()

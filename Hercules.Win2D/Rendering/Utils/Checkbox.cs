@@ -9,7 +9,6 @@
 using System.Numerics;
 using Windows.UI;
 using GP.Utils.Mathematics;
-using Hercules.Model;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Geometry;
 
@@ -38,22 +37,18 @@ namespace Hercules.Win2D.Rendering.Utils
             renderBounds = new Rect2(renderPosition, renderSize);
         }
 
-        public bool HandleClick(Win2DRenderable renderable, Vector2 mousePosition)
+        public HitResult HitTest(Win2DRenderNode renderNode, Vector2 hitPosition)
         {
-            bool isHit = renderBounds.Contains(mousePosition);
-
-            if (isHit)
-            {
-                renderable.Node.ToggleCheckedTransactional();
-            }
-
-            return isHit;
+            return renderBounds.Contains(hitPosition) ? new HitResult(renderNode, HitTarget.CheckBox) : null;
         }
 
         public void Render(Win2DRenderable renderable, CanvasDrawingSession session)
         {
             using (session.StackTransform(Matrix3x2.CreateTranslation(renderPosition)))
             {
+#if DRAW_OUTLINE
+                session.DrawRectangle(0, 0, renderSize.X, renderSize.Y, Colors.Purple);
+#endif
                 session.FillRectangle(0, 0, renderSize.X, renderSize.Y, Colors.White);
                 session.DrawRectangle(0, 0, renderSize.X, renderSize.Y, Colors.Black);
 

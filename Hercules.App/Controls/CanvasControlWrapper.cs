@@ -102,10 +102,10 @@ namespace Hercules.App.Controls
                 OnAfterDraw();
             };
 
-            Application.Current.Resuming += Current_Resuming;
+            Application.Current.Resuming += App_Resuming;
         }
 
-        private void Current_Resuming(object sender, object e)
+        private void App_Resuming(object sender, object e)
         {
             Invalidate();
         }

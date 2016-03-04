@@ -465,4 +465,16 @@ The maximum allowed size is a 200x200 pixels.</value>
   <data name="Editor_Checked" xml:space="preserve">
     <value>{0} of {1} topics checked ({2:P})</value>
   </data>
+  <data name="AppBarButton_ToggleNotes.Label" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="AppBarButton_ToggleNotes.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
+    <value>Toggle Notes</value>
+  </data>
+  <data name="TransactionName_ChangeNotes" xml:space="preserve">
+    <value>Change Notes</value>
+  </data>
+  <data name="TransactionName_ToggleNotes" xml:space="preserve">
+    <value>Toggle Notes</value>
+  </data>
 </root>

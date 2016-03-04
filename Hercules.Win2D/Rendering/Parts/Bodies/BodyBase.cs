@@ -29,9 +29,11 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
         protected const float IconSizeMedium = 64;
         protected const float IconSizeSmall = 32;
         protected const float IconMargin = 6;
+        private static readonly Vector2 NotesButtonOffset = new Vector2(-2, 2);
         protected static readonly CanvasStrokeStyle SelectionStrokeStyle = new CanvasStrokeStyle { DashStyle = CanvasDashStyle.Dash };
         private readonly Win2DTextRenderer textRenderer = new Win2DTextRenderer();
-        private readonly ExpandButton button = new ExpandButton();
+        private readonly ExpandButton expandButton = new ExpandButton();
+        private readonly NotesButton notesButton = new NotesButton();
         private readonly CheckBox checkBox = new CheckBox();
         private Vector2 textIconRenderSize;
         private Vector2 textIconPadding;
@@ -58,9 +60,9 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
             textRenderer.ClearResources();
         }
 
-        public bool HandleClick(Win2DRenderable renderable, Vector2 hitPosition)
+        public HitResult HitTest(Win2DRenderNode renderNode, Vector2 hitPosition)
         {
-            return button.HandleClick(renderable, hitPosition) || checkBox.HandleClick(renderable, hitPosition);
+            return notesButton.HitTest(renderNode, hitPosition) ?? expandButton.HitTest(renderNode, hitPosition) ?? checkBox.HitTest(renderNode, hitPosition);
         }
 
         public virtual Vector2 Measure(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
@@ -164,9 +166,14 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
                 iconOffset.Y = textRenderSize.Y + IconMargin;
             }
 
-            if (MustRenderButton(renderable))
+            if (MustRenderNotesButton(renderable))
             {
-                ArrangeButton(renderable);
+                ArrangeNotesButton(renderable);
+            }
+
+            if (MustRenderExpandButton(renderable))
+            {
+                ArrangeExpandButton(renderable);
             }
 
             if (MustRenderCheckBox(renderable))
@@ -188,7 +195,7 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
             textRenderer.Arrange(textRenderPosition);
         }
 
-        private void ArrangeButton(IRenderable renderable)
+        private void ArrangeExpandButton(IRenderable renderable)
         {
             Vector2 renderPosition = renderable.RenderPosition;
             Vector2 renderSize = renderable.RenderSize;
@@ -207,12 +214,27 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
                     renderPosition.Y + (renderSize.Y * 0.5f));
             }
 
-            button.Arrange(buttonPosition, ButtonRadius);
+            expandButton.Arrange(buttonPosition, ButtonRadius);
+        }
+
+        private void ArrangeNotesButton(IRenderable renderable)
+        {
+            notesButton.Arrange(renderable.RenderPosition + new Vector2(renderable.RenderSize.X, 0) + NotesButtonOffset);
         }
 
         protected void RenderText(Win2DRenderable renderable, CanvasDrawingSession session)
         {
             textRenderer.Render(renderable, session);
+        }
+
+        protected void RenderNotesButton(Win2DRenderable renderable, CanvasDrawingSession session)
+        {
+            if (!MustRenderNotesButton(renderable))
+            {
+                return;
+            }
+
+            notesButton.Render(renderable, session);
         }
 
         protected void RenderCheckBox(Win2DRenderable renderable, CanvasDrawingSession session)
@@ -225,14 +247,14 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
             checkBox.Render(renderable, session);
         }
 
-        protected void RenderButton(Win2DRenderable renderable, CanvasDrawingSession session)
+        protected void RenderExpandButton(Win2DRenderable renderable, CanvasDrawingSession session)
         {
-            if (!MustRenderButton(renderable))
+            if (!MustRenderExpandButton(renderable))
             {
                 return;
             }
 
-            button.Render(renderable, session);
+            expandButton.Render(renderable, session);
         }
 
         private static bool MustRenderCheckBox(IRenderable renderable)
@@ -240,9 +262,14 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
              return renderable.Node.IsCheckable;
         }
 
-        private static bool MustRenderButton(IRenderable renderable)
+        private static bool MustRenderExpandButton(IRenderable renderable)
         {
             return renderable.Node.HasChildren;
+        }
+
+        private static bool MustRenderNotesButton(IRenderable renderable)
+        {
+            return renderable.Node.IsNotesEnabled;
         }
 
         protected void RenderIcon(Win2DRenderable renderable, CanvasDrawingSession session)

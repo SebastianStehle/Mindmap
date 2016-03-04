@@ -10,7 +10,11 @@ using System;
 using System.Numerics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
+using GP.Utils;
+using GP.Utils.UI;
+using Hercules.App.Modules.Editor.Views;
 using Hercules.Model;
 using Hercules.Win2D.Rendering;
 using Microsoft.Graphics.Canvas.UI.Xaml;
@@ -22,14 +26,14 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 
 namespace Hercules.App.Controls
 {
-    [TemplatePart(Name = CanvasPart, Type = typeof(CanvasControl))]
-    [TemplatePart(Name = TextBoxPart, Type = typeof(TextEditor))]
-    [TemplatePart(Name = ScrollViewerPart, Type = typeof(ScrollViewer))]
+    [TemplatePart(Name = PartCanvas, Type = typeof(CanvasControl))]
+    [TemplatePart(Name = PartTextBox, Type = typeof(TextEditor))]
+    [TemplatePart(Name = PartScrollViewer, Type = typeof(ScrollViewer))]
     public sealed class Mindmap : Control
     {
-        private const string CanvasPart = "PART_Canvas";
-        private const string TextBoxPart = "PART_TextBox";
-        private const string ScrollViewerPart = "PART_ScrollViewer";
+        private const string PartCanvas = "PART_Canvas";
+        private const string PartTextBox = "PART_TextBox";
+        private const string PartScrollViewer = "PART_ScrollViewer";
         private IWin2DRendererProvider lastWin2DRendererProvider;
         private ScrollViewer scrollViewer;
         private Win2DRenderer renderer;
@@ -52,33 +56,19 @@ namespace Hercules.App.Controls
         }
 
         public static readonly DependencyProperty DocumentProperty =
-            DependencyProperty.Register(nameof(Document), typeof(Document), typeof(Mindmap), new PropertyMetadata(null, OnDocumentChanged));
+            DependencyPropertyManager.Register<Mindmap, Document>(nameof(Document), null, (d, e) => d.OnDocumentChanged(e));
         public Document Document
         {
             get { return (Document)GetValue(DocumentProperty); }
             set { SetValue(DocumentProperty, value); }
         }
 
-        public static void OnDocumentChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            var owner = o as Mindmap;
-
-            owner?.InitializeRenderer();
-        }
-
         public static readonly DependencyProperty RendererProviderProperty =
-            DependencyProperty.Register(nameof(RendererProvider), typeof(IWin2DRendererProvider), typeof(Mindmap), new PropertyMetadata(null, OnRendererChanged));
+            DependencyPropertyManager.Register<Mindmap, IWin2DRendererProvider>(nameof(RendererProvider), null, (d, e) => d.InitializeRenderer());
         public IWin2DRendererProvider RendererProvider
         {
             get { return (IWin2DRendererProvider)GetValue(RendererProviderProperty); }
             set { SetValue(RendererProviderProperty, value); }
-        }
-
-        private static void OnRendererChanged(DependencyObject o, DependencyPropertyChangedEventArgs e)
-        {
-            var owner = o as Mindmap;
-
-            owner?.InitializeRenderer();
         }
 
         public Mindmap()
@@ -95,9 +85,40 @@ namespace Hercules.App.Controls
             InitializeRenderer();
         }
 
+        private void OnDocumentChanged(DependencyPropertyChangedEventArgs e)
+        {
+            Document oldDocument = e.OldValue as Document;
+
+            if (oldDocument != null)
+            {
+                oldDocument.StateChanged -= Document_StateChanged;
+            }
+
+            Document newDocument = e.NewValue as Document;
+
+            if (newDocument != null)
+            {
+                newDocument.StateChanged += Document_StateChanged;
+            }
+
+            InitializeRenderer();
+        }
+
+        private void Document_StateChanged(object sender, StateChangedEventArgs e)
+        {
+            IUndoRedoManager undoRedoManager = (IUndoRedoManager)sender;
+
+            ToggleNotesCommand command = undoRedoManager.LastCommand<ToggleNotesCommand>(n => n.Node.IsNotesEnabled);
+
+            if (command != null)
+            {
+                ShowNotes(command.Node);
+            }
+        }
+
         private void BindTextEditor()
         {
-            textEditor = GetTemplateChild(TextBoxPart) as TextEditor;
+            textEditor = GetTemplateChild(PartTextBox) as TextEditor;
 
             if (textEditor != null)
             {
@@ -107,7 +128,7 @@ namespace Hercules.App.Controls
 
         private void BindScrollViewer()
         {
-            scrollViewer = GetTemplateChild(ScrollViewerPart) as ScrollViewer;
+            scrollViewer = GetTemplateChild(PartScrollViewer) as ScrollViewer;
 
             if (scrollViewer != null)
             {
@@ -117,7 +138,7 @@ namespace Hercules.App.Controls
 
         private void BindCanvasControl()
         {
-            CanvasVirtualControl control = GetTemplateChild(CanvasPart) as CanvasVirtualControl;
+            CanvasVirtualControl control = GetTemplateChild(PartCanvas) as CanvasVirtualControl;
 
             if (control != null)
             {
@@ -212,12 +233,11 @@ namespace Hercules.App.Controls
             {
                 Vector2 position = e.GetCurrentPoint(canvasControl.Inner).Position.ToVector2();
 
-                foreach (Win2DRenderNode renderNode in r.Scene.DiagramNodes)
+                HitResult result = r.HitTest(position);
+
+                if (result?.RenderNode == textEditor.EditingNode)
                 {
-                    if (renderNode.HitTest(position) && textEditor.EditingNode == renderNode)
-                    {
-                        return;
-                    }
+                    return;
                 }
 
                 Focus(FocusState.Programmatic);
@@ -246,14 +266,12 @@ namespace Hercules.App.Controls
             {
                 Vector2 position = e.GetPosition(canvasControl.Inner).ToVector2();
 
-                foreach (Win2DRenderNode renderNode in r.Scene.DiagramNodes)
+                HitResult hitResult = r.Scene.HitTest(position);
+
+                if (hitResult != null)
                 {
-                    if (renderNode.HitTest(position))
-                    {
-                        textEditor.BeginEdit(renderNode);
-                        textEditor.Transform();
-                        break;
-                    }
+                    textEditor.BeginEdit(hitResult.RenderNode);
+                    textEditor.Transform();
                 }
             });
         }
@@ -266,14 +284,46 @@ namespace Hercules.App.Controls
                 {
                     Vector2 position = e.GetPosition(canvasControl.Inner).ToVector2();
 
-                    Win2DRenderNode handledNode;
+                    HitResult hitResult = r.Scene.HitTest(position);
 
-                    if (!r.HandleClick(position, out handledNode) || handledNode != textEditor.EditingNode)
+                    if (hitResult == null || hitResult.RenderNode != textEditor.EditingNode)
                     {
                         textEditor.EndEdit(true);
                     }
+
+                    if (hitResult != null)
+                    {
+                        if (hitResult.Target == HitTarget.Node)
+                        {
+                            hitResult.RenderNode.Node.Select();
+                        }
+                        else if (hitResult.Target == HitTarget.ExpandButton)
+                        {
+                            hitResult.RenderNode.Node.ToggleCollapseTransactional();
+                        }
+                        else if (hitResult.Target == HitTarget.CheckBox)
+                        {
+                            hitResult.RenderNode.Node.ToggleCheckedTransactional();
+                        }
+                        else if (hitResult.Target == HitTarget.NotesButton)
+                        {
+                            ShowNotes(hitResult.RenderNode.Node);
+                        }
+                    }
                 }
             });
+        }
+
+        private void ShowNotes(NodeBase node)
+        {
+            Flyout flyout = new Flyout();
+
+            NotesEditor editor = new NotesEditor(flyout, node);
+
+            flyout.Content = editor;
+            flyout.Placement = FlyoutPlacementMode.Full;
+
+            flyout.ShowAt(this);
         }
 
         private void WithRenderer(Action<Win2DRenderer> action)

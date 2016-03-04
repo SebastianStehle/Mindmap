@@ -12,6 +12,6 @@ namespace Hercules.Win2D.Rendering.Parts
 {
     public interface IClickablePart
     {
-        bool HandleClick(Win2DRenderable renderable, Vector2 hitPosition);
+        HitResult HitTest(Win2DRenderNode renderNode, Vector2 hitPosition);
     }
 }

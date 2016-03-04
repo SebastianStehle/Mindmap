@@ -9,6 +9,7 @@
 using System.IO;
 using Windows.UI.Xaml;
 using GP.Utils;
+using GP.Utils.UI;
 using Hercules.App.Components;
 
 namespace Hercules.App.Modules.Mindmaps.Views
@@ -16,7 +17,7 @@ namespace Hercules.App.Modules.Mindmaps.Views
     public sealed partial class RenameView
     {
         public static readonly DependencyProperty MindmapStoreProperty =
-            DependencyProperty.Register(nameof(MindmapStore), typeof(IMindmapStore), typeof(RenameView), new PropertyMetadata(null));
+            DependencyPropertyManager.Register<RenameView, IMindmapStore>(nameof(MindmapStore), null);
         public IMindmapStore MindmapStore
         {
             get { return (IMindmapStore)GetValue(MindmapStoreProperty); }
@@ -24,7 +25,7 @@ namespace Hercules.App.Modules.Mindmaps.Views
         }
 
         public static readonly DependencyProperty DocumentFileProperty =
-            DependencyProperty.Register(nameof(DocumentFile), typeof(IDocumentFileModel), typeof(RenameView), new PropertyMetadata(null));
+            DependencyPropertyManager.Register<RenameView, IDocumentFileModel>(nameof(DocumentFile), null);
         public IDocumentFileModel DocumentFile
         {
             get { return (IDocumentFileModel)GetValue(DocumentFileProperty); }

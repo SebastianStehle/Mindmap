@@ -45,6 +45,7 @@
     <Compile Include="ChangeIconCommand.cs" />
     <Compile Include="ChangeIconPositionCommand.cs" />
     <Compile Include="ChangeIconSizeCommand.cs" />
+    <Compile Include="ChangeNotesCommand.cs" />
     <Compile Include="ChangeShapeCommand.cs" />
     <Compile Include="ChangeTextCommand.cs" />
     <Compile Include="CheckableMode.cs" />
@@ -125,6 +126,7 @@
     <Compile Include="ToggleCheckableCommand.cs" />
     <Compile Include="ToggleCheckedCommand.cs" />
     <Compile Include="ToggleHullCommand.cs" />
+    <Compile Include="ToggleNotesCommand.cs" />
     <Compile Include="UndoRedoExtensions.cs" />
     <Compile Include="ValueColor.cs" />
   </ItemGroup>

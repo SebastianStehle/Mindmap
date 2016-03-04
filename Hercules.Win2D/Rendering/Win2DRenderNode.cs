@@ -166,7 +166,7 @@ namespace Hercules.Win2D.Rendering
 
             animationTargetPosition = MathHelper.PositiveInfinityVector2;
 
-            return true;
+            return false;
         }
 
         public void Measure(ICanvasResourceCreator resourceCreator)
@@ -207,26 +207,9 @@ namespace Hercules.Win2D.Rendering
             bodyGeometry.Arrange(this, resourceCreator);
         }
 
-        public virtual bool HitTest(Vector2 hitPosition)
+        public virtual HitResult HitTest(Vector2 hitPosition)
         {
-            return RenderBounds.Contains(hitPosition);
-        }
-
-        public virtual bool HandleClick(Vector2 hitPosition)
-        {
-            if (bodyGeometry?.HandleClick(this, hitPosition) == true)
-            {
-                return true;
-            }
-
-            if (HitTest(hitPosition))
-            {
-                Node.Select();
-
-                return true;
-            }
-
-            return false;
+            return bodyGeometry?.HitTest(this, hitPosition) ?? (RenderBounds.Contains(hitPosition) ? new HitResult(this, HitTarget.Node) : null);
         }
 
         public override void ClearResources()

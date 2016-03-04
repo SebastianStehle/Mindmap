@@ -248,21 +248,9 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        public bool HandleClick(Vector2 hitPosition, out Win2DRenderNode handledNode)
+        public HitResult HitTest(Vector2 hitPosition)
         {
-            handledNode = null;
-
-            foreach (Win2DRenderNode renderNode in DiagramNodes)
-            {
-                if (renderNode.HandleClick(hitPosition))
-                {
-                    handledNode = renderNode;
-
-                    return true;
-                }
-            }
-
-            return false;
+            return DiagramNodes.Select(x => x.HitTest(hitPosition)).FirstOrDefault(x => x != null);
         }
 
         private static bool CanRenderPath(Win2DRenderNode renderNode, Rect2 viewRect)

@@ -77,7 +77,8 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
                 }
             }
 
-            RenderButton(renderable, session);
+            RenderExpandButton(renderable, session);
+            RenderNotesButton(renderable, session);
         }
     }
 }

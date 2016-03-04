@@ -9,7 +9,6 @@
 using System.Numerics;
 using Windows.UI;
 using GP.Utils.Mathematics;
-using Hercules.Model;
 using Microsoft.Graphics.Canvas;
 
 // ReSharper disable SuggestBaseTypeForParameter
@@ -30,16 +29,9 @@ namespace Hercules.Win2D.Rendering.Utils
             renderBounds = Rect2.Inflate(new Rect2(center, Vector2.Zero), radius, radius);
         }
 
-        public bool HandleClick(Win2DRenderable renderable, Vector2 mousePosition)
+        public HitResult HitTest(Win2DRenderNode renderNode, Vector2 hitPosition)
         {
-            bool isHit = renderBounds.Contains(mousePosition);
-
-            if (isHit)
-            {
-                renderable.Node.ToggleCollapseTransactional();
-            }
-
-            return isHit;
+            return renderBounds.Contains(hitPosition) ? new HitResult(renderNode, HitTarget.ExpandButton) : null;
         }
 
         public void Render(Win2DRenderable renderable, CanvasDrawingSession session)
@@ -58,6 +50,9 @@ namespace Hercules.Win2D.Rendering.Utils
 
         private void RenderCircle(CanvasDrawingSession session)
         {
+#if DRAW_OUTLINE
+            session.DrawRectangle(renderBounds.ToRect(), Colors.Orange);
+#endif
             session.FillCircle(renderCenter, renderRadius, Colors.White);
 
             session.DrawCircle(renderCenter, renderRadius, Colors.DarkGray);

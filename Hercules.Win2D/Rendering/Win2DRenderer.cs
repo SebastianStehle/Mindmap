@@ -193,16 +193,9 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        public bool HandleClick(Vector2 hitPosition, out Win2DRenderNode handledNode)
+        public HitResult HitTest(Vector2 hitPosition)
         {
-            bool isHit = scene.HandleClick(hitPosition, out handledNode);
-
-            if (isHit)
-            {
-                Invalidate();
-            }
-
-            return isHit;
+            return scene.HitTest(hitPosition);
         }
 
         private void Document_NodeSelected(object sender, NodeEventArgs e)
@@ -210,7 +203,7 @@ namespace Hercules.Win2D.Rendering
             InvalidateWithoutLayout();
         }
 
-        private void Document_StateChanged(object sender, EventArgs e)
+        private void Document_StateChanged(object sender, StateChangedEventArgs e)
         {
             Invalidate();
         }

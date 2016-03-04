@@ -78,7 +78,8 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
                 session.DrawRoundedRectangle(renderable.RenderBounds.ToRect(), 5, 5, borderBrush, 2f, SelectionStrokeStyle);
             }
 
-            RenderButton(renderable, session);
+            RenderExpandButton(renderable, session);
+            RenderNotesButton(renderable, session);
         }
 
         public override IBodyPart Clone()

@@ -27,7 +27,7 @@ namespace Hercules.Model
             { "Status_Flag_Blue", "Flag_Blue" },
             { "Status_Flag_Green", "Flag_Green" },
             { "Status_Flag_White", "Flag_Cyan" },
-            { "Status_Flag_Yellow", "Flag_Orange" },
+            { "Status_Flag_Yellow", "Flag_Orange" }
         };
 
         public static string Map(string name)

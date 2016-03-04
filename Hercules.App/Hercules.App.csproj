@@ -149,6 +149,9 @@
     <Compile Include="Modules\Editor\Views\EditorPropertiesView.xaml.cs">
       <DependentUpon>EditorPropertiesView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Modules\Editor\Views\NotesEditor.xaml.cs">
+      <DependentUpon>NotesEditor.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Modules\Editor\Views\ToolbarView.xaml.cs">
       <DependentUpon>ToolbarView.xaml</DependentUpon>
     </Compile>
@@ -363,6 +366,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Modules\Editor\Views\EditorPropertiesView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Modules\Editor\Views\NotesEditor.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

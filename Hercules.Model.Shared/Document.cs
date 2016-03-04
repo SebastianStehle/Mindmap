@@ -37,7 +37,7 @@ namespace Hercules.Model
 
         public event EventHandler<NodeEventArgs> NodeSelected;
 
-        public event EventHandler StateChanged
+        public event EventHandler<StateChangedEventArgs> StateChanged
         {
             add
             {

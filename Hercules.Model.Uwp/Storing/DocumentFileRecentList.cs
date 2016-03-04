@@ -117,33 +117,49 @@ namespace Hercules.Model.Storing
             }
         }
 
-        public Task SaveAsync(IEnumerable<DocumentFile> newFiles)
+        public Task<bool> SaveAsync(IEnumerable<DocumentFile> newFiles)
         {
             Guard.NotNull(newFiles, nameof(newFiles));
 
             return FileQueue.EnqueueAsync(() =>
             {
+                int errors = 0;
+
                 HashSet<string> handledPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
                 foreach (StorageFile file in newFiles.Where(x => !x.IsInLocalFolder && x.File != null).Select(x => x.File))
                 {
-                    if (!handledPaths.Add(file.Path))
+                    try
                     {
-                        continue;
-                    }
+                        if (!handledPaths.Add(file.Path))
+                        {
+                            continue;
+                        }
 
-                    if (!tokenMapping.Remove(file.Path))
+                        if (!tokenMapping.Remove(file.Path))
+                        {
+                            recentList.Add(file);
+                        }
+                    }
+                    catch
                     {
-                        recentList.Add(file);
+                        errors++;
                     }
                 }
 
                 foreach (var token in tokenMapping.Values)
                 {
-                    recentList.Remove(token);
+                    try
+                    {
+                        recentList.Remove(token);
+                    }
+                    catch
+                    {
+                        errors++;
+                    }
                 }
 
-                return Task.FromResult(true);
+                return Task.FromResult(errors == 0);
             });
         }
     }

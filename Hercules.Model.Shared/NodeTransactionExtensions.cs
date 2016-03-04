@@ -103,6 +103,19 @@ namespace Hercules.Model
             }
         }
 
+        public static void ToggleNotesTransactional(this NodeBase node)
+        {
+            if (node?.Document != null)
+            {
+                string tansactionName = LocalizationManager.GetString("TransactionName_ToggleNotes");
+
+                node.Document.MakeTransaction(tansactionName, commands =>
+                {
+                    commands.Apply(new ToggleNotesCommand(node));
+                });
+            }
+        }
+
         public static void ToggleHullTransactional(this NodeBase node)
         {
             if (node?.Document != null)
@@ -151,6 +164,19 @@ namespace Hercules.Model
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
                     commands.Apply(new ChangeTextCommand(node, text ?? string.Empty));
+                });
+            }
+        }
+
+        public static void ChangeNotesTransactional(this NodeBase node, string notes)
+        {
+            if (node?.Document != null && !Equals(node.Notes, notes))
+            {
+                string transactionName = LocalizationManager.GetString("TransactionName_ChangeNotes");
+
+                node.Document.MakeTransaction(transactionName, commands =>
+                {
+                    commands.Apply(new ChangeNotesCommand(node, notes ?? string.Empty));
                 });
             }
         }

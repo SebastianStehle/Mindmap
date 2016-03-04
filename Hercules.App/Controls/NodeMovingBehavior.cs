@@ -104,12 +104,11 @@ namespace Hercules.App.Controls
                 return null;
             }
 
-            foreach (Win2DRenderNode renderNode in mindmap.Scene.DiagramNodes)
+            HitResult result = mindmap.Renderer.HitTest(position);
+
+            if (result != null && result.RenderNode != mindmap.TextEditingNode)
             {
-                if (renderNode.HitTest(position) && renderNode != mindmap.TextEditingNode)
-                {
-                    return NodeMovingOperation.Start(mindmap, renderNode);
-                }
+                return NodeMovingOperation.Start(mindmap, result.RenderNode);
             }
 
             return null;

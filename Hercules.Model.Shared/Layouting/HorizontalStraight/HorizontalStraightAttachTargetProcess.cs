@@ -51,14 +51,14 @@ namespace Hercules.Model.Layouting.HorizontalStraight
                 FindReorderTarget();
             }
 
-            if (children != null)
+            if (children == null)
             {
-                CalculatePreviewPosition();
-
-                return new AttachTarget(parent, side, insertIndex, position);
+                return null;
             }
 
-            return null;
+            CalculatePreviewPosition();
+
+            return new AttachTarget(parent, side, insertIndex, position);
         }
 
         private void FindAttachOnParent()

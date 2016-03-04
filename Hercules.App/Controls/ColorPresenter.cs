@@ -19,14 +19,14 @@ using Hercules.Win2D.Rendering;
 
 namespace Hercules.App.Controls
 {
-    [TemplatePart(Name = PanelPart, Type = typeof(Border))]
+    [TemplatePart(Name = PartPanel, Type = typeof(Border))]
     public sealed class ColorPresenter : Control
     {
-        private const string PanelPart = "PART_Panel";
+        private const string PartPanel = "PART_Panel";
         private Border border;
 
         public static readonly DependencyProperty ColorProperty =
-            DependencyProperty.Register(nameof(Color), typeof(INodeColor), typeof(ColorPresenter), new PropertyMetadata(null, (d, e) => ((ColorPresenter)d).UpdateColor()));
+            DependencyPropertyManager.Register<ColorPresenter, INodeColor>(nameof(Color), null, (d, e) => d.UpdateColor());
         public INodeColor Color
         {
             get { return (INodeColor)GetValue(ColorProperty); }
@@ -34,7 +34,7 @@ namespace Hercules.App.Controls
         }
 
         public static readonly DependencyProperty RendererProperty =
-            DependencyProperty.Register(nameof(Renderer), typeof(Win2DRenderer), typeof(ColorPresenter), new PropertyMetadata(null, (d, e) => ((ColorPresenter)d).UpdateColor()));
+            DependencyPropertyManager.Register<ColorPresenter, Win2DRenderer>(nameof(Renderer), null, (d, e) => d.UpdateColor());
         public Win2DRenderer Renderer
         {
             get { return (Win2DRenderer)GetValue(RendererProperty); }
@@ -48,7 +48,7 @@ namespace Hercules.App.Controls
 
         protected override void OnApplyTemplate()
         {
-            border = GetTemplateChild(PanelPart) as Border;
+            border = GetTemplateChild(PartPanel) as Border;
 
             UpdateColor();
         }

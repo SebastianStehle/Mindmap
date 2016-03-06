@@ -9,6 +9,7 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using System.Xml.Linq;
 
 // ReSharper disable LoopCanBePartlyConvertedToQuery
@@ -25,19 +26,23 @@ namespace Hercules.Model.ExImport.Formats.XMind
             {
                 string title = sheet.Element(Namespaces.Content("title"))?.Value;
 
-                if (!string.IsNullOrWhiteSpace(title))
+                Document document = new Document(Guid.NewGuid());
+
+                XElement root = sheet.Element(Namespaces.Content("topic"));
+
+                if (root == null)
                 {
-                    Document document = new Document(Guid.NewGuid());
-
-                    XElement root = sheet.Element(Namespaces.Content("topic"));
-
-                    if (root != null)
-                    {
-                        ReadNode(root, document.Root, stylesById);
-                    }
-
-                    yield return new ImportResult(document, title);
+                    continue;
                 }
+
+                ReadNode(root, document.Root, stylesById);
+
+                if (string.IsNullOrWhiteSpace(title))
+                {
+                    title = document.Root.Text ?? "Untitled";
+                }
+
+                yield return new ImportResult(document, title);
             }
         }
 
@@ -50,6 +55,28 @@ namespace Hercules.Model.ExImport.Formats.XMind
             ReadBranch(topic, node);
 
             ReadChilds(topic, node, stylesById);
+
+            ReadMarkers(topic, node);
+        }
+
+        private static void ReadMarkers(this XContainer topic, NodeBase node)
+        {
+            string markerId =
+                topic
+                    .Element(Namespaces.Content("marker-refs"))?
+                    .Elements(Namespaces.Content("marker-ref"))
+                    .Select(x => x.Attribute("marker-id")?.Value)
+                    .FirstOrDefault();
+
+            if (!string.IsNullOrWhiteSpace(markerId))
+            {
+                string icon = MarkerMapping.ResolveMindapp(markerId);
+
+                if (icon != null)
+                {
+                    node.ChangeIconTransactional(new KeyIcon(icon));
+                }
+            }
         }
 
         private static void ReadTitle(this XContainer topic, NodeBase node)

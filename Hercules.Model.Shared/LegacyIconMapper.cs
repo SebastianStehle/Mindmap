@@ -21,6 +21,7 @@ namespace Hercules.Model
         {
             { "Encrypt", "Key" },
             { "Favorites", "Star_Orange" },
+            { "Calendar_Dez", "Calendar_Dec" },
             { "Calendar_Public", "Calendar" },
             { "Function_Logical", "Book" },
             { "Status_Flag_Red", "Flag_Red" },

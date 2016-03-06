@@ -38,7 +38,7 @@ namespace Hercules.Model
                 "Calendar_Sep",
                 "Calendar_Oct",
                 "Calendar_Nov",
-                "Calendar_Dez"),
+                "Calendar_Dec"),
             new IconCategory("Priorities",
                 "Priority_1",
                 "Priority_2",

@@ -62,6 +62,7 @@
     <Compile Include="ExImport\Formats\XMind\ContentReader.cs" />
     <Compile Include="ExImport\Formats\XMind\ContentWriter.cs" />
     <Compile Include="ExImport\Formats\XMind\Extensions.cs" />
+    <Compile Include="ExImport\Formats\XMind\MarkerMapping.cs" />
     <Compile Include="ExImport\Formats\XMind\Namespaces.cs" />
     <Compile Include="ExImport\Formats\XMind\StylesReader.cs" />
     <Compile Include="ExImport\Formats\XMind\StylesWriter.cs" />

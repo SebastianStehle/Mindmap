@@ -16,36 +16,40 @@ namespace Hercules.App.Modules
     {
         public static RelayCommand DependentOn(this RelayCommand command, INotifyPropertyChanged owner, params string[] properties)
         {
-            if (owner != null && properties != null && properties.Length > 0)
+            if (owner == null || properties == null || properties.Length == 0)
             {
-                HashSet<string> propertiesSet = new HashSet<string>(properties);
-
-                owner.PropertyChanged += (sender, e) =>
-                {
-                    if (propertiesSet.Contains(e.PropertyName))
-                    {
-                        command.RaiseCanExecuteChanged();
-                    }
-                };
+                return command;
             }
+
+            HashSet<string> propertiesSet = new HashSet<string>(properties);
+
+            owner.PropertyChanged += (sender, e) =>
+            {
+                if (propertiesSet.Contains(e.PropertyName))
+                {
+                    command.RaiseCanExecuteChanged();
+                }
+            };
 
             return command;
         }
 
         public static RelayCommand<T> DependentOn<T>(this RelayCommand<T> command, INotifyPropertyChanged owner, params string[] properties)
         {
-            if (owner != null && properties != null && properties.Length > 0)
+            if (owner == null || properties == null || properties.Length == 0)
             {
-                HashSet<string> propertiesSet = new HashSet<string>(properties);
-
-                owner.PropertyChanged += (sender, e) =>
-                {
-                    if (propertiesSet.Contains(e.PropertyName))
-                    {
-                        command.RaiseCanExecuteChanged();
-                    }
-                };
+                return command;
             }
+
+            HashSet<string> propertiesSet = new HashSet<string>(properties);
+
+            owner.PropertyChanged += (sender, e) =>
+            {
+                if (propertiesSet.Contains(e.PropertyName))
+                {
+                    command.RaiseCanExecuteChanged();
+                }
+            };
 
             return command;
         }

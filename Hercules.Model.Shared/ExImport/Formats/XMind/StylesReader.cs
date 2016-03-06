@@ -21,42 +21,44 @@ namespace Hercules.Model.ExImport.Formats.XMind
         {
             XElement nodeStyles = mapStyles.Root.Element(Namespaces.Styles("styles"));
 
-            if (nodeStyles != null)
+            if (nodeStyles == null)
             {
-                foreach (XElement style in nodeStyles.Elements(Namespaces.Styles("style")))
+                return;
+            }
+
+            foreach (XElement style in nodeStyles.Elements(Namespaces.Styles("style")))
+            {
+                string id = style.AttributeValue("id");
+
+                if (string.IsNullOrWhiteSpace(id))
                 {
-                    string id = style.AttributeValue("id");
+                    continue;
+                }
 
-                    if (string.IsNullOrWhiteSpace(id))
-                    {
-                        continue;
-                    }
+                if (!style.IsAttributeEquals("type", "topic"))
+                {
+                    continue;
+                }
 
-                    if (!style.IsAttributeEquals("type", "topic"))
-                    {
-                        continue;
-                    }
+                XElement properties = style.Element(Namespaces.Styles("topic-properties"));
 
-                    XElement properties = style.Element(Namespaces.Styles("topic-properties"));
+                if (properties == null)
+                {
+                    continue;
+                }
 
-                    if (properties == null)
-                    {
-                        continue;
-                    }
+                string fillString = properties.AttributeValue(Namespaces.SVG("fill"));
 
-                    string fillString = properties.AttributeValue(Namespaces.SVG("fill"));
+                if (string.IsNullOrWhiteSpace(fillString) || !ColorRegex.IsMatch(fillString))
+                {
+                    continue;
+                }
 
-                    if (string.IsNullOrWhiteSpace(fillString) || !ColorRegex.IsMatch(fillString))
-                    {
-                        continue;
-                    }
+                int color;
 
-                    int color;
-
-                    if (int.TryParse(fillString.Substring(1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out color))
-                    {
-                        stylesById[id] = new XMindStyle { Color = color };
-                    }
+                if (int.TryParse(fillString.Substring(1), NumberStyles.HexNumber, CultureInfo.InvariantCulture, out color))
+                {
+                    stylesById[id] = new XMindStyle { Color = color };
                 }
             }
         }

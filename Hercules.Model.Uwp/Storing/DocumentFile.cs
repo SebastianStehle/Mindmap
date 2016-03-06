@@ -10,9 +10,7 @@ using System;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
-using Windows.Storage.FileProperties;
 using GP.Utils;
-using Hercules.Model.Storing.Json;
 
 // ReSharper disable InvertIf
 // ReSharper disable PossibleNullReferenceException
@@ -22,11 +20,12 @@ namespace Hercules.Model.Storing
 {
     public class DocumentFile
     {
-        private StorageFile file;
-        private DateTimeOffset modifiedUtc = DateTimeOffset.UtcNow;
+        private StorageFile fileReference;
+        private DateTimeOffset fileModified;
         private Document document;
-        private bool hasChanges;
         private string name;
+        private bool hasChanges;
+        private bool isInLocalFolder;
 
         public event EventHandler Changed;
 
@@ -37,12 +36,12 @@ namespace Hercules.Model.Storing
 
         public string Path
         {
-            get { return file?.Path; }
+            get { return fileReference?.Path; }
         }
 
         public bool IsInLocalFolder
         {
-            get { return IsInFolder(ApplicationData.Current.LocalFolder); }
+            get { return isInLocalFolder; }
         }
 
         public bool HasChanges
@@ -52,7 +51,7 @@ namespace Hercules.Model.Storing
 
         public StorageFile File
         {
-            get { return file; }
+            get { return fileReference; }
         }
 
         public Document Document
@@ -62,94 +61,70 @@ namespace Hercules.Model.Storing
 
         public DateTimeOffset ModifiedUtc
         {
-            get { return modifiedUtc; }
+            get { return fileModified; }
         }
 
         public static string Extension
         {
-            get { return JsonDocumentSerializer.FileExtension.Extension; }
+            get { return Constants.FileExtension.Extension; }
         }
 
-        private DocumentFile(string name)
+        private DocumentFile(StorageFile fileReference, Document document = null, bool isInLocalFolder = true, DateTimeOffset? fileModified = null)
         {
-            this.name = name;
-        }
+            name = fileReference?.DisplayName;
 
-        private DocumentFile(StorageFile file, BasicProperties properties)
-            : this(file.DisplayName)
-        {
-            this.file = file;
+            this.fileModified = fileModified ?? DateTimeOffset.UtcNow;
+            this.fileReference = fileReference;
+            this.isInLocalFolder = isInLocalFolder;
 
-            modifiedUtc = properties.DateModified.UtcDateTime;
-        }
-
-        private DocumentFile(Document document, string name)
-            : this(name)
-        {
             OpenInternal(document);
         }
 
-        public static async Task<DocumentFile> OpenAsync(StorageFile file)
+        public static async Task<DocumentFile> OpenAsync(StorageFile file, bool isInLocalFolder)
         {
             Guard.NotNull(file, nameof(file));
 
-            return new DocumentFile(file, await file.GetBasicPropertiesAsync());
+            return new DocumentFile(file, null, isInLocalFolder, (await file.GetBasicPropertiesAsync()).DateModified.UtcDateTime);
         }
 
-        public static DocumentFile CreateNew(string name, Document document = null)
+        public static async Task<DocumentFile> CreateNewAsync(string name, Document document = null)
         {
-            Guard.ValidFileName(name, nameof(name));
+            StorageFile storageFile = await LocalStore.CreateFileQueuedAsync(name + Extension);
 
-            return new DocumentFile(document ?? Document.CreateNew(name), name);
-        }
+            DocumentFile file = new DocumentFile(storageFile, document ?? Document.CreateNew(name));
 
-        public static DocumentFile Create(string name, Document document)
-        {
-            Guard.ValidFileName(name, nameof(name));
+            await file.SaveAsync();
 
-            return new DocumentFile(document, name);
-        }
-
-        public bool IsInFolder(StorageFolder folder)
-        {
-            return file != null && folder != null && file.Path.StartsWith(folder.Path, StringComparison.OrdinalIgnoreCase);
+            return file;
         }
 
         public Task<bool> RenameAsync(string newName)
         {
-            Guard.ValidFileName(newName, nameof(newName));
-
-            return DoAsync(() => file != null, async () =>
+            return DoAsync(() => fileReference != null, async () =>
             {
-                await FileQueue.RenameAsync(file, newName, Extension);
+                await fileReference.RenameQueuedAsync(newName, Extension);
+            });
+        }
 
-                name = newName;
+        public Task DeleteAsync()
+        {
+            return DoAsync(() => fileReference != null && isInLocalFolder, async () =>
+            {
+                await fileReference.DeleteQueuedAsync();
             });
         }
 
         public Task<bool> OpenAsync()
         {
-            if (document != null)
+            return DoAsync(() => fileReference != null || document != null, async () =>
             {
-                return Task.FromResult(true);
-            }
+                if (document == null)
+                {
+                    Document newDocument = await fileReference.OpenDocumentQueuedAsync();
 
-            return DoAsync(() => document == null && file != null, async () =>
-            {
-                Document newDocument = await FileQueue.OpenAsync(file);
-
-                OpenInternal(newDocument);
+                    OpenInternal(newDocument);
+                }
             });
-        }
-
-        public async Task<bool> SaveToAsync(StorageFolder folder)
-        {
-            return folder != null && await SaveAsync(await folder.CreateFileAsync(name + Extension, CreationCollisionOption.GenerateUniqueName));
-        }
-
-        public async Task<bool> SaveToLocalFolderAsync()
-        {
-            return await SaveToAsync(await FileQueue.GetStorageFolderAsync());
         }
 
         public Task<bool> SaveAsAsync(StorageFile newFile)
@@ -159,30 +134,30 @@ namespace Hercules.Model.Storing
 
         public Task<bool> SaveAsync()
         {
-            return SaveAsync(file);
+            return SaveAsync(fileReference);
         }
 
-        private Task<bool> SaveAsync(StorageFile targetFile)
+        private Task<bool> SaveAsync(StorageFile file)
         {
-            return DoAsync(() => document != null && targetFile != null, async () =>
+            return DoAsync(() => document != null && file != null, async () =>
             {
-                await FileQueue.SaveAsync(document, targetFile);
+                await file.SaveDocumentQueuedAsync(document);
 
                 try
                 {
-                    if (file != null && !string.Equals(file.Path, targetFile.Path, StringComparison.OrdinalIgnoreCase))
+                    if (fileReference != null && !string.Equals(fileReference.Path, file.Path, StringComparison.OrdinalIgnoreCase))
                     {
                         if (IsInLocalFolder)
                         {
-                            await file.DeleteAsync(StorageDeleteOption.PermanentDelete);
+                            await fileReference.DeleteQueuedAsync();
                         }
+
+                        isInLocalFolder = false;
                     }
                 }
                 finally
                 {
-                    file = targetFile;
-
-                    name = file.DisplayName;
+                    fileReference = file;
                 }
             });
         }
@@ -197,14 +172,19 @@ namespace Hercules.Model.Storing
                 {
                     await action();
 
-                    modifiedUtc = DateTime.UtcNow;
+                    if (fileReference != null)
+                    {
+                        name = fileReference.DisplayName;
+                    }
+
+                    fileModified = DateTime.UtcNow;
 
                     hasSucceeded = true;
                     hasChanges = false;
                 }
                 catch (FileNotFoundException)
                 {
-                    file = null;
+                    fileReference = null;
 
                     throw;
                 }

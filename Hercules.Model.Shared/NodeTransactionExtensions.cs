@@ -92,7 +92,7 @@ namespace Hercules.Model
 
         public static void ToggleCheckedTransactional(this NodeBase node)
         {
-            if (node?.Document != null)
+            if (node.Document != null)
             {
                 string tansactionName = LocalizationManager.GetString("TransactionName_ToggleChecked");
 
@@ -105,7 +105,7 @@ namespace Hercules.Model
 
         public static void ToggleNotesTransactional(this NodeBase node)
         {
-            if (node?.Document != null)
+            if (node.Document != null)
             {
                 string tansactionName = LocalizationManager.GetString("TransactionName_ToggleNotes");
 
@@ -118,7 +118,7 @@ namespace Hercules.Model
 
         public static void ToggleHullTransactional(this NodeBase node)
         {
-            if (node?.Document != null)
+            if (node.Document != null)
             {
                 string tansactionName = LocalizationManager.GetString("TransactionName_ToggleHull");
 
@@ -131,7 +131,7 @@ namespace Hercules.Model
 
         public static void ToggleCollapseTransactional(this NodeBase node)
         {
-            if (node?.Document != null)
+            if (node.Document != null)
             {
                 string transactionName = LocalizationManager.GetString("TransactionName_ExpandCollapse");
 
@@ -144,7 +144,7 @@ namespace Hercules.Model
 
         public static void ChangeShapeTransactional(this Node node, NodeShape? shape)
         {
-            if (node?.Document != null && !Equals(node.Shape, shape))
+            if (node.Document != null && !Equals(node.Shape, shape))
             {
                 string tansactionName = LocalizationManager.GetString("TransactionName_ChangeShape");
 
@@ -157,7 +157,7 @@ namespace Hercules.Model
 
         public static void ChangeTextTransactional(this NodeBase node, string text)
         {
-            if (node?.Document != null && !Equals(node.Text, text))
+            if (node.Document != null && !Equals(node.Text, text))
             {
                 string transactionName = LocalizationManager.GetString("TransactionName_ChangeText");
 
@@ -170,7 +170,7 @@ namespace Hercules.Model
 
         public static void ChangeNotesTransactional(this NodeBase node, string notes)
         {
-            if (node?.Document != null && !Equals(node.Notes, notes))
+            if (node.Document != null && !Equals(node.Notes, notes))
             {
                 string transactionName = LocalizationManager.GetString("TransactionName_ChangeNotes");
 
@@ -183,7 +183,7 @@ namespace Hercules.Model
 
         public static void ChangeColorTransactional(this NodeBase node, INodeColor color)
         {
-            if (node?.Document != null && !Equals(node.Color, color) && color != null)
+            if (node.Document != null && !Equals(node.Color, color) && color != null)
             {
                 string transactionName = LocalizationManager.GetString("TransactionName_ChangeColor");
 
@@ -196,7 +196,7 @@ namespace Hercules.Model
 
         public static void ChangeIconTransactional(this NodeBase node, INodeIcon icon)
         {
-            if (node?.Document != null && !Equals(node.Icon, icon))
+            if (node.Document != null && !Equals(node.Icon, icon))
             {
                 string transactionName = LocalizationManager.GetString("TransactionName_ChangeIcon");
 
@@ -209,7 +209,7 @@ namespace Hercules.Model
 
         public static void ChangeCheckableModeTransactional(this NodeBase node, CheckableMode checkableMode)
         {
-            if (node?.Document != null && !Equals(node.CheckableMode, checkableMode))
+            if (node.Document != null && !Equals(node.CheckableMode, checkableMode))
             {
                 string transactionName = LocalizationManager.GetString("TransactionName_ChangeCheckableMode");
 
@@ -222,7 +222,7 @@ namespace Hercules.Model
 
         public static void ChangeIconSizeTransactional(this NodeBase node, IconSize iconSize)
         {
-            if (node?.Document != null && !Equals(node.IconSize, iconSize))
+            if (node.Document != null && !Equals(node.IconSize, iconSize))
             {
                 string transactionName = LocalizationManager.GetString("TransactionName_ChangeIconSize");
 
@@ -235,7 +235,7 @@ namespace Hercules.Model
 
         public static void ChangeIconPositionTransactional(this NodeBase node, IconPosition iconPosition)
         {
-            if (node?.Document != null && !Equals(node.IconPosition, iconPosition))
+            if (node.Document != null && !Equals(node.IconPosition, iconPosition))
             {
                 string transactionName = LocalizationManager.GetString("TransactionName_ChangeIconPosition");
 

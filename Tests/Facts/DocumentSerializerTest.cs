@@ -14,6 +14,7 @@ using GP.Utils;
 using Hercules.Model;
 using Hercules.Model.ExImport.Formats.XMind;
 using Hercules.Model.Rendering;
+using Hercules.Model.Storing;
 using Hercules.Model.Storing.Json;
 using Rhino.Mocks;
 using Tests.Given;
@@ -39,7 +40,7 @@ namespace Tests.Facts
         [Fact]
         public void FileExtension()
         {
-            Assert.Equal(".mmd", JsonDocumentSerializer.FileExtension.Extension);
+            Assert.Equal(".mmd", Constants.FileExtension.Extension);
         }
 
         [Fact]

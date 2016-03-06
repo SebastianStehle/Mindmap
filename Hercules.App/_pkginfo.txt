@@ -1,1 +1,1 @@
-D:\Mindmap\Hercules.App\AppPackages\Hercules.App_1.1.33.0\Hercules.App_1.1.33.0_x86_x64_arm.appxbundle
+D:\Universal\Mindmap\Hercules.App\AppPackages\Hercules.App_1.1.2.0_Beta\Hercules.App_1.1.2.0_x86_x64_arm_Beta.appxbundle

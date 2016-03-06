@@ -106,9 +106,10 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         {
             get
             {
-                return createCommand ?? (createCommand = new RelayCommand(() =>
+                return createCommand ?? (createCommand = new RelayCommand(async () =>
                 {
-                    mindmapStore.AddAsync(LocalizationManager.GetString("MyMindmap")).Forget();
+                    await mindmapStore.AddAsync(LocalizationManager.GetString("MyMindmap"));
+                    await mindmapStore.OpenAsync(mindmapStore.AllFiles[0]);
                 }));
             }
         }

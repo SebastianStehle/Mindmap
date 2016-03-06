@@ -18,14 +18,6 @@ namespace Hercules.Model.Storing.Json
     {
         private static readonly JsonSerializerSettings HistorySerializerSettings = new JsonSerializerSettings();
 
-        public static FileExtension FileExtension
-        {
-            get
-            {
-                return new FileExtension(".mmd", "application/json");
-            }
-        }
-
         static JsonDocumentSerializer()
         {
             HistorySerializerSettings.Converters.Add(new PropertiesBagConverter());

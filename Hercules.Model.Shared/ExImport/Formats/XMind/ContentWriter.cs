@@ -48,50 +48,92 @@ namespace Hercules.Model.ExImport.Formats.XMind
                 topic.Add(new XAttribute("structure-class", "org.xmind.ui.map"));
             }
 
+            WriteTitle(node, topic);
+            WriteFolded(node, topic);
+            WriteMarker(node, topic);
+            WriteChildren(children, topic, timestamp);
+            WriteChildrenBoundaries(children, topic, timestamp);
+
+            return topic;
+        }
+
+        private static void WriteTitle(NodeBase node, XContainer topic)
+        {
             if (!string.IsNullOrWhiteSpace(node.Text))
             {
                 topic.Add(new XElement(Namespaces.Content("title"), node.Text));
             }
+        }
 
+        private static void WriteFolded(NodeBase node, XContainer topic)
+        {
             if (node.IsCollapsed)
             {
                 topic.Add(new XAttribute("branch", "folded"));
             }
+        }
 
-            if (children.Count > 0)
+        private static void WriteMarker(NodeBase node, XContainer topic)
+        {
+            KeyIcon keyIcon = node.Icon as KeyIcon;
+
+            if (keyIcon == null)
             {
-                XElement topics = new XElement(Namespaces.Content("topics"), new XAttribute("type", "attached"));
-
-                foreach (Node child in children)
-                {
-                    topics.Add(CreateTopic(timestamp, child, child.Children));
-                }
-
-                topic.Add(new XElement(Namespaces.Content("children"), topics));
+                return;
             }
 
-            if (children.Any(x => x.IsShowingHull))
+            string marker = MarkerMapping.ResolveXmind(keyIcon.Key);
+
+            if (marker != null)
             {
-                XElement boundaries = new XElement(Namespaces.Content("boundaries"));
+                topic.Add(
+                    new XElement(Namespaces.Content("marker-refs"),
+                        new XElement(Namespaces.Content("marker-ref"),
+                            new XAttribute("marker-id", marker))));
+            }
+        }
 
-                for (int i = 0; i < children.Count; i++)
-                {
-                    Node child = children[i];
-
-                    if (child.IsShowingHull)
-                    {
-                        boundaries.Add(
-                            new XElement(Namespaces.Content("boundary"),
-                                new XAttribute("id", Guid.NewGuid()),
-                                new XAttribute("range", $"({i}, {i})"),
-                                new XAttribute("timestamp", timestamp)));
-                    }
-                }
-
-                topic.Add(boundaries);
+        private static void WriteChildren(IReadOnlyCollection<Node> children, XContainer topic, string timestamp)
+        {
+            if (children.Count <= 0)
+            {
+                return;
             }
 
-            return topic;
+            XElement topics = new XElement(Namespaces.Content("topics"), new XAttribute("type", "attached"));
+
+            foreach (Node child in children)
+            {
+                topics.Add(CreateTopic(timestamp, child, child.Children));
+            }
+
+            topic.Add(new XElement(Namespaces.Content("children"), topics));
+        }
+
+        private static void WriteChildrenBoundaries(IReadOnlyList<Node> children, XContainer topic, string timestamp)
+        {
+            if (!children.Any(x => x.IsShowingHull))
+            {
+                return;
+            }
+
+            XElement boundaries = new XElement(Namespaces.Content("boundaries"));
+
+            for (int i = 0; i < children.Count; i++)
+            {
+                Node child = children[i];
+
+                if (child.IsShowingHull)
+                {
+                    boundaries.Add(
+                        new XElement(Namespaces.Content("boundary"),
+                            new XAttribute("id", Guid.NewGuid()),
+                            new XAttribute("range", $"({i}, {i})"),
+                            new XAttribute("timestamp", timestamp)));
+                }
+            }
+
+            topic.Add(boundaries);
         }
     }
 }

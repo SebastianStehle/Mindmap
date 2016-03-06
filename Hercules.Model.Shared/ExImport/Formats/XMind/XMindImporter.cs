@@ -52,16 +52,18 @@ namespace Hercules.Model.ExImport.Formats.XMind
         {
             ZipArchiveEntry mapStylesEntry = archive.GetEntry("styles.xml");
 
-            if (mapStylesEntry != null)
+            if (mapStylesEntry == null)
             {
-                using (Stream stream = mapStylesEntry.Open())
-                {
-                    XDocument mapStyles = XDocument.Load(stream);
+                return;
+            }
 
-                    mapStyles.CheckVersion("2.0");
+            using (Stream stream = mapStylesEntry.Open())
+            {
+                XDocument mapStyles = XDocument.Load(stream);
 
-                    StylesReader.ReadStyles(mapStyles, stylesById);
-                }
+                mapStyles.CheckVersion("2.0");
+
+                StylesReader.ReadStyles(mapStyles, stylesById);
             }
         }
 

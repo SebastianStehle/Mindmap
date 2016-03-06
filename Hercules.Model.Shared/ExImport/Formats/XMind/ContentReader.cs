@@ -49,33 +49,33 @@ namespace Hercules.Model.ExImport.Formats.XMind
         private static void ReadNode(this XElement topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById)
         {
             ReadTitle(topic, node);
-
-            ReadVisuals(topic, node, stylesById);
-
-            ReadBranch(topic, node);
-
-            ReadChilds(topic, node, stylesById);
-
-            ReadMarkers(topic, node);
+            ReadStyles(topic, node, stylesById);
+            ReadFolded(topic, node);
+            ReadChildren(topic, node, stylesById);
+            ReadMarker(topic, node);
         }
 
-        private static void ReadMarkers(this XContainer topic, NodeBase node)
+        private static void ReadMarker(this XContainer topic, NodeBase node)
         {
-            string markerId =
-                topic
-                    .Element(Namespaces.Content("marker-refs"))?
-                    .Elements(Namespaces.Content("marker-ref"))
-                    .Select(x => x.Attribute("marker-id")?.Value)
-                    .FirstOrDefault();
+            XElement markerRefs = topic.Element(Namespaces.Content("marker-refs"));
 
-            if (!string.IsNullOrWhiteSpace(markerId))
+            if (markerRefs == null)
             {
-                string icon = MarkerMapping.ResolveMindapp(markerId);
+                return;
+            }
 
-                if (icon != null)
-                {
-                    node.ChangeIconTransactional(new KeyIcon(icon));
-                }
+            string markerId = markerRefs.Elements(Namespaces.Content("marker-ref")).Select(x => x.Attribute("marker-id")?.Value).FirstOrDefault(x => x != null);
+
+            if (string.IsNullOrWhiteSpace(markerId))
+            {
+                return;
+            }
+
+            string icon = MarkerMapping.ResolveMindapp(markerId);
+
+            if (icon != null)
+            {
+                node.ChangeIconTransactional(new KeyIcon(icon));
             }
         }
 
@@ -89,7 +89,7 @@ namespace Hercules.Model.ExImport.Formats.XMind
             }
         }
 
-        private static void ReadBranch(this XElement topic, NodeBase node)
+        private static void ReadFolded(this XElement topic, NodeBase node)
         {
             if (topic.IsAttributeEquals("branch", "folded"))
             {
@@ -97,22 +97,24 @@ namespace Hercules.Model.ExImport.Formats.XMind
             }
         }
 
-        private static void ReadVisuals(this XElement topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById)
+        private static void ReadStyles(this XElement topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById)
         {
             string styleId = topic.AttributeValue("style-id");
 
             XMindStyle style;
 
-            if (!string.IsNullOrWhiteSpace(styleId) && stylesById.TryGetValue(styleId, out style))
+            if (string.IsNullOrWhiteSpace(styleId) || !stylesById.TryGetValue(styleId, out style))
             {
-                if (style.Color >= 0)
-                {
-                    node.ChangeColorTransactional(new ValueColor(style.Color));
-                }
+                return;
+            }
+
+            if (style.Color >= 0)
+            {
+                node.ChangeColorTransactional(new ValueColor(style.Color));
             }
         }
 
-        private static void ReadChilds(this XContainer topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById)
+        private static void ReadChildren(this XContainer topic, NodeBase node, IReadOnlyDictionary<string, XMindStyle> stylesById)
         {
             List<NodeBase> children = new List<NodeBase>();
 
@@ -137,33 +139,41 @@ namespace Hercules.Model.ExImport.Formats.XMind
         {
             XElement boundaries = topic.Element(Namespaces.Content("boundaries"));
 
-            if (boundaries != null)
+            if (boundaries == null)
             {
-                foreach (XElement boundary in boundaries.Elements(Namespaces.Content("boundary")))
+                return;
+            }
+
+            foreach (XElement boundary in boundaries.Elements(Namespaces.Content("boundary")))
+            {
+                string range = boundary.AttributeValue("range");
+
+                if (range == null)
                 {
-                    string range = boundary.AttributeValue("range");
+                    continue;
+                }
 
-                    if (range != null)
-                    {
-                        range = range.Trim(' ', '(', ')');
+                range = range.Trim(' ', '(', ')');
 
-                        string[] parts = range.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                string[] parts = range.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
 
-                        if (parts.Length == 2)
-                        {
-                            int s;
-                            int e;
+                if (parts.Length != 2)
+                {
+                    continue;
+                }
 
-                            if (int.TryParse(parts[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out s) &&
-                                int.TryParse(parts[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out e))
-                            {
-                                if (s == e && s >= 0 && s <= children.Count - 1)
-                                {
-                                    children[s].ToggleHullTransactional();
-                                }
-                            }
-                        }
-                    }
+                int s;
+                int e;
+
+                if (!int.TryParse(parts[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out s) ||
+                    !int.TryParse(parts[0], NumberStyles.Integer, CultureInfo.InvariantCulture, out e))
+                {
+                    continue;
+                }
+
+                if (s == e && s >= 0 && s <= children.Count - 1)
+                {
+                    children[s].ToggleHullTransactional();
                 }
             }
         }

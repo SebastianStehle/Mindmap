@@ -11,6 +11,7 @@ using System.IO;
 using System.Threading.Tasks;
 using GP.Utils;
 using Hercules.Model.Rendering;
+using Hercules.Model.Storing;
 using Hercules.Model.Storing.Json;
 
 namespace Hercules.Model.ExImport.Formats.Mindapp
@@ -19,18 +20,12 @@ namespace Hercules.Model.ExImport.Formats.Mindapp
     {
         public string NameKey
         {
-            get
-            {
-                return "Mindapp";
-            }
+            get { return "Mindapp"; }
         }
 
         public IEnumerable<FileExtension> Extensions
         {
-            get
-            {
-                yield return JsonDocumentSerializer.FileExtension;
-            }
+            get { yield return Constants.FileExtension; }
         }
 
         public Task ExportAsync(Document document, IRenderer renderer, Stream stream, PropertiesBag properties = null)

@@ -19,6 +19,7 @@ using GP.Utils.Mvvm;
 using Hercules.Model;
 using Hercules.Model.Storing;
 
+// ReSharper disable RedundantIfElseBlock
 // ReSharper disable InvertIf
 // ReSharper disable ConvertIfStatementToReturnStatement
 
@@ -37,8 +38,10 @@ namespace Hercules.App.Components.Implementations
                 {
                     return string.Concat(LocalizationManager.GetString("Paths_AppFolder"), "\\", Name);
                 }
-
-                return Path;
+                else
+                {
+                    return Path;
+                }
             }
         }
 
@@ -106,17 +109,12 @@ namespace Hercules.App.Components.Implementations
         {
             StorageFile file = await PickSaveAsync(DocumentFile.Extension);
 
-            return file != null && await SaveInternalAsync(hideDialogs, () => documentFile.SaveAsAsync(file));
+            return await SaveInternalAsync(hideDialogs, () => documentFile.SaveAsAsync(file));
         }
 
         public Task<bool> SaveSilentAsync()
         {
             return SaveInternalAsync(true, () => documentFile.SaveAsync());
-        }
-
-        public Task<bool> SaveToLocalFolderAsync()
-        {
-            return SaveInternalAsync(true, () => documentFile.SaveToLocalFolderAsync());
         }
 
         public Task<bool> SaveAsync()
@@ -156,7 +154,11 @@ namespace Hercules.App.Components.Implementations
             {
                 if (!hideDialogs)
                 {
+#if DEBUG
+                    await dialogService.AlertAsync($"The operation {actionName} faile with: {e}");
+#else
                     await dialogService.AlertLocalizedAsync($"Mindmap_{actionName}Failed_Unknown_Alert");
+#endif
                 }
 
                 App.TelemetryClient?.TrackException(e);
@@ -171,17 +173,13 @@ namespace Hercules.App.Components.Implementations
 
         public async Task<bool> RemoveAsync()
         {
-            bool canRemove = !HasChanges;
-
-            if (!canRemove)
-            {
-                canRemove = await dialogService.ConfirmLocalizedAsync("Mindmap_Remove_Confirm");
-            }
+            bool canRemove = !HasChanges || await dialogService.ConfirmLocalizedAsync("Mindmap_Remove_Confirm");
 
             if (canRemove)
             {
-                Close();
+                await documentFile.DeleteAsync();
 
+                Close();
                 Cleanup();
             }
 
@@ -190,11 +188,11 @@ namespace Hercules.App.Components.Implementations
 
         private void RaisePropertiesChanged()
         {
-            RaisePropertyChanged(nameof(Name));
-            RaisePropertyChanged(nameof(Path));
             RaisePropertyChanged(nameof(DisplayPath));
             RaisePropertyChanged(nameof(HasChanges));
             RaisePropertyChanged(nameof(ModifiedLocal));
+            RaisePropertyChanged(nameof(Name));
+            RaisePropertyChanged(nameof(Path));
         }
 
         private async Task<StorageFile> PickSaveAsync(params string[] extensions)

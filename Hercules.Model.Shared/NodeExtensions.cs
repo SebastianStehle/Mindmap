@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using GP.Utils;
 
+// ReSharper disable InvertIf
 // ReSharper disable ConvertIfStatementToReturnStatement
 
 namespace Hercules.Model
@@ -18,8 +19,6 @@ namespace Hercules.Model
     {
         public static IList<Node> AllChildren(this NodeBase nodeBase)
         {
-            Guard.NotNull(nodeBase, nameof(nodeBase));
-
             RootNode root = nodeBase as RootNode;
 
             if (root != null)
@@ -34,8 +33,6 @@ namespace Hercules.Model
 
         public static IList<Node> AllChildren(this Node node)
         {
-            Guard.NotNull(node, nameof(node));
-
             List<Node> allChildren = new List<Node>();
 
             AddChildren(allChildren, node);
@@ -45,8 +42,6 @@ namespace Hercules.Model
 
         public static IList<Node> AllChildren(this RootNode root)
         {
-            Guard.NotNull(root, nameof(root));
-
             List<Node> allChildren = new List<Node>();
 
             foreach (Node child in root.RightChildren)

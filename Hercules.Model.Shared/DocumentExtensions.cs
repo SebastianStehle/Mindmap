@@ -16,15 +16,12 @@ namespace Hercules.Model
     {
         public static void ToggleCheckableTransactional(this Document document)
         {
-            if (document != null)
-            {
-                string tansactionName = LocalizationManager.GetString("TransactionName_ToggleCheckable");
+            string tansactionName = LocalizationManager.GetString("TransactionName_ToggleCheckable");
 
-                document.MakeTransaction(tansactionName, commands =>
-                {
-                    commands.Apply(new ToggleCheckableCommand(document));
-                });
-            }
+            document.MakeTransaction(tansactionName, commands =>
+            {
+                commands.Apply(new ToggleCheckableCommand(document));
+            });
         }
 
         public static void RemoveSelectedNodeTransactional(this Document document)
@@ -44,8 +41,6 @@ namespace Hercules.Model
 
         public static NodeBase SelectRightOfSelectedNode(this Document document)
         {
-            Guard.NotNull(document, nameof(document));
-
             NodeBase result = document.SelectedNode;
 
             if (!document.TrySelectRoot(ref result))
@@ -78,8 +73,6 @@ namespace Hercules.Model
 
         public static NodeBase SelectLeftOfSelectedNode(this Document document)
         {
-            Guard.NotNull(document, nameof(document));
-
             NodeBase result = document.SelectedNode;
 
             if (!document.TrySelectRoot(ref result))
@@ -112,8 +105,6 @@ namespace Hercules.Model
 
         public static NodeBase SelectTopOfSelectedNode(this Document document)
         {
-            Guard.NotNull(document, nameof(document));
-
             NodeBase result = document.SelectedNode;
 
             if (!document.TrySelectRoot(ref result))
@@ -159,8 +150,6 @@ namespace Hercules.Model
 
         public static NodeBase SelectBottomOfSelectedNode(this Document document)
         {
-            Guard.NotNull(document, nameof(document));
-
             NodeBase result = document.SelectedNode;
 
             if (!document.TrySelectRoot(ref result))

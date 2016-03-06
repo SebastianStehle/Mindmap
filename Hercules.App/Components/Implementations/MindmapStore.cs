@@ -77,21 +77,19 @@ namespace Hercules.App.Components.Implementations
         {
             StorageFile file = await PickFileAsync(DocumentFile.Extension);
 
-            await AddAsync(file);
+            if (file != null)
+            {
+                await AddAsync(file);
+            }
         }
 
         public async Task AddAsync(string name, Document document = null)
         {
             Guard.ValidFileName(name, nameof(name));
 
-            DocumentFileModel model = new DocumentFileModel(DocumentFile.CreateNew(name, document), dialogService);
+            DocumentFileModel model = new DocumentFileModel(await DocumentFile.CreateNewAsync(name, document), dialogService);
 
-            if (await model.SaveToLocalFolderAsync())
-            {
-                allFiles.Insert(0, model);
-            }
-
-            await OpenAsync(model);
+            allFiles.Insert(0, model);
         }
 
         public async Task AddAsync(StorageFile file)
@@ -102,7 +100,7 @@ namespace Hercules.App.Components.Implementations
 
             if (model == null)
             {
-                model = new DocumentFileModel(await DocumentFile.OpenAsync(file), dialogService);
+                model = new DocumentFileModel(await DocumentFile.OpenAsync(file, false), dialogService);
 
                 allFiles.Insert(0, model);
             }

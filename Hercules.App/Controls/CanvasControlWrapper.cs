@@ -20,27 +20,33 @@ namespace Hercules.App.Controls
 {
     public sealed class CanvasControlWrapper : ICanvasControl
     {
-        private readonly CanvasVirtualControl inner;
+        private readonly CanvasVirtualControl canvasControl;
 
         public CanvasDevice Device
         {
-            get { return inner.Device; }
+            get { return canvasControl.Device; }
         }
 
         public CanvasVirtualControl Inner
         {
-            get { return inner; }
+            get { return canvasControl; }
         }
 
         public CoreDispatcher Dispatcher
         {
-            get { return inner.Dispatcher; }
+            get { return canvasControl.Dispatcher; }
         }
 
         public float DpiScale
         {
-            get { return inner.DpiScale; }
-            set { inner.DpiScale = value; }
+            get
+            {
+                return canvasControl.DpiScale;
+            }
+            set
+            {
+                canvasControl.DpiScale = value;
+            }
         }
 
         public event EventHandler<BoundedCanvasDrawEventArgs> Draw;
@@ -75,14 +81,14 @@ namespace Hercules.App.Controls
         {
             Guard.NotNull(canvasControl, nameof(canvasControl));
 
-            inner = canvasControl;
+            this.canvasControl = canvasControl;
 
-            inner.CreateResources += (sender, args) =>
+            canvasControl.CreateResources += (sender, args) =>
             {
                 OnCreateResources();
             };
 
-            inner.RegionsInvalidated += (sender, args) =>
+            canvasControl.RegionsInvalidated += (sender, args) =>
             {
                 if (args.InvalidatedRegions.Length <= 0)
                 {
@@ -112,12 +118,12 @@ namespace Hercules.App.Controls
 
         public int ConvertDipsToPixels(float dips, CanvasDpiRounding dpiRounding)
         {
-            return inner.ConvertDipsToPixels(dips, dpiRounding);
+            return canvasControl.ConvertDipsToPixels(dips, dpiRounding);
         }
 
         public void Invalidate()
         {
-            Dispatcher.RunIdleAsync(x => inner.Invalidate()).Forget();
+            Dispatcher.RunIdleAsync(x => canvasControl.Invalidate()).Forget();
         }
     }
 }

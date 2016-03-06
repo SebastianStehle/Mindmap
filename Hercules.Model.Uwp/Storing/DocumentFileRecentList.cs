@@ -21,7 +21,6 @@ namespace Hercules.Model.Storing
 {
     public sealed class DocumentFileRecentList
     {
-        private const string DefaultSubfolder = "Mindapp";
         private readonly StorageItemMostRecentlyUsedList recentList = StorageApplicationPermissions.MostRecentlyUsedList;
         private readonly Dictionary<string, string> tokenMapping = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         private readonly List<DocumentFile> files = new List<DocumentFile>();
@@ -42,8 +41,8 @@ namespace Hercules.Model.Storing
             {
                 Dictionary<string, DocumentFile> unsortedFiles = new Dictionary<string, DocumentFile>(StringComparer.OrdinalIgnoreCase);
 
-                await AddFilesLocalAsync(unsortedFiles);
-                await AddFilesRecentAsync(unsortedFiles);
+                await LoadFilesFromLocalStoreAsync(unsortedFiles);
+                await LoadFilesFromRecentListAsync(unsortedFiles);
 
                 files.Clear();
 
@@ -56,33 +55,18 @@ namespace Hercules.Model.Storing
             });
         }
 
-        private static async Task AddFilesLocalAsync(IDictionary<string, DocumentFile> unsortedFiles)
+        private static async Task LoadFilesFromLocalStoreAsync(IDictionary<string, DocumentFile> unsortedFiles)
         {
-            StorageFolder mindmaps;
-            try
-            {
-                mindmaps = await ApplicationData.Current.LocalFolder.GetFolderAsync(DefaultSubfolder);
-            }
-            catch (FileNotFoundException)
-            {
-                mindmaps = null;
-            }
-
-            if (mindmaps == null)
-            {
-                return;
-            }
-
-            foreach (StorageFile file in await mindmaps.GetFilesAsync())
+            foreach (StorageFile file in await LocalStore.GetFilesQueuedAsync())
             {
                 if (!unsortedFiles.ContainsKey(file.Path))
                 {
-                    unsortedFiles.Add(file.Path, await DocumentFile.OpenAsync(file));
+                    unsortedFiles.Add(file.Path, await DocumentFile.OpenAsync(file, true));
                 }
             }
         }
 
-        private async Task AddFilesRecentAsync(IDictionary<string, DocumentFile> unsortedFiles)
+        private async Task LoadFilesFromRecentListAsync(IDictionary<string, DocumentFile> unsortedFiles)
         {
             tokenMapping.Clear();
 
@@ -107,7 +91,7 @@ namespace Hercules.Model.Storing
                     }
                     else
                     {
-                        unsortedFiles.Add(file.Path, await DocumentFile.OpenAsync(file));
+                        unsortedFiles.Add(file.Path, await DocumentFile.OpenAsync(file, false));
                     }
                 }
                 catch (FileNotFoundException)

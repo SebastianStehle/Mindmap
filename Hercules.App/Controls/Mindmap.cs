@@ -206,7 +206,7 @@ namespace Hercules.App.Controls
             {
                 UpdateScale();
             }
-            else if (canvasControl != null)
+            if (canvasControl != null)
             {
                 canvasControl.Invalidate();
             }

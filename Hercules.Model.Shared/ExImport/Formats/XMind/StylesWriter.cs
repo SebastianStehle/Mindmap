@@ -22,28 +22,30 @@ namespace Hercules.Model.ExImport.Formats.XMind
             {
                 IRenderColor color = renderer.FindColor(node);
 
-                if (color != null)
+                if (color == null)
                 {
-                    string colorString = ColorsVectorHelper.ConvertToRGBString(color.Normal);
-
-                    XElement properties = new XElement(Namespaces.Styles("topic-properties"));
-
-                    if (node is RootNode || node.Parent is RootNode)
-                    {
-                        properties.Add(new XAttribute(Namespaces.SVG("fill"), colorString));
-                    }
-                    else
-                    {
-                        properties.Add(new XAttribute("border-line-color", colorString));
-                        properties.Add(new XAttribute("line-color", colorString));
-                    }
-
-                    styles.Add(
-                        new XElement(Namespaces.Styles("style"),
-                            new XAttribute("id", "s" + node.Id),
-                            new XAttribute("type", "topic"),
-                            properties));
+                    continue;
                 }
+
+                string colorString = ColorsVectorHelper.ConvertToRGBString(color.Normal);
+
+                XElement properties = new XElement(Namespaces.Styles("topic-properties"));
+
+                if (node is RootNode || node.Parent is RootNode)
+                {
+                    properties.Add(new XAttribute(Namespaces.SVG("fill"), colorString));
+                }
+                else
+                {
+                    properties.Add(new XAttribute("border-line-color", colorString));
+                    properties.Add(new XAttribute("line-color", colorString));
+                }
+
+                styles.Add(
+                    new XElement(Namespaces.Styles("style"),
+                        new XAttribute("id", "s" + node.Id),
+                        new XAttribute("type", "topic"),
+                        properties));
             }
 
             xMapStyles.Add(

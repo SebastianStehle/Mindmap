@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using GP.Utils;
+using Hercules.Model.Storing;
 using Hercules.Model.Storing.Json;
 
 namespace Hercules.Model.ExImport.Formats.Mindapp
@@ -23,7 +24,7 @@ namespace Hercules.Model.ExImport.Formats.Mindapp
 
         public IEnumerable<FileExtension> Extensions
         {
-            get { yield return JsonDocumentSerializer.FileExtension; }
+            get { yield return Constants.FileExtension; }
         }
 
         public Task<List<ImportResult>> ImportAsync(Stream stream, string name, PropertiesBag properties = null)

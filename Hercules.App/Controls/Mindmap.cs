@@ -55,6 +55,14 @@ namespace Hercules.App.Controls
             get { return renderer.Scene; }
         }
 
+        public static readonly DependencyProperty NotesFlyoutStyleProperty =
+            DependencyPropertyManager.Register<Mindmap, Style>(nameof(NotesFlyoutStyle), null);
+        public Style NotesFlyoutStyle
+        {
+            get { return (Style)GetValue(NotesFlyoutStyleProperty); }
+            set { SetValue(NotesFlyoutStyleProperty, value); }
+        }
+
         public static readonly DependencyProperty DocumentProperty =
             DependencyPropertyManager.Register<Mindmap, Document>(nameof(Document), null, (d, e) => d.OnDocumentChanged(e));
         public Document Document
@@ -316,13 +324,11 @@ namespace Hercules.App.Controls
 
         private void ShowNotes(NodeBase node)
         {
-            Flyout flyout = new Flyout();
+            Flyout flyout = new Flyout { FlyoutPresenterStyle = NotesFlyoutStyle, Placement = FlyoutPlacementMode.Full };
 
             NotesEditor editor = new NotesEditor(flyout, node);
 
             flyout.Content = editor;
-            flyout.Placement = FlyoutPlacementMode.Full;
-
             flyout.ShowAt(this);
         }
 

@@ -27,7 +27,7 @@ exit /b %errorlevel%
 -register:user ^
 -target:"%~dp0\packages\xunit.runner.console.2.1.0\tools\xunit.console.exe" ^
 -targetargs:"Tests\bin\Debug\Tests.dll -noshadow" ^
--filter:"+[GP*]* +[Hercules*]* -[*]*FileExtension*" ^
+-filter:"+[Hercules*]* -[*]*FileExtension*" ^
 -skipautoprops ^
 -output:"%~dp0\GeneratedReports\Mindapp.xml"
 exit /b %errorlevel%

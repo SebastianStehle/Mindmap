@@ -13,7 +13,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
-using Windows.System.Profile;
 using GP.Utils;
 
 // ReSharper disable LoopCanBePartlyConvertedToQuery

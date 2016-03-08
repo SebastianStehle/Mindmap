@@ -89,8 +89,15 @@ namespace Hercules.Model.Storing
 
         public static async Task<DocumentFile> CreateNewAsync(string name, Document document = null)
         {
+            Guard.ValidFileName(name, nameof(name));
+
             StorageFile storageFile = await LocalStore.CreateFileQueuedAsync(name + Extension);
 
+            return await CreateNewAsync(name, document, storageFile);
+        }
+
+        private static async Task<DocumentFile> CreateNewAsync(string name, Document document, StorageFile storageFile)
+        {
             DocumentFile file = new DocumentFile(storageFile, document ?? Document.CreateNew(name));
 
             await file.SaveAsync();

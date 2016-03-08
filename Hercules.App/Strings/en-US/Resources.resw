@@ -477,4 +477,10 @@ The maximum allowed size is a 200x200 pixels.</value>
   <data name="TransactionName_ToggleNotes" xml:space="preserve">
     <value>Toggle Notes</value>
   </data>
+  <data name="Properties_NotesSection.Header" xml:space="preserve">
+    <value>Notes</value>
+  </data>
+  <data name="Properties_ToggleNotesButton" xml:space="preserve">
+    <value>Show/Hide Notes</value>
+  </data>
 </root>

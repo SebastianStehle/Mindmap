@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System.Linq;
+using System.Windows.Input;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
 using GP.Utils;
@@ -71,7 +72,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
         [Dependency]
         public IDialogService MessageDialogService { get; set; }
 
-        public RelayCommand<ImportModel> ImportCommand
+        public ICommand ImportCommand
         {
             get
             {
@@ -82,7 +83,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
-        public RelayCommand RedoCommand
+        public ICommand RedoCommand
         {
             get
             {
@@ -97,7 +98,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
-        public RelayCommand UndoCommand
+        public ICommand UndoCommand
         {
             get
             {
@@ -112,7 +113,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
-        public RelayCommand<ExportModel> ExportCommand
+        public ICommand ExportCommand
         {
             get
             {
@@ -124,7 +125,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
-        public RelayCommand PrintCommand
+        public ICommand PrintCommand
         {
             get
             {
@@ -136,7 +137,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
-        public RelayCommand ToggleNotesCommand
+        public ICommand ToggleNotesCommand
         {
             get
             {
@@ -148,7 +149,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
-        public RelayCommand SelectTopCommand
+        public ICommand SelectTopCommand
         {
             get
             {
@@ -160,7 +161,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
-        public RelayCommand SelectRightCommand
+        public ICommand SelectRightCommand
         {
             get
             {
@@ -172,7 +173,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
-        public RelayCommand SelectBottomCommand
+        public ICommand SelectBottomCommand
         {
             get
             {
@@ -184,7 +185,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
-        public RelayCommand SelectLeftCommand
+        public ICommand SelectLeftCommand
         {
             get
             {
@@ -196,7 +197,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
-        public RelayCommand RemoveCommand
+        public ICommand RemoveCommand
         {
             get
             {
@@ -208,7 +209,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
-        public RelayCommand AddChildCommand
+        public ICommand AddChildCommand
         {
             get
             {
@@ -220,7 +221,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
-        public RelayCommand AddSiblingCommand
+        public ICommand AddSiblingCommand
         {
             get
             {
@@ -293,8 +294,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
         private void UpdateUndoRedo()
         {
-            UndoCommand.RaiseCanExecuteChanged();
-            RedoCommand.RaiseCanExecuteChanged();
+            undoCommand?.RaiseCanExecuteChanged();
+            redoCommand?.RaiseCanExecuteChanged();
         }
     }
 }

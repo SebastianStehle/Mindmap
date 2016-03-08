@@ -26,6 +26,18 @@ namespace Hercules.App.Components.Implementations
             }
         }
 
+        public bool ShowNotesSection
+        {
+            get
+            {
+                return GetBoolean(nameof(ShowNotesSection), true);
+            }
+            set
+            {
+                SetBoolean(nameof(ShowNotesSection), value);
+            }
+        }
+
         public bool ShowIconSection
         {
             get

@@ -10,6 +10,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GalaSoft.MvvmLight.Messaging;
@@ -58,7 +59,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         [Dependency]
         public IDialogService MessageDialogService { get; set; }
 
-        public RelayCommand<IDocumentFileModel> RemoveCommand
+        public ICommand RemoveCommand
         {
             get
             {
@@ -69,7 +70,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             }
         }
 
-        public RelayCommand OpenCommand
+        public ICommand OpenCommand
         {
             get
             {
@@ -80,7 +81,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             }
         }
 
-        public RelayCommand SaveCommand
+        public ICommand SaveCommand
         {
             get
             {
@@ -91,7 +92,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             }
         }
 
-        public RelayCommand SaveAsCommand
+        public ICommand SaveAsCommand
         {
             get
             {
@@ -102,7 +103,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             }
         }
 
-        public RelayCommand CreateCommand
+        public ICommand CreateCommand
         {
             get
             {

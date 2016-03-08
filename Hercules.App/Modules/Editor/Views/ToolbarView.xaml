@@ -15,6 +15,7 @@
             <VisualStateGroup x:Name="VisualStateGroup">
                 <VisualState x:Name="Tablet">
                     <VisualState.Setters>
+                        <Setter Target="PrimaryNotesButton.(UIElement.Visibility)" Value="Visible"/>
                         <Setter Target="PrimaryListButton.(UIElement.Visibility)" Value="Visible"/>
                         <Setter Target="PrimaryUndoRedoButtons.(UIElement.Visibility)" Value="Visible"/>
                         <Setter Target="PrimaryPropertiesButtonSeparator.(UIElement.Visibility)" Value="Visible"/>
@@ -23,11 +24,12 @@
                         <Setter Target="CompactButtonExportSeparator.(UIElement.Visibility)" Value="Collapsed"/>
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="600"/>
+                        <AdaptiveTrigger MinWindowWidth="640"/>
                     </VisualState.StateTriggers>
                 </VisualState>
                 <VisualState x:Name="Desktop">
                     <VisualState.Setters>
+                        <Setter Target="PrimaryNotesButton.(UIElement.Visibility)" Value="Visible"/>
                         <Setter Target="PrimaryListButton.(UIElement.Visibility)" Value="Visible"/>
                         <Setter Target="PrimaryUndoRedoButtons.(UIElement.Visibility)" Value="Visible"/>
                         <Setter Target="PrimaryAdvancedButtons.(UIElement.Visibility)" Value="Visible"/>
@@ -123,15 +125,15 @@
             </StackPanel>
         </CommandBar.Content>
         <CommandBar.PrimaryCommands>
-            <AppBarButton x:Uid="AppBarButton_ToggleNotes" IsCompact="True" Label="Notes" Icon="Edit"
-                Command="{Binding ToggleNotesCommand}">
-            </AppBarButton>
-            
             <AppBarButton x:Uid="AppBarButton_RemoveNode" IsCompact="True" Label="Remove" Icon="Delete" 
                 Command="{Binding RemoveCommand}">
             </AppBarButton>
 
             <AppBarSeparator x:Name="PrimaryRemoveButtonSeparator" Visibility="Collapsed" />
+            
+            <AppBarButton x:Uid="AppBarButton_ToggleNotes" IsCompact="True" Label="Notes" Icon="Edit" Visibility="Collapsed" x:Name="PrimaryNotesButton"
+                Command="{Binding ToggleNotesCommand}">
+            </AppBarButton>
 
             <AppBarButton x:Uid="AppBarButton_AddSibling" Style="{StaticResource AppBarButtonStyleSibling}" IsCompact="True" Label="Sibling"
                 Command="{Binding AddSiblingCommand}">

@@ -98,6 +98,14 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden">
         <StackPanel x:Name="Root">
+            <gpc:ExpandableContentControl x:Uid="Properties_NotesSection" Style="{StaticResource BorderedSection}" Header="Notes" IsExpanded="{Binding ShowNotesSection, Mode=TwoWay}">
+                <StackPanel>
+                    <Button x:Uid="Properties_ToggleNotesButton" 
+                        Content="Show/Hide Notes" 
+                        Command="{Binding ToggleNotesCommand}" />
+                    </StackPanel>
+            </gpc:ExpandableContentControl>
+            
             <gpc:ExpandableContentControl x:Uid="Properties_ColorSection" Style="{StaticResource BorderedSection}" Header="Color"  IsExpanded="{Binding ShowColorSection, Mode=TwoWay}">
                 <StackPanel>
                     <GridView ItemsSource="{Binding ThemeColors}" Style="{StaticResource PropertyGridStyle}" Width="240" HorizontalAlignment="Left">

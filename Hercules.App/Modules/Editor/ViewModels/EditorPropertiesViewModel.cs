@@ -39,6 +39,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
         private RelayCommand<int> changeIconSizeCommand;
         private RelayCommand<int> changeShapeCommand;
         private RelayCommand<int> changeCheckableModeCommand;
+        private RelayCommand toggleNotesCommand;
         private RelayCommand toggleIsCheckableCommand;
         private RelayCommand toggleHullCommand;
         private RelayCommand addIconCommand;
@@ -99,6 +100,22 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
+        public bool ShowNotesSection
+        {
+            get
+            {
+                return SettingsProvider?.ShowNotesSection == true;
+            }
+            set
+            {
+                if (!Equals(SettingsProvider.ShowNotesSection, value))
+                {
+                    SettingsProvider.ShowNotesSection = value;
+                    RaisePropertyChanged(nameof(ShowNotesSection));
+                }
+            }
+        }
+
         public bool ShowShapeSection
         {
             get
@@ -128,6 +145,18 @@ namespace Hercules.App.Modules.Editor.ViewModels
                     SettingsProvider.ShowCheckBoxesSection = value;
                     RaisePropertyChanged(nameof(ShowCheckBoxesSection));
                 }
+            }
+        }
+
+        public ICommand ToggleNotesCommand
+        {
+            get
+            {
+                return toggleNotesCommand ?? (toggleNotesCommand = new RelayCommand(() =>
+                {
+                    Document.SelectedNode.ToggleNotesTransactional();
+                },
+                () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
         }
 

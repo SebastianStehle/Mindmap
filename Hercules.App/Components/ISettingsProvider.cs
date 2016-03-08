@@ -12,6 +12,8 @@ namespace Hercules.App.Components
     {
         bool IsAlreadyStarted { get; set; }
 
+        bool ShowNotesSection { get; set; }
+
         bool ShowIconSection { get; set; }
 
         bool ShowColorSection { get; set; }

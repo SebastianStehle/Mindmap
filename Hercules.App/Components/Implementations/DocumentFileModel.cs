@@ -155,7 +155,7 @@ namespace Hercules.App.Components.Implementations
                 if (!hideDialogs)
                 {
 #if DEBUG
-                    await dialogService.AlertAsync($"The operation {actionName} faile with: {e}");
+                    await dialogService.AlertAsync($"The operation {actionName} failed with: {e}");
 #else
                     await dialogService.AlertLocalizedAsync($"Mindmap_{actionName}Failed_Unknown_Alert");
 #endif

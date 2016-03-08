@@ -143,6 +143,8 @@ namespace Hercules.Model.Storing
             {
                 await file.SaveDocumentQueuedAsync(document);
 
+                hasChanges = false;
+
                 try
                 {
                     if (fileReference != null && !string.Equals(fileReference.Path, file.Path, StringComparison.OrdinalIgnoreCase))
@@ -180,7 +182,6 @@ namespace Hercules.Model.Storing
                     fileModified = DateTime.UtcNow;
 
                     hasSucceeded = true;
-                    hasChanges = false;
                 }
                 catch (FileNotFoundException)
                 {

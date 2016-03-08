@@ -77,7 +77,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                 return openCommand ?? (openCommand = new RelayCommand(() =>
                 {
                     mindmapStore.PickAndAddAsync().Forget();
-                }));
+                }, () => PlattformDetector.IsDesktop));
             }
         }
 
@@ -99,7 +99,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
                 return saveAsCommand ?? (saveAsCommand = new RelayCommand(() =>
                 {
                     mindmapStore.SaveAsAsync(mindmapStore.SelectedFile).Forget();
-                }, () => SelectedFile != null).DependentOn(this, nameof(SelectedFile)));
+                }, () => PlattformDetector.IsDesktop && SelectedFile != null).DependentOn(this, nameof(SelectedFile)));
             }
         }
 

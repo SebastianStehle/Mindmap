@@ -13,6 +13,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
+using Windows.System.Profile;
 using GP.Utils;
 
 // ReSharper disable LoopCanBePartlyConvertedToQuery
@@ -68,6 +69,11 @@ namespace Hercules.Model.Storing
 
         private async Task LoadFilesFromRecentListAsync(IDictionary<string, DocumentFile> unsortedFiles)
         {
+            if (!PlattformDetector.IsDesktop)
+            {
+                return;
+            }
+
             tokenMapping.Clear();
 
             HashSet<string> filesHandled = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
@@ -104,6 +110,11 @@ namespace Hercules.Model.Storing
         public Task<bool> SaveAsync(IEnumerable<DocumentFile> newFiles)
         {
             Guard.NotNull(newFiles, nameof(newFiles));
+
+            if (!PlattformDetector.IsDesktop)
+            {
+                return Task.FromResult(true);
+            }
 
             return FileQueue.EnqueueAsync(() =>
             {

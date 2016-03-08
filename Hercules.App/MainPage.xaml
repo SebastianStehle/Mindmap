@@ -126,10 +126,18 @@
                             Command="{Binding CreateCommand}" />
                         <AppBarButton x:Uid="Mindmaps_SaveButton" Icon="Save" Label="Save" Foreground="{StaticResource ThemeMainBrush}" 
                             Command="{Binding SaveCommand}" />
-                        <AppBarButton x:Uid="Mindmaps_SaveAsButton" Icon="Save" Label="Save As" Foreground="{StaticResource ThemeMainBrush}" 
-                            Command="{Binding SaveAsCommand}" />
-                        <AppBarButton x:Uid="Mindmaps_OpenButton" Icon="OpenFile" Label="Open" Foreground="{StaticResource ThemeMainBrush}" 
-                            Command="{Binding OpenCommand}" />
+                        <AppBarButton x:Uid="Mindmaps_SaveAsButton" Icon="Save" Label="Save As" Foreground="{StaticResource ThemeMainBrush}" Visibility="Collapsed" 
+                            Command="{Binding SaveAsCommand}">
+                            <i:Interaction.Behaviors>
+                                <gpi:ShowOnDesktopBehavior />
+                            </i:Interaction.Behaviors>
+                        </AppBarButton>
+                        <AppBarButton x:Uid="Mindmaps_OpenButton" Icon="OpenFile" Label="Open" Foreground="{StaticResource ThemeMainBrush}" Visibility="Collapsed" 
+                            Command="{Binding OpenCommand}">
+                            <i:Interaction.Behaviors>
+                                <gpi:ShowOnDesktopBehavior />
+                            </i:Interaction.Behaviors>
+                        </AppBarButton>
                     </StackPanel>
 
                     <m:ListView x:Name="MindmapsContainer" Grid.Row="1" Margin="0,5,0,0" />

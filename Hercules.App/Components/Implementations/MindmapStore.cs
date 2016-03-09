@@ -120,9 +120,14 @@ namespace Hercules.App.Components.Implementations
                 {
                     if (await model.OpenAsync())
                     {
-                        if (selectedFile != null && !selectedFile.HasChanges)
+                        if (selectedFile != null)
                         {
-                            selectedFile.Close();
+                            await selectedFile.SaveSilentAsync();
+
+                            if (!selectedFile.HasChanges)
+                            {
+                                selectedFile.Close();
+                            }
                         }
 
                         selectedFile = model;

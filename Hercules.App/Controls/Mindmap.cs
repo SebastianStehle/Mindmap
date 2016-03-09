@@ -28,12 +28,14 @@ namespace Hercules.App.Controls
 {
     [TemplatePart(Name = PartCanvas, Type = typeof(CanvasControl))]
     [TemplatePart(Name = PartTextBox, Type = typeof(TextEditor))]
+    [TemplatePart(Name = PartCenterButton, Type = typeof(ButtonBase))]
     [TemplatePart(Name = PartScrollViewer, Type = typeof(ScrollViewer))]
     public sealed class Mindmap : Control
     {
         private const string PartCanvas = "PART_Canvas";
         private const string PartTextBox = "PART_TextBox";
         private const string PartScrollViewer = "PART_ScrollViewer";
+        private const string PartCenterButton = "PART_CenterButton";
         private IWin2DRendererProvider lastWin2DRendererProvider;
         private ScrollViewer scrollViewer;
         private Win2DRenderer renderer;
@@ -88,6 +90,7 @@ namespace Hercules.App.Controls
         {
             BindCanvasControl();
             BindTextEditor();
+            BindCenterButton();
             BindScrollViewer();
 
             InitializeRenderer();
@@ -121,6 +124,16 @@ namespace Hercules.App.Controls
             if (command != null)
             {
                 ShowNotes(command.Node);
+            }
+        }
+
+        private void BindCenterButton()
+        {
+            ButtonBase centerButton = GetTemplateChild(PartCenterButton) as ButtonBase;
+
+            if (centerButton != null)
+            {
+                centerButton.Click += CenterButton_Click;
             }
         }
 
@@ -225,6 +238,11 @@ namespace Hercules.App.Controls
             Focus(FocusState.Programmatic);
         }
 
+        private void CenterButton_Click(object sender, RoutedEventArgs e)
+        {
+            scrollViewer?.CenterViewport(true);
+        }
+
         protected override void OnPointerPressed(PointerRoutedEventArgs e)
         {
             FocusWhenNotTextEditing(e);
@@ -243,7 +261,7 @@ namespace Hercules.App.Controls
 
                 HitResult result = r.HitTest(position);
 
-                if (result?.RenderNode == textEditor.EditingNode)
+                if (result?.RenderNode != null && result.RenderNode == textEditor.EditingNode)
                 {
                     return;
                 }
@@ -288,35 +306,32 @@ namespace Hercules.App.Controls
         {
             WithRenderer(r =>
             {
-                if (textEditor != null)
+                Vector2 position = e.GetPosition(canvasControl.Inner).ToVector2();
+
+                HitResult hitResult = r.Scene.HitTest(position);
+
+                if (textEditor != null && (hitResult == null || hitResult.RenderNode != textEditor.EditingNode))
                 {
-                    Vector2 position = e.GetPosition(canvasControl.Inner).ToVector2();
+                    textEditor.EndEdit(true);
+                }
 
-                    HitResult hitResult = r.Scene.HitTest(position);
-
-                    if (hitResult == null || hitResult.RenderNode != textEditor.EditingNode)
+                if (hitResult != null)
+                {
+                    if (hitResult.Target == HitTarget.Node)
                     {
-                        textEditor.EndEdit(true);
+                        hitResult.RenderNode.Node.Select();
                     }
-
-                    if (hitResult != null)
+                    else if (hitResult.Target == HitTarget.ExpandButton)
                     {
-                        if (hitResult.Target == HitTarget.Node)
-                        {
-                            hitResult.RenderNode.Node.Select();
-                        }
-                        else if (hitResult.Target == HitTarget.ExpandButton)
-                        {
-                            hitResult.RenderNode.Node.ToggleCollapseTransactional();
-                        }
-                        else if (hitResult.Target == HitTarget.CheckBox)
-                        {
-                            hitResult.RenderNode.Node.ToggleCheckedTransactional();
-                        }
-                        else if (hitResult.Target == HitTarget.NotesButton)
-                        {
-                            ShowNotes(hitResult.RenderNode.Node);
-                        }
+                        hitResult.RenderNode.Node.ToggleCollapseTransactional();
+                    }
+                    else if (hitResult.Target == HitTarget.CheckBox)
+                    {
+                        hitResult.RenderNode.Node.ToggleCheckedTransactional();
+                    }
+                    else if (hitResult.Target == HitTarget.NotesButton)
+                    {
+                        ShowNotes(hitResult.RenderNode.Node);
                     }
                 }
             });

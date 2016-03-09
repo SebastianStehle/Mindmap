@@ -37,14 +37,13 @@
                             IsHorizontalRailEnabled="False">
                             
                             <i:Interaction.Behaviors>
-                                <gpi:CenterScrollViewerWhenExtendSizeChanged />
-                                
+                                <gpi:ScrollViewerCenterWhenExtendSizeChanged />
                                 <gpi:ScrollViewerBringIntoViewInputPaneBehavior />
                             </i:Interaction.Behaviors>
 
                             <Grid>
                                 <canvas:CanvasVirtualControl x:Name="PART_Canvas" Background="Transparent" Width="{Binding Document.Width, RelativeSource={RelativeSource TemplatedParent}}" Height="{Binding Document.Height, RelativeSource={RelativeSource TemplatedParent}}" />
-
+                                
                                 <controls:TextEditor x:Name="PART_TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="5,0"
                                     MinHeight="0"
                                     MinWidth="80"
@@ -61,6 +60,10 @@
                                     HorizontalAlignment="Left" />
                             </Grid>
                         </ScrollViewer>
+
+                        <Button x:Name="PART_CenterButton" Width="44" Height="44" Margin="10" Style="{StaticResource SimpleButtonStyle}" VerticalAlignment="Bottom">
+                            <TextBlock FontSize="24" FontFamily="Segoe MDL2 Assets " Text="&#59421;" />
+                        </Button>
                     </Grid>
                 </ControlTemplate>
             </Setter.Value>

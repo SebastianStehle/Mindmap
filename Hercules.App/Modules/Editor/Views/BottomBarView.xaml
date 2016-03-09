@@ -48,6 +48,12 @@
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
+
+            <AppBarSeparator />
+
+            <AppBarButton x:Uid="AppBarButton_ToggleProperties" IsCompact="True" Label="Properties" Click="PropertiesButton_Click">
+                <TextBlock TextAlignment="Center" FontSize="20" Text="&#xE2B1;" FontFamily="Segoe MDL2 Assets" />
+            </AppBarButton>
         </CommandBar.PrimaryCommands>
     </CommandBar>
 </UserControl>

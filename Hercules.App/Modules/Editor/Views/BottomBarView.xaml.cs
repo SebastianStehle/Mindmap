@@ -15,6 +15,8 @@ namespace Hercules.App.Modules.Editor.Views
     {
         public event EventHandler<RoutedEventArgs> ListButtonClicked;
 
+        public event EventHandler<RoutedEventArgs> PropertiesButtonClicked;
+
         public BottomBarView()
         {
             InitializeComponent();
@@ -23,6 +25,11 @@ namespace Hercules.App.Modules.Editor.Views
         private void ListAppBarButton_Click(object sender, RoutedEventArgs e)
         {
             ListButtonClicked?.Invoke(sender, new RoutedEventArgs());
+        }
+
+        private void PropertiesButton_Click(object sender, RoutedEventArgs e)
+        {
+            PropertiesButtonClicked?.Invoke(sender, new RoutedEventArgs());
         }
     }
 }

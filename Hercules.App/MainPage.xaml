@@ -69,7 +69,7 @@
                         <Setter Target="BottomToolBar.(UIElement.Visibility)" Value="Collapsed"/>
                     </VisualState.Setters>
                     <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="600"/>
+                        <AdaptiveTrigger MinWindowWidth="680"/>
                     </VisualState.StateTriggers>
                 </VisualState>
             </VisualStateGroup>
@@ -170,6 +170,6 @@
             </SplitView.Content>
         </SplitView>
         
-        <e:BottomBarView x:Name="BottomToolBar" Grid.Row="2" ListButtonClicked="Toolbars_ListButtonClicked"></e:BottomBarView>
+        <e:BottomBarView x:Name="BottomToolBar" Grid.Row="2" ListButtonClicked="Toolbars_ListButtonClicked" PropertiesButtonClicked="Toolbars_PropertiesButtonClicked"></e:BottomBarView>
     </Grid>
 </Page>

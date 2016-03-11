@@ -113,7 +113,7 @@ namespace Hercules.App.Controls
 
         private void App_Resuming(object sender, object e)
         {
-            Invalidate();
+            canvasControl.Invalidate();
         }
 
         public int ConvertDipsToPixels(float dips, CanvasDpiRounding dpiRounding)

@@ -57,10 +57,14 @@ namespace Hercules.App.Components.Implementations
 
         private void AutoSaveTimer_Tick(object sender, object e)
         {
-            if (selectedFile != null)
+            var files = allFiles.OfType<DocumentFileModel>().ToList();
+
+            foreach (DocumentFileModel file in files)
             {
-                selectedFile.SaveSilentAsync().Forget();
+                file.SaveSilentAsync().Forget();
             }
+
+            recentList.SaveAsync(files.Select(x => x.File).ToList()).Forget();
         }
 
         public Task StoreRecentsAsync()
@@ -116,9 +120,14 @@ namespace Hercules.App.Components.Implementations
                 {
                     if (await model.OpenAsync())
                     {
-                        if (selectedFile != null && !selectedFile.HasChanges)
+                        if (selectedFile != null)
                         {
-                            selectedFile.Close();
+                            await selectedFile.SaveSilentAsync();
+
+                            if (!selectedFile.HasChanges)
+                            {
+                                selectedFile.Close();
+                            }
                         }
 
                         selectedFile = model;

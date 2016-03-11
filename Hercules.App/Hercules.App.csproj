@@ -189,7 +189,7 @@
     <Content Include="Assets\Icons\Calendar.png" />
     <Content Include="Assets\Icons\Calendar_Apr.png" />
     <Content Include="Assets\Icons\Calendar_Aug.png" />
-    <Content Include="Assets\Icons\Calendar_Dez.png" />
+    <Content Include="Assets\Icons\Calendar_Dec.png" />
     <Content Include="Assets\Icons\Calendar_Feb.png" />
     <Content Include="Assets\Icons\Calendar_Jan.png" />
     <Content Include="Assets\Icons\Calendar_Jul.png" />

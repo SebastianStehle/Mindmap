@@ -358,14 +358,14 @@
     <Language Code="zu-za" InMinimumRequirementSet="true" />
   </SupportedLocales>
   <ProductReservedInfo>
-    <MainPackageIdentityName>25800SebastianStehle.Mindapp</MainPackageIdentityName>
+    <MainPackageIdentityName>25800SebastianStehle.MindappBeta</MainPackageIdentityName>
     <ReservedNames>
-      <ReservedName>Mindapp</ReservedName>
+      <ReservedName>Mindapp_Beta</ReservedName>
     </ReservedNames>
   </ProductReservedInfo>
   <AccountPackageIdentityNames>
-    <MainPackageIdentityName>25800SebastianStehle.MindappBeta</MainPackageIdentityName>
+    <MainPackageIdentityName>25800SebastianStehle.Mindapp</MainPackageIdentityName>
     <MainPackageIdentityName>25800SebastianStehle.RavenMind</MainPackageIdentityName>
   </AccountPackageIdentityNames>
-  <PackageInfoList LandingUrl="https://dev.windows.com/dashboard/Application?appId=9NBLGGH5ZBDC" />
+  <PackageInfoList LandingUrl="https://dev.windows.com/dashboard/Application?appId=9NBLGGH4QCR1" />
 </StoreAssociation>

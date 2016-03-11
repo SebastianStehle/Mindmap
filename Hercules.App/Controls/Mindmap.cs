@@ -14,10 +14,10 @@ using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;
 using GP.Utils;
 using GP.Utils.UI;
+using GP.Utils.UI.Controls;
 using Hercules.App.Modules.Editor.Views;
 using Hercules.Model;
 using Hercules.Win2D.Rendering;
-using Microsoft.Graphics.Canvas.UI.Xaml;
 
 // ReSharper disable InvertIf
 // ReSharper disable LoopCanBeConvertedToQuery
@@ -26,7 +26,7 @@ using Microsoft.Graphics.Canvas.UI.Xaml;
 
 namespace Hercules.App.Controls
 {
-    [TemplatePart(Name = PartCanvas, Type = typeof(CanvasControl))]
+    [TemplatePart(Name = PartCanvas, Type = typeof(CanvasVirtualWrapper))]
     [TemplatePart(Name = PartTextBox, Type = typeof(TextEditor))]
     [TemplatePart(Name = PartScrollViewer, Type = typeof(ScrollViewer))]
     public sealed class Mindmap : Control
@@ -35,9 +35,9 @@ namespace Hercules.App.Controls
         private const string PartTextBox = "PART_TextBox";
         private const string PartScrollViewer = "PART_ScrollViewer";
         private IWin2DRendererProvider lastWin2DRendererProvider;
-        private ScrollViewer scrollViewer;
+        private CanvasVirtualWrapper canvasControl;
         private Win2DRenderer renderer;
-        private CanvasControlWrapper canvasControl;
+        private ScrollViewer scrollViewer;
         private TextEditor textEditor;
 
         public Win2DRenderNode TextEditingNode
@@ -146,12 +146,10 @@ namespace Hercules.App.Controls
 
         private void BindCanvasControl()
         {
-            CanvasVirtualControl control = GetTemplateChild(PartCanvas) as CanvasVirtualControl;
+            canvasControl = GetTemplateChild(PartCanvas) as CanvasVirtualWrapper;
 
-            if (control != null)
+            if (canvasControl != null)
             {
-                canvasControl = new CanvasControlWrapper(control);
-
                 canvasControl.AfterDraw += CanvasControl_AfterDraw;
             }
         }
@@ -239,7 +237,7 @@ namespace Hercules.App.Controls
         {
             WithRenderer(r =>
             {
-                Vector2 position = e.GetCurrentPoint(canvasControl.Inner).Position.ToVector2();
+                Vector2 position = e.GetCurrentPoint(canvasControl).Position.ToVector2();
 
                 HitResult result = r.HitTest(position);
 
@@ -272,7 +270,7 @@ namespace Hercules.App.Controls
         {
             WithRenderer(r =>
             {
-                Vector2 position = e.GetPosition(canvasControl.Inner).ToVector2();
+                Vector2 position = e.GetPosition(canvasControl).ToVector2();
 
                 HitResult hitResult = r.Scene.HitTest(position);
 
@@ -290,7 +288,7 @@ namespace Hercules.App.Controls
             {
                 if (textEditor != null)
                 {
-                    Vector2 position = e.GetPosition(canvasControl.Inner).ToVector2();
+                    Vector2 position = e.GetPosition(canvasControl).ToVector2();
 
                     HitResult hitResult = r.Scene.HitTest(position);
 

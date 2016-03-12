@@ -117,7 +117,6 @@
     <Compile Include="Components\IMindmapPrintService.cs" />
     <Compile Include="Components\ISettingsProvider.cs" />
     <Compile Include="Components\TitleBarUpdater.cs" />
-    <Compile Include="Controls\CanvasControlWrapper.cs" />
     <Compile Include="Controls\ColorPresenter.cs" />
     <Compile Include="Controls\ImportGeneratorBehavior.cs" />
     <Compile Include="Controls\ExportGeneratorBehavior.cs" />

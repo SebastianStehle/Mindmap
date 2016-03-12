@@ -143,7 +143,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return toggleNotesCommand ?? (toggleNotesCommand = new RelayCommand(() =>
                 {
-                    Document.SelectedNode.ToggleNotesTransactional();
+                    SelectedNode.ToggleNotesTransactional();
                 },
                 () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }

@@ -154,7 +154,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return toggleNotesCommand ?? (toggleNotesCommand = new RelayCommand(() =>
                 {
-                    Document.SelectedNode.ToggleNotesTransactional();
+                    SelectedNode.ToggleNotesTransactional();
                 },
                 () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
@@ -210,15 +210,15 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return changeShapeCommand ?? (changeShapeCommand = new RelayCommand<int>(x =>
                 {
-                    var node = SelectedNode as Node;
+                    var node = (Node)SelectedNode;
 
                     if (x == 0)
                     {
-                        node?.ChangeShapeTransactional(null);
+                        node.ChangeShapeTransactional(null);
                     }
                     else
                     {
-                        node?.ChangeShapeTransactional((NodeShape)(x - 1));
+                        node.ChangeShapeTransactional((NodeShape)(x - 1));
                     }
                 },
                 x => SelectedNode is Node)).DependentOn(this, nameof(SelectedNode));

@@ -3,9 +3,8 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:i="using:Microsoft.Xaml.Interactivity"
     xmlns:gpi="using:GP.Utils.UI.Interactivity"
-    xmlns:canvas="using:Microsoft.Graphics.Canvas.UI.Xaml"
-    xmlns:controls="using:Hercules.App.Controls"
-    xmlns:controls1="using:GP.Utils.UI.Controls">
+    xmlns:gpc="using:GP.Utils.UI.Controls"
+    xmlns:controls="using:Hercules.App.Controls">
 
     <Style TargetType="controls:ColorPresenter">
         <Setter Property="Template">
@@ -43,7 +42,13 @@
                             </i:Interaction.Behaviors>
 
                             <Grid>
-                                <controls1:CanvasVirtualWrapper x:Name="PART_Canvas" Width="{Binding Document.Width, RelativeSource={RelativeSource TemplatedParent}}" Height="{Binding Document.Height, RelativeSource={RelativeSource TemplatedParent}}" />
+                                <gpc:CanvasVirtualWrapper x:Name="PART_Canvas" Width="{Binding Document.Width, RelativeSource={RelativeSource TemplatedParent}}" Height="{Binding Document.Height, RelativeSource={RelativeSource TemplatedParent}}">
+                                    <i:Interaction.Behaviors>
+                                        <gpi:SwallowKeyArrowDownEventsBehavior />
+                                        
+                                        <controls:NodeMovingBehavior />
+                                    </i:Interaction.Behaviors>
+                                </gpc:CanvasVirtualWrapper>
 
                                 <controls:TextEditor x:Name="PART_TextBox" Style="{StaticResource NoClearButtonTextBox}" Padding="5,0"
                                     MinHeight="0"

@@ -119,11 +119,14 @@ namespace Hercules.App.Controls
         {
             IUndoRedoManager undoRedoManager = (IUndoRedoManager)sender;
 
-            ToggleNotesCommand command = undoRedoManager.LastCommand<ToggleNotesCommand>(n => n.Node.IsNotesEnabled);
-
-            if (command != null)
+            if (e.Reason == StateChangedReason.Register)
             {
-                ShowNotes(command.Node);
+                ToggleNotesCommand command = undoRedoManager.LastCommand<ToggleNotesCommand>(n => n.Node.IsNotesEnabled);
+
+                if (command != null)
+                {
+                    ShowNotes(command.Node);
+                }
             }
         }
 

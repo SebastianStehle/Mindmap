@@ -101,6 +101,7 @@ namespace Hercules.App.Controls
                     if (target != null)
                     {
                         targetNode.MoveTransactional(target.Parent, target.Index, target.NodeSide);
+                        targetNode.Select();
                     }
                 }
             }

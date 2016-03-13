@@ -36,8 +36,17 @@
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Down">
                 <ic:InvokeCommandAction Command="{Binding SelectBottomCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
-            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Down">
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Right">
                 <ic:InvokeCommandAction Command="{Binding SelectRightCommand}" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="M">
+                <ic:InvokeCommandAction Command="{Binding ToggleNotesCommand}" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Multiply">
+                <ic:InvokeCommandAction Command="{Binding ExpandCommand}" />
+            </gpi:GlobalShortcutTriggerBehavior>
+            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Divide">
+                <ic:InvokeCommandAction Command="{Binding CollapseCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Z">
                 <ic:InvokeCommandAction Command="{Binding UndoCommand}" />
@@ -51,10 +60,10 @@
 
         <controls:Mindmap Document="{Binding Document}" RendererProvider="{Binding RendererProvider}" x:Name="Mindmap">
             <i:Interaction.Behaviors>
-                <gpi:ControlShortcutTriggerBehavior Key="Tab">
+                <gpi:ControlShortcutTriggerBehavior HandleKeyDown="true" Key="Tab">
                     <ic:InvokeCommandAction Command="{Binding AddChildCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
-                <gpi:ControlShortcutTriggerBehavior Key="Enter">
+                <gpi:ControlShortcutTriggerBehavior HandleKeyDown="true" Key="Enter">
                     <ic:InvokeCommandAction Command="{Binding AddSiblingCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="Back">
@@ -78,14 +87,21 @@
                 <gpi:ControlShortcutTriggerBehavior Key="Right">
                     <ic:InvokeCommandAction Command="{Binding SelectRightCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
+                <gpi:ControlShortcutTriggerBehavior Key="M">
+                    <ic:InvokeCommandAction Command="{Binding ToggleNotesCommand}" />
+                </gpi:ControlShortcutTriggerBehavior>
+                <gpi:ControlShortcutTriggerBehavior Key="Multiply">
+                    <ic:InvokeCommandAction Command="{Binding ExpandCommand}" />
+                </gpi:ControlShortcutTriggerBehavior>
+                <gpi:ControlShortcutTriggerBehavior Key="Divide">
+                    <ic:InvokeCommandAction Command="{Binding CollapseCommand}" />
+                </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="Space">
                     <gpi:EventAction Invoked="EditTextCommand_Invoked" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="T">
                     <gpi:EventAction Invoked="EditTextCommand_Invoked" />
                 </gpi:ControlShortcutTriggerBehavior>
-                
-                <controls:NodeMovingBehavior />
             </i:Interaction.Behaviors>
         </controls:Mindmap>
 

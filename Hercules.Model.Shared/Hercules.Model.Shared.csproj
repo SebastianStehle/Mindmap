@@ -100,8 +100,10 @@
     <Compile Include="NodeCache.cs" />
     <Compile Include="NodeEventArgs.cs" />
     <Compile Include="NodeExtensions.cs" />
+    <Compile Include="NodeNavigationExtensions.cs" />
     <Compile Include="NodeShape.cs" />
     <Compile Include="NodeSide.cs" />
+    <Compile Include="NodeSideExtensions.cs" />
     <Compile Include="NodeTransactionExtensions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoveChildCommand.cs" />

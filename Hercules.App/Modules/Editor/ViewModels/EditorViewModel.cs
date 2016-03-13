@@ -31,6 +31,8 @@ namespace Hercules.App.Modules.Editor.ViewModels
         private RelayCommand redoCommand;
         private RelayCommand undoCommand;
         private RelayCommand removeCommand;
+        private RelayCommand expandCommand;
+        private RelayCommand collapseCommand;
         private RelayCommand addChildCommand;
         private RelayCommand addSiblingCommand;
         private RelayCommand selectTopCommand;
@@ -137,6 +139,30 @@ namespace Hercules.App.Modules.Editor.ViewModels
             }
         }
 
+        public ICommand ExpandCommand
+        {
+            get
+            {
+                return expandCommand ?? (expandCommand = new RelayCommand(() =>
+                {
+                    SelectedNode.ExpandTransactional();
+                },
+                () => Document != null && SelectedNode != null && SelectedNode.HasChildren).DependentOn(this, nameof(Document), nameof(SelectedNode)));
+            }
+        }
+
+        public ICommand CollapseCommand
+        {
+            get
+            {
+                return collapseCommand ?? (collapseCommand = new RelayCommand(() =>
+                {
+                    SelectedNode.CollapseTransactional();
+                },
+                () => Document != null && SelectedNode != null && SelectedNode.HasChildren).DependentOn(this, nameof(Document), nameof(SelectedNode)));
+            }
+        }
+
         public ICommand ToggleNotesCommand
         {
             get
@@ -155,7 +181,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return selectTopCommand ?? (selectTopCommand = new RelayCommand(() =>
                 {
-                    Document.SelectTopOfSelectedNode();
+                    SelectedNode.FindTopOf()?.Select();
                 },
                 () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
@@ -167,7 +193,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return selectRightCommand ?? (selectRightCommand = new RelayCommand(() =>
                 {
-                    Document.SelectRightOfSelectedNode();
+                    SelectedNode.FindRightOf()?.Select();
                 },
                 () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
@@ -179,7 +205,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return selectBottomCommand ?? (selectBottomCommand = new RelayCommand(() =>
                 {
-                    Document.SelectBottomOfSelectedNode();
+                    SelectedNode.FindBottomOf()?.Select();
                 },
                 () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
@@ -191,7 +217,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return selectLeftCommand ?? (selectLeftCommand = new RelayCommand(() =>
                 {
-                    Document.SelectLeftOfSelectedNode();
+                    SelectedNode.FindLeftOf()?.Select();
                 },
                 () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
@@ -203,7 +229,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return removeCommand ?? (removeCommand = new RelayCommand(() =>
                 {
-                    Document.RemoveSelectedNodeTransactional();
+                    SelectedNode.RemoveTransactional();
                 },
                 () => Document != null && SelectedNode is Node).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
@@ -215,7 +241,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return addChildCommand ?? (addChildCommand = new RelayCommand(() =>
                 {
-                    Document.AddChildToSelectedNodeTransactional();
+                    SelectedNode.AddChildTransactional();
                 },
                 () => Document != null && SelectedNode != null).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }
@@ -227,7 +253,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
             {
                 return addSiblingCommand ?? (addSiblingCommand = new RelayCommand(() =>
                 {
-                    Document.AddSibilingToSelectedNodeTransactional();
+                    SelectedNode.AddSibilingTransactional();
                 },
                 () => Document != null && SelectedNode is Node).DependentOn(this, nameof(Document), nameof(SelectedNode)));
             }

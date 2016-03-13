@@ -469,7 +469,7 @@ The maximum allowed size is a 200x200 pixels.</value>
     <value>Notes</value>
   </data>
   <data name="AppBarButton_ToggleNotes.[using:Windows.UI.Xaml.Controls]ToolTipService.ToolTip" xml:space="preserve">
-    <value>Toggle Notes</value>
+    <value>Toggle Notes (M)</value>
   </data>
   <data name="TransactionName_ChangeNotes" xml:space="preserve">
     <value>Change Notes</value>

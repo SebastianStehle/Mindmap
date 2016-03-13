@@ -9,111 +9,150 @@
         <Setter Property="Template">
             <Setter.Value>
                 <ControlTemplate TargetType="ContentControl">
-                    <Grid HorizontalAlignment="Left" VerticalAlignment="Top">
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition />
-                        </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                            <RowDefinition />
-                        </Grid.RowDefinitions>
+                    <StackPanel HorizontalAlignment="Left" VerticalAlignment="Top">
+                        <TextBlock Style="{StaticResource HelpH1Style}" Text="When Editor has focus" />
 
-                        <TextBlock Grid.Row="0" Style="{StaticResource HelpH1Style}" Text="When Editor has focus" />
-                        
-                        <TextBlock Grid.Row="1" Style="{StaticResource HelpH2Style}" Text="One Node Selected" />
+                        <TextBlock Style="{StaticResource HelpH2Style}" Text="One Node Selected" />
 
-                        <TextBlock Grid.Row="2" Style="{StaticResource HelpShortcutStyle}" Text="Space" />
-                        <TextBlock Grid.Row="2" Style="{StaticResource HelpCommentStyle}" Text="Start editing" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Space" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Start editing" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="3" Style="{StaticResource HelpShortcutStyle}" Text="Tab" />
-                        <TextBlock Grid.Row="3" Style="{StaticResource HelpCommentStyle}" Text="Add child subtopic" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Tab" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Add child subtopic" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="4" Style="{StaticResource HelpShortcutStyle}" Text="Enter" />
-                        <TextBlock Grid.Row="4" Style="{StaticResource HelpCommentStyle}" Text="Add sibling subtopic" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="M" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Toggle notes / memo" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="5" Style="{StaticResource HelpShortcutStyle}" Text="Delete, Back" />
-                        <TextBlock Grid.Row="5" Style="{StaticResource HelpCommentStyle}" Text="Delete current subtopic" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="*" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Show all subtopics" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="6" Style="{StaticResource HelpShortcutStyle}" Text="Arrow Keys" />
-                        <TextBlock Grid.Row="6" Style="{StaticResource HelpCommentStyle}" Text="Change selection" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="/" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Hide all subtopics" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="7" Style="{StaticResource HelpH2Style}" Text="While Editing One Node" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Enter" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Add sibling subtopic" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="8" Style="{StaticResource HelpShortcutStyle}" Text="Enter" />
-                        <TextBlock Grid.Row="8" Style="{StaticResource HelpCommentStyle}" Text="Accept" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Delete, Back" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Delete current subtopic" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="9" Style="{StaticResource HelpShortcutStyle}" Text="Escape" />
-                        <TextBlock Grid.Row="9" Style="{StaticResource HelpCommentStyle}" Text="Cancel" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Arrow Keys" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Change selection" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="10" Style="{StaticResource HelpH1Style}" Text="Global shortcuts" Margin="0,15,0,0" />
+                        <TextBlock Style="{StaticResource HelpH2Style}" Text="While Editing One Node" />
 
-                        <TextBlock Grid.Row="11" Style="{StaticResource HelpShortcutStyle}" Text="Control + H, Control + F1, F1" />
-                        <TextBlock Grid.Row="11" Style="{StaticResource HelpCommentStyle}" Text="Show Help" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Enter" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Accept" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="12" Style="{StaticResource HelpShortcutStyle}" Text="Control + P" />
-                        <TextBlock Grid.Row="12" Style="{StaticResource HelpCommentStyle}" Text="Show Properties" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Escape" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Cancel" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="13" Style="{StaticResource HelpShortcutStyle}" Text="Control + L" />
-                        <TextBlock Grid.Row="13" Style="{StaticResource HelpCommentStyle}" Text="Show Mindmap List" />
+                        <TextBlock Style="{StaticResource HelpH1Style}" Text="Global shortcuts" Margin="0,15,0,0" />
 
-                        <TextBlock Grid.Row="14" Style="{StaticResource HelpShortcutStyle}" Text="Control + Z" />
-                        <TextBlock Grid.Row="14" Style="{StaticResource HelpCommentStyle}" Text="Undo" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + H, Control + F1, F1" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Show Help" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="15" Style="{StaticResource HelpShortcutStyle}" Text="Control + Y" />
-                        <TextBlock Grid.Row="15" Style="{StaticResource HelpCommentStyle}" Text="Redo" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + P" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Show Properties" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="16" Style="{StaticResource HelpShortcutStyle}" Text="Control + Space" />
-                        <TextBlock Grid.Row="16" Style="{StaticResource HelpCommentStyle}" Text="Start editing" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + L" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Show Mindmap List" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="17" Style="{StaticResource HelpShortcutStyle}" Text="Control + Tab" />
-                        <TextBlock Grid.Row="17" Style="{StaticResource HelpCommentStyle}" Text="Add child subtopic" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + Z" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Undo" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="18" Style="{StaticResource HelpShortcutStyle}" Text="Control + Enter" />
-                        <TextBlock Grid.Row="18" Style="{StaticResource HelpCommentStyle}" Text="Add sibling subtopic" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + Y" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Redo" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="19" Style="{StaticResource HelpShortcutStyle}" Text="Control + Delete, Control + Back" />
-                        <TextBlock Grid.Row="19" Style="{StaticResource HelpCommentStyle}" Text="Delete current subtopic" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + Space" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Start editing" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="20" Style="{StaticResource HelpShortcutStyle}" Text="Control + Arrow Keys" />
-                        <TextBlock Grid.Row="20" Style="{StaticResource HelpCommentStyle}" Text="Change selection" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + Tab" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Add child subtopic" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="21" Style="{StaticResource HelpShortcutStyle}" Text="Control + N" />
-                        <TextBlock Grid.Row="21" Style="{StaticResource HelpCommentStyle}" Text="Create new mindmap" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + Enter" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Add sibling subtopic" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="22" Style="{StaticResource HelpShortcutStyle}" Text="Control + S" />
-                        <TextBlock Grid.Row="22" Style="{StaticResource HelpCommentStyle}" Text="Save current mindmap" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + M" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Toggle notes / memo" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="23" Style="{StaticResource HelpShortcutStyle}" Text="Control + Shift + S" />
-                        <TextBlock Grid.Row="23" Style="{StaticResource HelpCommentStyle}" Text="Save current mindmap to file" />
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + *" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Show all subtopics" />
+                        </StackPanel>
 
-                        <TextBlock Grid.Row="24" Style="{StaticResource HelpShortcutStyle}" Text="Control + O" />
-                        <TextBlock Grid.Row="24" Style="{StaticResource HelpCommentStyle}" Text="Open mindmap" />
-                    </Grid>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + /" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Hide all subtopics" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + Delete, Control + Back" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Delete current subtopic" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + Arrow Keys" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Change selection" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + N" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Create new mindmap" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + S" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Save current mindmap" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + Shift + S" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Save current mindmap to file" />
+                        </StackPanel>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Style="{StaticResource HelpShortcutStyle}" Text="Control + O" />
+                            <TextBlock Style="{StaticResource HelpCommentStyle}" Text="Open mindmap" />
+                        </StackPanel>
+                    </StackPanel>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>

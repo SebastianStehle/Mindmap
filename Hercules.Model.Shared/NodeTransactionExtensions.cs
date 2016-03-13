@@ -64,6 +64,8 @@ namespace Hercules.Model
 
             if (selectedNormalNode?.Document != null)
             {
+                (node.FindBottomOf() ?? node.Parent)?.Select();
+
                 string tansactionName = LocalizationManager.GetString("TransactionName_RemoveNode");
 
                 node.Document.MakeTransaction(tansactionName, commands =>
@@ -86,6 +88,32 @@ namespace Hercules.Model
                     commands.Apply(new RemoveChildCommand(selectedNormalNode.Parent, selectedNormalNode));
 
                     commands.Apply(new InsertChildCommand(target, index, side, selectedNormalNode));
+                });
+            }
+        }
+
+        public static void CollapseTransactional(this NodeBase node)
+        {
+            if (node.Document != null && node.HasChildren && !node.IsCollapsed)
+            {
+                string transactionName = LocalizationManager.GetString("TransactionName_ExpandCollapse");
+
+                node.Document.MakeTransaction(transactionName, commands =>
+                {
+                    commands.Apply(new ToggleCollapseCommand(node));
+                });
+            }
+        }
+
+        public static void ExpandTransactional(this NodeBase node)
+        {
+            if (node.Document != null && node.HasChildren && node.IsCollapsed)
+            {
+                string transactionName = LocalizationManager.GetString("TransactionName_ExpandCollapse");
+
+                node.Document.MakeTransaction(transactionName, commands =>
+                {
+                    commands.Apply(new ToggleCollapseCommand(node));
                 });
             }
         }
@@ -131,7 +159,7 @@ namespace Hercules.Model
 
         public static void ToggleCollapseTransactional(this NodeBase node)
         {
-            if (node.Document != null)
+            if (node.Document != null && node.HasChildren)
             {
                 string transactionName = LocalizationManager.GetString("TransactionName_ExpandCollapse");
 

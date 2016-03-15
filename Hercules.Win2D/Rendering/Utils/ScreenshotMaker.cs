@@ -46,7 +46,7 @@ namespace Hercules.Win2D.Rendering.Utils
             int wDiff = wPixels - maxPixels;
             int hDiff = hPixels - maxPixels;
 
-            if (wDiff > maxPixels || hDiff > maxPixels)
+            if (wDiff > 0 || hDiff > 0)
             {
                 if (wDiff > hDiff)
                 {

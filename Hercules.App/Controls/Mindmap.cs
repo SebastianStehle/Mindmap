@@ -66,7 +66,7 @@ namespace Hercules.App.Controls
         }
 
         public static readonly DependencyProperty DocumentProperty =
-            DependencyPropertyManager.Register<Mindmap, Document>(nameof(Document), null, (d, e) => d.OnDocumentChanged(e));
+            DependencyPropertyManager.Register<Mindmap, Document>(nameof(Document), null, e => e.Owner.OnDocumentChanged(e.OldValue, e.NewValue));
         public Document Document
         {
             get { return (Document)GetValue(DocumentProperty); }
@@ -74,7 +74,7 @@ namespace Hercules.App.Controls
         }
 
         public static readonly DependencyProperty RendererProviderProperty =
-            DependencyPropertyManager.Register<Mindmap, IWin2DRendererProvider>(nameof(RendererProvider), null, (d, e) => d.InitializeRenderer());
+            DependencyPropertyManager.Register<Mindmap, IWin2DRendererProvider>(nameof(RendererProvider), null, e => e.Owner.InitializeRenderer());
         public IWin2DRendererProvider RendererProvider
         {
             get { return (IWin2DRendererProvider)GetValue(RendererProviderProperty); }
@@ -96,16 +96,12 @@ namespace Hercules.App.Controls
             InitializeRenderer();
         }
 
-        private void OnDocumentChanged(DependencyPropertyChangedEventArgs e)
+        private void OnDocumentChanged(Document oldDocument, Document newDocument)
         {
-            Document oldDocument = e.OldValue as Document;
-
             if (oldDocument != null)
             {
                 oldDocument.StateChanged -= Document_StateChanged;
             }
-
-            Document newDocument = e.NewValue as Document;
 
             if (newDocument != null)
             {

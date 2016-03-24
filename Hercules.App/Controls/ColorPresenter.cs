@@ -26,7 +26,7 @@ namespace Hercules.App.Controls
         private Border border;
 
         public static readonly DependencyProperty ColorProperty =
-            DependencyPropertyManager.Register<ColorPresenter, INodeColor>(nameof(Color), null, (d, e) => d.UpdateColor());
+            DependencyPropertyManager.Register<ColorPresenter, INodeColor>(nameof(Color), null, e => e.Owner.UpdateColor());
         public INodeColor Color
         {
             get { return (INodeColor)GetValue(ColorProperty); }
@@ -34,7 +34,7 @@ namespace Hercules.App.Controls
         }
 
         public static readonly DependencyProperty RendererProperty =
-            DependencyPropertyManager.Register<ColorPresenter, Win2DRenderer>(nameof(Renderer), null, (d, e) => d.UpdateColor());
+            DependencyPropertyManager.Register<ColorPresenter, Win2DRenderer>(nameof(Renderer), null, e => e.Owner.UpdateColor());
         public Win2DRenderer Renderer
         {
             get { return (Win2DRenderer)GetValue(RendererProperty); }

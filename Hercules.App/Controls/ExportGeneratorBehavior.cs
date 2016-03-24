@@ -20,7 +20,7 @@ namespace Hercules.App.Controls
     public sealed class ExportGeneratorBehavior : Behavior<MenuFlyoutSubItem>
     {
         public static readonly DependencyProperty EditorViewModelProperty =
-            DependencyPropertyManager.Register<ExportGeneratorBehavior, EditorViewModel>(nameof(EditorViewModel), null, (d, e) => d.BindItems());
+            DependencyPropertyManager.Register<ExportGeneratorBehavior, EditorViewModel>(nameof(EditorViewModel), null, e => e.Owner.BindItems());
         public EditorViewModel EditorViewModel
         {
             get { return (EditorViewModel)GetValue(EditorViewModelProperty); }

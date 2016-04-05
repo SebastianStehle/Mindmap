@@ -11,8 +11,7 @@
     xmlns:gpi="using:GP.Utils.UI.Interactivity"
     mc:Ignorable="d"
     IsTabStop="False"
-    IsEnabled="{Binding ProcessManager.IsMainProcessRunning, Source={StaticResource ViewModelLocator}, Converter={StaticResource TrueWhenFalseConverter}}"
-    DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
+    DataContext="{Binding Source={StaticResource ViewModelLocator}}">
 
     <Page.Resources>
         <Storyboard x:Key="ShowListStoryboard">
@@ -39,137 +38,130 @@
         </Storyboard>
     </Page.Resources>
 
-    <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
-        <i:Interaction.Behaviors>
-            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="P">
-                <gpi:EventAction Invoked="Toolbars_PropertiesButtonClicked" />
-            </gpi:GlobalShortcutTriggerBehavior>
-            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="L">
-                <gpi:EventAction Invoked="Toolbars_ListButtonClicked" />
-            </gpi:GlobalShortcutTriggerBehavior>
-            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="P">
-                <ic:InvokeCommandAction Command="{Binding SaveCommand}"  />
-            </gpi:GlobalShortcutTriggerBehavior>
-            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" RequiresShiftModifier="True" Key="S">
-                <ic:InvokeCommandAction Command="{Binding SaveAsCommand}"  />
-            </gpi:GlobalShortcutTriggerBehavior>
-            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="O">
-                <ic:InvokeCommandAction Command="{Binding OpenCommand}"  />
-            </gpi:GlobalShortcutTriggerBehavior>
-        </i:Interaction.Behaviors>
-        
-        <VisualStateManager.VisualStateGroups>
-            <VisualStateGroup x:Name="ResponsiveStates">
-                <VisualState x:Name="Tablet">
-                    <VisualState.Setters>
-                        <Setter Target="InnerSplitView.(SplitView.DisplayMode)" Value="Inline"/>
-                        <Setter Target="OuterSplitView.(SplitView.DisplayMode)" Value="CompactInline"/>
-                        <Setter Target="InnerSplitView.(SplitView.OpenPaneLength)" Value="320"/>
-                        <Setter Target="OuterSplitView.(SplitView.OpenPaneLength)" Value="320"/>
-                        <Setter Target="BottomToolBar.(UIElement.Visibility)" Value="Collapsed"/>
-                    </VisualState.Setters>
-                    <VisualState.StateTriggers>
-                        <AdaptiveTrigger MinWindowWidth="680"/>
-                    </VisualState.StateTriggers>
-                </VisualState>
-            </VisualStateGroup>
-        </VisualStateManager.VisualStateGroups>
-
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
-
-        <e:ToolbarView Grid.Row="0" ListButtonClicked="Toolbars_ListButtonClicked" PropertiesButtonClicked="Toolbars_PropertiesButtonClicked" />
-
-        <SplitView x:Name="OuterSplitView" Grid.Row="1" DisplayMode="Overlay" OpenPaneLength="280" CompactPaneLength="68">
+    <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" IsEnabled="{x:Bind EditorViewModel.ProcessManager.IsMainProcessRunning, Converter={StaticResource TrueWhenFalseConverter}, Mode=OneWay}">
+        <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <i:Interaction.Behaviors>
-                <ic:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=OuterSplitView}">
-                    <ic:DataTriggerBehavior.Value>
-                        <x:Boolean>True</x:Boolean>
-                    </ic:DataTriggerBehavior.Value>
-                    <im:ControlStoryboardAction Storyboard="{StaticResource ShowListStoryboard}"/>
-                </ic:DataTriggerBehavior>
-                <ic:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=OuterSplitView}">
-                    <ic:DataTriggerBehavior.Value>
-                        <x:Boolean>False</x:Boolean>
-                    </ic:DataTriggerBehavior.Value>
-                    <im:ControlStoryboardAction Storyboard="{StaticResource HideListStoryboard}"/>
-                </ic:DataTriggerBehavior>
+                <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="P">
+                    <gpi:EventAction Invoked="Toolbars_PropertiesButtonClicked" />
+                </gpi:GlobalShortcutTriggerBehavior>
+                <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="L">
+                    <gpi:EventAction Invoked="Toolbars_ListButtonClicked" />
+                </gpi:GlobalShortcutTriggerBehavior>
             </i:Interaction.Behaviors>
-
-            <SplitView.Pane>
-                <Grid DataContext="{Binding Mindmaps, Source={StaticResource ViewModelLocator}}">
-                    <i:Interaction.Behaviors>
-                        <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="N">
-                            <ic:InvokeCommandAction Command="{Binding CreateCommand}"  />
-                        </gpi:GlobalShortcutTriggerBehavior>
-                        <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="S">
-                            <ic:InvokeCommandAction Command="{Binding SaveCommand}"  />
-                        </gpi:GlobalShortcutTriggerBehavior>
-                        <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" RequiresShiftModifier="True" Key="S">
-                            <ic:InvokeCommandAction Command="{Binding SaveAsCommand}"  />
-                        </gpi:GlobalShortcutTriggerBehavior>
-                        <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="O">
-                            <ic:InvokeCommandAction Command="{Binding OpenCommand}"  />
-                        </gpi:GlobalShortcutTriggerBehavior>
-                    </i:Interaction.Behaviors>
-                    
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="*" />
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Orientation="Horizontal" Margin="0,40,0,20">
-                        <AppBarButton x:Uid="Mindmaps_AddButton" Icon="Add" Label="New" Foreground="{StaticResource ThemeMainBrush}" 
-                            Command="{Binding CreateCommand}" />
-                        <AppBarButton x:Uid="Mindmaps_SaveButton" Icon="Save" Label="Save" Foreground="{StaticResource ThemeMainBrush}" 
-                            Command="{Binding SaveCommand}" />
-                        <AppBarButton x:Uid="Mindmaps_SaveAsButton" Icon="Save" Label="Save As" Foreground="{StaticResource ThemeMainBrush}" Visibility="Collapsed" 
-                            Command="{Binding SaveAsCommand}">
-                            <i:Interaction.Behaviors>
-                                <gpi:ShowOnDesktopBehavior />
-                            </i:Interaction.Behaviors>
-                        </AppBarButton>
-                        <AppBarButton x:Uid="Mindmaps_OpenButton" Icon="OpenFile" Label="Open" Foreground="{StaticResource ThemeMainBrush}" Visibility="Collapsed" 
-                            Command="{Binding OpenCommand}">
-                            <i:Interaction.Behaviors>
-                                <gpi:ShowOnDesktopBehavior />
-                            </i:Interaction.Behaviors>
-                        </AppBarButton>
-                    </StackPanel>
-
-                    <m:ListView x:Name="MindmapsContainer" Grid.Row="1" Margin="0,5,0,0" />
-                </Grid>
-            </SplitView.Pane>
-            <SplitView.Content>
-                <SplitView x:Name="InnerSplitView" PanePlacement="Right" OpenPaneLength="280">
-                    <i:Interaction.Behaviors>
-                        <ic:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=InnerSplitView}">
-                            <ic:DataTriggerBehavior.Value>
-                                <x:Boolean>True</x:Boolean>
-                            </ic:DataTriggerBehavior.Value>
-                            <im:ControlStoryboardAction Storyboard="{StaticResource ShowPropertiesStoryboard}"/>
-                        </ic:DataTriggerBehavior>
-                        <ic:DataTriggerBehavior Binding="{Binding IsPaneOpen, ElementName=InnerSplitView}">
-                            <ic:DataTriggerBehavior.Value>
-                                <x:Boolean>False</x:Boolean>
-                            </ic:DataTriggerBehavior.Value>
-                            <im:ControlStoryboardAction Storyboard="{StaticResource HidePropertiesStoryboard}"/>
-                        </ic:DataTriggerBehavior>
-                    </i:Interaction.Behaviors>
-                    
-                    <SplitView.Pane>
-                        <e:EditorPropertiesView x:Name="PropertiesContainer" />
-                    </SplitView.Pane>
-                    <SplitView.Content>
-                        <e:EditorView />
-                    </SplitView.Content>
-                </SplitView>
-            </SplitView.Content>
-        </SplitView>
         
-        <e:BottomBarView x:Name="BottomToolBar" Grid.Row="2" ListButtonClicked="Toolbars_ListButtonClicked" PropertiesButtonClicked="Toolbars_PropertiesButtonClicked"></e:BottomBarView>
-    </Grid>
+            <VisualStateManager.VisualStateGroups>
+                <VisualStateGroup x:Name="ResponsiveStates">
+                    <VisualState x:Name="Tablet">
+                        <VisualState.Setters>
+                            <Setter Target="InnerSplitView.(SplitView.DisplayMode)" Value="Inline"/>
+                            <Setter Target="OuterSplitView.(SplitView.DisplayMode)" Value="CompactInline"/>
+                            <Setter Target="InnerSplitView.(SplitView.OpenPaneLength)" Value="320"/>
+                            <Setter Target="OuterSplitView.(SplitView.OpenPaneLength)" Value="320"/>
+                            <Setter Target="BottomToolBar.(UIElement.Visibility)" Value="Collapsed"/>
+                        </VisualState.Setters>
+                        <VisualState.StateTriggers>
+                            <AdaptiveTrigger MinWindowWidth="680"/>
+                        </VisualState.StateTriggers>
+                    </VisualState>
+                </VisualStateGroup>
+            </VisualStateManager.VisualStateGroups>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+
+            <e:ToolbarView Grid.Row="0" ListButtonClicked="Toolbars_ListButtonClicked" PropertiesButtonClicked="Toolbars_PropertiesButtonClicked" />
+
+            <SplitView x:Name="OuterSplitView" Grid.Row="1" DisplayMode="Overlay" OpenPaneLength="280" CompactPaneLength="68">
+                <i:Interaction.Behaviors>
+                    <ic:DataTriggerBehavior Binding="{x:Bind OuterSplitView.IsPaneOpen, Mode=OneWay}">
+                        <ic:DataTriggerBehavior.Value>
+                            <x:Boolean>True</x:Boolean>
+                        </ic:DataTriggerBehavior.Value>
+                        <im:ControlStoryboardAction Storyboard="{StaticResource ShowListStoryboard}"/>
+                    </ic:DataTriggerBehavior>
+                    <ic:DataTriggerBehavior Binding="{x:Bind OuterSplitView.IsPaneOpen, Mode=OneWay}">
+                        <ic:DataTriggerBehavior.Value>
+                            <x:Boolean>False</x:Boolean>
+                        </ic:DataTriggerBehavior.Value>
+                        <im:ControlStoryboardAction Storyboard="{StaticResource HideListStoryboard}"/>
+                    </ic:DataTriggerBehavior>
+                </i:Interaction.Behaviors>
+
+                <SplitView.Pane>
+                    <Grid>
+                        <i:Interaction.Behaviors>
+                            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="N">
+                                <ic:InvokeCommandAction Command="{x:Bind MindmapsViewModel.CreateCommand}"  />
+                            </gpi:GlobalShortcutTriggerBehavior>
+                            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="S">
+                                <ic:InvokeCommandAction Command="{x:Bind MindmapsViewModel.SaveCommand}"  />
+                            </gpi:GlobalShortcutTriggerBehavior>
+                            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" RequiresShiftModifier="True" Key="S">
+                                <ic:InvokeCommandAction Command="{x:Bind MindmapsViewModel.SaveAsCommand}"  />
+                            </gpi:GlobalShortcutTriggerBehavior>
+                            <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="O">
+                                <ic:InvokeCommandAction Command="{x:Bind MindmapsViewModel.OpenCommand}"  />
+                            </gpi:GlobalShortcutTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Orientation="Horizontal" Margin="0,40,0,20">
+                            <AppBarButton x:Uid="Mindmaps_AddButton" Icon="Add" Label="New" Foreground="{StaticResource ThemeMainBrush}" 
+                                Command="{x:Bind MindmapsViewModel.CreateCommand}" />
+                            <AppBarButton x:Uid="Mindmaps_SaveButton" Icon="Save" Label="Save" Foreground="{StaticResource ThemeMainBrush}" 
+                                Command="{x:Bind MindmapsViewModel.SaveCommand}" />
+                            <AppBarButton x:Uid="Mindmaps_SaveAsButton" Icon="Save" Label="Save As" Foreground="{StaticResource ThemeMainBrush}" Visibility="Collapsed" 
+                                Command="{x:Bind MindmapsViewModel.SaveAsCommand}">
+                                <i:Interaction.Behaviors>
+                                    <gpi:ShowOnDesktopBehavior />
+                                </i:Interaction.Behaviors>
+                            </AppBarButton>
+                            <AppBarButton x:Uid="Mindmaps_OpenButton" Icon="OpenFile" Label="Open" Foreground="{StaticResource ThemeMainBrush}" Visibility="Collapsed" 
+                                Command="{x:Bind MindmapsViewModel.OpenCommand}">
+                                <i:Interaction.Behaviors>
+                                    <gpi:ShowOnDesktopBehavior />
+                                </i:Interaction.Behaviors>
+                            </AppBarButton>
+                        </StackPanel>
+
+                        <m:ListView x:Name="MindmapsContainer" Grid.Row="1" Margin="0,5,0,0" />
+                    </Grid>
+                </SplitView.Pane>
+                <SplitView.Content>
+                    <SplitView x:Name="InnerSplitView" PanePlacement="Right" OpenPaneLength="280">
+                        <i:Interaction.Behaviors>
+                            <ic:DataTriggerBehavior Binding="{x:Bind InnerSplitView.IsPaneOpen, Mode=OneWay}">
+                                <ic:DataTriggerBehavior.Value>
+                                    <x:Boolean>True</x:Boolean>
+                                </ic:DataTriggerBehavior.Value>
+                                <im:ControlStoryboardAction Storyboard="{StaticResource ShowPropertiesStoryboard}"/>
+                            </ic:DataTriggerBehavior>
+                            <ic:DataTriggerBehavior Binding="{x:Bind InnerSplitView.IsPaneOpen, Mode=OneWay}">
+                                <ic:DataTriggerBehavior.Value>
+                                    <x:Boolean>False</x:Boolean>
+                                </ic:DataTriggerBehavior.Value>
+                                <im:ControlStoryboardAction Storyboard="{StaticResource HidePropertiesStoryboard}"/>
+                            </ic:DataTriggerBehavior>
+                        </i:Interaction.Behaviors>
+                    
+                        <SplitView.Pane>
+                            <e:EditorPropertiesView x:Name="PropertiesContainer" />
+                        </SplitView.Pane>
+                        <SplitView.Content>
+                            <e:EditorView />
+                        </SplitView.Content>
+                    </SplitView>
+                </SplitView.Content>
+            </SplitView>
+        
+            <e:BottomBarView x:Name="BottomToolBar" Grid.Row="2" ListButtonClicked="Toolbars_ListButtonClicked" PropertiesButtonClicked="Toolbars_PropertiesButtonClicked"></e:BottomBarView>
+        </Grid>
+    </ContentControl>
 </Page>

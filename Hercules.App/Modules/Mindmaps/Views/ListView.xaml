@@ -5,13 +5,13 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:m="using:Hercules.App.Modules.Mindmaps.Views"
     xmlns:controls="using:Hercules.App.Controls"
+    xmlns:components="using:Hercules.App.Components"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400"
-    Loaded="ListView_Loaded"
     DataContext="{Binding Mindmaps, Source={StaticResource ViewModelLocator}}">
 
-    <Grid>
+    <Grid Loaded="{x:Bind ViewModel.Load}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition />
@@ -23,13 +23,13 @@
                 FontWeight="Bold" />
         </Border>
 
-        <ListBox Grid.Row="1" ItemContainerStyle="{StaticResource BorderedListBoxItemStyle}" SelectedItem="{Binding SelectedFile, Mode=TwoWay}" ItemsSource="{Binding RecentFiles}" HorizontalContentAlignment="Stretch">
+        <ListBox Grid.Row="1" ItemContainerStyle="{StaticResource BorderedListBoxItemStyle}" SelectedItem="{x:Bind ViewModel.SelectedFile, Converter={StaticResource NoopConverter}, Mode=TwoWay}" ItemsSource="{x:Bind ViewModel.RecentFiles}" HorizontalContentAlignment="Stretch">
             <ListBox.ItemTemplate>
-                <DataTemplate>
+                <DataTemplate x:DataType="components:IDocumentFileModel">
                     <Grid x:Name="Root" HorizontalAlignment="Stretch" Background="Transparent">
                         <FlyoutBase.AttachedFlyout>
                             <controls:MindmapFlyout Placement="Bottom">
-                                <m:RenameView MindmapStore="{Binding Path=Mindmaps.MindmapStore, Source={StaticResource ViewModelLocator}}" DocumentFile="{Binding}" />
+                                <m:RenameView MindmapStore="{Binding Mindmaps.MindmapStore, Source={StaticResource ViewModelLocator}}" DocumentFile="{x:Bind}" />
                             </controls:MindmapFlyout>
                         </FlyoutBase.AttachedFlyout>
 
@@ -41,18 +41,18 @@
                                     <MenuFlyoutSeparator />
                                     
                                     <MenuFlyoutItem x:Uid="Mindmaps_RemoveMenuItem" Text="Delete"
-                                        Command="{Binding Path=Mindmaps.RemoveCommand, Source={StaticResource ViewModelLocator}}" 
-                                        CommandParameter="{Binding}" />
+                                        Command="{Binding Mindmaps.RemoveCommand, Source={StaticResource ViewModelLocator}}" 
+                                        CommandParameter="{x:Bind}" />
                                 </MenuFlyout>
                             </FlyoutBase.AttachedFlyout>
 
                             <StackPanel Margin="12">
                                 <StackPanel Orientation="Horizontal">
-                                    <TextBlock Text="*" Visibility="{Binding Path=HasChanges, Converter={StaticResource VisibleWhenTrueConverter}}"
+                                    <TextBlock Text="*" Visibility="{x:Bind HasChanges, Converter={StaticResource VisibleWhenTrueConverter}, Mode=OneWay}"
                                         FontSize="15"
                                         FontWeight="Bold"
                                         Margin="0,0,10,0" />
-                                    <TextBlock Text="{Binding Path=Name}" FontSize="15" TextTrimming="WordEllipsis" />
+                                    <TextBlock Text="{x:Bind Name, Mode=OneWay}" FontSize="15" TextTrimming="WordEllipsis" />
                                 </StackPanel>
                                 
                                 <StackPanel Orientation="Horizontal" Opacity="0.8" Margin="0,2">
@@ -61,7 +61,7 @@
                                         TextAlignment="Left"
                                         TextWrapping="NoWrap" Margin="0,0,4,0" />
                                     <TextBlock FontSize="13"
-                                        Text="{Binding Path=ModifiedLocal}" 
+                                        Text="{x:Bind ModifiedLocal, Mode=OneWay}" 
                                         TextAlignment="Left"
                                         TextWrapping="NoWrap" />
                                 </StackPanel>
@@ -72,7 +72,7 @@
                                         TextAlignment="Left"
                                         TextWrapping="NoWrap" Margin="0,0,4,0" />
                                     <TextBlock FontSize="11"
-                                        Text="{Binding Path=DisplayPath}" 
+                                        Text="{x:Bind DisplayPath, Mode=OneWay}" 
                                         TextAlignment="Left"
                                         TextTrimming="CharacterEllipsis"
                                         TextWrapping="NoWrap" />

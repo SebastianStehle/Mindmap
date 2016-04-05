@@ -130,6 +130,11 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
             messenger.Register<ImportMessage>(this, OnImport);
         }
 
+        public void Load()
+        {
+            LoadAsync().Forget();
+        }
+
         public async Task LoadAsync()
         {
             try

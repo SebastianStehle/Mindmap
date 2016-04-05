@@ -7,11 +7,17 @@
 // ==========================================================================
 
 using Windows.UI.Xaml;
+using Hercules.App.Modules.Editor.ViewModels;
 
 namespace Hercules.App.Modules.Editor.Views
 {
     public sealed partial class EditorView
     {
+        public EditorViewModel ViewModel
+        {
+            get { return (EditorViewModel)DataContext; }
+        }
+
         public EditorView()
         {
             InitializeComponent();

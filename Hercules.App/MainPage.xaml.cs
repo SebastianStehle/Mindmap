@@ -13,11 +13,24 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using GP.Utils.UI;
+using Hercules.App.Modules;
+using Hercules.App.Modules.Editor.ViewModels;
+using Hercules.App.Modules.Mindmaps.ViewModels;
 
 namespace Hercules.App
 {
     public sealed partial class MainPage
     {
+        public EditorViewModel EditorViewModel
+        {
+            get { return ((ViewModelLocator)DataContext).Editor; }
+        }
+
+        public MindmapsViewModel MindmapsViewModel
+        {
+            get { return ((ViewModelLocator)DataContext).Mindmaps; }
+        }
+
         public MainPage()
         {
             InitializeComponent();

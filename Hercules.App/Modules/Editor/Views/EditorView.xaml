@@ -16,85 +16,85 @@
     <Grid>
         <i:Interaction.Behaviors>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Tab">
-                <ic:InvokeCommandAction Command="{Binding AddChildCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.AddChildCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Enter">
-                <ic:InvokeCommandAction Command="{Binding AddSiblingCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.AddSiblingCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Back">
-                <ic:InvokeCommandAction Command="{Binding RemoveCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.RemoveCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Delete">
-                <ic:InvokeCommandAction Command="{Binding RemoveCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.RemoveCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Up">
-                <ic:InvokeCommandAction Command="{Binding SelectTopCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.SelectTopCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Left">
-                <ic:InvokeCommandAction Command="{Binding SelectLeftCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.SelectLeftCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Down">
-                <ic:InvokeCommandAction Command="{Binding SelectBottomCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.SelectBottomCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Right">
-                <ic:InvokeCommandAction Command="{Binding SelectRightCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.SelectRightCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="M">
-                <ic:InvokeCommandAction Command="{Binding ToggleNotesCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.ToggleNotesCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Multiply">
-                <ic:InvokeCommandAction Command="{Binding ExpandCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.ExpandCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Divide">
-                <ic:InvokeCommandAction Command="{Binding CollapseCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.CollapseCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Z">
-                <ic:InvokeCommandAction Command="{Binding UndoCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.UndoCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="Y">
-                <ic:InvokeCommandAction Command="{Binding RedoCommand}" />
+                <ic:InvokeCommandAction Command="{x:Bind ViewModel.RedoCommand}" />
             </gpi:GlobalShortcutTriggerBehavior>
         </i:Interaction.Behaviors>
         
         <gpc:TiledBackground TileSize="60" />
 
-        <controls:Mindmap Document="{Binding Document}" RendererProvider="{Binding RendererProvider}" x:Name="Mindmap">
+        <controls:Mindmap Document="{x:Bind ViewModel.Document, Mode=OneWay}" RendererProvider="{x:Bind ViewModel.RendererProvider, Mode=OneWay}" x:Name="Mindmap">
             <i:Interaction.Behaviors>
                 <gpi:ControlShortcutTriggerBehavior HandleKeyDown="true" Key="Tab">
-                    <ic:InvokeCommandAction Command="{Binding AddChildCommand}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.AddChildCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior HandleKeyDown="true" Key="Enter">
-                    <ic:InvokeCommandAction Command="{Binding AddSiblingCommand}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.AddSiblingCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="Back">
-                    <ic:InvokeCommandAction Command="{Binding RemoveCommand}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.RemoveCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="Delete">
-                    <ic:InvokeCommandAction Command="{Binding RemoveCommand}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.RemoveCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="Up">
-                    <ic:InvokeCommandAction Command="{Binding SelectTopCommand}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.SelectTopCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="Left">
-                    <ic:InvokeCommandAction Command="{Binding SelectLeftCommand}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.SelectLeftCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="Up">
-                    <ic:InvokeCommandAction Command="{Binding SelectTopCommand}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.SelectTopCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="Down">
-                    <ic:InvokeCommandAction Command="{Binding SelectBottomCommand}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.SelectBottomCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="Right">
-                    <ic:InvokeCommandAction Command="{Binding SelectRightCommand}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.SelectRightCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="M">
-                    <ic:InvokeCommandAction Command="{Binding ToggleNotesCommand}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.ToggleNotesCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="Multiply">
-                    <ic:InvokeCommandAction Command="{Binding ExpandCommand}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.ExpandCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="Divide">
-                    <ic:InvokeCommandAction Command="{Binding CollapseCommand}" />
+                    <ic:InvokeCommandAction Command="{x:Bind ViewModel.CollapseCommand}" />
                 </gpi:ControlShortcutTriggerBehavior>
                 <gpi:ControlShortcutTriggerBehavior Key="Space">
                     <gpi:EventAction Invoked="EditTextCommand_Invoked" />
@@ -105,9 +105,9 @@
             </i:Interaction.Behaviors>
         </controls:Mindmap>
 
-        <TextBlock Text="{Binding CheckedState}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,20,0" FontSize="16" />
+        <TextBlock Text="{x:Bind ViewModel.CheckedState, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,10,20,0" FontSize="16" />
 
-        <Grid DataContext="{Binding ProcessManager, Source={StaticResource ViewModelLocator}}" Visibility="{Binding IsMainProcessRunning, Converter={StaticResource VisibleWhenTrueConverter}, FallbackValue=Collapsed}">
+        <Grid Visibility="{x:Bind ViewModel.ProcessManager.IsMainProcessRunning, Converter={StaticResource VisibleWhenTrueConverter}, FallbackValue=Collapsed, Mode=OneWay}">
             <Border Background="White" Opacity="0.5" IsHitTestVisible="True" />
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">

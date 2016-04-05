@@ -6,7 +6,8 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:gpi="using:GP.Utils.UI.Interactivity"
     xmlns:controls="using:Hercules.App.Controls"
-    mc:Ignorable="d">
+    mc:Ignorable="d"
+    DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
 
     <CommandBar Background="{ThemeResource ThemedAppBarBackgroundBrush}" RequestedTheme="Dark">
         <i:Interaction.Behaviors>
@@ -19,7 +20,7 @@
             </StackPanel>
         </CommandBar.Content>
         <CommandBar.PrimaryCommands>
-            <AppBarButton x:Uid="AppBarButton_Export" Label="Export" DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}" IsEnabled="{Binding Document, Converter={StaticResource TrueWhenNotNullConverter}}">
+            <AppBarButton x:Uid="AppBarButton_Export" Label="Export" IsEnabled="{x:Bind ViewModel.Document, Converter={StaticResource TrueWhenNotNullConverter}, Mode=OneWay}">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE898;"/>
                 </AppBarButton.Icon>
@@ -27,23 +28,23 @@
                     <MenuFlyout>
                         <MenuFlyoutSubItem x:Uid="AppBarButton_ExportItem" Text="Export">
                             <i:Interaction.Behaviors>
-                                <controls:ExportGeneratorBehavior EditorViewModel="{Binding}" />
+                                <controls:ExportGeneratorBehavior EditorViewModel="{x:Bind ViewModel}" />
                             </i:Interaction.Behaviors>
                         </MenuFlyoutSubItem>
 
-                        <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{Binding PrintCommand}" />
+                        <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{x:Bind ViewModel.PrintCommand}" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>
 
-            <AppBarButton x:Uid="AppBarButton_Import" Label="Import" DataContext="{Binding Editor, Source={StaticResource ViewModelLocator}}">
+            <AppBarButton x:Uid="AppBarButton_Import" Label="Import">
                 <AppBarButton.Icon>
                     <FontIcon Glyph="&#xE896;"/>
                 </AppBarButton.Icon>
                 <AppBarButton.Flyout>
                     <MenuFlyout>
                         <i:Interaction.Behaviors>
-                            <controls:ImportGeneratorBehavior EditorViewModel="{Binding}" />
+                            <controls:ImportGeneratorBehavior EditorViewModel="{x:Bind ViewModel}" />
                         </i:Interaction.Behaviors>
                     </MenuFlyout>
                 </AppBarButton.Flyout>

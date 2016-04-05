@@ -7,6 +7,7 @@
     xmlns:gpc="using:GP.Utils.UI.Controls"
     xmlns:gpi="using:GP.Utils.UI.Interactivity"
     xmlns:controls="using:Hercules.App.Controls"
+    xmlns:model="using:Hercules.Model"
     xmlns:assets="using:Hercules.Model"
     mc:Ignorable="d"
     d:DesignHeight="1000"
@@ -98,46 +99,46 @@
 
     <ScrollViewer VerticalScrollBarVisibility="Auto" VerticalScrollMode="Auto" HorizontalScrollMode="Disabled" HorizontalScrollBarVisibility="Hidden">
         <StackPanel x:Name="Root">
-            <gpc:ExpandableContentControl x:Uid="Properties_NotesSection" Style="{StaticResource BorderedSection}" Header="Notes" IsExpanded="{Binding ShowNotesSection, Mode=TwoWay}">
+            <gpc:ExpandableContentControl x:Uid="Properties_NotesSection" Style="{StaticResource BorderedSection}" Header="Notes" IsExpanded="{x:Bind ViewModel.ShowNotesSection, Mode=TwoWay}">
                 <StackPanel>
                     <Button x:Uid="Properties_ToggleNotesButton" 
                         Content="Show/Hide Notes" 
-                        Command="{Binding ToggleNotesCommand}" />
+                        Command="{x:Bind ViewModel.ToggleNotesCommand}" />
                     </StackPanel>
             </gpc:ExpandableContentControl>
-            
-            <gpc:ExpandableContentControl x:Uid="Properties_ColorSection" Style="{StaticResource BorderedSection}" Header="Color"  IsExpanded="{Binding ShowColorSection, Mode=TwoWay}">
+
+            <gpc:ExpandableContentControl x:Uid="Properties_ColorSection" Style="{StaticResource BorderedSection}" Header="Color" IsExpanded="{x:Bind ViewModel.ShowColorSection, Mode=TwoWay}">
                 <StackPanel>
-                    <GridView ItemsSource="{Binding ThemeColors}" Style="{StaticResource PropertyGridStyle}" Width="240" HorizontalAlignment="Left">
+                    <GridView ItemsSource="{x:Bind ViewModel.ThemeColors}" Style="{StaticResource PropertyGridStyle}" Width="240" HorizontalAlignment="Left">
                         <i:Interaction.Behaviors>
-                            <gpi:SelectionBehavior SelectedItem="{Binding SelectedNode.Color}" SelectedItemCommand="{Binding ChangeColorCommand}" />
+                            <gpi:SelectionBehavior SelectedItem="{x:Bind ViewModel.SelectedNode.Color, Mode=OneWay}" SelectedItemCommand="{x:Bind ViewModel.ChangeColorCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:ColorPresenter Color="{Binding}" Margin="2" Width="32" Height="32" Renderer="{Binding Path=DataContext.Renderer, ElementName=Root}" />
+                            <DataTemplate x:DataType="model:INodeColor">
+                                <controls:ColorPresenter Color="{x:Bind}" Margin="2" Width="32" Height="32" Renderer="{Binding Path=DataContext.Renderer, ElementName=Root}" />
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
-                    <GridView ItemsSource="{Binding CustomColors}" Style="{StaticResource PropertyGridStyle}" Width="240" HorizontalAlignment="Left">
+                    <GridView ItemsSource="{x:Bind ViewModel.CustomColors}" Style="{StaticResource PropertyGridStyle}" Width="240" HorizontalAlignment="Left">
                         <i:Interaction.Behaviors>
-                            <gpi:SelectionBehavior SelectedItem="{Binding SelectedNode.Color}" SelectedItemCommand="{Binding ChangeColorCommand}" />
+                            <gpi:SelectionBehavior SelectedItem="{x:Bind ViewModel.SelectedNode.Color, Mode=OneWay}" SelectedItemCommand="{x:Bind ViewModel.ChangeColorCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.ItemTemplate>
-                            <DataTemplate>
-                                <controls:ColorPresenter Color="{Binding}" Margin="2" Width="32" Height="32" Renderer="{Binding Path=DataContext.Renderer, ElementName=Root}" />
+                            <DataTemplate x:DataType="model:INodeColor">
+                                <controls:ColorPresenter Color="{x:Bind}" Margin="2" Width="32" Height="32" Renderer="{Binding Path=DataContext.Renderer, ElementName=Root}" />
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
 
-                    <gpc:ColorPickerButton x:Uid="Properties_ColorPickerButton" Command="{Binding AddColorCommand}" ButtonContent="Add" SelectionButtonContent="Select" Margin="0,10,0,0" />
+                    <gpc:ColorPickerButton x:Uid="Properties_ColorPickerButton" Command="{x:Bind ViewModel.AddColorCommand}" ButtonContent="Add" SelectionButtonContent="Select" Margin="0,10,0,0" />
                 </StackPanel>
             </gpc:ExpandableContentControl>
 
-            <gpc:ExpandableContentControl x:Uid="Properties_ShapeSection" Style="{StaticResource BorderedSection}" Header="Shape" IsExpanded="{Binding ShowShapeSection, Mode=TwoWay}">
+            <gpc:ExpandableContentControl x:Uid="Properties_ShapeSection" Style="{StaticResource BorderedSection}" Header="Shape" IsExpanded="{x:Bind ViewModel.ShowShapeSection, Mode=TwoWay}">
                 <StackPanel>
                     <GridView ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
-                            <gpi:SelectionBehavior SelectedIndexCommand="{Binding ChangeShapeCommand}" />
+                            <gpi:SelectionBehavior SelectedIndexCommand="{x:Bind ViewModel.ChangeShapeCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.SelectedIndex>
                             <Binding Path="SelectedNode.Shape" Converter="{StaticResource ValueToIntConverter}" Mode="TwoWay">
@@ -151,23 +152,23 @@
 
                             <Grid>
                                 <TextBlock x:Name="EllipseFake" />
-                                <Ellipse MaxHeight="20" Stroke="{Binding ElementName=EllipseFake, Path=Foreground}" StrokeThickness="2" />
+                                <Ellipse MaxHeight="20" Stroke="{x:Bind EllipseFake.Foreground, Mode=OneWay}" StrokeThickness="2" />
                             </Grid>
 
                             <Grid>
                                 <TextBlock x:Name="RectangleFake" />
-                                <Rectangle MaxHeight="20" Stroke="{Binding ElementName=RectangleFake, Path=Foreground}" StrokeThickness="2" />
+                                <Rectangle MaxHeight="20" Stroke="{x:Bind RectangleFake.Foreground, Mode=OneWay}" StrokeThickness="2" />
                             </Grid>
 
                             <Grid>
                                 <TextBlock x:Name="RoundedRectangleFake" />
-                                <Rectangle MaxHeight="20" Stroke="{Binding ElementName=RoundedRectangleFake, Path=Foreground}" RadiusX="3" RadiusY="3" StrokeThickness="2" />
+                                <Rectangle MaxHeight="20" Stroke="{x:Bind RoundedRectangleFake.Foreground, Mode=OneWay}" RadiusX="3" RadiusY="3" StrokeThickness="2" />
                             </Grid>
 
                             <StackPanel VerticalAlignment="Center">
                                 <TextBlock x:Name="BorderText" Text="T" Height="16" FontSize="14" FontWeight="Bold" FontStyle="Italic" VerticalAlignment="Center" HorizontalAlignment="Center" />
 
-                                <Rectangle Fill="{Binding ElementName=BorderText, Path=Foreground}" Height="2" />
+                                <Rectangle Fill="{x:Bind BorderText.Foreground, Mode=OneWay}" Height="2" />
                             </StackPanel>
                         </GridView.Items>
                     </GridView>
@@ -176,15 +177,15 @@
 
                     <Button x:Uid="Properties_HullButton" 
                         Content="Toggle Hull" 
-                        Command="{Binding ToggleHullCommand}" />
+                        Command="{x:Bind ViewModel.ToggleHullCommand}" />
                 </StackPanel>
             </gpc:ExpandableContentControl>
 
-            <gpc:ExpandableContentControl x:Uid="Properties_IconSection" Style="{StaticResource BorderedSection}" Header="Icon" IsExpanded="{Binding ShowIconSection, Mode=TwoWay}">
+            <gpc:ExpandableContentControl x:Uid="Properties_IconSection" Style="{StaticResource BorderedSection}" Header="Icon" IsExpanded="{x:Bind ViewModel.ShowIconSection, Mode=TwoWay}">
                 <StackPanel>
-                    <GridView ItemsSource="{Binding Source={StaticResource SupportedIcons}, Path=None}" SelectedIndex="0" Style="{StaticResource PropertyGridStyle}">
+                    <GridView ItemsSource="{Binding None, Source={StaticResource SupportedIcons}}" SelectedIndex="0" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
-                            <gpi:SelectionBehavior SelectedItem="{Binding SelectedNode.Icon}" SelectedItemCommand="{Binding ChangeIconCommand}" />
+                            <gpi:SelectionBehavior SelectedItem="{x:Bind ViewModel.SelectedNode.Icon, Mode=OneWay}" SelectedItemCommand="{x:Bind ViewModel.ChangeIconCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.ItemTemplate>
                             <DataTemplate>
@@ -196,17 +197,17 @@
                             </DataTemplate>
                         </GridView.ItemTemplate>
                     </GridView>
-                    <ItemsControl ItemsSource="{Binding Source={StaticResource SupportedIcons}, Path=Categories}" x:Name="AllIcons" HorizontalAlignment="Left" Width="240">
+                    <ItemsControl ItemsSource="{Binding Categories, Source={StaticResource SupportedIcons}}" x:Name="AllIcons" HorizontalAlignment="Left" Width="240">
                         <ItemsControl.ItemTemplate>
-                            <DataTemplate>
-                                <GridView Margin="0,0,0,10" ItemsSource="{Binding Path=Icons}" Style="{StaticResource PropertyGridStyle}">
+                            <DataTemplate x:DataType="model:IconCategory">
+                                <GridView Margin="0,0,0,10" ItemsSource="{x:Bind Path=Icons}" Style="{StaticResource PropertyGridStyle}">
                                     <i:Interaction.Behaviors>
-                                        <gpi:SelectionBehavior SelectedItem="{Binding ElementName=AllIcons, Path=DataContext.SelectedNode.Icon}" SelectedItemCommand="{Binding ElementName=AllIcons, Path=DataContext.ChangeIconCommand}" />
+                                        <gpi:SelectionBehavior SelectedItem="{Binding DataContext.SelectedNode.Icon, ElementName=AllIcons}" SelectedItemCommand="{Binding DataContext.ChangeIconCommand, ElementName=AllIcons}" />
                                     </i:Interaction.Behaviors>
                                     <GridView.ItemTemplate>
-                                        <DataTemplate>
+                                        <DataTemplate x:DataType="model:INodeIcon">
                                             <Grid Background="Transparent" Margin="2">
-                                                <Image Source="{Binding Converter={StaticResource NodeIconBitmapConverter}}" Width="32" Height="32" />
+                                                <Image Source="{x:Bind Converter={StaticResource NodeIconBitmapConverter}}" Width="32" Height="32" />
                                             </Grid>
                                         </DataTemplate>
                                     </GridView.ItemTemplate>
@@ -214,14 +215,14 @@
                             </DataTemplate>
                         </ItemsControl.ItemTemplate>
                     </ItemsControl>
-                    <GridView ItemsSource="{Binding CustomIcons}" Style="{StaticResource PropertyGridStyle}" HorizontalAlignment="Left" Width="240">
+                    <GridView ItemsSource="{x:Bind ViewModel.CustomIcons}" Style="{StaticResource PropertyGridStyle}" HorizontalAlignment="Left" Width="240">
                         <i:Interaction.Behaviors>
-                            <gpi:SelectionBehavior SelectedItem="{Binding SelectedNode.Icon}" SelectedItemCommand="{Binding ChangeIconCommand}" />
+                            <gpi:SelectionBehavior SelectedItem="{x:Bind ViewModel.SelectedNode.Icon, Mode=OneWay}" SelectedItemCommand="{x:Bind ViewModel.ChangeIconCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.ItemTemplate>
-                            <DataTemplate>
+                            <DataTemplate x:DataType="model:INodeIcon">
                                 <Grid Background="Transparent" Margin="2">
-                                    <Image Source="{Binding Converter={StaticResource NodeIconBitmapConverter}}" Width="32" Height="32" />
+                                    <Image Source="{x:Bind Converter={StaticResource NodeIconBitmapConverter}}" Width="32" Height="32" />
                                 </Grid>
                             </DataTemplate>
                         </GridView.ItemTemplate>
@@ -229,7 +230,7 @@
 
                     <Button x:Uid="Properties_AddIconButton" 
                         Content="Open File" 
-                        Command="{Binding AddIconCommand}" Margin="0,10,0,0" />
+                        Command="{x:Bind ViewModel.AddIconCommand}" Margin="0,10,0,0" />
 
                     <TextBlock x:Uid="Properties_AddIconHint" 
                         Foreground="Gray"
@@ -242,9 +243,9 @@
                     <TextBlock x:Uid="Properties_IconPositionHeader" Text="Icon Position" 
                         Style="{StaticResource PropertyHeaderStyle}" />
 
-                    <GridView SelectedIndex="{Binding SelectedNode.IconPosition, Converter={StaticResource ValueToIntConverter}, Mode=TwoWay}" ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
+                    <GridView SelectedIndex="{x:Bind ViewModel.SelectedNode.IconPosition, Converter={StaticResource ValueToIntConverter}, Mode=OneWay}" ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
-                            <gpi:SelectionBehavior SelectedIndexCommand="{Binding ChangeIconPositionCommand}" />
+                            <gpi:SelectionBehavior SelectedIndexCommand="{x:Bind ViewModel.ChangeIconPositionCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.Items>
                             <Grid>
@@ -257,9 +258,9 @@
                                 <TextBlock x:Name="LeftFake" />
 
                                 <Ellipse Grid.Column="0" Width="12" Height="12" 
-                                    Stroke="{Binding ElementName=LeftFake, Path=Foreground}" 
+                                    Stroke="{x:Bind LeftFake.Foreground, Mode=OneWay}" 
                                     StrokeThickness="2" />
-                                <Rectangle Grid.Column="2" Fill="{Binding ElementName=LeftFake, Path=Foreground}" Height="2" Width="12" />
+                                <Rectangle Grid.Column="2" Fill="{x:Bind LeftFake.Foreground, Mode=OneWay}" Height="2" Width="12" />
                             </Grid>
 
                             <Grid>
@@ -272,9 +273,9 @@
                                 <TextBlock x:Name="RightFake" />
 
                                 <Ellipse Grid.Column="2" Width="12" Height="12" 
-                                    Stroke="{Binding ElementName=RightFake, Path=Foreground}" 
+                                    Stroke="{x:Bind RightFake.Foreground, Mode=OneWay}" 
                                     StrokeThickness="2" />
-                                <Rectangle Grid.Column="0" Fill="{Binding ElementName=RightFake, Path=Foreground}" Height="2" Width="12" />
+                                <Rectangle Grid.Column="0" Fill="{x:Bind RightFake.Foreground, Mode=OneWay}" Height="2" Width="12" />
                             </Grid>
 
                             <Grid>
@@ -287,9 +288,9 @@
                                 <TextBlock x:Name="TopFake" />
 
                                 <Ellipse Grid.Row="0" Width="12" Height="12" 
-                                    Stroke="{Binding ElementName=TopFake, Path=Foreground}" 
+                                    Stroke="{x:Bind TopFake.Foreground, Mode=OneWay}" 
                                     StrokeThickness="2" />
-                                <Rectangle Grid.Row="2" Fill="{Binding ElementName=TopFake, Path=Foreground}" Height="2" Width="12" />
+                                <Rectangle Grid.Row="2" Fill="{x:Bind TopFake.Foreground, Mode=OneWay}" Height="2" Width="12" />
                             </Grid>
 
                             <Grid>
@@ -302,9 +303,9 @@
                                 <TextBlock x:Name="BottomFake" />
 
                                 <Ellipse Grid.Row="2" Width="12" Height="12" 
-                                    Stroke="{Binding ElementName=BottomFake, Path=Foreground}" 
+                                    Stroke="{x:Bind BottomFake.Foreground, Mode=OneWay}" 
                                     StrokeThickness="2" />
-                                <Rectangle Grid.Row="0" Fill="{Binding ElementName=BottomFake, Path=Foreground}" Height="2" Width="12" />
+                                <Rectangle Grid.Row="0" Fill="{x:Bind BottomFake.Foreground, Mode=OneWay}" Height="2" Width="12" />
                             </Grid>
                         </GridView.Items>
                     </GridView>
@@ -313,17 +314,17 @@
 
                     <TextBlock x:Uid="Properties_IconSizeHeader" Text="Icon Size" 
                         Style="{StaticResource PropertyHeaderStyle}" />
-                    
-                    <GridView SelectedIndex="{Binding SelectedNode.IconSize, Converter={StaticResource ValueToIntConverter}, Mode=TwoWay}" ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
+
+                    <GridView SelectedIndex="{x:Bind ViewModel.SelectedNode.IconSize, Converter={StaticResource ValueToIntConverter}, Mode=OneWay}" ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
-                            <gpi:SelectionBehavior SelectedIndexCommand="{Binding ChangeIconSizeCommand}" />
+                            <gpi:SelectionBehavior SelectedIndexCommand="{x:Bind ViewModel.ChangeIconSizeCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.Items>
                             <Grid>
                                 <TextBlock x:Name="SmallFake" />
 
                                 <Rectangle Width="14" Height="14" HorizontalAlignment="Left" VerticalAlignment="Bottom" 
-                                    Stroke="{Binding ElementName=SmallFake, Path=Foreground}" 
+                                    Stroke="{x:Bind SmallFake.Foreground, Mode=OneWay}" 
                                     StrokeThickness="2" />
                             </Grid>
 
@@ -331,7 +332,7 @@
                                 <TextBlock x:Name="MediumFake" />
 
                                 <Rectangle Width="20" Height="20" HorizontalAlignment="Left" VerticalAlignment="Bottom"
-                                    Stroke="{Binding ElementName=MediumFake, Path=Foreground}" 
+                                    Stroke="{x:Bind MediumFake.Foreground, Mode=OneWay}" 
                                     StrokeThickness="2" />
                             </Grid>
 
@@ -339,27 +340,27 @@
                                 <TextBlock x:Name="LargeFake" />
 
                                 <Rectangle
-                                    Stroke="{Binding ElementName=LargeFake, Path=Foreground}" 
+                                    Stroke="{x:Bind LargeFake.Foreground, Mode=OneWay}" 
                                     StrokeThickness="2" />
                             </Grid>
                         </GridView.Items>
                     </GridView>
                 </StackPanel>
             </gpc:ExpandableContentControl>
-            <gpc:ExpandableContentControl x:Uid="Properties_CheckBoxesSection" Header="Checkboxes" IsExpanded="{Binding ShowCheckBoxesSection, Mode=TwoWay}">
+            <gpc:ExpandableContentControl x:Uid="Properties_CheckBoxesSection" Header="Checkboxes" IsExpanded="{x:Bind ViewModel.ShowCheckBoxesSection, Mode=OneWay}">
                 <StackPanel>
                     <Button x:Uid="Properties_ToggleIsCheckableButton" 
                         Content="Show/Hide Checkboxes" 
-                        Command="{Binding ToggleIsCheckableCommand}" />
+                        Command="{x:Bind ViewModel.ToggleIsCheckableCommand}" />
 
                     <Border Style="{StaticResource SeparatorStyle}" />
 
                     <TextBlock x:Uid="Properties_ShowNodeCheckBoxes" Text="RenderNode Checkboxes" 
                         Style="{StaticResource PropertyHeaderStyle}" />
 
-                    <GridView SelectedIndex="{Binding SelectedNode.CheckableMode, Converter={StaticResource ValueToIntConverter}, Mode=TwoWay}" ItemContainerStyle="{StaticResource PropertySelectionStyleAuto}" Style="{StaticResource PropertyGridStyle}">
+                    <GridView SelectedIndex="{x:Bind ViewModel.SelectedNode.CheckableMode, Converter={StaticResource ValueToIntConverter}, Mode=OneWay}" ItemContainerStyle="{StaticResource PropertySelectionStyleAuto}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
-                            <gpi:SelectionBehavior SelectedIndexCommand="{Binding ChangeCheckableModeCommand}" />
+                            <gpi:SelectionBehavior SelectedIndexCommand="{x:Bind ViewModel.ChangeCheckableModeCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.Items>
                             <TextBlock x:Uid="Properties_CheckableDefault" Text="Default" />

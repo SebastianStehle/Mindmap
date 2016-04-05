@@ -7,8 +7,9 @@
     mc:Ignorable="d">
 
     <gp:TrueWhenNotNullConverter x:Key="TrueWhenNotNullConverter" />
-
     <gp:TrueWhenFalseConverter x:Key="TrueWhenFalseConverter" />
+
+    <gp:NoopConverter x:Key="NoopConverter" />
 
     <gp:VisibleWhenNotNullConverter x:Key="VisibleWhenNotNullConverter" />
     <gp:VisibleWhenFalseConverter x:Key="VisibleWhenFalseConverter" />

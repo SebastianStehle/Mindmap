@@ -30,7 +30,7 @@ namespace Hercules.App.Controls
         public INodeColor Color
         {
             get { return (INodeColor)GetValue(ColorProperty); }
-            set { SetValue(RendererProperty, value); }
+            set { SetValue(ColorProperty, value); }
         }
 
         public static readonly DependencyProperty RendererProperty =

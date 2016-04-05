@@ -96,7 +96,7 @@
 
                     <AppBarSeparator />
 
-                    <AppBarButton x:Uid="AppBarButton_Export" IsCompact="True" Label="Export" IsEnabled="{Binding Document, Converter={StaticResource TrueWhenNotNullConverter}}">
+                    <AppBarButton x:Uid="AppBarButton_Export" IsCompact="True" Label="Export" IsEnabled="{x:Bind ViewModel.Document, Converter={StaticResource TrueWhenNotNullConverter}, Mode=OneWay}">
                         <AppBarButton.Icon>
                             <FontIcon Glyph="&#xE898;"/>
                         </AppBarButton.Icon>
@@ -104,11 +104,11 @@
                             <MenuFlyout>
                                 <MenuFlyoutSubItem x:Uid="AppBarButton_ExportItem" Text="Export">
                                     <i:Interaction.Behaviors>
-                                        <controls:ExportGeneratorBehavior EditorViewModel="{Binding}" />
+                                        <controls:ExportGeneratorBehavior EditorViewModel="{x:Bind ViewModel}" />
                                     </i:Interaction.Behaviors>
                                 </MenuFlyoutSubItem>
 
-                                <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{Binding PrintCommand}" />
+                                <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{x:Bind ViewModel.PrintCommand}" />
                             </MenuFlyout>
                         </AppBarButton.Flyout>
                     </AppBarButton>
@@ -120,7 +120,7 @@
                         <AppBarButton.Flyout>
                             <MenuFlyout>
                                 <i:Interaction.Behaviors>
-                                    <controls:ImportGeneratorBehavior EditorViewModel="{Binding}" />
+                                    <controls:ImportGeneratorBehavior EditorViewModel="{x:Bind ViewModel}" />
                                 </i:Interaction.Behaviors>
                             </MenuFlyout>
                         </AppBarButton.Flyout>
@@ -131,30 +131,30 @@
 
                 <StackPanel x:Name="PrimaryUndoRedoButtons" Visibility="Collapsed" Orientation="Horizontal">
                     <AppBarButton x:Uid="AppBarButton_Undo" Icon="Undo" IsCompact="True" Label="Undo"
-                        Command="{Binding UndoCommand}" />
+                        Command="{x:Bind ViewModel.UndoCommand}" />
 
                     <AppBarButton x:Uid="AppBarButton_Redo" Icon="Redo" IsCompact="True" Label="Redo"
-                        Command="{Binding RedoCommand}" />
+                        Command="{x:Bind ViewModel.RedoCommand}" />
                 </StackPanel>
             </StackPanel>
         </CommandBar.Content>
         <CommandBar.PrimaryCommands>
             <AppBarButton x:Uid="AppBarButton_RemoveNode" IsCompact="True" Label="Remove" Icon="Delete" 
-                Command="{Binding RemoveCommand}">
+                Command="{x:Bind ViewModel.RemoveCommand}">
             </AppBarButton>
 
             <AppBarSeparator x:Name="PrimaryRemoveButtonSeparator" Visibility="Collapsed" />
             
             <AppBarButton x:Uid="AppBarButton_ToggleNotes" IsCompact="True" Label="Notes" Icon="Edit"
-                Command="{Binding ToggleNotesCommand}">
+                Command="{x:Bind ViewModel.ToggleNotesCommand}">
             </AppBarButton>
 
             <AppBarButton x:Uid="AppBarButton_AddSibling" Style="{StaticResource AppBarButtonStyleSibling}" IsCompact="True" Label="Sibling"
-                Command="{Binding AddSiblingCommand}">
+                Command="{x:Bind ViewModel.AddSiblingCommand}">
             </AppBarButton>
 
             <AppBarButton x:Uid="AppBarButton_AddChild" Style="{StaticResource AppBarButtonStyleChild}" IsCompact="True" Label="Child"
-                Command="{Binding AddChildCommand}">
+                Command="{x:Bind ViewModel.AddChildCommand}">
             </AppBarButton>
 
             <AppBarSeparator x:Name="PrimaryPropertiesButtonSeparator" Visibility="Collapsed" />
@@ -165,11 +165,11 @@
         </CommandBar.PrimaryCommands>
         <CommandBar.SecondaryCommands>
             <AppBarButton x:Name="CompactButtonUndo" x:Uid="AppBarButton_Undo" Icon="Undo" Label="Undo"
-                Command="{Binding UndoCommand}">
+                Command="{x:Bind ViewModel.UndoCommand}">
             </AppBarButton>
 
             <AppBarButton x:Name="CompactButtonRedo" x:Uid="AppBarButton_Redo" Icon="Redo" Label="Redo"
-                Command="{Binding RedoCommand}">
+                Command="{x:Bind ViewModel.RedoCommand}">
             </AppBarButton>
 
             <AppBarSeparator x:Name="CompactButtonExportSeparator" />
@@ -178,7 +178,7 @@
                 <AppBarButton.Flyout>
                     <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource DarkMenuFlyoutPresenterStyle}">
                         <i:Interaction.Behaviors>
-                            <controls:ImportGeneratorBehavior EditorViewModel="{Binding}" />
+                            <controls:ImportGeneratorBehavior EditorViewModel="{x:Bind ViewModel}" />
                         </i:Interaction.Behaviors>
                     </MenuFlyout>
                 </AppBarButton.Flyout>
@@ -188,11 +188,11 @@
                     <MenuFlyout MenuFlyoutPresenterStyle="{StaticResource DarkMenuFlyoutPresenterStyle}">
                         <MenuFlyoutSubItem x:Uid="AppBarButton_ExportItem" Text="Export">
                             <i:Interaction.Behaviors>
-                                <controls:ExportGeneratorBehavior EditorViewModel="{Binding}" />
+                                <controls:ExportGeneratorBehavior EditorViewModel="{x:Bind ViewModel}" />
                             </i:Interaction.Behaviors>
                         </MenuFlyoutSubItem>
-                        
-                        <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{Binding PrintCommand}" />
+
+                        <MenuFlyoutItem x:Uid="AppBarButton_Print" Text="Print" Command="{x:Bind ViewModel.PrintCommand}" />
                     </MenuFlyout>
                 </AppBarButton.Flyout>
             </AppBarButton>

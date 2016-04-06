@@ -6,7 +6,6 @@
 // All rights reserved.
 // ==========================================================================
 
-using Windows.ApplicationModel;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Input;

@@ -11,7 +11,7 @@
     xmlns:gpi="using:GP.Utils.UI.Interactivity"
     mc:Ignorable="d"
     IsTabStop="False"
-    DataContext="{Binding Source={StaticResource ViewModelLocator}}">
+    DataContext="{Binding Mindmaps, Source={StaticResource ViewModelLocator}}">
 
     <Page.Resources>
         <Storyboard x:Key="ShowListStoryboard">
@@ -38,7 +38,7 @@
         </Storyboard>
     </Page.Resources>
 
-    <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" IsEnabled="{x:Bind EditorViewModel.ProcessManager.IsMainProcessRunning, Converter={StaticResource TrueWhenFalseConverter}, Mode=OneWay}">
+    <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" IsEnabled="{x:Bind ViewModel.ProcessManager.IsMainProcessRunning, Converter={StaticResource TrueWhenFalseConverter}, Mode=OneWay}">
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <i:Interaction.Behaviors>
                 <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="P">
@@ -94,16 +94,16 @@
                     <Grid>
                         <i:Interaction.Behaviors>
                             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="N">
-                                <ic:InvokeCommandAction Command="{x:Bind MindmapsViewModel.CreateCommand}"  />
+                                <ic:InvokeCommandAction Command="{x:Bind ViewModel.CreateCommand}"  />
                             </gpi:GlobalShortcutTriggerBehavior>
                             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="S">
-                                <ic:InvokeCommandAction Command="{x:Bind MindmapsViewModel.SaveCommand}"  />
+                                <ic:InvokeCommandAction Command="{x:Bind ViewModel.SaveCommand}"  />
                             </gpi:GlobalShortcutTriggerBehavior>
                             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" RequiresShiftModifier="True" Key="S">
-                                <ic:InvokeCommandAction Command="{x:Bind MindmapsViewModel.SaveAsCommand}"  />
+                                <ic:InvokeCommandAction Command="{x:Bind ViewModel.SaveAsCommand}"  />
                             </gpi:GlobalShortcutTriggerBehavior>
                             <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="O">
-                                <ic:InvokeCommandAction Command="{x:Bind MindmapsViewModel.OpenCommand}"  />
+                                <ic:InvokeCommandAction Command="{x:Bind ViewModel.OpenCommand}"  />
                             </gpi:GlobalShortcutTriggerBehavior>
                         </i:Interaction.Behaviors>
                     
@@ -114,17 +114,17 @@
 
                         <StackPanel Orientation="Horizontal" Margin="0,40,0,20">
                             <AppBarButton x:Uid="Mindmaps_AddButton" Icon="Add" Label="New" Foreground="{StaticResource ThemeMainBrush}" 
-                                Command="{x:Bind MindmapsViewModel.CreateCommand}" />
+                                Command="{x:Bind ViewModel.CreateCommand}" />
                             <AppBarButton x:Uid="Mindmaps_SaveButton" Icon="Save" Label="Save" Foreground="{StaticResource ThemeMainBrush}" 
-                                Command="{x:Bind MindmapsViewModel.SaveCommand}" />
+                                Command="{x:Bind ViewModel.SaveCommand}" />
                             <AppBarButton x:Uid="Mindmaps_SaveAsButton" Icon="Save" Label="Save As" Foreground="{StaticResource ThemeMainBrush}" Visibility="Collapsed" 
-                                Command="{x:Bind MindmapsViewModel.SaveAsCommand}">
+                                Command="{x:Bind ViewModel.SaveAsCommand}">
                                 <i:Interaction.Behaviors>
                                     <gpi:ShowOnDesktopBehavior />
                                 </i:Interaction.Behaviors>
                             </AppBarButton>
                             <AppBarButton x:Uid="Mindmaps_OpenButton" Icon="OpenFile" Label="Open" Foreground="{StaticResource ThemeMainBrush}" Visibility="Collapsed" 
-                                Command="{x:Bind MindmapsViewModel.OpenCommand}">
+                                Command="{x:Bind ViewModel.OpenCommand}">
                                 <i:Interaction.Behaviors>
                                     <gpi:ShowOnDesktopBehavior />
                                 </i:Interaction.Behaviors>

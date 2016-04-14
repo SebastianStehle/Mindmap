@@ -111,6 +111,8 @@
                 <StackPanel>
                     <GridView ItemsSource="{x:Bind ViewModel.ThemeColors}" Style="{StaticResource PropertyGridStyle}" Width="240" HorizontalAlignment="Left">
                         <i:Interaction.Behaviors>
+                            <gpi:CommandEnabledBehavior Command="{x:Bind ViewModel.ChangeColorCommand}" />
+                            
                             <gpi:SelectionBehavior SelectedItem="{x:Bind ViewModel.SelectedNode.Color, Mode=OneWay}" SelectedItemCommand="{x:Bind ViewModel.ChangeColorCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.ItemTemplate>
@@ -121,6 +123,8 @@
                     </GridView>
                     <GridView ItemsSource="{x:Bind ViewModel.CustomColors}" Style="{StaticResource PropertyGridStyle}" Width="240" HorizontalAlignment="Left">
                         <i:Interaction.Behaviors>
+                            <gpi:CommandEnabledBehavior Command="{x:Bind ViewModel.ChangeColorCommand}" />
+                            
                             <gpi:SelectionBehavior SelectedItem="{x:Bind ViewModel.SelectedNode.Color, Mode=OneWay}" SelectedItemCommand="{x:Bind ViewModel.ChangeColorCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.ItemTemplate>
@@ -138,6 +142,8 @@
                 <StackPanel>
                     <GridView ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
+                            <gpi:CommandEnabledBehavior Command="{x:Bind ViewModel.ChangeShapeCommand}" />
+                            
                             <gpi:SelectionBehavior SelectedIndexCommand="{x:Bind ViewModel.ChangeShapeCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.SelectedIndex>
@@ -185,6 +191,8 @@
                 <StackPanel>
                     <GridView ItemsSource="{Binding None, Source={StaticResource SupportedIcons}}" SelectedIndex="0" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
+                            <gpi:CommandEnabledBehavior Command="{x:Bind ViewModel.ChangeIconCommand}" />
+                            
                             <gpi:SelectionBehavior SelectedItem="{x:Bind ViewModel.SelectedNode.Icon, Mode=OneWay}" SelectedItemCommand="{x:Bind ViewModel.ChangeIconCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.ItemTemplate>
@@ -202,6 +210,8 @@
                             <DataTemplate x:DataType="model:IconCategory">
                                 <GridView Margin="0,0,0,10" ItemsSource="{x:Bind Path=Icons}" Style="{StaticResource PropertyGridStyle}">
                                     <i:Interaction.Behaviors>
+                                        <gpi:CommandEnabledBehavior Command="{Binding DataContext.ChangeIconCommand, ElementName=AllIcons}" />
+                                        
                                         <gpi:SelectionBehavior SelectedItem="{Binding DataContext.SelectedNode.Icon, ElementName=AllIcons}" SelectedItemCommand="{Binding DataContext.ChangeIconCommand, ElementName=AllIcons}" />
                                     </i:Interaction.Behaviors>
                                     <GridView.ItemTemplate>
@@ -217,6 +227,8 @@
                     </ItemsControl>
                     <GridView ItemsSource="{x:Bind ViewModel.CustomIcons}" Style="{StaticResource PropertyGridStyle}" HorizontalAlignment="Left" Width="240">
                         <i:Interaction.Behaviors>
+                            <gpi:CommandEnabledBehavior Command="{x:Bind ViewModel.ChangeIconCommand}" />
+                            
                             <gpi:SelectionBehavior SelectedItem="{x:Bind ViewModel.SelectedNode.Icon, Mode=OneWay}" SelectedItemCommand="{x:Bind ViewModel.ChangeIconCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.ItemTemplate>
@@ -245,6 +257,8 @@
 
                     <GridView SelectedIndex="{x:Bind ViewModel.SelectedNode.IconPosition, Converter={StaticResource ValueToIntConverter}, Mode=OneWay}" ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
+                            <gpi:CommandEnabledBehavior Command="{x:Bind ViewModel.ChangeIconPositionCommand}" />
+                            
                             <gpi:SelectionBehavior SelectedIndexCommand="{x:Bind ViewModel.ChangeIconPositionCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.Items>
@@ -317,6 +331,8 @@
 
                     <GridView SelectedIndex="{x:Bind ViewModel.SelectedNode.IconSize, Converter={StaticResource ValueToIntConverter}, Mode=OneWay}" ItemContainerStyle="{StaticResource PropertySelectionStyle}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
+                            <gpi:CommandEnabledBehavior Command="{x:Bind ViewModel.ChangeIconSizeCommand}" />
+                            
                             <gpi:SelectionBehavior SelectedIndexCommand="{x:Bind ViewModel.ChangeIconSizeCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.Items>
@@ -360,6 +376,8 @@
 
                     <GridView SelectedIndex="{x:Bind ViewModel.SelectedNode.CheckableMode, Converter={StaticResource ValueToIntConverter}, Mode=OneWay}" ItemContainerStyle="{StaticResource PropertySelectionStyleAuto}" Style="{StaticResource PropertyGridStyle}">
                         <i:Interaction.Behaviors>
+                            <gpi:CommandEnabledBehavior Command="{x:Bind ViewModel.ChangeCheckableModeCommand}" />
+                            
                             <gpi:SelectionBehavior SelectedIndexCommand="{x:Bind ViewModel.ChangeCheckableModeCommand}" />
                         </i:Interaction.Behaviors>
                         <GridView.Items>

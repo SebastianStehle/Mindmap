@@ -39,6 +39,23 @@
     </Page.Resources>
 
     <ContentControl HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch" IsEnabled="{x:Bind ViewModel.ProcessManager.IsMainProcessRunning, Converter={StaticResource TrueWhenFalseConverter}, Mode=OneWay}">
+        <VisualStateManager.VisualStateGroups>
+            <VisualStateGroup x:Name="ResponsiveStates">
+                <VisualState x:Name="Tablet">
+                    <VisualState.Setters>
+                        <Setter Target="InnerSplitView.(SplitView.DisplayMode)" Value="Inline"/>
+                        <Setter Target="OuterSplitView.(SplitView.DisplayMode)" Value="CompactInline"/>
+                        <Setter Target="InnerSplitView.(SplitView.OpenPaneLength)" Value="320"/>
+                        <Setter Target="OuterSplitView.(SplitView.OpenPaneLength)" Value="320"/>
+                        <Setter Target="BottomToolBar.(UIElement.Visibility)" Value="Collapsed"/>
+                    </VisualState.Setters>
+                    <VisualState.StateTriggers>
+                        <AdaptiveTrigger MinWindowWidth="680"/>
+                    </VisualState.StateTriggers>
+                </VisualState>
+            </VisualStateGroup>
+        </VisualStateManager.VisualStateGroups>
+        
         <Grid Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
             <i:Interaction.Behaviors>
                 <gpi:GlobalShortcutTriggerBehavior RequiresControlModifier="True" Key="P">
@@ -48,23 +65,6 @@
                     <gpi:EventAction Invoked="Toolbars_ListButtonClicked" />
                 </gpi:GlobalShortcutTriggerBehavior>
             </i:Interaction.Behaviors>
-        
-            <VisualStateManager.VisualStateGroups>
-                <VisualStateGroup x:Name="ResponsiveStates">
-                    <VisualState x:Name="Tablet">
-                        <VisualState.Setters>
-                            <Setter Target="InnerSplitView.(SplitView.DisplayMode)" Value="Inline"/>
-                            <Setter Target="OuterSplitView.(SplitView.DisplayMode)" Value="CompactInline"/>
-                            <Setter Target="InnerSplitView.(SplitView.OpenPaneLength)" Value="320"/>
-                            <Setter Target="OuterSplitView.(SplitView.OpenPaneLength)" Value="320"/>
-                            <Setter Target="BottomToolBar.(UIElement.Visibility)" Value="Collapsed"/>
-                        </VisualState.Setters>
-                        <VisualState.StateTriggers>
-                            <AdaptiveTrigger MinWindowWidth="680"/>
-                        </VisualState.StateTriggers>
-                    </VisualState>
-                </VisualStateGroup>
-            </VisualStateManager.VisualStateGroups>
 
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />

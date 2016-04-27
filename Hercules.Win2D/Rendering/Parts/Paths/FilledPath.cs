@@ -6,6 +6,7 @@
 // All rights reserved.
 // ==========================================================================
 
+using System.Collections.Generic;
 using Windows.UI;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
@@ -21,14 +22,16 @@ namespace Hercules.Win2D.Rendering.Parts.Paths
         {
         }
 
-        protected override CanvasGeometry CreateGeometry(Win2DRenderNode renderNode, ICanvasResourceCreator resourceCreator)
+        protected override IEnumerable<CanvasGeometry> CreateGeometries(Win2DRenderNode renderNode, ICanvasResourceCreator resourceCreator)
         {
-            return GeometryBuilder.ComputeFilledPath(renderNode, renderNode.Parent, resourceCreator);
+            yield return GeometryBuilder.ComputeFilledPath(renderNode, renderNode.Parent, resourceCreator);
+            yield return GeometryBuilder.ComputeLinePath(renderNode, renderNode.Parent, resourceCreator, true);
         }
 
-        protected override void RenderInternal(Win2DRenderable renderable, CanvasDrawingSession session, CanvasGeometry geometry, ICanvasBrush brush)
+        protected override void RenderInternal(Win2DRenderable renderable, CanvasDrawingSession session, CanvasGeometry[] geometries, ICanvasBrush brush)
         {
-            session.FillGeometry(geometry, brush);
+            session.FillGeometry(geometries[0], brush);
+            session.DrawGeometry(geometries[1], brush, 2);
         }
     }
 }

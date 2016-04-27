@@ -22,6 +22,7 @@ namespace Hercules.Win2D.Rendering.Utils
     {
         private const float Radius = 10;
         private const float Padding = 10;
+        private const float StartHeightHalf = 20;
 
         public static CanvasGeometry ComputeHullGeometry(ICanvasResourceCreator resourceCreator, Win2DScene scene, Win2DRenderNode renderNode)
         {
@@ -147,17 +148,17 @@ namespace Hercules.Win2D.Rendering.Utils
 
             using (CanvasPathBuilder builder = new CanvasPathBuilder(session.Device))
             {
-                builder.BeginFigure(new Vector2(point1.X, point1.Y - 20));
+                builder.BeginFigure(new Vector2(point1.X, point1.Y - StartHeightHalf));
 
                 builder.AddCubicBezier(
-                    new Vector2(halfX, point1.Y - 2),
-                    new Vector2(halfX, point2.Y - 2),
-                    new Vector2(point2.X, point2.Y - 1));
-                builder.AddLine(point2.X, point2.Y + 1);
+                    new Vector2(halfX, point1.Y - StartHeightHalf),
+                    new Vector2(halfX, point2.Y),
+                    new Vector2(point2.X, point2.Y));
+                builder.AddLine(point2.X, point2.Y);
                 builder.AddCubicBezier(
-                    new Vector2(halfX, point2.Y + 2),
-                    new Vector2(halfX, point1.Y + 2),
-                    new Vector2(point1.X, point1.Y + 20));
+                    new Vector2(halfX, point2.Y),
+                    new Vector2(halfX, point1.Y + StartHeightHalf),
+                    new Vector2(point1.X, point1.Y + StartHeightHalf));
 
                 builder.EndFigure(CanvasFigureLoop.Closed);
 
@@ -165,7 +166,7 @@ namespace Hercules.Win2D.Rendering.Utils
             }
         }
 
-        public static CanvasGeometry ComputeLinePath(Win2DRenderNode target, Win2DRenderNode parent, ICanvasResourceCreator resourceCreator)
+        public static CanvasGeometry ComputeLinePath(Win2DRenderNode target, Win2DRenderNode parent, ICanvasResourceCreator resourceCreator, bool parentCentered = false)
         {
             Guard.NotNull(target, nameof(target));
             Guard.NotNull(resourceCreator, nameof(resourceCreator));
@@ -186,12 +187,28 @@ namespace Hercules.Win2D.Rendering.Utils
 
             if (targetRect.CenterX > parentRect.CenterX)
             {
-                CalculateCenterR(parentRect, ref point1, parentOffset);
+                if (parentCentered)
+                {
+                    CalculateCenter(parentRect, ref point1);
+                }
+                else
+                {
+                    CalculateCenterR(parentRect, ref point1, parentOffset);
+                }
+
                 CalculateCenterL(targetRect, ref point2, targetOffset);
             }
             else
             {
-                CalculateCenterL(parentRect, ref point1, parentOffset);
+                if (parentCentered)
+                {
+                    CalculateCenter(parentRect, ref point1);
+                }
+                else
+                {
+                    CalculateCenterL(parentRect, ref point1, parentOffset);
+                }
+
                 CalculateCenterR(targetRect, ref point2, targetOffset);
             }
 

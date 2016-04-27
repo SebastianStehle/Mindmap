@@ -6,8 +6,11 @@
 // All rights reserved.
 // ==========================================================================
 
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 using Windows.UI;
+using GP.Utils;
 using GP.Utils.Mathematics;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Brushes;
@@ -21,7 +24,7 @@ namespace Hercules.Win2D.Rendering.Parts.Paths
         private readonly float opacity;
         private Vector2 lastActualPosition = MathHelper.PositiveInfinityVector2;
         private Vector2 lastParentPosition = MathHelper.PositiveInfinityVector2;
-        private CanvasGeometry pathGeometry;
+        private CanvasGeometry[] pathGeometries;
 
         protected GeometryPathBase(Color strokeColor, float opacity = 1)
         {
@@ -32,8 +35,8 @@ namespace Hercules.Win2D.Rendering.Parts.Paths
 
         public void ClearResources()
         {
-            pathGeometry?.Dispose();
-            pathGeometry = null;
+            pathGeometries?.Foreach(x => x.Dispose());
+            pathGeometries = null;
         }
 
         public void Arrange(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
@@ -58,19 +61,19 @@ namespace Hercules.Win2D.Rendering.Parts.Paths
 
             ClearResources();
 
-            pathGeometry = CreateGeometry(renderNode, resourceCreator);
+            pathGeometries = CreateGeometries(renderNode, resourceCreator).ToArray();
         }
 
-        protected abstract CanvasGeometry CreateGeometry(Win2DRenderNode renderNode, ICanvasResourceCreator resourceCreator);
+        protected abstract IEnumerable<CanvasGeometry> CreateGeometries(Win2DRenderNode renderNode, ICanvasResourceCreator resourceCreator);
 
         public void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderControls)
         {
-            if (pathGeometry != null)
+            if (pathGeometries != null)
             {
-                RenderInternal(renderable, session, pathGeometry, renderable.Resources.Brush(strokeColor, opacity));
+                RenderInternal(renderable, session, pathGeometries, renderable.Resources.Brush(strokeColor, opacity));
             }
         }
 
-        protected abstract void RenderInternal(Win2DRenderable renderable, CanvasDrawingSession session, CanvasGeometry geometry, ICanvasBrush brush);
+        protected abstract void RenderInternal(Win2DRenderable renderable, CanvasDrawingSession session, CanvasGeometry[] geometries, ICanvasBrush brush);
     }
 }

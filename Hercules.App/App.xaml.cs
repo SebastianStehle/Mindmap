@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using GalaSoft.MvvmLight.Messaging;
 using Hercules.App.Messages;
+using Microsoft.HockeyApp;
 
 namespace Hercules.App
 {
@@ -23,6 +24,8 @@ namespace Hercules.App
     {
         public App()
         {
+            HockeyClient.Current.Configure("9753e6d94abc4e3bae685877c81a5d52");
+
             InitializeComponent();
 
             Suspending += OnSuspending;

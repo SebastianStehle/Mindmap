@@ -59,7 +59,7 @@ namespace Hercules.Model.Storing
         {
             foreach (StorageFile file in await LocalStore.GetFilesQueuedAsync())
             {
-                if (!unsortedFiles.ContainsKey(file.Path))
+                if (!unsortedFiles.ContainsKey(file.Path) && file.FileType == ".mmd")
                 {
                     unsortedFiles.Add(file.Path, await DocumentFile.OpenAsync(file, true));
                 }

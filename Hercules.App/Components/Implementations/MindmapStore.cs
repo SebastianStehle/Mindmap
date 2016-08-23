@@ -30,6 +30,8 @@ namespace Hercules.App.Components.Implementations
         private readonly ObservableCollection<IDocumentFileModel> allFiles = new ObservableCollection<IDocumentFileModel>();
         private readonly DocumentFileRecentList recentList = new DocumentFileRecentList();
         private readonly DispatcherTimer autoSaveTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(30) };
+        private readonly DispatcherTimer backupTimer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(5) };
+        private readonly BackupMaker backupMaker = new BackupMaker();
         private readonly IDialogService dialogService;
         private readonly IProcessManager processManager;
         private DocumentFileModel selectedFile;
@@ -53,6 +55,9 @@ namespace Hercules.App.Components.Implementations
 
             autoSaveTimer.Tick += AutoSaveTimer_Tick;
             autoSaveTimer.Start();
+
+            backupTimer.Tick += (sender, e) => StoreBackupAsync().Forget();
+            backupTimer.Start();
         }
 
         private void AutoSaveTimer_Tick(object sender, object e)
@@ -70,6 +75,11 @@ namespace Hercules.App.Components.Implementations
         public Task StoreRecentsAsync()
         {
             return recentList.SaveAsync(allFiles.OfType<DocumentFileModel>().Select(x => x.File).ToList());
+        }
+
+        public Task StoreBackupAsync()
+        {
+            return backupMaker.MakeBackupAsync(allFiles.OfType<DocumentFileModel>().Select(x => x.File).ToList());
         }
 
         public Task LoadRecentsAsync()
@@ -118,6 +128,8 @@ namespace Hercules.App.Components.Implementations
             {
                 await processManager.RunMainProcessAsync(this, async () =>
                 {
+                    await StoreBackupAsync();
+
                     if (await model.OpenAsync())
                     {
                         if (selectedFile != null)

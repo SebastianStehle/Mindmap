@@ -32,6 +32,8 @@ namespace Hercules.App.Components
 
         Task StoreRecentsAsync();
 
+        Task StoreBackupAsync();
+
         Task OpenAsync(IDocumentFileModel file);
 
         Task SaveAsAsync(IDocumentFileModel file);

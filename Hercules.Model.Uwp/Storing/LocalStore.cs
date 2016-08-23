@@ -62,5 +62,17 @@ namespace Hercules.Model.Storing
                 return await folder.CreateFileAsync(name, CreationCollisionOption.GenerateUniqueName);
             });
         }
+
+        public static Task<StorageFile> CreateOrOpenFileQueuedAsync(string name)
+        {
+            Guard.ValidFileName(name, nameof(name));
+
+            return FileQueue.EnqueueAsync(async () =>
+            {
+                StorageFolder folder = await GetStorageFolderAsync();
+
+                return await folder.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
+            });
+        }
     }
 }

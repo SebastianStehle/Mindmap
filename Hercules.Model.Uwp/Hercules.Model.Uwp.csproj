@@ -114,6 +114,7 @@
     <Compile Include="ImageSerializer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Rendering\IPrintableRenderer.cs" />
+    <Compile Include="Storing\BackupMaker.cs" />
     <Compile Include="Storing\DocumentFile.cs" />
     <Compile Include="Storing\DocumentFileRecentList.cs" />
     <Compile Include="Storing\FileQueue.cs" />

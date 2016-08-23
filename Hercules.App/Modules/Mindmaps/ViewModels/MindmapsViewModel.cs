@@ -160,6 +160,7 @@ namespace Hercules.App.Modules.Mindmaps.ViewModels
         {
             await mindmapStore.SaveAsync(mindmapStore.SelectedFile);
             await mindmapStore.StoreRecentsAsync();
+            await mindmapStore.StoreBackupAsync();
 
             message.Callback();
         }

@@ -18,6 +18,7 @@ using GP.Utils;
 using GP.Utils.Mvvm;
 using Hercules.Model;
 using Hercules.Model.Storing;
+using Microsoft.HockeyApp;
 
 // ReSharper disable RedundantIfElseBlock
 // ReSharper disable InvertIf
@@ -161,7 +162,7 @@ namespace Hercules.App.Components.Implementations
 #endif
                 }
 
-                //App.TelemetryClient?.TrackException(e);
+                HockeyClient.Current.TrackException(e);
             }
             finally
             {

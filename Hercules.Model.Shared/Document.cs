@@ -27,7 +27,7 @@ namespace Hercules.Model
         private readonly RootNode root;
         private readonly IUndoRedoManager undoRedoManager = new UndoRedoManager();
         private readonly ILayout layout = HorizontalStraightLayout.Instance;
-        private readonly Vector2 size = new Vector2(20000, 12000);
+        private readonly Vector2 size = new Vector2(20000, 20000);
         private CompositeUndoRedoAction transaction;
         private NodeBase selectedNode;
 

@@ -161,7 +161,7 @@ namespace Hercules.App.Components.Implementations
 #endif
                 }
 
-                App.TelemetryClient?.TrackException(e);
+                //App.TelemetryClient?.TrackException(e);
             }
             finally
             {

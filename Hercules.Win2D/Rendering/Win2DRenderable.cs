@@ -19,6 +19,7 @@ namespace Hercules.Win2D.Rendering
         private Vector2 renderPosition;
         private Vector2 renderSize;
         private Rect2 renderBounds;
+        private Rect2 occlusionBounds;
         private readonly NodeBase node;
         private readonly Win2DRenderer renderer;
 
@@ -57,6 +58,11 @@ namespace Hercules.Win2D.Rendering
             get { return renderBounds; }
         }
 
+        public Rect2 OcclusionBounds
+        {
+            get { return occlusionBounds; }
+        }
+
         protected Win2DRenderable(NodeBase node, Win2DRenderer renderer)
         {
             Guard.NotNull(node, nameof(node));
@@ -88,6 +94,8 @@ namespace Hercules.Win2D.Rendering
         private void UpdateBounds()
         {
             renderBounds = new Rect2(renderPosition, renderSize);
+
+            occlusionBounds = renderBounds.Inflate(renderBounds.Size * 0.5f);
         }
     }
 }

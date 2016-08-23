@@ -258,9 +258,9 @@ namespace Hercules.Win2D.Rendering
             return viewRect.IntersectsWith(renderNode.RenderBoundsWithParent);
         }
 
-        private static bool CanRenderNode(IRenderable renderNode, Rect2 viewRect)
+        private static bool CanRenderNode(Win2DRenderNode renderNode, Rect2 viewRect)
         {
-            return viewRect.IntersectsWith(renderNode.RenderBounds);
+            return viewRect.IntersectsWith(renderNode.OcclusionBounds);
         }
 
         private void Document_NodeAdded(object sender, NodeEventArgs e)

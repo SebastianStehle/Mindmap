@@ -16,18 +16,13 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Navigation;
 using GalaSoft.MvvmLight.Messaging;
 using Hercules.App.Messages;
-using Microsoft.ApplicationInsights;
 
 namespace Hercules.App
 {
     public sealed partial class App
     {
-        public static readonly TelemetryClient TelemetryClient = new TelemetryClient();
-
         public App()
         {
-            WindowsAppInitializer.InitializeAsync();
-
             InitializeComponent();
 
             Suspending += OnSuspending;

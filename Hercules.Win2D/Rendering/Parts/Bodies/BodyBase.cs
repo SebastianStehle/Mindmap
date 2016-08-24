@@ -24,7 +24,7 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
         protected const float ButtonRadius = 10;
         protected const float CheckBoxSize = 20;
         protected const float CheckBoxMargin = 6;
-        protected const float MinHeight = 36;
+        protected const float MinHeight = 28;
         protected const float IconSizeLarge = 160;
         protected const float IconSizeMedium = 64;
         protected const float IconSizeSmall = 32;

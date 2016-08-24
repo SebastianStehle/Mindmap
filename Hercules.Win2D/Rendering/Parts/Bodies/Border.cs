@@ -18,7 +18,7 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
 {
     public sealed class Border : BodyBase
     {
-        private const float VerticalOffsetPadding = 8;
+        private const float VerticalOffsetPadding = 4;
         private static readonly CanvasStrokeStyle StrokeStyle = new CanvasStrokeStyle { StartCap = CanvasCapStyle.Round, EndCap = CanvasCapStyle.Round };
         private readonly Color pathColor;
         private float verticalOffset;
@@ -44,7 +44,7 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
 
         protected override Vector2 CalculatePadding(Win2DRenderable renderable, Vector2 contentSize)
         {
-            return new Vector2(15, 10);
+            return new Vector2(15, 6);
         }
 
         public override void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderControls)

@@ -106,7 +106,7 @@ namespace Hercules.Win2D.Rendering
                     renderSize = Vector2.Zero;
                 }
 
-                renderSize.Y = Math.Max(renderSize.Y, TextFormat.FontSize * 2) + PaddingY;
+                renderSize.Y = Math.Max(renderSize.Y, TextFormat.FontSize * 1.5f) + PaddingY;
                 renderSize.X = Math.Max(renderSize.X, TextFormat.FontSize * 2);
 
                 renderSize = MathHelper.RoundToMultipleOfTwo(renderSize);

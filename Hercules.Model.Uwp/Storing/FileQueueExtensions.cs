@@ -7,12 +7,14 @@
 // ==========================================================================
 
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.Streams;
 using GP.Utils;
 using Hercules.Model.Storing.Json;
+using Microsoft.HockeyApp;
 
 namespace Hercules.Model.Storing
 {
@@ -22,7 +24,15 @@ namespace Hercules.Model.Storing
         {
             return FileQueue.EnqueueAsync(async () =>
             {
-                await file.DeleteAsync(StorageDeleteOption.Default);
+                try
+                {
+                    await file.DeleteAsync(StorageDeleteOption.Default);
+                }
+                catch (Exception e)
+                {
+                    HockeyClient.Current.TrackException(e, GetExceptionProperies(file, "Delete"));
+                    throw;
+                }
             });
         }
 
@@ -32,7 +42,15 @@ namespace Hercules.Model.Storing
 
             return FileQueue.EnqueueAsync(async () =>
             {
-                await file.RenameAsync(name + extension, NameCollisionOption.GenerateUniqueName);
+                try
+                {
+                    await file.RenameAsync(name + extension, NameCollisionOption.GenerateUniqueName);
+                }
+                catch (Exception e)
+                {
+                    HockeyClient.Current.TrackException(e, GetExceptionProperies(file, "Rename"));
+                    throw;
+                }
             });
         }
 
@@ -40,9 +58,17 @@ namespace Hercules.Model.Storing
         {
             return FileQueue.EnqueueAsync(async () =>
             {
-                using (IRandomAccessStream stream = await file.OpenReadAsync())
+                try
                 {
-                    return stream.Size > 0 ? JsonDocumentSerializer.Deserialize(stream.AsStreamForRead()) : Document.CreateNew(file.DisplayName);
+                    using (IRandomAccessStream stream = await file.OpenReadAsync())
+                    {
+                        return stream.Size > 0 ? JsonDocumentSerializer.Deserialize(stream.AsStreamForRead()) : Document.CreateNew(file.DisplayName);
+                    }
+                }
+                catch (Exception e)
+                {
+                    HockeyClient.Current.TrackException(e, GetExceptionProperies(file, "Open"));
+                    throw;
                 }
             });
         }
@@ -53,13 +79,30 @@ namespace Hercules.Model.Storing
 
             await FileQueue.EnqueueAsync(async () =>
             {
-                using (StorageStreamTransaction transaction = await file.OpenTransactedWriteAsync())
+                try
                 {
-                    JsonDocumentSerializer.Serialize(history, transaction.Stream.AsStreamForWrite());
+                    using (StorageStreamTransaction transaction = await file.OpenTransactedWriteAsync())
+                    {
+                        JsonDocumentSerializer.Serialize(history, transaction.Stream.AsStreamForWrite());
 
-                    await transaction.CommitAsync();
+                        await transaction.CommitAsync();
+                    }
+                }
+                catch (Exception e)
+                {
+                    HockeyClient.Current.TrackException(e, GetExceptionProperies(file, "Open"));
+                    throw;
                 }
             });
+        }
+
+        private static IDictionary<string, string> GetExceptionProperies(IStorageItem file, string action)
+        {
+            return new Dictionary<string, string>
+            {
+                { "FileName", !string.IsNullOrWhiteSpace(file.Path) ? file.Path : file.Name },
+                { "FileAction", action }
+            };
         }
     }
 }

@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using Windows.Storage;
 using Windows.Storage.AccessCache;
 using GP.Utils;
+using Microsoft.HockeyApp;
 
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 
@@ -39,19 +40,28 @@ namespace Hercules.Model.Storing
         {
             return FileQueue.EnqueueAsync<IReadOnlyList<DocumentFile>>(async () =>
             {
-                Dictionary<string, DocumentFile> unsortedFiles = new Dictionary<string, DocumentFile>(StringComparer.OrdinalIgnoreCase);
-
-                await LoadFilesFromLocalStoreAsync(unsortedFiles);
-                await LoadFilesFromRecentListAsync(unsortedFiles);
-
-                files.Clear();
-
-                foreach (DocumentFile sortedFile in unsortedFiles.Values.OrderByDescending(x => x.ModifiedUtc))
+                try
                 {
-                    files.Add(sortedFile);
-                }
+                    Dictionary<string, DocumentFile> unsortedFiles =
+                        new Dictionary<string, DocumentFile>(StringComparer.OrdinalIgnoreCase);
 
-                return files;
+                    await LoadFilesFromLocalStoreAsync(unsortedFiles);
+                    await LoadFilesFromRecentListAsync(unsortedFiles);
+
+                    files.Clear();
+
+                    foreach (DocumentFile sortedFile in unsortedFiles.Values.OrderByDescending(x => x.ModifiedUtc))
+                    {
+                        files.Add(sortedFile);
+                    }
+
+                    return files;
+                }
+                catch (Exception e)
+                {
+                    HockeyClient.Current.TrackException(e, GetExceptionProperies("LoadRecentList"));
+                    throw;
+                }
             });
         }
 
@@ -117,44 +127,62 @@ namespace Hercules.Model.Storing
 
             return FileQueue.EnqueueAsync(() =>
             {
-                int errors = 0;
-
-                HashSet<string> handledPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
-
-                foreach (StorageFile file in newFiles.Where(x => !x.IsInLocalFolder && x.File != null).Select(x => x.File))
+                try
                 {
-                    try
-                    {
-                        if (!handledPaths.Add(file.Path))
-                        {
-                            continue;
-                        }
+                    int errors = 0;
 
-                        if (!tokenMapping.Remove(file.Path))
+                    HashSet<string> handledPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+                    foreach (
+                        StorageFile file in
+                            newFiles.Where(x => !x.IsInLocalFolder && x.File != null).Select(x => x.File))
+                    {
+                        try
                         {
-                            recentList.Add(file);
+                            if (!handledPaths.Add(file.Path))
+                            {
+                                continue;
+                            }
+
+                            if (!tokenMapping.Remove(file.Path))
+                            {
+                                recentList.Add(file);
+                            }
+                        }
+                        catch
+                        {
+                            errors++;
                         }
                     }
-                    catch
+
+                    foreach (var token in tokenMapping.Values)
                     {
-                        errors++;
+                        try
+                        {
+                            recentList.Remove(token);
+                        }
+                        catch
+                        {
+                            errors++;
+                        }
                     }
+
+                    return Task.FromResult(errors == 0);
                 }
-
-                foreach (var token in tokenMapping.Values)
+                catch (Exception e)
                 {
-                    try
-                    {
-                        recentList.Remove(token);
-                    }
-                    catch
-                    {
-                        errors++;
-                    }
+                    HockeyClient.Current.TrackException(e, GetExceptionProperies("SaveRecentList"));
+                    throw;
                 }
-
-                return Task.FromResult(errors == 0);
             });
+        }
+
+        private static IDictionary<string, string> GetExceptionProperies(string action)
+        {
+            return new Dictionary<string, string>
+            {
+                { "FileAction", action }
+            };
         }
     }
 }

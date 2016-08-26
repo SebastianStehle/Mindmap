@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Windows.Storage;
 using GP.Utils;
+using Microsoft.HockeyApp;
 
 namespace Hercules.Model.Storing
 {
@@ -45,9 +46,17 @@ namespace Hercules.Model.Storing
         {
             return FileQueue.EnqueueAsync(async () =>
             {
-                StorageFolder folder = await GetStorageFolderAsync();
+                try
+                {
+                    StorageFolder folder = await GetStorageFolderAsync();
 
-                return (await folder.GetFilesAsync()).ToList();
+                    return (await folder.GetFilesAsync()).ToList();
+                }
+                catch (Exception e)
+                {
+                    HockeyClient.Current.TrackException(e, GetExceptionProperies("GetFiles"));
+                    throw;
+                }
             });
         }
 
@@ -57,9 +66,18 @@ namespace Hercules.Model.Storing
 
             return FileQueue.EnqueueAsync(async () =>
             {
-                StorageFolder folder = await GetStorageFolderAsync();
+                try
+                {
+                    StorageFolder folder = await GetStorageFolderAsync();
 
-                return await folder.CreateFileAsync(name, CreationCollisionOption.GenerateUniqueName);
+                    return await folder.CreateFileAsync(name, CreationCollisionOption.GenerateUniqueName);
+
+                }
+                catch (Exception e)
+                {
+                    HockeyClient.Current.TrackException(e, GetExceptionProperies("CreateNew", name));
+                    throw;
+                }
             });
         }
 
@@ -69,10 +87,33 @@ namespace Hercules.Model.Storing
 
             return FileQueue.EnqueueAsync(async () =>
             {
-                StorageFolder folder = await GetStorageFolderAsync();
+                try
+                {
+                    StorageFolder folder = await GetStorageFolderAsync();
 
-                return await folder.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
+                    return await folder.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
+                }
+                catch (Exception e)
+                {
+                    HockeyClient.Current.TrackException(e, GetExceptionProperies("CreateOrOpen", name));
+                    throw;
+                }
             });
+        }
+
+        private static IDictionary<string, string> GetExceptionProperies(string action, string name = null)
+        {
+            Dictionary<string, string> properties = new Dictionary<string, string>
+            {
+                { "FileAction", action }
+            };
+
+            if (name != null)
+            {
+                properties.Add("FileName", name);
+            }
+
+            return properties;
         }
     }
 }

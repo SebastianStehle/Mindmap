@@ -17,7 +17,7 @@ namespace Hercules.Model.Layouting.HorizontalStraight
 
         public int HorizontalMargin { get; set; } = 50;
 
-        public int ElementMargin { get; set; } = 3;
+        public int ElementMargin { get; set; } = 6;
 
         public void UpdateLayout(Document document, IRenderScene scene)
         {

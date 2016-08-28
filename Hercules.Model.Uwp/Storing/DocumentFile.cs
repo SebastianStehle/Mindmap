@@ -98,7 +98,7 @@ namespace Hercules.Model.Storing
 
         private static async Task<DocumentFile> CreateNewAsync(string name, Document document, StorageFile storageFile)
         {
-            DocumentFile file = new DocumentFile(storageFile, document ?? Document.CreateNew(name));
+            DocumentFile file = new DocumentFile(storageFile, document ?? new Document(Guid.NewGuid(), name));
 
             await file.SaveAsync();
 
@@ -214,7 +214,7 @@ namespace Hercules.Model.Storing
 
             if (document != null)
             {
-                document.StateChanged += Document_StateChanged;
+                document.UndoRedoStack.StateChanged += Document_StateChanged;
             }
         }
 
@@ -222,13 +222,13 @@ namespace Hercules.Model.Storing
         {
             if (document != null)
             {
-                document.StateChanged -= Document_StateChanged;
+                document.UndoRedoStack.StateChanged -= Document_StateChanged;
             }
 
             document = null;
         }
 
-        private void Document_StateChanged(object sender, StateChangedEventArgs e)
+        private void Document_StateChanged(object sender, EventArgs e)
         {
             hasChanges = true;
 

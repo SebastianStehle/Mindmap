@@ -10,7 +10,7 @@ using System;
 
 namespace Hercules.Model
 {
-    public abstract class NodeAction
+    public abstract class NodeAction : IAction
     {
         private readonly Guid nodeId;
 

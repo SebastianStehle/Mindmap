@@ -1,27 +1,20 @@
 ﻿// ==========================================================================
-// SelectNode.cs
+// IExportTarget.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
-using System;
+using System.Threading.Tasks;
+using Hercules.Model.Rendering;
 
-namespace Hercules.Model
+namespace Hercules.Model.ExImport
 {
-    public sealed class SelectNode : IAction
+    public interface IExportTarget
     {
-        private readonly Guid? nodeId;
+        string NameKey { get; }
 
-        public Guid? NodeId
-        {
-            get { return nodeId; }
-        }
-
-        public SelectNode(Guid? nodeId)
-        {
-            this.nodeId = nodeId;
-        }
+        Task ExportAsync(string name, Document document, IExporter exporter, IRenderer renderer);
     }
 }

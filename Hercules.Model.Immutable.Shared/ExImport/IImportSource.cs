@@ -1,27 +1,20 @@
 ﻿// ==========================================================================
-// SelectNode.cs
+// IImportSource.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
-using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
-namespace Hercules.Model
+namespace Hercules.Model.ExImport
 {
-    public sealed class SelectNode : IAction
+    public interface IImportSource
     {
-        private readonly Guid? nodeId;
+        string NameKey { get; }
 
-        public Guid? NodeId
-        {
-            get { return nodeId; }
-        }
-
-        public SelectNode(Guid? nodeId)
-        {
-            this.nodeId = nodeId;
-        }
+        Task<List<ImportResult>> ImportAsync(IImporter importer);
     }
 }

@@ -1,27 +1,19 @@
 ﻿// ==========================================================================
-// SelectNode.cs
+// IOutlineGenerator.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
-using System;
+using System.IO;
+using System.Threading.Tasks;
+using Hercules.Model.Rendering;
 
-namespace Hercules.Model
+namespace Hercules.Model.ExImport
 {
-    public sealed class SelectNode : IAction
+    public interface IOutlineGenerator
     {
-        private readonly Guid? nodeId;
-
-        public Guid? NodeId
-        {
-            get { return nodeId; }
-        }
-
-        public SelectNode(Guid? nodeId)
-        {
-            this.nodeId = nodeId;
-        }
+        Task WriteOutlineAsync(Document document, IRenderer renderer, Stream stream, bool useColors, string noTextPlaceholder);
     }
 }

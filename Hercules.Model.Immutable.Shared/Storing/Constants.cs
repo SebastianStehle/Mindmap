@@ -1,27 +1,23 @@
 ﻿// ==========================================================================
-// SelectNode.cs
+// Constants.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
 // All rights reserved.
 // ==========================================================================
 
-using System;
+using GP.Utils;
 
-namespace Hercules.Model
+namespace Hercules.Model.Storing
 {
-    public sealed class SelectNode : IAction
+    public static class Constants
     {
-        private readonly Guid? nodeId;
-
-        public Guid? NodeId
+        public static FileExtension FileExtension
         {
-            get { return nodeId; }
-        }
-
-        public SelectNode(Guid? nodeId)
-        {
-            this.nodeId = nodeId;
+            get
+            {
+                return new FileExtension(".mmd", "application/json");
+            }
         }
     }
 }

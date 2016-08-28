@@ -23,14 +23,19 @@ namespace Hercules.Model
             get { return undoRedoStack.Current; }
         }
 
+        public UndoRedoStack<DocumentState> UndoRedoStack
+        {
+            get { return undoRedoStack; }
+        }
+
         public Vector2 Size
         {
             get { return size; }
         }
 
-        public Document(Guid id)
+        public Document(Guid id, string text)
         {
-            undoRedoStack  = new UndoRedoStack<DocumentState>(new DocumentState(Guid.NewGuid()));
+            undoRedoStack  = new UndoRedoStack<DocumentState>(new DocumentState(id, text));
             undoRedoStack.StateChanged += UndoRedoStack_StateChanged;
 
             projections = new DocumentStateProjections(undoRedoStack.Current);
@@ -66,9 +71,9 @@ namespace Hercules.Model
             return projections.RightMainNodes();
         }
 
-        public void Dispatch(dynamic action)
+        public void Dispatch(IAction action, bool disableHistory = false)
         {
-            DocumentState newState = undoRedoStack.Current.Dispatch(action, this);
+            DocumentState newState = undoRedoStack.Current.Dispatch(action as dynamic, this);
 
             if (undoRedoStack.Current == newState)
             {

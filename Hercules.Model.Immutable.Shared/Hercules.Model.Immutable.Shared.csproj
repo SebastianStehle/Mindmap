@@ -41,12 +41,29 @@
   <ItemGroup>
     <Compile Include="AddChild.cs" />
     <Compile Include="AddSibling.cs" />
+    <Compile Include="AttachmentIcon.cs" />
     <Compile Include="CollectionExtensions.cs" />
     <Compile Include="Document.cs" />
     <Compile Include="DocumentObject.cs" />
     <Compile Include="DocumentState.cs" />
     <Compile Include="DocumentStateProjections.cs" />
+    <Compile Include="ExImport\Formats\Html\HtmlOutlineExporter.cs" />
+    <Compile Include="ExImport\Formats\Image\ImageExporter.cs" />
+    <Compile Include="ExImport\Formats\Mindapp\MindappExporter.cs" />
+    <Compile Include="ExImport\Formats\Mindapp\MindappImporter.cs" />
+    <Compile Include="ExImport\IExporter.cs" />
+    <Compile Include="ExImport\IExportTarget.cs" />
+    <Compile Include="ExImport\IImporter.cs" />
+    <Compile Include="ExImport\IImportSource.cs" />
+    <Compile Include="ExImport\ImportResult.cs" />
+    <Compile Include="ExImport\IOutlineGenerator.cs" />
+    <Compile Include="IAction.cs" />
+    <Compile Include="IconPosition.cs" />
+    <Compile Include="IconSize.cs" />
     <Compile Include="ImmutableObject.cs" />
+    <Compile Include="INodeColor.cs" />
+    <Compile Include="INodeIcon.cs" />
+    <Compile Include="KeyIcon.cs" />
     <Compile Include="Layouting\AttachTarget.cs" />
     <Compile Include="Layouting\HorizontalStraight\HorizontalStraightAttachTargetProcess.cs" />
     <Compile Include="Layouting\HorizontalStraight\HorizontalStraightLayout.cs" />
@@ -74,6 +91,13 @@
     <Compile Include="Rendering\IRenderScene.cs" />
     <Compile Include="RootNode.cs" />
     <Compile Include="SelectNode.cs" />
+    <Compile Include="Storing\Constants.cs" />
+    <Compile Include="Storing\Json\JsonDocumentSerializer.cs" />
+    <Compile Include="Storing\Json\JsonHistory.cs" />
+    <Compile Include="Storing\Json\JsonHistoryStep.cs" />
+    <Compile Include="Storing\Json\JsonHistoryStepsCommand.cs" />
+    <Compile Include="Storing\Json\PropertiesBagConverter.cs" />
+    <Compile Include="Storing\Utils\JsonStreamConvert.cs" />
     <Compile Include="UndoRedoStack.cs" />
   </ItemGroup>
   <ItemGroup>

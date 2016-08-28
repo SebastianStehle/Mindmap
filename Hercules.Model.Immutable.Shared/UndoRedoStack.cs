@@ -1,8 +1,14 @@
-﻿using System;
+﻿// ==========================================================================
+// UndoRedoStack.cs
+// Hercules Mindmap App
+// ==========================================================================
+// Copyright (c) Sebastian Stehle
+// All rights reserved.
+// ==========================================================================
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Hercules.Model
 {
@@ -13,6 +19,11 @@ namespace Hercules.Model
         private T current;
 
         public event EventHandler StateChanged;
+
+        public IEnumerable<T> History
+        {
+            get { return undoStack.Reverse(); }
+        }
 
         public bool CanUndo
         {

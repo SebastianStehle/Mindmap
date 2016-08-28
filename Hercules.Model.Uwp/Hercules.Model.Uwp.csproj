@@ -131,9 +131,9 @@
       <Project>{bf45f42d-d00c-4ac5-ac3f-ce261da43f99}</Project>
       <Name>GP.Utils.Uwp</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Hercules.Model.Shared\Hercules.Model.Shared.csproj">
-      <Project>{c8e9741d-cc6d-4131-90d5-87866f25ee89}</Project>
-      <Name>Hercules.Model.Shared</Name>
+    <ProjectReference Include="..\Hercules.Model.Immutable.Shared\Hercules.Model.Immutable.Shared.csproj">
+      <Project>{97fb7749-d395-4fec-91f0-a31fdacd696f}</Project>
+      <Name>Hercules.Model.Immutable.Shared</Name>
     </ProjectReference>
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '14.0' ">

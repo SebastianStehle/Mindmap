@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// SelectNode.cs
+// INodeIcon.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -7,21 +7,19 @@
 // ==========================================================================
 
 using System;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace Hercules.Model
 {
-    public sealed class SelectNode : IAction
+    public interface INodeIcon : IEquatable<INodeIcon>
     {
-        private readonly Guid? nodeId;
+        string Name { get; }
 
-        public Guid? NodeId
-        {
-            get { return nodeId; }
-        }
+        int PixelWidth { get; }
 
-        public SelectNode(Guid? nodeId)
-        {
-            this.nodeId = nodeId;
-        }
+        int PixelHeight { get; }
+
+        Task<Stream> OpenAsStreamAsync();
     }
 }

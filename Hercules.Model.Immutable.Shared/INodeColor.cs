@@ -1,5 +1,5 @@
 ﻿// ==========================================================================
-// SelectNode.cs
+// INodeColor.cs
 // Hercules Mindmap App
 // ==========================================================================
 // Copyright (c) Sebastian Stehle
@@ -10,18 +10,7 @@ using System;
 
 namespace Hercules.Model
 {
-    public sealed class SelectNode : IAction
+    public interface INodeColor : IEquatable<INodeColor>
     {
-        private readonly Guid? nodeId;
-
-        public Guid? NodeId
-        {
-            get { return nodeId; }
-        }
-
-        public SelectNode(Guid? nodeId)
-        {
-            this.nodeId = nodeId;
-        }
     }
 }

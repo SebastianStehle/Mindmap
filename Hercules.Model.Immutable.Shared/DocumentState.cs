@@ -9,19 +9,18 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
-using System.Linq;
 using GP.Utils;
 
 namespace Hercules.Model
 {
-    public sealed class DocumentState : ImmutableObject<DocumentState>
+    public sealed class DocumentState
     {
         private readonly RootNode root;
-        private bool isCheckableDefault;
+        private IAction sourceAction;
         private Guid? selectedNodeId;
         private ImmutableDictionary<Guid, NodeBase> nodes;
 
-        public DocumentState(Guid rootId)
+        public DocumentState(Guid rootId, string text)
         {
             root = new RootNode(rootId);
 
@@ -38,6 +37,11 @@ namespace Hercules.Model
             get { return selectedNodeId; }
         }
 
+        public IAction SourceAction
+        {
+            get { return sourceAction; }
+        }
+
         public IReadOnlyDictionary<Guid, NodeBase> Nodes
         {
             get { return nodes; }
@@ -52,7 +56,7 @@ namespace Hercules.Model
                 return this;
             }
 
-            return Cloned<DocumentState>(clone => clone.selectedNodeId = action.NodeId);
+            return Cloned(action, clone => clone.selectedNodeId = action.NodeId);
         }
 
         public DocumentState Dispatch(MoveNode action, Document document)
@@ -79,7 +83,7 @@ namespace Hercules.Model
                     .SetItem(oldParent.Id, oldParent.Remove(node.Id))
                     .SetItem(newParent.Id, newParent.Insert(action.NodeId, action.Index, action.Side));
 
-            return Cloned<DocumentState>(clone => clone.nodes = newNodes);
+            return Cloned(action, clone => clone.nodes = newNodes);
         }
 
         public DocumentState Dispatch(AddChild action, Document document)
@@ -100,7 +104,7 @@ namespace Hercules.Model
                     .SetItem(node.Id, node)
                     .SetItem(newParent.Id, newParent.Insert(action.NodeId));
 
-            return Cloned<DocumentState>(clone => clone.nodes = newNodes);
+            return Cloned(action, clone => clone.nodes = newNodes);
         }
 
         public DocumentState Dispatch(AddSibling action, Document document)
@@ -121,7 +125,21 @@ namespace Hercules.Model
                     .SetItem(node.Id, node)
                     .SetItem(newParent.Id, newParent.Insert(action.NodeId));
 
-            return Cloned<DocumentState>(clone => clone.nodes = newNodes);
+            return Cloned(action, clone => clone.nodes = newNodes);
+        }
+
+        private DocumentState Cloned(IAction action, params Action<DocumentState>[] modifiers)
+        {
+            DocumentState clone = (DocumentState)MemberwiseClone();
+
+            foreach (var modifier in modifiers)
+            {
+                modifier(clone);
+            }
+
+            clone.sourceAction = action;
+
+            return clone;
         }
     }
 }

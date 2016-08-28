@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using GP.Utils;
+
 // ReSharper disable ConvertIfStatementToReturnStatement
 
 namespace Hercules.Model
@@ -78,11 +79,11 @@ namespace Hercules.Model
         {
             if (leftChildIds.Contains(nodeId))
             {
-                return this.Cloned<RootNode>(clone => clone.rightChildIds = rightChildIds.Remove(nodeId));
+                return Cloned<RootNode>(clone => clone.rightChildIds = rightChildIds.Remove(nodeId));
             }
             else
             {
-                return this.Cloned<RootNode>(clone => clone.rightChildIds = rightChildIds.Remove(nodeId));
+                return Cloned<RootNode>(clone => clone.rightChildIds = rightChildIds.Remove(nodeId));
             }
         }
     }

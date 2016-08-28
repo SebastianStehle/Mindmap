@@ -62,7 +62,7 @@ namespace Hercules.Model.Storing
                 {
                     using (IRandomAccessStream stream = await file.OpenReadAsync())
                     {
-                        return stream.Size > 0 ? JsonDocumentSerializer.Deserialize(stream.AsStreamForRead()) : Document.CreateNew(file.DisplayName);
+                        return stream.Size > 0 ? JsonDocumentSerializer.Deserialize(stream.AsStreamForRead()) : new Document(Guid.NewGuid(), file.DisplayName);
                     }
                 }
                 catch (Exception e)

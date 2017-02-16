@@ -18,20 +18,20 @@ namespace Hercules.Model
     {
         public static IList<Node> AllChildren(this NodeBase nodeBase)
         {
-            List<Node> allChildren = new List<Node>();
+            var allChildren = new List<Node>();
 
-            RootNode root = nodeBase as RootNode;
+            var root = nodeBase as RootNode;
 
             if (root != null)
             {
-                foreach (Node child in root.RightChildren)
+                foreach (var child in root.RightChildren)
                 {
                     allChildren.Add(child);
 
                     AddChildren(allChildren, child);
                 }
 
-                foreach (Node child in root.LeftChildren)
+                foreach (var child in root.LeftChildren)
                 {
                     allChildren.Add(child);
 
@@ -39,7 +39,7 @@ namespace Hercules.Model
                 }
             }
 
-            Node node = nodeBase as Node;
+            var node = nodeBase as Node;
 
             if (node != null)
             {
@@ -51,7 +51,7 @@ namespace Hercules.Model
 
         private static void AddChildren(ICollection<Node> allChildren, Node node)
         {
-            foreach (Node child in node.Children)
+            foreach (var child in node.Children)
             {
                 allChildren.Add(child);
 
@@ -63,7 +63,7 @@ namespace Hercules.Model
         {
             IReadOnlyList<Node> result = null;
 
-            RootNode parent = node.Parent as RootNode;
+            var parent = node.Parent as RootNode;
 
             if (parent != null)
             {
@@ -72,7 +72,7 @@ namespace Hercules.Model
 
             if (result == null)
             {
-                Node parentNormal = node.Parent as Node;
+                var parentNormal = node.Parent as Node;
 
                 if (parentNormal != null)
                 {

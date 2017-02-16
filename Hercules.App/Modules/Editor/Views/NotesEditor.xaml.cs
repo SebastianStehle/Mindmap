@@ -37,7 +37,7 @@ namespace Hercules.App.Modules.Editor.Views
 
         private void EditBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
-            ITextSelection selection = EditBox.Document.Selection;
+            var selection = EditBox.Document.Selection;
 
             if (selection == null)
             {
@@ -52,9 +52,9 @@ namespace Hercules.App.Modules.Editor.Views
 
         private void Flyout_Closed(object sender, object e)
         {
-            string text = string.Empty;
+            var text = string.Empty;
 
-            ITextSelection selection = EditBox.Document.Selection;
+            var selection = EditBox.Document.Selection;
 
             selection.Expand(TextRangeUnit.Window);
 

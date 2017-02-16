@@ -37,16 +37,14 @@ namespace Hercules.Model
         {
         }
 
-        public override bool Remove(Node child, out int oldIndex)
+        public override void Remove(Node child, out int oldIndex)
         {
-            bool isRemoved = Remove(rightChildren, child, out oldIndex) || Remove(leftChildren, child, out oldIndex);
+            var isRemoved = Remove(rightChildren, child, out oldIndex) || Remove(leftChildren, child, out oldIndex);
 
             if (isRemoved)
             {
                 OnPropertyChanged(nameof(HasChildren));
             }
-
-            return isRemoved;
         }
 
         public override void Insert(Node child, int? index, NodeSide side)
@@ -77,7 +75,7 @@ namespace Hercules.Model
             OnPropertyChanged(nameof(HasChildren));
         }
 
-        public override bool HasChild(Node child)
+        public bool HasChild(Node child)
         {
             return child != null && (leftChildren.Contains(child) || rightChildren.Contains(child) || leftChildren.Any(n => n.HasChild(child)) || rightChildren.Any(n => n.HasChild(child)));
         }

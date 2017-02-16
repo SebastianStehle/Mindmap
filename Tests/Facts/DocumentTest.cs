@@ -25,9 +25,9 @@ namespace Tests.Facts
         [Fact]
         public void NodeAdded_HasDocument()
         {
-            Node child1 = new Node(Guid.NewGuid());
-            Node child11 = new Node(Guid.NewGuid());
-            Node child12 = new Node(Guid.NewGuid());
+            var child1 = new Node(Guid.NewGuid());
+            var child11 = new Node(Guid.NewGuid());
+            var child12 = new Node(Guid.NewGuid());
 
             child1.Insert(child11, 0, NodeSide.Right);
             child1.Insert(child12, 1, NodeSide.Right);

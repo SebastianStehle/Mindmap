@@ -60,7 +60,7 @@ namespace Hercules.App.Controls
                 return;
             }
 
-            ThemeColor themeColor = Color as ThemeColor;
+            var themeColor = Color as ThemeColor;
 
             Color color;
 

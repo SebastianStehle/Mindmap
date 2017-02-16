@@ -41,15 +41,15 @@ namespace Hercules.Win2D.Rendering.Parts.Paths
 
         public void Arrange(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
         {
-            Win2DRenderNode renderNode = renderable as Win2DRenderNode;
+            var renderNode = renderable as Win2DRenderNode;
 
             if (renderNode?.Parent == null)
             {
                 return;
             }
 
-            Vector2 currentPosition = renderable.RenderPosition;
-            Vector2 parentPosition = renderNode.Parent.RenderPosition;
+            var currentPosition = renderable.RenderPosition;
+            var parentPosition = renderNode.Parent.RenderPosition;
 
             if ((lastActualPosition == currentPosition) && (lastParentPosition == parentPosition))
             {
@@ -70,10 +70,10 @@ namespace Hercules.Win2D.Rendering.Parts.Paths
         {
             if (pathGeometries != null)
             {
-                RenderInternal(renderable, session, pathGeometries, renderable.Resources.Brush(strokeColor, opacity));
+                RenderInternal(session, pathGeometries, renderable.Resources.Brush(strokeColor, opacity));
             }
         }
 
-        protected abstract void RenderInternal(Win2DRenderable renderable, CanvasDrawingSession session, CanvasGeometry[] geometries, ICanvasBrush brush);
+        protected abstract void RenderInternal(CanvasDrawingSession session, CanvasGeometry[] geometries, ICanvasBrush brush);
     }
 }

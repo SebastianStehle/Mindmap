@@ -13,7 +13,6 @@ using GP.Utils.UI;
 using GP.Utils.UI.Interactivity;
 using Hercules.App.Modules;
 using Hercules.App.Modules.Editor.ViewModels;
-using Hercules.Model.ExImport;
 
 namespace Hercules.App.Controls
 {
@@ -34,7 +33,7 @@ namespace Hercules.App.Controls
 
         private void BindItems()
         {
-            EditorViewModel viewModel = EditorViewModel;
+            var viewModel = EditorViewModel;
 
             if (viewModel == null)
             {
@@ -48,19 +47,19 @@ namespace Hercules.App.Controls
                 return;
             }
 
-            foreach (IExportTarget target in viewModel.ExportTargets)
+            foreach (var target in viewModel.ExportTargets)
             {
-                string text = LocalizationManager.GetString($"ExportTarget_{target.NameKey}");
+                var text = LocalizationManager.GetString($"ExportTarget_{target.NameKey}");
 
-                MenuFlyoutSubItem targetItem = new MenuFlyoutSubItem { Text = text };
+                var targetItem = new MenuFlyoutSubItem { Text = text };
 
-                foreach (IExporter exporter in viewModel.Exporters)
+                foreach (var exporter in viewModel.Exporters)
                 {
                     text = LocalizationManager.GetString($"Exporter_{exporter.NameKey}");
 
                     var viewModelParameter = new ExportModel { Target = target, Exporter = exporter };
 
-                    MenuFlyoutItem exportButton =
+                    var exportButton =
                         VisualTreeExtensions.CreateMenuItem(text,
                             viewModel.ExportCommand,
                             viewModelParameter);

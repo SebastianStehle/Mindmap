@@ -42,9 +42,9 @@ namespace Hercules.Model.ExImport.Formats.Html
             Guard.NotNull(renderer, nameof(renderer));
             Guard.NotNull(stream, nameof(stream));
 
-            bool useColors = properties == null || !properties.Contains("HasColors") || properties["HasColors"].ToBoolean(CultureInfo.InvariantCulture);
+            var useColors = properties == null || !properties.Contains("HasColors") || properties["HasColors"].ToBoolean(CultureInfo.InvariantCulture);
 
-            string noTextPlaceholder =
+            var noTextPlaceholder =
                 properties != null &&
                 properties.Contains("NoTextPlaceholder") ?
                 properties["NoTextPlaceholder"].ToString() :
@@ -62,20 +62,20 @@ namespace Hercules.Model.ExImport.Formats.Html
 
             return Task.Run(() =>
             {
-                XmlWriter xmlWriter = XmlWriter.Create(stream, new XmlWriterSettings { OmitXmlDeclaration = true });
+                var xmlWriter = XmlWriter.Create(stream, new XmlWriterSettings { OmitXmlDeclaration = true });
 
                 xmlWriter.WriteStartElement("div");
 
                 WriteNode(xmlWriter, document.Root, renderer, "1.4em", useColors, noTextPlaceholder);
 
-                List<Node> children = document.Root.LeftChildren.Union(document.Root.RightChildren).ToList();
+                var children = document.Root.LeftChildren.Union(document.Root.RightChildren).ToList();
 
                 if (children.Count > 0)
                 {
                     xmlWriter.WriteStartElement("ul");
                     xmlWriter.WriteAttributeString("style", ListStyle);
 
-                    foreach (Node node in children)
+                    foreach (var node in children)
                     {
                         xmlWriter.WriteStartElement("li");
                         xmlWriter.WriteAttributeString("style", ListItemStyle);
@@ -105,7 +105,7 @@ namespace Hercules.Model.ExImport.Formats.Html
             xmlWriter.WriteStartElement("ul");
             xmlWriter.WriteAttributeString("style", ListStyle);
 
-            foreach (Node child in node.Children)
+            foreach (var child in node.Children)
             {
                 xmlWriter.WriteStartElement("li");
                 xmlWriter.WriteAttributeString("style", ListItemStyle);
@@ -120,11 +120,11 @@ namespace Hercules.Model.ExImport.Formats.Html
 
         private static void WriteNode(XmlWriter xmlWriter, NodeBase nodeBase, IRenderer renderer, string fontSize, bool useColors, string noTextPlaceholder)
         {
-            string color = "#000";
+            var color = "#000";
 
             if (useColors)
             {
-                IRenderColor themeColor = renderer.FindColor(nodeBase);
+                var themeColor = renderer.FindColor(nodeBase);
 
                 color = ColorsVectorHelper.ConvertToRGBString(themeColor.Darker);
             }

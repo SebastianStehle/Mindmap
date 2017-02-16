@@ -8,6 +8,7 @@
 
 using System.ComponentModel;
 using Hercules.Model;
+// ReSharper disable UnusedMemberInSuper.Global
 
 namespace Hercules.App.Components
 {

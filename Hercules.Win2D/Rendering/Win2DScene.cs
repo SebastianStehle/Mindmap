@@ -18,6 +18,7 @@ using Hercules.Model.Rendering;
 using Microsoft.Graphics.Canvas;
 using Microsoft.Graphics.Canvas.Text;
 
+// ReSharper disable SuggestBaseTypeForParameter
 // ReSharper disable InvertIf
 // ReSharper disable LoopCanBeConvertedToQuery
 // ReSharper disable LoopCanBePartlyConvertedToQuery
@@ -76,7 +77,7 @@ namespace Hercules.Win2D.Rendering
 
         public void ClearResources()
         {
-            foreach (Win2DRenderable renderNode in AllRenderables)
+            foreach (var renderNode in AllRenderables)
             {
                 renderNode.ClearResources();
             }
@@ -87,7 +88,7 @@ namespace Hercules.Win2D.Rendering
             document.NodeRemoved += Document_NodeRemoved;
             document.NodeAdded += Document_NodeAdded;
 
-            foreach (NodeBase node in document.Nodes)
+            foreach (var node in document.Nodes)
             {
                 TryAdd(node);
             }
@@ -98,7 +99,7 @@ namespace Hercules.Win2D.Rendering
             document.NodeRemoved -= Document_NodeRemoved;
             document.NodeAdded -= Document_NodeAdded;
 
-            foreach (NodeBase node in document.Nodes)
+            foreach (var node in document.Nodes)
             {
                 TryRemove(node);
             }
@@ -116,7 +117,7 @@ namespace Hercules.Win2D.Rendering
 
         public void ShowPreviewElement(Vector2 position, NodeBase parent, NodeSide anchor)
         {
-            Win2DRenderNode parentNode = TryAdd(parent);
+            var parentNode = TryAdd(parent);
 
             previewNode.Parent = parentNode;
 
@@ -126,11 +127,11 @@ namespace Hercules.Win2D.Rendering
 
         public void UpdateLayout(ICanvasResourceCreator resourceCreator, ILayout layout)
         {
-            foreach (Win2DRenderNode renderNode in AllNodes)
+            foreach (var renderNode in AllNodes)
             {
-                renderNode.ComputeBody(resourceCreator);
-                renderNode.ComputeHull(resourceCreator);
-                renderNode.ComputePath(resourceCreator);
+                renderNode.ComputeBody();
+                renderNode.ComputeHull();
+                renderNode.ComputePath();
             }
 
             if (isLayoutInvalidated)
@@ -138,12 +139,12 @@ namespace Hercules.Win2D.Rendering
                 layout.UpdateVisibility(document, this);
             }
 
-            foreach (Win2DRenderNode renderNode in AllNodes)
+            foreach (var renderNode in AllNodes)
             {
                 renderNode.Measure(resourceCreator);
             }
 
-            foreach (Win2DAdornerRenderNode adorner in adorners)
+            foreach (var adorner in adorners)
             {
                 adorner.Measure(resourceCreator);
             }
@@ -155,11 +156,11 @@ namespace Hercules.Win2D.Rendering
 
             layout.UpdateLayout(document, this);
 
-            foreach (Win2DRenderNode renderNode in renderNodes.Values)
+            foreach (var renderNode in renderNodes.Values)
             {
                 if (renderNode.IsVisible)
                 {
-                    renderNode.ComputeHull(resourceCreator);
+                    renderNode.ComputeHull();
                 }
             }
 
@@ -168,21 +169,21 @@ namespace Hercules.Win2D.Rendering
 
         public bool UpdateArrangement(ICanvasResourceCreator resourceCreator, bool animate)
         {
-            bool needsRedraw = false;
+            var needsRedraw = false;
 
-            DateTime utcNow = DateTime.UtcNow;
+            var utcNow = DateTime.UtcNow;
 
-            foreach (Win2DRenderNode renderNode in AllNodes)
+            foreach (var renderNode in AllNodes)
             {
                 needsRedraw |= renderNode.AnimateRenderPosition(animate, utcNow, 600);
             }
 
-            double minX = double.MaxValue;
-            double minY = double.MaxValue;
-            double maxX = double.MinValue;
-            double maxY = double.MinValue;
+            var minX = double.MaxValue;
+            var minY = double.MaxValue;
+            var maxX = double.MinValue;
+            var maxY = double.MinValue;
 
-            foreach (Win2DRenderNode renderNode in AllNodes)
+            foreach (var renderNode in AllNodes)
             {
                 renderNode.ArrangePath(resourceCreator);
                 renderNode.ArrangeHull(resourceCreator);
@@ -193,7 +194,7 @@ namespace Hercules.Win2D.Rendering
                     continue;
                 }
 
-                Rect2 nodeBounds = renderNode.RenderBounds;
+                var nodeBounds = renderNode.RenderBounds;
 
                 minX = Math.Min(minX, nodeBounds.Left);
                 minY = Math.Min(minY, nodeBounds.Top);
@@ -201,7 +202,7 @@ namespace Hercules.Win2D.Rendering
                 maxY = Math.Max(maxY, nodeBounds.Bottom);
             }
 
-            foreach (Win2DAdornerRenderNode adorner in adorners)
+            foreach (var adorner in adorners)
             {
                 adorner.Arrange(resourceCreator);
             }
@@ -215,7 +216,7 @@ namespace Hercules.Win2D.Rendering
         {
             session.TextAntialiasing = CanvasTextAntialiasing.Grayscale;
 
-            foreach (Win2DRenderNode renderNode in DiagramNodes)
+            foreach (var renderNode in DiagramNodes)
             {
                 if (renderNode.Node.HasChildren && renderNode.IsVisible && !renderNode.Node.IsCollapsed && renderNode.Node.IsShowingHull)
                 {
@@ -223,7 +224,7 @@ namespace Hercules.Win2D.Rendering
                 }
             }
 
-            foreach (Win2DRenderNode renderNode in AllNodes)
+            foreach (var renderNode in AllNodes)
             {
                 if (renderNode.IsVisible && CanRenderPath(renderNode, viewRect))
                 {
@@ -231,7 +232,7 @@ namespace Hercules.Win2D.Rendering
                 }
             }
 
-            foreach (Win2DRenderNode renderNode in AllNodes)
+            foreach (var renderNode in AllNodes)
             {
                 if (renderNode.IsVisible && CanRenderNode(renderNode, viewRect))
                 {
@@ -241,7 +242,7 @@ namespace Hercules.Win2D.Rendering
 
             if (renderControls)
             {
-                foreach (Win2DAdornerRenderNode adorner in adorners)
+                foreach (var adorner in adorners)
                 {
                     adorner.Render(session);
                 }
@@ -308,7 +309,7 @@ namespace Hercules.Win2D.Rendering
             {
                 return renderNodes.GetOrAddDefault(node, x =>
                 {
-                    Win2DRenderNode renderNode = nodeFactory(x);
+                    var renderNode = nodeFactory(x);
 
                     renderNode.Parent = TryAdd(node.Parent);
 

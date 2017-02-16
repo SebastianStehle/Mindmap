@@ -36,7 +36,7 @@ namespace Hercules.Model
         protected ChildNodeCommandBase(PropertiesBag properties, Document document)
             : base(properties, document)
         {
-            Guid childId = properties[PropertyChildId].ToGuid(CultureInfo.InvariantCulture);
+            var childId = properties[PropertyChildId].ToGuid(CultureInfo.InvariantCulture);
 
             child = (Node)document.GetOrCreateNode(childId, i => new Node(i));
         }

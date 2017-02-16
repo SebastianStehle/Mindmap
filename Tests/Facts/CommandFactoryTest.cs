@@ -36,9 +36,9 @@ namespace Tests.Facts
         [Fact]
         public void ByPrettyName_ReturnsCommand()
         {
-            string typeName = "ToggleHull";
+            var typeName = "ToggleHull";
 
-            IUndoRedoCommand command = CommandFactory.CreateCommand(typeName, properties, document);
+            var command = CommandFactory.CreateCommand(typeName, properties, document);
 
             Assert.IsType<ToggleHullCommand>(command);
         }
@@ -46,9 +46,9 @@ namespace Tests.Facts
         [Fact]
         public void ByTypeName_ReturnsCommand()
         {
-            string typeName = typeof(ToggleHullCommand).AssemblyQualifiedName;
+            var typeName = typeof(ToggleHullCommand).AssemblyQualifiedName;
 
-            IUndoRedoCommand command = CommandFactory.CreateCommand(typeName, properties, document);
+            var command = CommandFactory.CreateCommand(typeName, properties, document);
 
             Assert.IsType<ToggleHullCommand>(command);
         }
@@ -56,9 +56,9 @@ namespace Tests.Facts
         [Fact]
         public void ByOldTypeName_ReturnsCommand()
         {
-            string typeName = typeof(ToggleHullCommand).AssemblyQualifiedName.Replace("Hercules.Model.Shared,", "Hercules.Model,");
+            var typeName = typeof(ToggleHullCommand).AssemblyQualifiedName.Replace("Hercules.Model.Shared,", "Hercules.Model,");
 
-            IUndoRedoCommand command = CommandFactory.CreateCommand(typeName, properties, document);
+            var command = CommandFactory.CreateCommand(typeName, properties, document);
 
             Assert.IsType<ToggleHullCommand>(command);
         }

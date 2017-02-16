@@ -34,13 +34,13 @@ namespace Hercules.Model
         {
             AttachmentIcon result = null;
 
-            foreach (Guid decoderId in DecoderIds)
+            foreach (var decoderId in DecoderIds)
             {
                 stream.Position = 0;
 
                 try
                 {
-                    BitmapDecoder decoder = await BitmapDecoder.CreateAsync(decoderId, stream.AsRandomAccessStream()).AsTask().ConfigureAwait(false);
+                    var decoder = await BitmapDecoder.CreateAsync(decoderId, stream.AsRandomAccessStream()).AsTask().ConfigureAwait(false);
 
                     if (!(decoder.PixelWidth <= AttachmentIcon.MaxSize) || !(decoder.PixelHeight <= AttachmentIcon.MaxSize))
                     {
@@ -63,7 +63,7 @@ namespace Hercules.Model
         {
             string uri = $"ms-appx:///Assets/Icons/{key}.png";
 
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
+            var file = await StorageFile.GetFileFromApplicationUriAsync(new Uri(uri));
 
             return (await file.OpenReadAsync()).AsStreamForRead();
         }

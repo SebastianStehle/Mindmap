@@ -30,7 +30,7 @@ namespace Hercules.Model.ExImport.Formats.Image
 
         public Task ExportAsync(Document document, IRenderer renderer, Stream stream, PropertiesBag properties = null)
         {
-            int dpi =
+            var dpi =
                 properties != null &&
                 properties.Contains("DPI") ?
                 properties["DPI"].ToInt32(CultureInfo.InvariantCulture) :

@@ -113,11 +113,11 @@ namespace Hercules.App.Controls
 
         private void Document_StateChanged(object sender, StateChangedEventArgs e)
         {
-            IUndoRedoManager undoRedoManager = (IUndoRedoManager)sender;
+            var undoRedoManager = (IUndoRedoManager)sender;
 
             if (e.Reason == StateChangedReason.Register)
             {
-                ToggleNotesCommand command = undoRedoManager.LastCommand<ToggleNotesCommand>(n => n.Node.IsNotesEnabled);
+                var command = undoRedoManager.LastCommand<ToggleNotesCommand>(n => n.Node.IsNotesEnabled);
 
                 if (command != null)
                 {
@@ -128,7 +128,7 @@ namespace Hercules.App.Controls
 
         private void BindCenterButton()
         {
-            ButtonBase centerButton = GetTemplateChild(PartCenterButton) as ButtonBase;
+            var centerButton = GetTemplateChild(PartCenterButton) as ButtonBase;
 
             if (centerButton != null)
             {
@@ -181,9 +181,9 @@ namespace Hercules.App.Controls
         {
             if (canvasControl != null)
             {
-                float dpiScale = scrollViewer.ZoomFactor;
+                var dpiScale = scrollViewer.ZoomFactor;
 
-                float dpiRatio = canvasControl.DpiScale / dpiScale;
+                var dpiRatio = canvasControl.DpiScale / dpiScale;
 
                 if (dpiRatio <= 0.8 || dpiRatio >= 1.25)
                 {
@@ -254,9 +254,9 @@ namespace Hercules.App.Controls
         {
             WithRenderer(r =>
             {
-                Vector2 position = e.GetCurrentPoint(canvasControl).Position.ToVector2();
+                var position = e.GetCurrentPoint(canvasControl).Position.ToVector2();
 
-                HitResult result = r.HitTest(position);
+                var result = r.HitTest(position);
 
                 if (result?.RenderNode != null && result.RenderNode == textEditor.EditingNode)
                 {
@@ -275,7 +275,7 @@ namespace Hercules.App.Controls
             {
                 if (Document?.SelectedNode != null)
                 {
-                    Win2DRenderNode renderNode = (Win2DRenderNode)r.Scene.FindRenderNode(Document.SelectedNode);
+                    var renderNode = (Win2DRenderNode)r.Scene.FindRenderNode(Document.SelectedNode);
 
                     textEditor.BeginEdit(renderNode);
                     textEditor.Transform();
@@ -287,9 +287,9 @@ namespace Hercules.App.Controls
         {
             WithRenderer(r =>
             {
-                Vector2 position = e.GetPosition(canvasControl).ToVector2();
+                var position = e.GetPosition(canvasControl).ToVector2();
 
-                HitResult hitResult = r.Scene.HitTest(position);
+                var hitResult = r.Scene.HitTest(position);
 
                 if (hitResult != null)
                 {
@@ -303,9 +303,9 @@ namespace Hercules.App.Controls
         {
             WithRenderer(r =>
             {
-                Vector2 position = e.GetPosition(canvasControl).ToVector2();
+                var position = e.GetPosition(canvasControl).ToVector2();
 
-                HitResult hitResult = r.Scene.HitTest(position);
+                var hitResult = r.Scene.HitTest(position);
 
                 if (textEditor != null && (hitResult == null || hitResult.RenderNode != textEditor.EditingNode))
                 {
@@ -336,9 +336,9 @@ namespace Hercules.App.Controls
 
         private void ShowNotes(NodeBase node)
         {
-            Flyout flyout = new Flyout { FlyoutPresenterStyle = NotesFlyoutStyle, Placement = FlyoutPlacementMode.Full };
+            var flyout = new Flyout { FlyoutPresenterStyle = NotesFlyoutStyle, Placement = FlyoutPlacementMode.Full };
 
-            NotesEditor editor = new NotesEditor(flyout, node);
+            var editor = new NotesEditor(flyout, node);
 
             flyout.Content = editor;
             flyout.ShowAt(this);

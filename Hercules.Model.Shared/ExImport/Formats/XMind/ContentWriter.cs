@@ -18,11 +18,11 @@ namespace Hercules.Model.ExImport.Formats.XMind
     {
         public static void WriteContent(Document document, XDocument content)
         {
-            string timestamp = ((int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds).ToString(CultureInfo.InvariantCulture);
+            var timestamp = ((int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds).ToString(CultureInfo.InvariantCulture);
 
             var allChildren = document.Root.RightChildren.Union(document.Root.LeftChildren).ToList();
 
-            XElement root =
+            var root =
                 new XElement(Namespaces.Content("xmap-content"),
                     new XAttribute("version", "2.0"),
                     new XAttribute("timestamp", timestamp),
@@ -37,7 +37,7 @@ namespace Hercules.Model.ExImport.Formats.XMind
 
         private static XElement CreateTopic(string timestamp, NodeBase node, IReadOnlyList<Node> children)
         {
-            XElement topic =
+            var topic =
                 new XElement(Namespaces.Content("topic"),
                     new XAttribute("id", node.Id),
                     new XAttribute("timestamp", timestamp),
@@ -75,14 +75,14 @@ namespace Hercules.Model.ExImport.Formats.XMind
 
         private static void WriteMarker(NodeBase node, XContainer topic)
         {
-            KeyIcon keyIcon = node.Icon as KeyIcon;
+            var keyIcon = node.Icon as KeyIcon;
 
             if (keyIcon == null)
             {
                 return;
             }
 
-            string marker = MarkerMapping.ResolveXmind(keyIcon.Key);
+            var marker = MarkerMapping.ResolveXmind(keyIcon.Key);
 
             if (marker != null)
             {
@@ -100,9 +100,9 @@ namespace Hercules.Model.ExImport.Formats.XMind
                 return;
             }
 
-            XElement topics = new XElement(Namespaces.Content("topics"), new XAttribute("type", "attached"));
+            var topics = new XElement(Namespaces.Content("topics"), new XAttribute("type", "attached"));
 
-            foreach (Node child in children)
+            foreach (var child in children)
             {
                 topics.Add(CreateTopic(timestamp, child, child.Children));
             }
@@ -117,11 +117,11 @@ namespace Hercules.Model.ExImport.Formats.XMind
                 return;
             }
 
-            XElement boundaries = new XElement(Namespaces.Content("boundaries"));
+            var boundaries = new XElement(Namespaces.Content("boundaries"));
 
-            for (int i = 0; i < children.Count; i++)
+            for (var i = 0; i < children.Count; i++)
             {
-                Node child = children[i];
+                var child = children[i];
 
                 if (child.IsShowingHull)
                 {

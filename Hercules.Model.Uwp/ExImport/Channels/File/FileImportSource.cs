@@ -10,7 +10,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading.Tasks;
-using Windows.Storage;
 using Windows.Storage.Pickers;
 using GP.Utils;
 
@@ -27,27 +26,27 @@ namespace Hercules.Model.ExImport.Channels.File
         {
             Guard.NotNull(importer, nameof(importer));
 
-            List<ImportResult> result = new List<ImportResult>();
+            var result = new List<ImportResult>();
 
-            FileOpenPicker filePicker = new FileOpenPicker();
+            var filePicker = new FileOpenPicker();
 
-            foreach (FileExtension extension in importer.Extensions)
+            foreach (var extension in importer.Extensions)
             {
                 filePicker.FileTypeFilter.Add(extension.Extension);
             }
 
-            StorageFile file = await filePicker.PickSingleFileAsync();
+            var file = await filePicker.PickSingleFileAsync();
 
             if (file == null)
             {
                 return result;
             }
 
-            using (Stream fileStream = await file.OpenStreamForReadAsync())
+            using (var fileStream = await file.OpenStreamForReadAsync())
             {
-                string nameWithoutExtension = file.Name;
+                var nameWithoutExtension = file.Name;
 
-                int lastDot = file.Name.LastIndexOf('.');
+                var lastDot = file.Name.LastIndexOf('.');
 
                 if (lastDot > 0)
                 {

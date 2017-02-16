@@ -173,9 +173,7 @@ namespace Hercules.Model
             parent = null;
         }
 
-        public abstract bool HasChild(Node child);
-
-        public abstract bool Remove(Node child, out int oldIndex);
+        public abstract void Remove(Node child, out int oldIndex);
 
         public abstract void Insert(Node child, int? index, NodeSide side);
 
@@ -183,7 +181,7 @@ namespace Hercules.Model
         {
             node.NodeSide = side;
 
-            foreach (Node child in node.Children)
+            foreach (var child in node.Children)
             {
                 ChangeSide(child, side);
             }

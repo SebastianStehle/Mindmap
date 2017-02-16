@@ -28,7 +28,7 @@ namespace Hercules.Model.Storing
                 return mindappsFolder;
             }
 
-            StorageFolder localFolder = ApplicationData.Current.LocalFolder;
+            var localFolder = ApplicationData.Current.LocalFolder;
 
             try
             {
@@ -48,7 +48,7 @@ namespace Hercules.Model.Storing
             {
                 try
                 {
-                    StorageFolder folder = await GetStorageFolderAsync();
+                    var folder = await GetStorageFolderAsync();
 
                     return (await folder.GetFilesAsync()).ToList();
                 }
@@ -68,7 +68,7 @@ namespace Hercules.Model.Storing
             {
                 try
                 {
-                    StorageFolder folder = await GetStorageFolderAsync();
+                    var folder = await GetStorageFolderAsync();
 
                     return await folder.CreateFileAsync(name, CreationCollisionOption.GenerateUniqueName);
 
@@ -89,7 +89,7 @@ namespace Hercules.Model.Storing
             {
                 try
                 {
-                    StorageFolder folder = await GetStorageFolderAsync();
+                    var folder = await GetStorageFolderAsync();
 
                     return await folder.CreateFileAsync(name, CreationCollisionOption.OpenIfExists);
                 }
@@ -103,7 +103,7 @@ namespace Hercules.Model.Storing
 
         private static IDictionary<string, string> GetExceptionProperies(string action, string name = null)
         {
-            Dictionary<string, string> properties = new Dictionary<string, string>
+            var properties = new Dictionary<string, string>
             {
                 { "FileAction", action }
             };

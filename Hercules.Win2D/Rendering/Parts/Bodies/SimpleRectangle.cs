@@ -10,7 +10,6 @@ using System.Numerics;
 using Windows.UI;
 using GP.Utils.Mathematics;
 using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Brushes;
 
 namespace Hercules.Win2D.Rendering.Parts.Bodies
 {
@@ -44,7 +43,7 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
 
         public override void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderSelection)
         {
-            ICanvasBrush brush = renderable.Resources.Brush(Colors.Black, 0.5f);
+            var brush = renderable.Resources.Brush(Colors.Black, 0.5f);
 
             session.FillRectangle(renderable.RenderBounds.ToRect(), brush);
         }

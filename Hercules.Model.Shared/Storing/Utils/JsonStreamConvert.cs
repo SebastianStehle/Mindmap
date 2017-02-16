@@ -18,7 +18,7 @@ namespace Hercules.Model.Storing.Utils
 
         public static void SerializeAsJson<T>(T value, Stream stream, JsonSerializerSettings settings = null)
         {
-            using (StreamWriter writer = new StreamWriter(stream, Encoding.UTF8, 4096, true))
+            using (var writer = new StreamWriter(stream, Encoding.UTF8, 4096, true))
             {
                 WriteObject(settings ?? DefaultSettings, writer, value);
 
@@ -28,7 +28,7 @@ namespace Hercules.Model.Storing.Utils
 
         public static T DeserializeAsJson<T>(Stream stream, JsonSerializerSettings settings = null)
         {
-            using (StreamReader reader = new StreamReader(stream, Encoding.UTF8))
+            using (var reader = new StreamReader(stream, Encoding.UTF8))
             {
                 return ReadObject<T>(settings ?? DefaultSettings, reader);
             }
@@ -36,7 +36,7 @@ namespace Hercules.Model.Storing.Utils
 
         private static void WriteObject(JsonSerializerSettings settings, TextWriter writer, object value)
         {
-            using (JsonWriter jsonWriter = CreateJsonWriter(writer))
+            using (var jsonWriter = CreateJsonWriter(writer))
             {
                 CreateJsonSerializer(settings).Serialize(jsonWriter, value);
             }
@@ -44,7 +44,7 @@ namespace Hercules.Model.Storing.Utils
 
         private static T ReadObject<T>(JsonSerializerSettings settings, TextReader reader)
         {
-            using (JsonReader jsonReader = CreateJsonReader(reader))
+            using (var jsonReader = CreateJsonReader(reader))
             {
                 return CreateJsonSerializer(settings).Deserialize<T>(jsonReader);
             }
@@ -52,21 +52,21 @@ namespace Hercules.Model.Storing.Utils
 
         private static JsonWriter CreateJsonWriter(TextWriter textWriter)
         {
-            JsonTextWriter writer = new JsonTextWriter(textWriter) { CloseOutput = false };
+            var writer = new JsonTextWriter(textWriter) { CloseOutput = false };
 
             return writer;
         }
 
         private static JsonReader CreateJsonReader(TextReader textReader)
         {
-            JsonTextReader reader = new JsonTextReader(textReader);
+            var reader = new JsonTextReader(textReader);
 
             return reader;
         }
 
         private static JsonSerializer CreateJsonSerializer(JsonSerializerSettings settings)
         {
-            JsonSerializer serializer = JsonSerializer.Create(settings);
+            var serializer = JsonSerializer.Create(settings);
 
             return serializer;
         }

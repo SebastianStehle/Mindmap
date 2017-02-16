@@ -11,7 +11,6 @@ using System.Numerics;
 using Windows.UI;
 using GP.Utils.Mathematics;
 using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Brushes;
 using Microsoft.Graphics.Canvas.Geometry;
 
 namespace Hercules.Win2D.Rendering.Parts.Bodies
@@ -35,29 +34,29 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
 
         public override Vector2 Measure(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
         {
-            Vector2 size = base.Measure(renderable, resourceCreator);
+            var size = base.Measure(renderable, resourceCreator);
 
             verticalOffset = (size.Y - VerticalOffsetPadding) - (0.5f * size.Y);
 
             return size;
         }
 
-        protected override Vector2 CalculatePadding(Win2DRenderable renderable, Vector2 contentSize)
+        protected override Vector2 CalculatePadding(Vector2 contentSize)
         {
             return new Vector2(15, 6);
         }
 
         public override void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderControls)
         {
-            ICanvasBrush borderBrush = renderable.Resources.ThemeDarkBrush(color);
+            var borderBrush = renderable.Resources.ThemeDarkBrush(color);
 
-            ICanvasBrush lineBrush = renderable.Resources.Brush(pathColor, 1);
+            var lineBrush = renderable.Resources.Brush(pathColor, 1);
 
-            Vector2 left = new Vector2(
+            var left = new Vector2(
                 (float)Math.Round(renderable.RenderBounds.Left - 1),
                 (float)Math.Round(renderable.RenderBounds.CenterY) + verticalOffset);
 
-            Vector2 right = new Vector2(
+            var right = new Vector2(
                 (float)Math.Round(renderable.RenderBounds.Right + 1),
                 (float)Math.Round(renderable.RenderBounds.CenterY) + verticalOffset);
 

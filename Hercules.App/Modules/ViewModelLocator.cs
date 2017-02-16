@@ -56,58 +56,60 @@ namespace Hercules.App.Modules
 
             ImageSerializer.Setup();
 
-            if (!DesignMode.DesignModeEnabled)
+            if (DesignMode.DesignModeEnabled)
             {
-                IUnityContainer unityContainer = new UnityContainer();
-
-                unityContainer.RegisterInstance(
-                    new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1, s => ThreadPool.RunAsync(t => s()).Forget())),
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<GP.Utils.Mvvm.IDialogService, GP.Utils.Mvvm.DialogService>(
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterInstance(Messenger.Default,
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<ISettingsProvider, DefaultSettingsProvider>(
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IProcessManager, ProcessManager>(
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<INavigationService, NavigationService>(
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IOutlineGenerator, HtmlOutlineExporter>(
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IMindmapPrintService, MindmapPrintService>(
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IMindmapStore, MindmapStore>(
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IWin2DRendererProvider, ModernPastelRendererProvider>(
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IImportSource, FileImportSource>("File",
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IImporter, XMindImporter>("XMind",
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IImporter, MindappImporter>("Mindapp",
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IExportTarget, FileExportTarget>("File",
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IExportTarget, EmailExportTarget>("Email",
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IExporter, ImageExporter>("Image",
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IExporter, XMindExporter>("XMind",
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IExporter, HtmlOutlineExporter>("HtmlOutline",
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<IExporter, MindappExporter>("Mindapp",
-                    new ContainerControlledLifetimeManager());
-                unityContainer.RegisterType<MindmapsViewModel>(
-                    new PerResolveLifetimeManager());
-                unityContainer.RegisterType<EditorViewModel>(
-                    new PerResolveLifetimeManager());
-
-                unityContainer.BuildUp(this);
-
-                Container = unityContainer;
+                return;
             }
+
+            IUnityContainer unityContainer = new UnityContainer();
+
+            unityContainer.RegisterInstance(
+                new TaskFactory(new LimitedConcurrencyLevelTaskScheduler(1, s => ThreadPool.RunAsync(t => s()).Forget())),
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<GP.Utils.Mvvm.IDialogService, GP.Utils.Mvvm.DialogService>(
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterInstance(Messenger.Default,
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<ISettingsProvider, DefaultSettingsProvider>(
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IProcessManager, ProcessManager>(
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<INavigationService, NavigationService>(
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IOutlineGenerator, HtmlOutlineExporter>(
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IMindmapPrintService, MindmapPrintService>(
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IMindmapStore, MindmapStore>(
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IWin2DRendererProvider, ModernPastelRendererProvider>(
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IImportSource, FileImportSource>("File",
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IImporter, XMindImporter>("XMind",
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IImporter, MindappImporter>("Mindapp",
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IExportTarget, FileExportTarget>("File",
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IExportTarget, EmailExportTarget>("Email",
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IExporter, ImageExporter>("Image",
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IExporter, XMindExporter>("XMind",
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IExporter, HtmlOutlineExporter>("HtmlOutline",
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<IExporter, MindappExporter>("Mindapp",
+                new ContainerControlledLifetimeManager());
+            unityContainer.RegisterType<MindmapsViewModel>(
+                new PerResolveLifetimeManager());
+            unityContainer.RegisterType<EditorViewModel>(
+                new PerResolveLifetimeManager());
+
+            unityContainer.BuildUp(this);
+
+            Container = unityContainer;
         }
     }
 }

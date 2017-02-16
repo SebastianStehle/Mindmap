@@ -21,27 +21,27 @@ namespace Hercules.App.Controls
     {
         public object Convert(object value, Type targetType, object parameter, string language)
         {
-            INodeIcon icon = value as INodeIcon;
+            var icon = value as INodeIcon;
 
-            BitmapImage bitmapImage = null;
-
-            if (icon != null)
+            if (icon == null)
             {
-                bitmapImage = new BitmapImage();
-
-                icon.OpenAsStreamAsync().ContinueWith(stream =>
-                {
-                    if (stream.Result != null)
-                    {
-                        CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
-                            CoreDispatcherPriority.Normal,
-                            () =>
-                            {
-                                bitmapImage.SetSourceAsync(stream.Result.AsRandomAccessStream()).Forget();
-                            }).Forget();
-                    }
-                });
+                return null;
             }
+
+            var bitmapImage = new BitmapImage();
+
+            icon.OpenAsStreamAsync().ContinueWith(stream =>
+            {
+                if (stream.Result != null)
+                {
+                    CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
+                        CoreDispatcherPriority.Normal,
+                        () =>
+                        {
+                            bitmapImage.SetSourceAsync(stream.Result.AsRandomAccessStream()).Forget();
+                        }).Forget();
+                }
+            });
 
             return bitmapImage;
         }

@@ -23,7 +23,7 @@ namespace Hercules.App.Components.Implementations
         {
             if (printDocument != null)
             {
-                IDisposable disposable = printDocument as IDisposable;
+                var disposable = printDocument as IDisposable;
 
                 if (disposable != null)
                 {
@@ -35,7 +35,7 @@ namespace Hercules.App.Components.Implementations
             {
                 printDocument = renderer.Print();
 
-                PrintManager printManager = PrintManager.GetForCurrentView();
+                var printManager = PrintManager.GetForCurrentView();
 
                 printManager.PrintTaskRequested += PrintManager_PrintTaskRequested;
                 try
@@ -51,7 +51,7 @@ namespace Hercules.App.Components.Implementations
 
         private void PrintManager_PrintTaskRequested(PrintManager sender, PrintTaskRequestedEventArgs args)
         {
-            string heading = LocalizationManager.GetString("Print_Heading");
+            var heading = LocalizationManager.GetString("Print_Heading");
 
             args.Request.CreatePrintTask(heading, a =>
             {

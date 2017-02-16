@@ -39,7 +39,7 @@ namespace Tests.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Tests.Properties.Resources", typeof(Resources).Assembly);
+                    var temp = new global::System.Resources.ResourceManager("Tests.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -65,7 +65,7 @@ namespace Tests.Properties {
         /// </summary>
         internal static byte[] Format0 {
             get {
-                object obj = ResourceManager.GetObject("Format0", resourceCulture);
+                var obj = ResourceManager.GetObject("Format0", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -75,7 +75,7 @@ namespace Tests.Properties {
         /// </summary>
         internal static byte[] Format1 {
             get {
-                object obj = ResourceManager.GetObject("Format1", resourceCulture);
+                var obj = ResourceManager.GetObject("Format1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -85,7 +85,7 @@ namespace Tests.Properties {
         /// </summary>
         internal static byte[] Format2 {
             get {
-                object obj = ResourceManager.GetObject("Format2", resourceCulture);
+                var obj = ResourceManager.GetObject("Format2", resourceCulture);
                 return ((byte[])(obj));
             }
         }

@@ -16,20 +16,20 @@ namespace Hercules.Model.ExImport.Formats.XMind
     {
         public static void WriteContent(Document document, XDocument xMapStyles, IRenderer renderer)
         {
-            XElement styles = new XElement(Namespaces.Styles("styles"));
+            var styles = new XElement(Namespaces.Styles("styles"));
 
-            foreach (NodeBase node in document.Nodes)
+            foreach (var node in document.Nodes)
             {
-                IRenderColor color = renderer.FindColor(node);
+                var color = renderer.FindColor(node);
 
                 if (color == null)
                 {
                     continue;
                 }
 
-                string colorString = ColorsVectorHelper.ConvertToRGBString(color.Normal);
+                var colorString = ColorsVectorHelper.ConvertToRGBString(color.Normal);
 
-                XElement properties = new XElement(Namespaces.Styles("topic-properties"));
+                var properties = new XElement(Namespaces.Styles("topic-properties"));
 
                 if (node is RootNode || node.Parent is RootNode)
                 {

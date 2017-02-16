@@ -29,22 +29,22 @@ namespace Hercules.Win2D.Rendering.Utils
             Guard.NotNull(device, nameof(device));
             Guard.GreaterThan(padding, 0, nameof(padding));
 
-            Rect2 sceneBounds = scene.RenderBounds;
+            var sceneBounds = scene.RenderBounds;
 
-            float w = sceneBounds.Size.X + (2 * padding);
-            float h = sceneBounds.Size.Y + (2 * padding);
+            var w = sceneBounds.Size.X + (2 * padding);
+            var h = sceneBounds.Size.Y + (2 * padding);
 
-            float dpiValue = dpi ?? DisplayInformation.GetForCurrentView().LogicalDpi;
+            var dpiValue = dpi ?? DisplayInformation.GetForCurrentView().LogicalDpi;
 
-            float dpiFactor = dpiValue / DpiWithPixelMapping;
+            var dpiFactor = dpiValue / DpiWithPixelMapping;
 
-            int wPixels = (int)(w * dpiFactor);
-            int hPixels = (int)(h * dpiFactor);
+            var wPixels = (int)(w * dpiFactor);
+            var hPixels = (int)(h * dpiFactor);
 
-            int maxPixels = Math.Min(MaxSize, device.Device.MaximumBitmapSizeInPixels - 100);
+            var maxPixels = Math.Min(MaxSize, device.Device.MaximumBitmapSizeInPixels - 100);
 
-            int wDiff = wPixels - maxPixels;
-            int hDiff = hPixels - maxPixels;
+            var wDiff = wPixels - maxPixels;
+            var hDiff = hPixels - maxPixels;
 
             if (wDiff > 0 || hDiff > 0)
             {
@@ -58,9 +58,9 @@ namespace Hercules.Win2D.Rendering.Utils
                 }
             }
 
-            using (CanvasRenderTarget target = new CanvasRenderTarget(device, w, h, dpiValue))
+            using (var target = new CanvasRenderTarget(device, w, h, dpiValue))
             {
-                using (CanvasDrawingSession session = target.CreateDrawingSession())
+                using (var session = target.CreateDrawingSession())
                 {
                     session.Clear(background.ToColor());
 

@@ -80,7 +80,7 @@ namespace Hercules.Win2D.Rendering
 
         public Win2DColor(int color)
             : this(
-                ColorsHelper.ConvertToColor(color, 0, 0, 0),
+                ColorsHelper.ConvertToColor(color),
                 ColorsHelper.ConvertToColor(color, 0, 0.2, -0.3),
                 ColorsHelper.ConvertToColor(color, 0, -0.2, 0.2))
         {

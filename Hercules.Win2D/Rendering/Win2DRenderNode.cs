@@ -53,7 +53,7 @@ namespace Hercules.Win2D.Rendering
             get { return bodyGeometry.TextRenderer; }
         }
 
-        public virtual float VerticalPathRenderOffset
+        public float VerticalPathRenderOffset
         {
             get { return bodyGeometry.VerticalPathOffset; }
         }
@@ -151,7 +151,7 @@ namespace Hercules.Win2D.Rendering
 
                 if (animatingEndUtc.HasValue)
                 {
-                    float timeRemaining = (float)(animatingEndUtc.Value - utcNow).TotalMilliseconds;
+                    var timeRemaining = (float)(animatingEndUtc.Value - utcNow).TotalMilliseconds;
 
                     fractionComplete -= Math.Min(1, Math.Max(0, timeRemaining / animationSpeed));
                 }
@@ -207,7 +207,7 @@ namespace Hercules.Win2D.Rendering
             bodyGeometry.Arrange(this, resourceCreator);
         }
 
-        public virtual HitResult HitTest(Vector2 hitPosition)
+        public HitResult HitTest(Vector2 hitPosition)
         {
             return bodyGeometry?.HitTest(this, hitPosition) ?? (RenderBounds.Contains(hitPosition) ? new HitResult(this, HitTarget.Node) : null);
         }
@@ -237,9 +237,9 @@ namespace Hercules.Win2D.Rendering
             pathGeometry = null;
         }
 
-        public void ComputeBody(ICanvasResourceCreator resourceCreator)
+        public void ComputeBody()
         {
-            IBodyPart body = CreateBody(resourceCreator, bodyGeometry);
+            var body = CreateBody(bodyGeometry);
 
             if (body != null)
             {
@@ -249,9 +249,9 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        public void ComputePath(ICanvasResourceCreator resourceCreator)
+        public void ComputePath()
         {
-            IPathPart path = CreatePath(resourceCreator, pathGeometry);
+            var path = CreatePath(pathGeometry);
 
             if (path != null)
             {
@@ -261,9 +261,9 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        public void ComputeHull(ICanvasResourceCreator resourceCreator)
+        public void ComputeHull()
         {
-            IHullPart hull = CreateHull(resourceCreator, hullGeometry);
+            var hull = CreateHull(hullGeometry);
 
             if (hull != null)
             {
@@ -273,11 +273,11 @@ namespace Hercules.Win2D.Rendering
             }
         }
 
-        protected abstract IBodyPart CreateBody(ICanvasResourceCreator resourceCreator, IBodyPart current);
+        protected abstract IBodyPart CreateBody(IBodyPart current);
 
-        protected abstract IHullPart CreateHull(ICanvasResourceCreator resourceCreator, IHullPart current);
+        protected abstract IHullPart CreateHull(IHullPart current);
 
-        protected abstract IPathPart CreatePath(ICanvasResourceCreator resourceCreator, IPathPart current);
+        protected abstract IPathPart CreatePath(IPathPart current);
 
         public Win2DAdornerRenderNode CreateAdorner()
         {

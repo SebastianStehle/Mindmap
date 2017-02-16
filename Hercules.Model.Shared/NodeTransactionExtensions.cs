@@ -16,13 +16,13 @@ namespace Hercules.Model
     {
         public static NodeBase AddSibilingTransactional(this NodeBase node)
         {
-            Node selectedNormalNode = node as Node;
+            var selectedNormalNode = node as Node;
 
             if (selectedNormalNode?.Document != null)
             {
-                InsertChildCommand command = new InsertChildCommand(selectedNormalNode.Parent, null, selectedNormalNode.NodeSide);
+                var command = new InsertChildCommand(selectedNormalNode.Parent, null, selectedNormalNode.NodeSide);
 
-                string tansactionName = LocalizationManager.GetString("TransactionName_AddSibling");
+                var tansactionName = LocalizationManager.GetString("TransactionName_AddSibling");
 
                 selectedNormalNode.Document.MakeTransaction(tansactionName, commands =>
                 {
@@ -41,9 +41,9 @@ namespace Hercules.Model
         {
             if (node?.Document != null)
             {
-                InsertChildCommand command = new InsertChildCommand(node, null, NodeSide.Auto);
+                var command = new InsertChildCommand(node, null, NodeSide.Auto);
 
-                string tansactionName = LocalizationManager.GetString("TransactionName_AddChild");
+                var tansactionName = LocalizationManager.GetString("TransactionName_AddChild");
 
                 node.Document.MakeTransaction(tansactionName, commands =>
                 {
@@ -60,13 +60,13 @@ namespace Hercules.Model
 
         public static void RemoveTransactional(this NodeBase node)
         {
-            Node selectedNormalNode = node as Node;
+            var selectedNormalNode = node as Node;
 
             if (selectedNormalNode?.Document != null)
             {
                 (node.FindBottomOf() ?? node.Parent)?.Select();
 
-                string tansactionName = LocalizationManager.GetString("TransactionName_RemoveNode");
+                var tansactionName = LocalizationManager.GetString("TransactionName_RemoveNode");
 
                 node.Document.MakeTransaction(tansactionName, commands =>
                 {
@@ -77,11 +77,11 @@ namespace Hercules.Model
 
         public static void MoveTransactional(this NodeBase node, NodeBase target, int? index, NodeSide side)
         {
-            Node selectedNormalNode = node as Node;
+            var selectedNormalNode = node as Node;
 
             if (selectedNormalNode?.Document != null)
             {
-                string tansactionName = LocalizationManager.GetString("TransactionName_MoveNode");
+                var tansactionName = LocalizationManager.GetString("TransactionName_MoveNode");
 
                 selectedNormalNode.Document.MakeTransaction(tansactionName, commands =>
                 {
@@ -96,7 +96,7 @@ namespace Hercules.Model
         {
             if (node.Document != null && node.HasChildren && !node.IsCollapsed)
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_ExpandCollapse");
+                var transactionName = LocalizationManager.GetString("TransactionName_ExpandCollapse");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
@@ -109,7 +109,7 @@ namespace Hercules.Model
         {
             if (node.Document != null && node.HasChildren && node.IsCollapsed)
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_ExpandCollapse");
+                var transactionName = LocalizationManager.GetString("TransactionName_ExpandCollapse");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
@@ -122,7 +122,7 @@ namespace Hercules.Model
         {
             if (node.Document != null)
             {
-                string tansactionName = LocalizationManager.GetString("TransactionName_ToggleChecked");
+                var tansactionName = LocalizationManager.GetString("TransactionName_ToggleChecked");
 
                 node.Document.MakeTransaction(tansactionName, commands =>
                 {
@@ -135,7 +135,7 @@ namespace Hercules.Model
         {
             if (node.Document != null)
             {
-                string tansactionName = LocalizationManager.GetString("TransactionName_ToggleNotes");
+                var tansactionName = LocalizationManager.GetString("TransactionName_ToggleNotes");
 
                 node.Document.MakeTransaction(tansactionName, commands =>
                 {
@@ -148,7 +148,7 @@ namespace Hercules.Model
         {
             if (node.Document != null)
             {
-                string tansactionName = LocalizationManager.GetString("TransactionName_ToggleHull");
+                var tansactionName = LocalizationManager.GetString("TransactionName_ToggleHull");
 
                 node.Document.MakeTransaction(tansactionName, commands =>
                 {
@@ -161,7 +161,7 @@ namespace Hercules.Model
         {
             if (node.Document != null && node.HasChildren)
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_ExpandCollapse");
+                var transactionName = LocalizationManager.GetString("TransactionName_ExpandCollapse");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
@@ -174,7 +174,7 @@ namespace Hercules.Model
         {
             if (node.Document != null && !Equals(node.Shape, shape))
             {
-                string tansactionName = LocalizationManager.GetString("TransactionName_ChangeShape");
+                var tansactionName = LocalizationManager.GetString("TransactionName_ChangeShape");
 
                 node.Document.MakeTransaction(tansactionName, commands =>
                 {
@@ -187,7 +187,7 @@ namespace Hercules.Model
         {
             if (node.Document != null && !Equals(node.Text, text))
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_ChangeText");
+                var transactionName = LocalizationManager.GetString("TransactionName_ChangeText");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
@@ -200,7 +200,7 @@ namespace Hercules.Model
         {
             if (node.Document != null && !Equals(node.Notes, notes))
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_ChangeNotes");
+                var transactionName = LocalizationManager.GetString("TransactionName_ChangeNotes");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
@@ -213,7 +213,7 @@ namespace Hercules.Model
         {
             if (node.Document != null && !Equals(node.Color, color) && color != null)
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_ChangeColor");
+                var transactionName = LocalizationManager.GetString("TransactionName_ChangeColor");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
@@ -226,7 +226,7 @@ namespace Hercules.Model
         {
             if (node.Document != null && !Equals(node.Icon, icon))
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_ChangeIcon");
+                var transactionName = LocalizationManager.GetString("TransactionName_ChangeIcon");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
@@ -239,7 +239,7 @@ namespace Hercules.Model
         {
             if (node.Document != null && !Equals(node.CheckableMode, checkableMode))
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_ChangeCheckableMode");
+                var transactionName = LocalizationManager.GetString("TransactionName_ChangeCheckableMode");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
@@ -252,7 +252,7 @@ namespace Hercules.Model
         {
             if (node.Document != null && !Equals(node.IconSize, iconSize))
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_ChangeIconSize");
+                var transactionName = LocalizationManager.GetString("TransactionName_ChangeIconSize");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {
@@ -265,7 +265,7 @@ namespace Hercules.Model
         {
             if (node.Document != null && !Equals(node.IconPosition, iconPosition))
             {
-                string transactionName = LocalizationManager.GetString("TransactionName_ChangeIconPosition");
+                var transactionName = LocalizationManager.GetString("TransactionName_ChangeIconPosition");
 
                 node.Document.MakeTransaction(transactionName, commands =>
                 {

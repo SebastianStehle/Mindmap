@@ -58,7 +58,7 @@ namespace Hercules.Win2D.Rendering
 
         private static async Task<CanvasBitmap> LoadFile(INodeIcon icon, ICanvasResourceCreator device)
         {
-            using (Stream stream = await icon.OpenAsStreamAsync())
+            using (var stream = await icon.OpenAsStreamAsync())
             {
                 if (stream != null)
                 {
@@ -71,7 +71,7 @@ namespace Hercules.Win2D.Rendering
 
         public async Task<Stream> ToStreamAsync()
         {
-            MemoryStream memoryStream = new MemoryStream();
+            var memoryStream = new MemoryStream();
 
             await bitmap.SaveAsync(memoryStream.AsRandomAccessStream(), CanvasBitmapFileFormat.Png);
 
@@ -80,7 +80,7 @@ namespace Hercules.Win2D.Rendering
 
         protected override void DisposeObject(bool disposing)
         {
-            CanvasBitmap currentBitmap = bitmap;
+            var currentBitmap = bitmap;
 
             if (currentBitmap != null)
             {

@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using System.ComponentModel;
+// ReSharper disable VirtualMemberNeverOverridden.Global
 
 namespace Hercules.Model
 {
@@ -20,12 +21,7 @@ namespace Hercules.Model
 
         protected void OnPropertyChanged(PropertyChangedEventArgs eventArgs)
         {
-            PropertyChangedEventHandler eventHandler = PropertyChanged;
-
-            if (eventHandler != null)
-            {
-                eventHandler(this, eventArgs);
-            }
+            PropertyChanged?.Invoke(this, eventArgs);
         }
 
         protected virtual void OnPropertyChanged(string propertyName)

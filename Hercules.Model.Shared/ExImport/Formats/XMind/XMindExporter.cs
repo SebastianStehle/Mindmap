@@ -36,9 +36,9 @@ namespace Hercules.Model.ExImport.Formats.XMind
 
             return Task.Run(() =>
             {
-                List<KeyValuePair<string, Document>> result = new List<KeyValuePair<string, Document>>();
+                var result = new List<KeyValuePair<string, Document>>();
 
-                using (ZipArchive archive = new ZipArchive(stream, ZipArchiveMode.Create))
+                using (var archive = new ZipArchive(stream, ZipArchiveMode.Create))
                 {
                     archive.CreateXmlEntry("META-INF/manifest.xml", WriteManifest);
                     archive.CreateXmlEntry("content.xml", c => ContentWriter.WriteContent(document, c));

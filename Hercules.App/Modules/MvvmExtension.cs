@@ -21,7 +21,7 @@ namespace Hercules.App.Modules
                 return command;
             }
 
-            HashSet<string> propertiesSet = new HashSet<string>(properties);
+            var propertiesSet = new HashSet<string>(properties);
 
             owner.PropertyChanged += (sender, e) =>
             {
@@ -41,7 +41,7 @@ namespace Hercules.App.Modules
                 return command;
             }
 
-            HashSet<string> propertiesSet = new HashSet<string>(properties);
+            var propertiesSet = new HashSet<string>(properties);
 
             owner.PropertyChanged += (sender, e) =>
             {

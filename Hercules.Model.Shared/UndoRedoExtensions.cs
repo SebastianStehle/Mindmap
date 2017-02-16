@@ -24,18 +24,18 @@ namespace Hercules.Model
 
         public static bool IsLastCommand<TCommand>(this IUndoRedoManager manager, Predicate<TCommand> predicate) where TCommand : class, IUndoRedoAction
         {
-            TCommand command = LastCommand(manager, predicate);
+            var command = LastCommand(manager, predicate);
 
             return command != null;
         }
 
         public static TCommand LastCommand<TCommand>(this IUndoRedoManager manager, Predicate<TCommand> predicate) where TCommand : class, IUndoRedoAction
         {
-            TCommand command = manager.History.FirstOrDefault() as TCommand;
+            var command = manager.History.FirstOrDefault() as TCommand;
 
             if (command == null)
             {
-                CompositeUndoRedoAction composite = manager.History.FirstOrDefault() as CompositeUndoRedoAction;
+                var composite = manager.History.FirstOrDefault() as CompositeUndoRedoAction;
 
                 if (composite != null && composite.Actions.Count == 1)
                 {
@@ -48,17 +48,17 @@ namespace Hercules.Model
 
         public static IEnumerable<IUndoRedoCommand> Commands(this IUndoRedoManager manager)
         {
-            foreach (IUndoRedoAction action in manager.History)
+            foreach (var action in manager.History)
             {
-                IUndoRedoCommand command = action as IUndoRedoCommand;
+                var command = action as IUndoRedoCommand;
 
                 if (command == null)
                 {
-                    CompositeUndoRedoAction composite = action as CompositeUndoRedoAction;
+                    var composite = action as CompositeUndoRedoAction;
 
                     if (composite != null)
                     {
-                        foreach (IUndoRedoCommand nested in composite.Actions.OfType<IUndoRedoCommand>())
+                        foreach (var nested in composite.Actions.OfType<IUndoRedoCommand>())
                         {
                             yield return nested;
                         }

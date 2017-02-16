@@ -75,13 +75,13 @@ namespace Hercules.Model.Storing
 
         public static async Task SaveDocumentQueuedAsync(this StorageFile file, Document document)
         {
-            JsonHistory history = new JsonHistory(document);
+            var history = new JsonHistory(document);
 
             await FileQueue.EnqueueAsync(async () =>
             {
                 try
                 {
-                    using (StorageStreamTransaction transaction = await file.OpenTransactedWriteAsync())
+                    using (var transaction = await file.OpenTransactedWriteAsync())
                     {
                         JsonDocumentSerializer.Serialize(history, transaction.Stream.AsStreamForWrite());
 

@@ -49,19 +49,17 @@ namespace Hercules.Model
             OnPropertyChanged(nameof(HasChildren));
         }
 
-        public override bool Remove(Node child, out int oldIndex)
+        public override void Remove(Node child, out int oldIndex)
         {
-            bool isRemoved = Remove(children, child, out oldIndex);
+            var isRemoved = Remove(children, child, out oldIndex);
 
             if (isRemoved)
             {
                 OnPropertyChanged(nameof(HasChildren));
             }
-
-            return isRemoved;
         }
 
-        public override bool HasChild(Node child)
+        public bool HasChild(Node child)
         {
             return child != null && (children.Contains(child) || children.Any(n => n.HasChild(child)));
         }

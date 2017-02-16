@@ -7,7 +7,6 @@
 // ==========================================================================
 
 using System;
-using System.Numerics;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
@@ -111,12 +110,12 @@ namespace Hercules.App.Controls
                 return;
             }
 
-            Vector2 position = editingNode.TextRenderer.RenderPosition;
+            var position = editingNode.TextRenderer.RenderPosition;
 
             renderTransform.X = position.X - Padding.Left - BorderThickness.Left;
             renderTransform.Y = position.Y - Padding.Top  - BorderThickness.Top;
 
-            Vector2 renderSize = editingNode.TextRenderer.RenderSize;
+            var renderSize = editingNode.TextRenderer.RenderSize;
 
             MinWidth =
                 renderSize.X +

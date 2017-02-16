@@ -91,14 +91,14 @@ namespace Hercules.Model.Storing
         {
             Guard.ValidFileName(name, nameof(name));
 
-            StorageFile storageFile = await LocalStore.CreateFileQueuedAsync(name + Extension);
+            var storageFile = await LocalStore.CreateFileQueuedAsync(name + Extension);
 
             return await CreateNewAsync(name, document, storageFile);
         }
 
         private static async Task<DocumentFile> CreateNewAsync(string name, Document document, StorageFile storageFile)
         {
-            DocumentFile file = new DocumentFile(storageFile, document ?? Document.CreateNew(name));
+            var file = new DocumentFile(storageFile, document ?? Document.CreateNew(name));
 
             await file.SaveAsync();
 
@@ -127,7 +127,7 @@ namespace Hercules.Model.Storing
             {
                 if (document == null)
                 {
-                    Document newDocument = await fileReference.OpenDocumentQueuedAsync();
+                    var newDocument = await fileReference.OpenDocumentQueuedAsync();
 
                     OpenInternal(newDocument);
                 }
@@ -173,7 +173,7 @@ namespace Hercules.Model.Storing
 
         private async Task<bool> DoAsync(Func<bool> predicate, Func<Task> action)
         {
-            bool hasSucceeded = false;
+            var hasSucceeded = false;
 
             if (predicate())
             {

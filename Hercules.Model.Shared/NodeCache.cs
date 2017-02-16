@@ -47,7 +47,7 @@ namespace Hercules.Model
 
         private void Cleanup()
         {
-            foreach (KeyValuePair<Guid, WeakReference<NodeBase>> kvp in nodes.ToList())
+            foreach (var kvp in nodes.ToList())
             {
                 NodeBase temp;
 

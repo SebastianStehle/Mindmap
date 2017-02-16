@@ -73,7 +73,7 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
 
             if (renderable.Node.Icon != null)
             {
-                float targetSize = IconSizeSmall;
+                var targetSize = IconSizeSmall;
 
                 if (renderable.Node.IconSize == IconSize.Medium)
                 {
@@ -86,7 +86,7 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
 
                 iconRenderSize = new Vector2(renderable.Node.Icon.PixelWidth, renderable.Node.Icon.PixelHeight);
 
-                float ratio = iconRenderSize.X / iconRenderSize.Y;
+                var ratio = iconRenderSize.X / iconRenderSize.Y;
 
                 if (iconRenderSize.X > iconRenderSize.Y)
                 {
@@ -114,9 +114,9 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
             }
 
             textIconRenderSize.Y = Math.Max(MinHeight, textIconRenderSize.Y);
-            textIconPadding = CalculatePadding(renderable, textIconRenderSize);
+            textIconPadding = CalculatePadding(textIconRenderSize);
 
-            Vector2 totalSize = textIconRenderSize + (2 * textIconPadding);
+            var totalSize = textIconRenderSize + (2 * textIconPadding);
 
             if (MustRenderCheckBox(renderable))
             {
@@ -128,10 +128,10 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
 
         public virtual void Arrange(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
         {
-            Vector2 iconOffset = Vector2.Zero;
-            Vector2 textOffset = Vector2.Zero;
+            var iconOffset = Vector2.Zero;
+            var textOffset = Vector2.Zero;
 
-            Vector2 textRenderSize = textRenderer.RenderSize;
+            var textRenderSize = textRenderer.RenderSize;
 
             if (renderable.Node.Icon == null)
             {
@@ -178,7 +178,7 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
 
             if (MustRenderCheckBox(renderable))
             {
-                Vector2 checkBoxOffset = new Vector2(
+                var checkBoxOffset = new Vector2(
                     textIconPadding.X + (0.5f * CheckBoxSize),
                     textIconPadding.Y + textOffset.Y + (0.5f * textRenderSize.Y));
 
@@ -190,15 +190,15 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
 
             iconRenderPosition = renderable.RenderPosition + textIconPadding + iconOffset;
 
-            Vector2 textRenderPosition = renderable.RenderPosition + textIconPadding + textOffset;
+            var textRenderPosition = renderable.RenderPosition + textIconPadding + textOffset;
 
             textRenderer.Arrange(textRenderPosition);
         }
 
         private void ArrangeExpandButton(IRenderable renderable)
         {
-            Vector2 renderPosition = renderable.RenderPosition;
-            Vector2 renderSize = renderable.RenderSize;
+            var renderPosition = renderable.RenderPosition;
+            var renderSize = renderable.RenderSize;
             Vector2 buttonPosition;
 
             if (renderable.Node.NodeSide == NodeSide.Left)
@@ -279,14 +279,14 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
                 return;
             }
 
-            ICanvasImage image = renderable.Resources.Image(renderable.Node);
+            var image = renderable.Resources.Image(renderable.Node);
 
             if (image == null)
             {
                 return;
             }
 
-            Rect rect = new Rect(
+            var rect = new Rect(
                 iconRenderPosition.X,
                 iconRenderPosition.Y,
                 iconRenderSize.X,
@@ -295,7 +295,7 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
             session.DrawImage(image, rect, image.GetBounds(session), 1, CanvasImageInterpolation.HighQualityCubic);
         }
 
-        protected virtual Vector2 CalculatePadding(Win2DRenderable renderable, Vector2 contentSize)
+        protected virtual Vector2 CalculatePadding(Vector2 contentSize)
         {
             return Vector2.Zero;
         }

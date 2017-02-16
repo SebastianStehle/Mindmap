@@ -20,7 +20,7 @@ namespace Hercules.Model
         {
             NodeBase result = null;
 
-            RootNode selectedRoot = node as RootNode;
+            var selectedRoot = node as RootNode;
 
             if (selectedRoot != null)
             {
@@ -31,7 +31,7 @@ namespace Hercules.Model
             }
             else
             {
-                Node normalNode = node as Node;
+                var normalNode = node as Node;
 
                 if (normalNode != null && normalNode.NodeSide == NodeSide.Right)
                 {
@@ -53,7 +53,7 @@ namespace Hercules.Model
         {
             NodeBase result = null;
 
-            RootNode selectedRoot = node as RootNode;
+            var selectedRoot = node as RootNode;
 
             if (selectedRoot != null)
             {
@@ -64,7 +64,7 @@ namespace Hercules.Model
             }
             else
             {
-                Node normalNode = node as Node;
+                var normalNode = node as Node;
 
                 if (normalNode != null && normalNode.NodeSide == NodeSide.Left)
                 {
@@ -86,13 +86,13 @@ namespace Hercules.Model
         {
             NodeBase result = null;
 
-            Node normalNode = node as Node;
+            var normalNode = node as Node;
 
             if (normalNode != null)
             {
-                IReadOnlyList<Node> parentCollection = normalNode.RetrieveParentCollection();
+                var parentCollection = normalNode.RetrieveParentCollection();
 
-                int currentIndex = parentCollection.IndexOf(normalNode);
+                var currentIndex = parentCollection.IndexOf(normalNode);
 
                 if (currentIndex > 0)
                 {
@@ -100,15 +100,15 @@ namespace Hercules.Model
                 }
                 else
                 {
-                    Node normalParent = node.Parent as Node;
+                    var normalParent = node.Parent as Node;
 
                     if (normalParent != null)
                     {
-                        IReadOnlyList<Node> grandParentCollection = normalParent.RetrieveParentCollection();
+                        var grandParentCollection = normalParent.RetrieveParentCollection();
 
-                        int currentParentIndex = grandParentCollection.IndexOf(normalParent);
+                        var currentParentIndex = grandParentCollection.IndexOf(normalParent);
 
-                        for (int i = currentParentIndex - 1; i >= 0; i--)
+                        for (var i = currentParentIndex - 1; i >= 0; i--)
                         {
                             if ((result = grandParentCollection[i].Children.LastOrDefault()) != null)
                             {
@@ -126,13 +126,13 @@ namespace Hercules.Model
         {
             NodeBase result = null;
 
-            Node normalNode = node as Node;
+            var normalNode = node as Node;
 
             if (normalNode != null)
             {
-                IReadOnlyList<Node> parentCollection = normalNode.RetrieveParentCollection();
+                var parentCollection = normalNode.RetrieveParentCollection();
 
-                int currentIndex = parentCollection.IndexOf(normalNode);
+                var currentIndex = parentCollection.IndexOf(normalNode);
 
                 if (currentIndex < parentCollection.Count - 1)
                 {
@@ -140,15 +140,15 @@ namespace Hercules.Model
                 }
                 else
                 {
-                    Node normalParent = node.Parent as Node;
+                    var normalParent = node.Parent as Node;
 
                     if (normalParent != null)
                     {
-                        IReadOnlyList<Node> grandParentCollection = normalParent.RetrieveParentCollection();
+                        var grandParentCollection = normalParent.RetrieveParentCollection();
 
-                        int currentParentIndex = grandParentCollection.IndexOf(normalParent);
+                        var currentParentIndex = grandParentCollection.IndexOf(normalParent);
 
-                        for (int i = currentParentIndex + 1; i < grandParentCollection.Count; i++)
+                        for (var i = currentParentIndex + 1; i < grandParentCollection.Count; i++)
                         {
                             if ((result = grandParentCollection[i].Children.FirstOrDefault()) != null)
                             {

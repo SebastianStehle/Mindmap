@@ -25,22 +25,22 @@ namespace Hercules.Model.Storing
 
         static CommandFactory()
         {
-            Type commandBaseType = typeof(IUndoRedoCommand);
+            var commandBaseType = typeof(IUndoRedoCommand);
 
-            Assembly assembly = typeof(CommandFactory).GetTypeInfo().Assembly;
+            var assembly = typeof(CommandFactory).GetTypeInfo().Assembly;
 
-            foreach (Type type in assembly.GetTypes())
+            foreach (var type in assembly.GetTypes())
             {
-                TypeInfo typeInfo = type.GetTypeInfo();
+                var typeInfo = type.GetTypeInfo();
 
                 if (type.GetInterfaces().Contains(commandBaseType))
                 {
-                    string typeName = ResolveTypeName(type);
+                    var typeName = ResolveTypeName(type);
 
                     AddCommand(type, typeName);
                 }
 
-                LegacyNameAttribute legacyName = typeInfo.GetCustomAttribute<LegacyNameAttribute>();
+                var legacyName = typeInfo.GetCustomAttribute<LegacyNameAttribute>();
 
                 if (!string.IsNullOrWhiteSpace(legacyName?.OldName))
                 {
@@ -66,7 +66,7 @@ namespace Hercules.Model.Storing
 
         private static string ResolveTypeName(Type type)
         {
-            string result = type.Name;
+            var result = type.Name;
 
             if (result.EndsWith(Suffix, StringComparison.OrdinalIgnoreCase))
             {
@@ -78,7 +78,7 @@ namespace Hercules.Model.Storing
 
         public static IUndoRedoCommand CreateCommand(string typeName, PropertiesBag properties, Document document)
         {
-            Type type = ResolveType(typeName);
+            var type = ResolveType(typeName);
 
             return CreateCommand(properties, document, type);
         }
@@ -90,13 +90,13 @@ namespace Hercules.Model.Storing
 
         private static Type ResolveType(string typeName)
         {
-            Type type = TryResolveTypeName(typeName);
+            var type = TryResolveTypeName(typeName);
 
             if (type == null)
             {
                 if (!typeName.Contains(ModelAssemblyNew))
                 {
-                    string newTypeName = typeName.Replace(ModelAssemblyOld, ModelAssemblyNew);
+                    var newTypeName = typeName.Replace(ModelAssemblyOld, ModelAssemblyNew);
 
                     type = TryResolveTypeName(newTypeName);
                 }

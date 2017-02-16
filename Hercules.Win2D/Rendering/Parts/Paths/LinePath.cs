@@ -27,7 +27,7 @@ namespace Hercules.Win2D.Rendering.Parts.Paths
             yield return GeometryBuilder.ComputeLinePath(renderNode, renderNode.Parent, resourceCreator);
         }
 
-        protected override void RenderInternal(Win2DRenderable renderable, CanvasDrawingSession session, CanvasGeometry[] geometries, ICanvasBrush brush)
+        protected override void RenderInternal(CanvasDrawingSession session, CanvasGeometry[] geometries, ICanvasBrush brush)
         {
             session.DrawGeometry(geometries[0], brush, 2);
         }

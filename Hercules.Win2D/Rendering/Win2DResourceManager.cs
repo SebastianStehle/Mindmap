@@ -48,14 +48,14 @@ namespace Hercules.Win2D.Rendering
 
         public void ClearResources()
         {
-            foreach (ICanvasBrush brush in cachedColors.Values)
+            foreach (var brush in cachedColors.Values)
             {
                 brush.Dispose();
             }
 
             cachedColors.Clear();
 
-            foreach (Win2DIcon icon in cachedIcons.Values)
+            foreach (var icon in cachedIcons.Values)
             {
                 icon.Dispose();
             }
@@ -65,7 +65,7 @@ namespace Hercules.Win2D.Rendering
 
         public ICanvasBrush ThemeNormalBrush(int colorIndex)
         {
-            IRenderColor color = ResolveColor(colorIndex);
+            var color = ResolveColor(colorIndex);
 
             return ThemeNormalBrush(color);
         }
@@ -79,7 +79,7 @@ namespace Hercules.Win2D.Rendering
 
         public ICanvasBrush ThemeDarkBrush(int colorIndex)
         {
-            IRenderColor color = ResolveColor(colorIndex);
+            var color = ResolveColor(colorIndex);
 
             return Brush(((Win2DColor)color).Darker, 1);
         }
@@ -93,7 +93,7 @@ namespace Hercules.Win2D.Rendering
 
         public ICanvasBrush ThemeLightBrush(int colorIndex)
         {
-            IRenderColor color = ResolveColor(colorIndex);
+            var color = ResolveColor(colorIndex);
 
             return Brush(((Win2DColor)color).Lighter, 1);
         }
@@ -119,7 +119,7 @@ namespace Hercules.Win2D.Rendering
         {
             return cachedColors.GetOrAddDefault(new Tuple<Color, float>(color, opacity), x =>
             {
-                CanvasSolidColorBrush brush = new CanvasSolidColorBrush(canvas.Device, color) { Opacity = opacity };
+                var brush = new CanvasSolidColorBrush(canvas.Device, color) { Opacity = opacity };
 
                 return brush;
             });
@@ -141,7 +141,7 @@ namespace Hercules.Win2D.Rendering
         {
             Guard.NotNull(node, nameof(node));
 
-            ThemeColor themeColor = node.Color as ThemeColor;
+            var themeColor = node.Color as ThemeColor;
 
             return themeColor != null ? colors[themeColor.Index] : new Win2DColor((ValueColor)node.Color);
         }

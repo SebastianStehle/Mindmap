@@ -32,7 +32,7 @@ namespace Hercules.Win2D.Rendering.Utils
 
         static NotesButton()
         {
-            int code = int.Parse("E70F", NumberStyles.HexNumber);
+            var code = int.Parse("E70F", NumberStyles.HexNumber);
 
             Glyph = char.ConvertFromUtf32(code);
         }
@@ -58,7 +58,7 @@ namespace Hercules.Win2D.Rendering.Utils
 #if DRAW_OUTLINE
             session.DrawRectangle(renderBounds.ToRect(), Colors.Turquoise);
 #endif
-            Color color = renderable.Node.HasNotes ? Colors.Black : Colors.Gray;
+            var color = renderable.Node.HasNotes ? Colors.Black : Colors.Gray;
 
             session.DrawText(Glyph, renderPosition.X, renderPosition.Y, color, TextFormat);
         }

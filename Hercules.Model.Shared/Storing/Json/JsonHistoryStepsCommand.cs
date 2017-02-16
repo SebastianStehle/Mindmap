@@ -9,6 +9,9 @@
 using GP.Utils;
 using Newtonsoft.Json;
 
+// ReSharper disable MemberCanBePrivate.Global
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+
 namespace Hercules.Model.Storing.Json
 {
     public sealed class JsonHistoryStepCommand

@@ -54,8 +54,8 @@ namespace Hercules.Model.Layouting
 
         private static Vector2 CalculateCenter(Document document)
         {
-            float x = 0.5f * document.Size.X;
-            float y = 0.5f * document.Size.Y;
+            var x = 0.5f * document.Size.X;
+            var y = 0.5f * document.Size.Y;
 
             return new Vector2(x, y);
         }

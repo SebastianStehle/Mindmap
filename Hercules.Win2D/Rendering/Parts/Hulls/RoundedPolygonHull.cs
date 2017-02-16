@@ -26,7 +26,7 @@ namespace Hercules.Win2D.Rendering.Parts.Hulls
         {
             ClearResources();
 
-            Win2DRenderNode renderNode = renderable as Win2DRenderNode;
+            var renderNode = renderable as Win2DRenderNode;
 
             if (renderNode != null)
             {

@@ -12,6 +12,8 @@ using System.Linq;
 using GP.Utils;
 using Newtonsoft.Json;
 
+// ReSharper disable AutoPropertyCanBeMadeGetOnly.Global
+// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable LoopCanBePartlyConvertedToQuery
 
 namespace Hercules.Model.Storing.Json
@@ -36,7 +38,7 @@ namespace Hercules.Model.Storing.Json
 
             foreach (var transaction in document.UndoRedoManager.History.OfType<CompositeUndoRedoAction>())
             {
-                JsonHistoryStep jsonStep = CreateJsonStep(transaction);
+                var jsonStep = CreateJsonStep(transaction);
 
                 Steps.Add(jsonStep);
             }
@@ -44,11 +46,11 @@ namespace Hercules.Model.Storing.Json
 
         private static JsonHistoryStep CreateJsonStep(CompositeUndoRedoAction transaction)
         {
-            JsonHistoryStep jsonStep = new JsonHistoryStep { Name = transaction.Name, Date = transaction.Date };
+            var jsonStep = new JsonHistoryStep { Name = transaction.Name, Date = transaction.Date };
 
-            foreach (IUndoRedoCommand command in transaction.Actions.OfType<IUndoRedoCommand>())
+            foreach (var command in transaction.Actions.OfType<IUndoRedoCommand>())
             {
-                JsonHistoryStepCommand jsonCommand = new JsonHistoryStepCommand { CommandType = CommandFactory.ToTypeName(command) };
+                var jsonCommand = new JsonHistoryStepCommand { CommandType = CommandFactory.ToTypeName(command) };
 
                 command.Save(jsonCommand.Properties);
 
@@ -60,15 +62,15 @@ namespace Hercules.Model.Storing.Json
 
         public Document ToDocument()
         {
-            Document document = new Document(Id);
+            var document = new Document(Id);
 
-            foreach (JsonHistoryStep step in Steps.Reverse<JsonHistoryStep>())
+            foreach (var step in Steps.Reverse<JsonHistoryStep>())
             {
                 document.BeginTransaction(step.Name, step.Date);
 
-                foreach (JsonHistoryStepCommand jsonCommand in step.Commands)
+                foreach (var jsonCommand in step.Commands)
                 {
-                    IUndoRedoCommand command = CommandFactory.CreateCommand(jsonCommand.CommandType, jsonCommand.Properties, document);
+                    var command = CommandFactory.CreateCommand(jsonCommand.CommandType, jsonCommand.Properties, document);
 
                     document.Apply(command);
                 }

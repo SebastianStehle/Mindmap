@@ -31,18 +31,18 @@ namespace Tests.Facts
         [Fact]
         public void VisibilityTest()
         {
-            Document document = new Document(Guid.NewGuid());
-            NodeBase child1 = document.Root.AddChildTransactional();
-            NodeBase child11 = child1.AddChildTransactional();
-            NodeBase child111 = child11.AddChildTransactional();
-            NodeBase child112 = child111.AddSibilingTransactional();
+            var document = new Document(Guid.NewGuid());
+            var child1 = document.Root.AddChildTransactional();
+            var child11 = child1.AddChildTransactional();
+            var child111 = child11.AddChildTransactional();
+            var child112 = child111.AddSibilingTransactional();
 
             child11.ToggleCollapseTransactional();
 
-            IRenderNode renderNodeChild1 = Mocks.StrictMock<IRenderNode>();
-            IRenderNode renderNodeChild11 = Mocks.StrictMock<IRenderNode>();
-            IRenderNode renderNodeChild111 = Mocks.StrictMock<IRenderNode>();
-            IRenderNode renderNodeChild112 = Mocks.StrictMock<IRenderNode>();
+            var renderNodeChild1 = Mocks.StrictMock<IRenderNode>();
+            var renderNodeChild11 = Mocks.StrictMock<IRenderNode>();
+            var renderNodeChild111 = Mocks.StrictMock<IRenderNode>();
+            var renderNodeChild112 = Mocks.StrictMock<IRenderNode>();
 
             using (Record())
             {

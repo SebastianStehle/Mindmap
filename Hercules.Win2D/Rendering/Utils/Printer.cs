@@ -24,20 +24,20 @@ namespace Hercules.Win2D.Rendering.Utils
             Guard.NotNull(scene, nameof(scene));
             Guard.GreaterThan(padding, 0, nameof(padding));
 
-            CanvasPrintDocument printDocument = new CanvasPrintDocument();
+            var printDocument = new CanvasPrintDocument();
 
-            Rect2 sceneBounds = scene.RenderBounds;
+            var sceneBounds = scene.RenderBounds;
 
             Action<CanvasDrawingSession, PrintPageDescription> renderForPrint = (session, page) =>
             {
                 session.Clear(Colors.White);
 
-                Vector2 size = page.PageSize.ToVector2();
+                var size = page.PageSize.ToVector2();
 
-                float ratio = sceneBounds.Width / sceneBounds.Height;
+                var ratio = sceneBounds.Width / sceneBounds.Height;
 
-                float targetSizeX = Math.Min(size.X - (2 * padding), sceneBounds.Width);
-                float targetSizeY = targetSizeX / ratio;
+                var targetSizeX = Math.Min(size.X - (2 * padding), sceneBounds.Width);
+                var targetSizeY = targetSizeX / ratio;
 
                 if (targetSizeY > page.PageSize.Height)
                 {
@@ -45,7 +45,7 @@ namespace Hercules.Win2D.Rendering.Utils
                     targetSizeX = targetSizeY * ratio;
                 }
 
-                float zoom = targetSizeX / sceneBounds.Width;
+                var zoom = targetSizeX / sceneBounds.Width;
 
                 session.Transform =
                     Matrix3x2.CreateTranslation(
@@ -68,7 +68,7 @@ namespace Hercules.Win2D.Rendering.Utils
 
             printDocument.Print += (sender, args) =>
             {
-                using (CanvasDrawingSession session = args.CreateDrawingSession())
+                using (var session = args.CreateDrawingSession())
                 {
                     renderForPrint(session, args.PrintTaskOptions.GetPageDescription(1));
                 }

@@ -52,7 +52,7 @@ namespace Hercules.App.Components
 
         private static void UpdateTitle(IDocumentFileModel file)
         {
-            string name = string.Empty;
+            var name = string.Empty;
 
             if (file != null)
             {
@@ -67,7 +67,7 @@ namespace Hercules.App.Components
             CoreApplication.MainView.CoreWindow.Dispatcher.RunAsync(
                 CoreDispatcherPriority.Normal, () =>
                 {
-                    ApplicationView view = ApplicationView.GetForCurrentView();
+                    var view = ApplicationView.GetForCurrentView();
 
                     if (view != null)
                     {

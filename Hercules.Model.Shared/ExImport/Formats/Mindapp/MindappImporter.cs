@@ -27,17 +27,17 @@ namespace Hercules.Model.ExImport.Formats.Mindapp
             get { yield return Constants.FileExtension; }
         }
 
-        public Task<List<ImportResult>> ImportAsync(Stream stream, string name, PropertiesBag properties = null)
+        public Task<List<ImportResult>> ImportAsync(Stream stream, string name)
         {
             Guard.NotNull(stream, nameof(stream));
 
             return Task.Run(() =>
             {
-                List<ImportResult> result = new List<ImportResult>();
+                var result = new List<ImportResult>();
 
                 if (!string.IsNullOrWhiteSpace(name))
                 {
-                    Document document = JsonDocumentSerializer.Deserialize(stream);
+                    var document = JsonDocumentSerializer.Deserialize(stream);
 
                     result.Add(new ImportResult(document, name));
                 }

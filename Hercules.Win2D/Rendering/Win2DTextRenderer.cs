@@ -8,7 +8,6 @@
 
 using System;
 using System.Numerics;
-using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Text;
 using GP.Utils.Mathematics;
@@ -84,7 +83,7 @@ namespace Hercules.Win2D.Rendering
 
         public void Measure(Win2DRenderable renderable, ICanvasResourceCreator resourceCreator)
         {
-            string text = renderable.Node.Text;
+            var text = renderable.Node.Text;
 
             if (isFirstMeasure || !string.Equals(text, lastText, StringComparison.CurrentCulture))
             {
@@ -94,7 +93,7 @@ namespace Hercules.Win2D.Rendering
 
                 if (!string.IsNullOrWhiteSpace(text))
                 {
-                    using (CanvasTextLayout textLayout = new CanvasTextLayout(resourceCreator, text, TextFormat, 0.0f, 0.0f))
+                    using (var textLayout = new CanvasTextLayout(resourceCreator, text, TextFormat, 0.0f, 0.0f))
                     {
                         renderSize = new Vector2(
                             (float)textLayout.DrawBounds.Width,
@@ -120,9 +119,9 @@ namespace Hercules.Win2D.Rendering
 
         public void Render(Win2DRenderable renderable, CanvasDrawingSession session)
         {
-            string text = renderable.Node.Text;
+            var text = renderable.Node.Text;
 
-            Rect rect = RenderBounds.ToRect();
+            var rect = RenderBounds.ToRect();
 #if DRAW_OUTLINE
             session.DrawRectangle(rect, Colors.Red);
 #endif

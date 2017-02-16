@@ -20,7 +20,7 @@ namespace Hercules.Model.Layouting
 
         public void UpdateVisibility()
         {
-            Document document = Document;
+            var document = Document;
 
             UpdateVisibility(document.Root.IsCollapsed, document.Root.LeftChildren);
             UpdateVisibility(document.Root.IsCollapsed, document.Root.RightChildren);
@@ -28,9 +28,9 @@ namespace Hercules.Model.Layouting
 
         private void UpdateVisibility(bool isCollapsed, IEnumerable<Node> children)
         {
-            foreach (Node child in children)
+            foreach (var child in children)
             {
-                IRenderNode renderNode = Scene.FindRenderNode(child);
+                var renderNode = Scene.FindRenderNode(child);
 
                 if (!isCollapsed)
                 {

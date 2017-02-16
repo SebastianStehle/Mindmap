@@ -29,7 +29,7 @@ namespace Hercules.Model.Layouting.HorizontalStraight
 
         private void ArrangeRoot()
         {
-            HorizontalStraightLayoutNode rootLayoutNode = HorizontalStraightLayoutNode.AttachTo(Document.Root, Scene.FindRenderNode(Document.Root), null);
+            var rootLayoutNode = HorizontalStraightLayoutNode.AttachTo(Document.Root, Scene.FindRenderNode(Document.Root), null);
 
             rootLayoutNode.MoveTo(MindmapCenter, NodeSide.Auto);
 
@@ -41,8 +41,8 @@ namespace Hercules.Model.Layouting.HorizontalStraight
         {
             UpdateSizeWithChildren(root, children, Document.Root.IsCollapsed);
 
-            float x = MindmapCenter.X - (factor * 0.5f * root.RenderWidth);
-            float y = MindmapCenter.Y;
+            var x = MindmapCenter.X - (factor * 0.5f * root.RenderWidth);
+            var y = MindmapCenter.Y;
 
             root.Position = new Vector2(x, y);
 
@@ -63,14 +63,14 @@ namespace Hercules.Model.Layouting.HorizontalStraight
                     y = parent.Position.Y - (parent.TreeHeight * 0.5f) + Layout.ElementMargin;
                 }
 
-                foreach (Node child in children)
+                foreach (var child in children)
                 {
-                    HorizontalStraightLayoutNode childLayout = (HorizontalStraightLayoutNode)child.LayoutData;
+                    var childLayout = (HorizontalStraightLayoutNode)child.LayoutData;
 
                     if (!isCollapsed)
                     {
-                        float childX = x;
-                        float childY = y + (0.5f * childLayout.TreeHeight);
+                        var childX = x;
+                        var childY = y + (0.5f * childLayout.TreeHeight);
 
                         childLayout.MoveTo(new Vector2(childX, childY), anchor);
 
@@ -84,16 +84,16 @@ namespace Hercules.Model.Layouting.HorizontalStraight
 
         private void UpdateSizeWithChildren(HorizontalStraightLayoutNode parent, IReadOnlyCollection<Node> children, bool isCollapsed)
         {
-            float treeW = parent.RenderSize.X;
-            float treeH = parent.RenderSize.Y;
+            var treeW = parent.RenderSize.X;
+            var treeH = parent.RenderSize.Y;
 
             if (children.Count > 0)
             {
                 if (isCollapsed)
                 {
-                    foreach (Node child in children)
+                    foreach (var child in children)
                     {
-                        HorizontalStraightLayoutNode childData = HorizontalStraightLayoutNode.AttachTo(child, Scene.FindRenderNode(child), parent);
+                        var childData = HorizontalStraightLayoutNode.AttachTo(child, Scene.FindRenderNode(child), parent);
 
                         UpdateSizeWithChildren(childData, child.Children, child.IsCollapsed);
                     }
@@ -103,9 +103,9 @@ namespace Hercules.Model.Layouting.HorizontalStraight
                     float childsW = 0;
                     float childsH = 0;
 
-                    foreach (Node child in children)
+                    foreach (var child in children)
                     {
-                        HorizontalStraightLayoutNode childData = HorizontalStraightLayoutNode.AttachTo(child, Scene.FindRenderNode(child), parent);
+                        var childData = HorizontalStraightLayoutNode.AttachTo(child, Scene.FindRenderNode(child), parent);
 
                         UpdateSizeWithChildren(childData, child.Children, child.IsCollapsed);
 
@@ -126,7 +126,7 @@ namespace Hercules.Model.Layouting.HorizontalStraight
 
         private void ReleaseLayoutNodes()
         {
-            foreach (NodeBase node in Document.Nodes)
+            foreach (var node in Document.Nodes)
             {
                 node.LayoutData = null;
             }

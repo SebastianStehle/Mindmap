@@ -12,7 +12,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using GP.Utils.UI;
 using GP.Utils.UI.Interactivity;
-using Hercules.Win2D.Rendering;
 
 // ReSharper disable InvertIf
 // ReSharper disable LoopCanBeConvertedToQuery
@@ -76,7 +75,7 @@ namespace Hercules.App.Controls
         {
             if (movingOperation != null && scrollViewer != null)
             {
-                Vector2 translation = e.Delta.Translation.ToVector2() / scrollViewer.ZoomFactor;
+                var translation = e.Delta.Translation.ToVector2() / scrollViewer.ZoomFactor;
 
                 movingOperation.Move(translation);
             }
@@ -97,14 +96,14 @@ namespace Hercules.App.Controls
 
         private NodeMovingOperation AcquireOperation(Vector2 position)
         {
-            Mindmap mindmap = AssociatedElement.FindParent<Mindmap>();
+            var mindmap = AssociatedElement.FindParent<Mindmap>();
 
             if (mindmap?.Renderer == null)
             {
                 return null;
             }
 
-            HitResult result = mindmap.Renderer.HitTest(position);
+            var result = mindmap.Renderer.HitTest(position);
 
             if (result != null && result.RenderNode != mindmap.TextEditingNode)
             {

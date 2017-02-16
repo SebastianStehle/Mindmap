@@ -12,6 +12,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using GP.Utils;
 
+// ReSharper disable InvertIf
+
 namespace Hercules.Model
 {
     public sealed class AttachmentIcon : INodeIcon

@@ -55,7 +55,7 @@ namespace Hercules.Model.Layouting.HorizontalStraight
 
         public static HorizontalStraightLayoutNode AttachTo(NodeBase node, IRenderNode renderNode, HorizontalStraightLayoutNode parent)
         {
-            HorizontalStraightLayoutNode layoutNode = new HorizontalStraightLayoutNode(renderNode, parent);
+            var layoutNode = new HorizontalStraightLayoutNode(renderNode, parent);
 
             node.LayoutData = layoutNode;
 

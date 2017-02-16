@@ -33,7 +33,7 @@ namespace Hercules.Model
                 side = NodeSide.Right;
             }
 
-            bool isIndexParsed =
+            var isIndexParsed =
                 properties.TryParseNullableInt32(PropertyIndex, out index) ||
                 properties.TryParseNullableInt32(PropertyIndexOld, out index);
 
@@ -43,12 +43,7 @@ namespace Hercules.Model
             }
         }
 
-        public InsertChildCommand(NodeBase parent, int? index, NodeSide side)
-            : this(parent, index, side, null)
-        {
-        }
-
-        public InsertChildCommand(NodeBase parent, int? index, NodeSide side, Node child)
+        public InsertChildCommand(NodeBase parent, int? index, NodeSide side, Node child = null)
             : base(parent, child)
         {
             this.side = side;

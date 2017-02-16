@@ -19,16 +19,16 @@ namespace Hercules.Model.ExImport.Formats.XMind
 
         public static void ReadStyles(XDocument mapStyles, IDictionary<string, XMindStyle> stylesById)
         {
-            XElement nodeStyles = mapStyles.Root.Element(Namespaces.Styles("styles"));
+            var nodeStyles = mapStyles.Root.Element(Namespaces.Styles("styles"));
 
             if (nodeStyles == null)
             {
                 return;
             }
 
-            foreach (XElement style in nodeStyles.Elements(Namespaces.Styles("style")))
+            foreach (var style in nodeStyles.Elements(Namespaces.Styles("style")))
             {
-                string id = style.AttributeValue("id");
+                var id = style.AttributeValue("id");
 
                 if (string.IsNullOrWhiteSpace(id))
                 {
@@ -40,14 +40,14 @@ namespace Hercules.Model.ExImport.Formats.XMind
                     continue;
                 }
 
-                XElement properties = style.Element(Namespaces.Styles("topic-properties"));
+                var properties = style.Element(Namespaces.Styles("topic-properties"));
 
                 if (properties == null)
                 {
                     continue;
                 }
 
-                string fillString = properties.AttributeValue(Namespaces.SVG("fill"));
+                var fillString = properties.AttributeValue(Namespaces.SVG("fill"));
 
                 if (string.IsNullOrWhiteSpace(fillString) || !ColorRegex.IsMatch(fillString))
                 {

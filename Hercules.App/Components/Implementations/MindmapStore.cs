@@ -31,7 +31,6 @@ namespace Hercules.App.Components.Implementations
         private readonly DocumentFileRecentList recentList = new DocumentFileRecentList();
         private readonly DispatcherTimer autoSaveTimer = new DispatcherTimer { Interval = TimeSpan.FromSeconds(30) };
         private readonly DispatcherTimer backupTimer = new DispatcherTimer { Interval = TimeSpan.FromMinutes(5) };
-        private readonly BackupMaker backupMaker = new BackupMaker();
         private readonly IDialogService dialogService;
         private readonly IProcessManager processManager;
         private DocumentFileModel selectedFile;
@@ -64,7 +63,7 @@ namespace Hercules.App.Components.Implementations
         {
             var files = allFiles.OfType<DocumentFileModel>().ToList();
 
-            foreach (DocumentFileModel file in files)
+            foreach (var file in files)
             {
                 file.SaveSilentAsync().Forget();
             }
@@ -79,7 +78,7 @@ namespace Hercules.App.Components.Implementations
 
         public Task StoreBackupAsync()
         {
-            return backupMaker.MakeBackupAsync(allFiles.OfType<DocumentFileModel>().Select(x => x.File).ToList());
+            return BackupMaker.MakeBackupAsync(allFiles.OfType<DocumentFileModel>().Select(x => x.File).ToList());
         }
 
         public Task LoadRecentsAsync()
@@ -89,7 +88,7 @@ namespace Hercules.App.Components.Implementations
 
         public async Task PickAndAddAsync()
         {
-            StorageFile file = await PickFileAsync(DocumentFile.Extension);
+            var file = await PickFileAsync(DocumentFile.Extension);
 
             if (file != null)
             {
@@ -101,7 +100,7 @@ namespace Hercules.App.Components.Implementations
         {
             Guard.ValidFileName(name, nameof(name));
 
-            DocumentFileModel model = new DocumentFileModel(await DocumentFile.CreateNewAsync(name, document), dialogService);
+            var model = new DocumentFileModel(await DocumentFile.CreateNewAsync(name, document), dialogService);
 
             allFiles.Insert(0, model);
         }
@@ -110,7 +109,7 @@ namespace Hercules.App.Components.Implementations
         {
             Guard.NotNull(file, nameof(file));
 
-            DocumentFileModel model = allFiles.OfType<DocumentFileModel>().FirstOrDefault(x => string.Equals(x.Path, file.Path, StringComparison.OrdinalIgnoreCase));
+            var model = allFiles.OfType<DocumentFileModel>().FirstOrDefault(x => string.Equals(x.Path, file.Path, StringComparison.OrdinalIgnoreCase));
 
             if (model == null)
             {
@@ -206,7 +205,7 @@ namespace Hercules.App.Components.Implementations
 
         private static Task ForFileAsync(IDocumentFileModel file, Predicate<DocumentFileModel> predicate, Func<DocumentFileModel, Task> action)
         {
-            DocumentFileModel model = file as DocumentFileModel;
+            var model = file as DocumentFileModel;
 
             return model != null && predicate(model) ? action(model) : Task.FromResult(false);
         }
@@ -223,7 +222,7 @@ namespace Hercules.App.Components.Implementations
 
         private static Task<StorageFile> PickFileAsync(string extension)
         {
-            FileOpenPicker fileOpenPicker = new FileOpenPicker();
+            var fileOpenPicker = new FileOpenPicker();
 
             fileOpenPicker.FileTypeFilter.Add(extension);
 

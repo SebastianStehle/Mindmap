@@ -21,6 +21,8 @@ using Hercules.Win2D.Rendering;
 using Microsoft.Practices.Unity;
 using PropertyChanged;
 
+// ReSharper disable ClassNeverInstantiated.Global
+// ReSharper disable MemberCanBePrivate.Global
 // ReSharper disable InvertIf
 
 namespace Hercules.App.Modules.Editor.ViewModels
@@ -168,7 +170,7 @@ namespace Hercules.App.Modules.Editor.ViewModels
                 {
                     await MessageDialogService.OpenFileDialogAsync(ImageExtensions, async (name, stream) =>
                     {
-                        AttachmentIcon attachmentIcon = await AttachmentIcon.TryCreateAsync(name, await stream.ToMemoryStreamAsync());
+                        var attachmentIcon = await AttachmentIcon.TryCreateAsync(name, await stream.ToMemoryStreamAsync());
 
                         if (attachmentIcon != null)
                         {

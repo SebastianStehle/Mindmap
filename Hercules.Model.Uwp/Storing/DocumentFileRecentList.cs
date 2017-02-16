@@ -11,7 +11,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Storage;
 using Windows.Storage.AccessCache;
 using GP.Utils;
 using Microsoft.HockeyApp;
@@ -31,7 +30,7 @@ namespace Hercules.Model.Storing
             Guard.NotNull(list, nameof(list));
             Guard.NotNull(factory, nameof(factory));
 
-            IReadOnlyList<DocumentFile> loadedFiles = await LoadAsync();
+            var loadedFiles = await LoadAsync();
 
             loadedFiles.Foreach(x => list.Add(factory(x)));
         }
@@ -42,7 +41,7 @@ namespace Hercules.Model.Storing
             {
                 try
                 {
-                    Dictionary<string, DocumentFile> unsortedFiles =
+                    var unsortedFiles =
                         new Dictionary<string, DocumentFile>(StringComparer.OrdinalIgnoreCase);
 
                     await LoadFilesFromLocalStoreAsync(unsortedFiles);
@@ -50,7 +49,7 @@ namespace Hercules.Model.Storing
 
                     files.Clear();
 
-                    foreach (DocumentFile sortedFile in unsortedFiles.Values.OrderByDescending(x => x.ModifiedUtc))
+                    foreach (var sortedFile in unsortedFiles.Values.OrderByDescending(x => x.ModifiedUtc))
                     {
                         files.Add(sortedFile);
                     }
@@ -67,7 +66,7 @@ namespace Hercules.Model.Storing
 
         private static async Task LoadFilesFromLocalStoreAsync(IDictionary<string, DocumentFile> unsortedFiles)
         {
-            foreach (StorageFile file in await LocalStore.GetFilesQueuedAsync())
+            foreach (var file in await LocalStore.GetFilesQueuedAsync())
             {
                 if (!unsortedFiles.ContainsKey(file.Path) && file.FileType == ".mmd")
                 {
@@ -85,13 +84,13 @@ namespace Hercules.Model.Storing
 
             tokenMapping.Clear();
 
-            HashSet<string> filesHandled = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var filesHandled = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
-            foreach (AccessListEntry entry in recentList.Entries.ToList())
+            foreach (var entry in recentList.Entries.ToList())
             {
                 try
                 {
-                    StorageFile file = await recentList.GetFileAsync(entry.Token);
+                    var file = await recentList.GetFileAsync(entry.Token);
 
                     if (!filesHandled.Add(file.Path))
                     {
@@ -129,12 +128,12 @@ namespace Hercules.Model.Storing
             {
                 try
                 {
-                    int errors = 0;
+                    var errors = 0;
 
-                    HashSet<string> handledPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                    var handledPaths = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
 
                     foreach (
-                        StorageFile file in
+                        var file in
                             newFiles.Where(x => !x.IsInLocalFolder && x.File != null).Select(x => x.File))
                     {
                         try

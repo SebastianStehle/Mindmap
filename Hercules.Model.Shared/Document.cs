@@ -109,7 +109,7 @@ namespace Hercules.Model
 
         public static Document CreateNew(string name)
         {
-            Document document = new Document(Guid.NewGuid());
+            var document = new Document(Guid.NewGuid());
 
             if (!string.IsNullOrWhiteSpace(name))
             {
@@ -133,7 +133,7 @@ namespace Hercules.Model
                 OnNodeAdded(newNode);
             }
 
-            foreach (Node child in newNode.Children)
+            foreach (var child in newNode.Children)
             {
                 Add(child);
             }
@@ -148,7 +148,7 @@ namespace Hercules.Model
                 OnNodeRemoved(oldNode);
             }
 
-            foreach (Node child in oldNode.Children)
+            foreach (var child in oldNode.Children)
             {
                 Remove(child);
             }
@@ -180,7 +180,7 @@ namespace Hercules.Model
         {
             if (transaction == null)
             {
-                DateTimeOffset date = timestamp ?? DateTimeOffset.Now;
+                var date = timestamp ?? DateTimeOffset.Now;
 
                 transaction = new CompositeUndoRedoAction(transactionName, date);
             }
@@ -190,7 +190,7 @@ namespace Hercules.Model
         {
             if (transaction != null)
             {
-                foreach (IUndoRedoCommand command in transaction.Actions.OfType<IUndoRedoCommand>())
+                foreach (var command in transaction.Actions.OfType<IUndoRedoCommand>())
                 {
                     command.Execute();
                 }
@@ -215,32 +215,17 @@ namespace Hercules.Model
 
         private void OnNodeAdded(NodeBase node)
         {
-            EventHandler<NodeEventArgs> eventHandler = NodeAdded;
-
-            if (eventHandler != null)
-            {
-                eventHandler(this, new NodeEventArgs(node));
-            }
+            NodeAdded?.Invoke(this, new NodeEventArgs(node));
         }
 
         private void OnNodeRemoved(NodeBase node)
         {
-            EventHandler<NodeEventArgs> eventHandler = NodeRemoved;
-
-            if (eventHandler != null)
-            {
-                eventHandler(this, new NodeEventArgs(node));
-            }
+            NodeRemoved?.Invoke(this, new NodeEventArgs(node));
         }
 
         private void OnNodeSelected(NodeBase node)
         {
-            EventHandler<NodeEventArgs> eventHandler = NodeSelected;
-
-            if (eventHandler != null)
-            {
-                eventHandler(this, new NodeEventArgs(node));
-            }
+            NodeSelected?.Invoke(this, new NodeEventArgs(node));
         }
 
         public void Select(NodeBase node)

@@ -7,6 +7,7 @@
 // ==========================================================================
 
 using Windows.UI.Xaml.Controls;
+// ReSharper disable VirtualMemberNeverOverridden.Global
 
 namespace Hercules.App.Controls
 {

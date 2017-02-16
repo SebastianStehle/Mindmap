@@ -108,7 +108,7 @@ namespace Hercules.App.Components.Implementations
 
         public async Task<bool> SaveAsAsync(bool hideDialogs = false)
         {
-            StorageFile file = await PickSaveAsync(DocumentFile.Extension);
+            var file = await PickSaveAsync(DocumentFile.Extension);
 
             return await SaveInternalAsync(hideDialogs, () => documentFile.SaveAsAsync(file));
         }
@@ -174,7 +174,7 @@ namespace Hercules.App.Components.Implementations
 
         public async Task<bool> RemoveAsync()
         {
-            bool canRemove = !HasChanges || await dialogService.ConfirmLocalizedAsync("Mindmap_Remove_Confirm");
+            var canRemove = !HasChanges || await dialogService.ConfirmLocalizedAsync("Mindmap_Remove_Confirm");
 
             if (canRemove)
             {
@@ -198,11 +198,11 @@ namespace Hercules.App.Components.Implementations
 
         private async Task<StorageFile> PickSaveAsync(params string[] extensions)
         {
-            FileSavePicker fileSavePicker = new FileSavePicker();
+            var fileSavePicker = new FileSavePicker();
 
             if (extensions != null && extensions.Length > 0)
             {
-                foreach (string extension in extensions)
+                foreach (var extension in extensions)
                 {
                     fileSavePicker.FileTypeChoices.Add(extension, new List<string> { extension });
                 }
@@ -219,7 +219,7 @@ namespace Hercules.App.Components.Implementations
                 fileSavePicker.SuggestedFileName = Name + extensions[0];
             }
 
-            StorageFile file = await fileSavePicker.PickSaveFileAsync();
+            var file = await fileSavePicker.PickSaveFileAsync();
 
             return file;
         }

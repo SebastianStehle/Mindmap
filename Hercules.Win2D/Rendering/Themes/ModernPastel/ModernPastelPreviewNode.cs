@@ -12,7 +12,6 @@ using Hercules.Model;
 using Hercules.Win2D.Rendering.Parts;
 using Hercules.Win2D.Rendering.Parts.Bodies;
 using Hercules.Win2D.Rendering.Parts.Paths;
-using Microsoft.Graphics.Canvas;
 
 // ReSharper disable InvertIf
 
@@ -27,19 +26,19 @@ namespace Hercules.Win2D.Rendering.Themes.ModernPastel
         {
         }
 
-        protected override IBodyPart CreateBody(ICanvasResourceCreator resourceCreator, IBodyPart current)
+        protected override IBodyPart CreateBody(IBodyPart current)
         {
             return current == null ? new SimpleRectangle(Size) : null;
         }
 
-        protected override IHullPart CreateHull(ICanvasResourceCreator resourceCreator, IHullPart current)
+        protected override IHullPart CreateHull(IHullPart current)
         {
             return null;
         }
 
-        protected override IPathPart CreatePath(ICanvasResourceCreator resourceCreator, IPathPart current)
+        protected override IPathPart CreatePath(IPathPart current)
         {
-            NodeBase parentNode = Parent?.Node;
+            var parentNode = Parent?.Node;
 
             if (parentNode == null)
             {

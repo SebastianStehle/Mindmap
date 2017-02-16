@@ -6,7 +6,6 @@
 // All rights reserved.
 // ==========================================================================
 
-using System;
 using System.Globalization;
 using GP.Utils;
 
@@ -34,7 +33,7 @@ namespace Hercules.Model
             Guard.NotNull(properties, nameof(properties));
             Guard.NotNull(document, nameof(document));
 
-            Guid nodeId = properties[PropertyNodeId].ToGuid(CultureInfo.InvariantCulture);
+            var nodeId = properties[PropertyNodeId].ToGuid(CultureInfo.InvariantCulture);
 
             node = (TNode)document.GetOrCreateNode(nodeId, i => new Node(i));
         }

@@ -8,7 +8,6 @@
 
 using System.Numerics;
 using Hercules.Model;
-using Hercules.Model.Layouting;
 using Hercules.Model.Rendering;
 using Hercules.Win2D.Rendering;
 
@@ -39,7 +38,7 @@ namespace Hercules.App.Controls
         {
             if (renderNode != null)
             {
-                Node movingNode = renderNode.Node as Node;
+                var movingNode = renderNode.Node as Node;
 
                 if (movingNode != null && movingNode.IsSelected && mindmap.Document != null)
                 {
@@ -74,7 +73,7 @@ namespace Hercules.App.Controls
             {
                 if (movingNode.RenderBounds.Width > 0 && movingNode.RenderBounds.Height > 0)
                 {
-                    AttachTarget target = document.Layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.RenderBounds);
+                    var target = document.Layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.RenderBounds);
 
                     if (target != null)
                     {
@@ -96,7 +95,7 @@ namespace Hercules.App.Controls
             {
                 if (movingNode != null && (initialPosition - movingNode.RenderPosition).LengthSquared() > 100)
                 {
-                    AttachTarget target = document.Layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.RenderBounds);
+                    var target = document.Layout.CalculateAttachTarget(document, renderer.Scene, targetNode, movingNode.RenderBounds);
 
                     if (target != null)
                     {

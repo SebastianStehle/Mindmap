@@ -13,7 +13,8 @@ using Hercules.App.Components;
 using Hercules.Model;
 using Hercules.Win2D.Rendering;
 using PropertyChanged;
-
+// ReSharper disable UnusedParameter.Global
+// ReSharper disable VirtualMemberNeverOverridden.Global
 // ReSharper disable InvertIf
 
 namespace Hercules.App.Modules.Editor.ViewModels

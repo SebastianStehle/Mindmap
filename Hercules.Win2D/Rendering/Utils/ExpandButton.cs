@@ -38,7 +38,7 @@ namespace Hercules.Win2D.Rendering.Utils
         {
             RenderCircle(session);
 
-            float halfRadius = 0.5f * renderRadius;
+            var halfRadius = 0.5f * renderRadius;
 
             RenderHorizontal(session, halfRadius);
 
@@ -60,10 +60,10 @@ namespace Hercules.Win2D.Rendering.Utils
 
         private void RenderVertical(CanvasDrawingSession session, float halfRadius)
         {
-            Vector2 verticalTop = new Vector2(
+            var verticalTop = new Vector2(
                 renderCenter.X,
                 renderCenter.Y - halfRadius);
-            Vector2 verticalBottom = new Vector2(
+            var verticalBottom = new Vector2(
                 renderCenter.X,
                 renderCenter.Y + halfRadius);
 
@@ -72,11 +72,11 @@ namespace Hercules.Win2D.Rendering.Utils
 
         private void RenderHorizontal(CanvasDrawingSession session, float halfRadius)
         {
-            Vector2 horizontalLeft = new Vector2(
+            var horizontalLeft = new Vector2(
                 renderCenter.X - halfRadius,
                 renderCenter.Y);
 
-            Vector2 horizontalRight = new Vector2(
+            var horizontalRight = new Vector2(
                 renderCenter.X + halfRadius,
                 renderCenter.Y);
 

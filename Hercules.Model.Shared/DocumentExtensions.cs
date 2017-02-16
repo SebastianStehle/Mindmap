@@ -14,7 +14,7 @@ namespace Hercules.Model
     {
         public static void ToggleCheckableTransactional(this Document document)
         {
-            string tansactionName = LocalizationManager.GetString("TransactionName_ToggleCheckable");
+            var tansactionName = LocalizationManager.GetString("TransactionName_ToggleCheckable");
 
             document.MakeTransaction(tansactionName, commands =>
             {

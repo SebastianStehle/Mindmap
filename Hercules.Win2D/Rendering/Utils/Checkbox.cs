@@ -71,10 +71,10 @@ namespace Hercules.Win2D.Rendering.Utils
 
         private CanvasGeometry CreateGeometry(ICanvasResourceCreator session)
         {
-            float w = renderSize.X;
-            float h = renderSize.Y;
+            var w = renderSize.X;
+            var h = renderSize.Y;
 
-            using (CanvasPathBuilder builder = new CanvasPathBuilder(session.Device))
+            using (var builder = new CanvasPathBuilder(session.Device))
             {
                 builder.BeginFigure(new Vector2(0.15f * w, 0.5f * h));
 

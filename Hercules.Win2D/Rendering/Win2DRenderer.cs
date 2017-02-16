@@ -15,7 +15,6 @@ using GP.Utils;
 using GP.Utils.Mathematics;
 using GP.Utils.UI.Controls;
 using Hercules.Model;
-using Hercules.Model.Layouting;
 using Hercules.Model.Rendering;
 using Hercules.Win2D.Rendering.Utils;
 using Microsoft.Graphics.Canvas;
@@ -168,7 +167,7 @@ namespace Hercules.Win2D.Rendering
 
         private void PrepareForUI(ICanvasResourceCreator resourceCreator)
         {
-            ILayout layout = Document?.Layout;
+            var layout = Document?.Layout;
 
             if (layout == null)
             {
@@ -185,7 +184,7 @@ namespace Hercules.Win2D.Rendering
 
         private void RenderForUI(CanvasDrawingSession session, Rect2 visibleRect)
         {
-            ILayout layout = Document?.Layout;
+            var layout = Document?.Layout;
 
             if (layout != null)
             {

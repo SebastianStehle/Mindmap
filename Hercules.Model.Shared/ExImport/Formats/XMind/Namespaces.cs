@@ -9,7 +9,7 @@ namespace Hercules.Model.ExImport.Formats.XMind
 {
     internal static class Namespaces
     {
-        public static readonly string SVGNamespace = "http://www.w3.org/2000/svg";
+        public const string SVGNamespace = "http://www.w3.org/2000/svg";
 
         public static string Content(string name)
         {

@@ -40,7 +40,7 @@ namespace Hercules.App
         {
             ShowUI(args);
 
-            StorageFile file = args.Files[0] as StorageFile;
+            var file = args.Files[0] as StorageFile;
 
             if (file != null)
             {
@@ -53,7 +53,7 @@ namespace Hercules.App
 #if DEBUG
             DebugSettings.EnableFrameRateCounter |= Debugger.IsAttached;
 #endif
-            Frame rootFrame = Window.Current.Content as Frame;
+            var rootFrame = Window.Current.Content as Frame;
 
             if (rootFrame == null)
             {
@@ -79,7 +79,7 @@ namespace Hercules.App
 
         private static void OnSuspending(object sender, SuspendingEventArgs e)
         {
-            SuspendingDeferral deferral = e.SuspendingOperation.GetDeferral();
+            var deferral = e.SuspendingOperation.GetDeferral();
 
             Messenger.Default.Send(new SaveMessage(deferral.Complete));
         }

@@ -7,10 +7,8 @@
 // ==========================================================================
 
 using System.Numerics;
-using Windows.Foundation;
 using GP.Utils.Mathematics;
 using Microsoft.Graphics.Canvas;
-using Microsoft.Graphics.Canvas.Brushes;
 
 namespace Hercules.Win2D.Rendering.Parts.Bodies
 {
@@ -24,21 +22,21 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
             this.borderRadius = borderRadius;
         }
 
-        protected override Vector2 CalculatePadding(Win2DRenderable renderable, Vector2 contentSize)
+        protected override Vector2 CalculatePadding(Vector2 contentSize)
         {
             return new Vector2(12, 4);
         }
 
         public override void Render(Win2DRenderable renderable, CanvasDrawingSession session, Win2DColor color, bool renderSelection)
         {
-            ICanvasBrush borderBrush = renderable.Resources.ThemeDarkBrush(color);
+            var borderBrush = renderable.Resources.ThemeDarkBrush(color);
 
-            ICanvasBrush backgroundBrush =
+            var backgroundBrush =
                 renderable.Node.IsSelected ?
                     renderable.Resources.ThemeLightBrush(color) :
                     renderable.Resources.ThemeNormalBrush(color);
 
-            Rect bounds = renderable.RenderBounds.ToRect();
+            var bounds = renderable.RenderBounds.ToRect();
 
             if (borderRadius > 0)
             {
@@ -65,7 +63,7 @@ namespace Hercules.Win2D.Rendering.Parts.Bodies
 
             if (renderable.Node.IsSelected)
             {
-                Rect rect = Rect2.Deflate(renderable.RenderBounds, SelectionMargin).ToRect();
+                var rect = Rect2.Deflate(renderable.RenderBounds, SelectionMargin).ToRect();
 
                 if (borderRadius > 0)
                 {

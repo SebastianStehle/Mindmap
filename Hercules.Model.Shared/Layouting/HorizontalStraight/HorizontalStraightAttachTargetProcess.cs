@@ -65,28 +65,28 @@ namespace Hercules.Model.Layouting.HorizontalStraight
         {
             double rectArea = movementBounds.Area;
 
-            foreach (NodeBase node in Document.Nodes)
+            foreach (var node in Document.Nodes)
             {
                 if (node == movingNode || node == movingNode.Parent || movingNode.HasChild(node as Node))
                 {
                     continue;
                 }
 
-                IRenderNode renderNode = Scene.FindRenderNode(node);
+                var renderNode = Scene.FindRenderNode(node);
 
                 if (renderNode == null || !renderNode.IsVisible)
                 {
                     continue;
                 }
 
-                Rect2 intersection = renderNode.RenderBounds.Intersect(movementBounds);
+                var intersection = renderNode.RenderBounds.Intersect(movementBounds);
 
                 if (intersection == Rect2.Empty)
                 {
                     continue;
                 }
 
-                double minArea = Math.Min(rectArea, renderNode.RenderBounds.Area);
+                var minArea = Math.Min(rectArea, renderNode.RenderBounds.Area);
 
                 if (intersection.Area > 0.5f * minArea)
                 {
@@ -103,7 +103,7 @@ namespace Hercules.Model.Layouting.HorizontalStraight
 
         private void CalculateAttachOnTargetChildren()
         {
-            RootNode root = parent as RootNode;
+            var root = parent as RootNode;
 
             if (root != null)
             {
@@ -121,7 +121,7 @@ namespace Hercules.Model.Layouting.HorizontalStraight
 
         private void FindReorderTarget()
         {
-            RootNode root = movingNode.Document.Root;
+            var root = movingNode.Document.Root;
 
             parent = movingNode.Parent;
 
@@ -154,15 +154,15 @@ namespace Hercules.Model.Layouting.HorizontalStraight
         {
             double centerY = movementCenter.Y;
 
-            int nodeIndex = collection.IndexOf(movingNode);
+            var nodeIndex = collection.IndexOf(movingNode);
 
             insertIndex = 0;
 
-            for (int i = collection.Count - 1; i >= 0; i--)
+            for (var i = collection.Count - 1; i >= 0; i--)
             {
-                Node otherNode = collection[i];
+                var otherNode = collection[i];
 
-                Rect2 bounds = Scene.FindRenderNode(otherNode).RenderBounds;
+                var bounds = Scene.FindRenderNode(otherNode).RenderBounds;
 
                 if (centerY <= bounds.CenterY)
                 {
@@ -192,17 +192,17 @@ namespace Hercules.Model.Layouting.HorizontalStraight
         {
             parentRenderNode = Scene.FindRenderNode(parent);
 
-            float factor = parent is RootNode ? 0.5f : 1.0f;
+            var factor = parent is RootNode ? 0.5f : 1.0f;
 
-            float x = CalculateX(factor);
-            float y = CalculateY();
+            var x = CalculateX(factor);
+            var y = CalculateY();
 
             position = new Vector2(x, y);
         }
 
         private float CalculateX(float factor)
         {
-            float x = parentRenderNode.LayoutPosition.X;
+            var x = parentRenderNode.LayoutPosition.X;
 
             if (side == NodeSide.Right)
             {
@@ -218,7 +218,7 @@ namespace Hercules.Model.Layouting.HorizontalStraight
 
         private float CalculateY()
         {
-            float y = parentRenderNode.LayoutPosition.Y;
+            var y = parentRenderNode.LayoutPosition.Y;
 
             if (children.Count > 0 && !parent.IsCollapsed)
             {
@@ -241,22 +241,22 @@ namespace Hercules.Model.Layouting.HorizontalStraight
 
         private float CalculateYBeforeFirstChild()
         {
-            Rect2 bounds = Scene.FindRenderNode(children.Last()).RenderBounds;
+            var bounds = Scene.FindRenderNode(children.Last()).RenderBounds;
 
             return bounds.Bottom + (Layout.ElementMargin * 2f) + (movementBounds.Height * 0.5f);
         }
 
         private float CalculateYAfterLastChild()
         {
-            Rect2 bounds = Scene.FindRenderNode(children.First()).RenderBounds;
+            var bounds = Scene.FindRenderNode(children.First()).RenderBounds;
 
             return bounds.Top - Layout.ElementMargin - (movementBounds.Height * 0.5f);
         }
 
         private float CalculateYBetweenChildren()
         {
-            Rect2 bounds1 = Scene.FindRenderNode(children[renderIndex - 1]).RenderBounds;
-            Rect2 bounds2 = Scene.FindRenderNode(children[renderIndex + 0]).RenderBounds;
+            var bounds1 = Scene.FindRenderNode(children[renderIndex - 1]).RenderBounds;
+            var bounds2 = Scene.FindRenderNode(children[renderIndex + 0]).RenderBounds;
 
             return (bounds1.CenterY + bounds2.CenterY) * 0.5f;
         }

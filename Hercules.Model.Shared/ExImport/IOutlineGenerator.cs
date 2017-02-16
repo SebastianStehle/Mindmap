@@ -9,6 +9,7 @@
 using System.IO;
 using System.Threading.Tasks;
 using Hercules.Model.Rendering;
+// ReSharper disable UnusedMemberInSuper.Global
 
 namespace Hercules.Model.ExImport
 {

@@ -46,7 +46,7 @@ namespace Tests.Facts
         [Fact]
         public void Format0_CorrectLoaded()
         {
-            byte[] file = Resources.Format0;
+            var file = Resources.Format0;
 
             TestFileLoading(file);
         }
@@ -54,7 +54,7 @@ namespace Tests.Facts
         [Fact]
         public void Format1_CorrectLoaded()
         {
-            byte[] file = Resources.Format1;
+            var file = Resources.Format1;
 
             TestFileLoading(file);
         }
@@ -62,7 +62,7 @@ namespace Tests.Facts
         [Fact]
         public void Format2_CorrectLoaded()
         {
-            byte[] file = Resources.Format2;
+            var file = Resources.Format2;
 
             TestFileLoading(file);
         }
@@ -70,9 +70,9 @@ namespace Tests.Facts
         [Fact]
         public void Format2_LoadAndWrite()
         {
-            byte[] file = Resources.Format2;
+            var file = Resources.Format2;
 
-            Document document = JsonDocumentSerializer.Deserialize(file);
+            var document = JsonDocumentSerializer.Deserialize(file);
 
             JsonDocumentSerializer.Serialize(new JsonHistory(document));
         }
@@ -89,14 +89,14 @@ namespace Tests.Facts
 
             using (Playback())
             {
-                byte[] file = Resources.Format2;
+                var file = Resources.Format2;
 
-                Document document = JsonDocumentSerializer.Deserialize(file);
+                var document = JsonDocumentSerializer.Deserialize(file);
 
-                XMindExporter exporter = new XMindExporter();
-                XMindImporter importer = new XMindImporter();
+                var exporter = new XMindExporter();
+                var importer = new XMindImporter();
 
-                MemoryStream stream = new MemoryStream();
+                var stream = new MemoryStream();
 
                 await exporter.ExportAsync(document, renderer, stream);
 
@@ -115,7 +115,7 @@ namespace Tests.Facts
 
         private static void TestFileLoading(byte[] file)
         {
-            Document document = JsonDocumentSerializer.Deserialize(file);
+            var document = JsonDocumentSerializer.Deserialize(file);
 
             AssertDocument(document);
         }
@@ -126,25 +126,25 @@ namespace Tests.Facts
 
             var allChildren = document.Root.RightChildren.Union(document.Root.LeftChildren).ToList();
 
-            Node rightA = allChildren.Single(x => x.Text == "R_A");
-            Node rightB = allChildren.Single(x => x.Text == "R_B");
+            var rightA = allChildren.Single(x => x.Text == "R_A");
+            var rightB = allChildren.Single(x => x.Text == "R_B");
 
             Assert.Equal(2, rightA.Children.Count);
             Assert.Equal(2, rightB.Children.Count);
 
-            Node rightA1 = rightA.Children[0];
-            Node rightA2 = rightA.Children[1];
-            Node rightB1 = rightB.Children[0];
-            Node rightB2 = rightB.Children[1];
+            var rightA1 = rightA.Children[0];
+            var rightA2 = rightA.Children[1];
+            var rightB1 = rightB.Children[0];
+            var rightB2 = rightB.Children[1];
 
             Assert.Equal(1, document.Root.LeftChildren.Count);
 
-            Node leftA = allChildren.Single(x => x.Text == "L_A");
+            var leftA = allChildren.Single(x => x.Text == "L_A");
 
             Assert.Equal(2, leftA.Children.Count);
 
-            Node leftA1 = leftA.Children[0];
-            Node leftA2 = leftA.Children[1];
+            var leftA1 = leftA.Children[0];
+            var leftA2 = leftA.Children[1];
 
             Assert.Equal("Test", document.Root.Text);
 

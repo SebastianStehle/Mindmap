@@ -21,7 +21,7 @@ namespace Hercules.Model.Storing.Json
 
         public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
         {
-            PropertiesBag properties = new PropertiesBag();
+            var properties = new PropertiesBag();
 
             while (reader.Read())
             {
@@ -44,7 +44,7 @@ namespace Hercules.Model.Storing.Json
 
         public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
         {
-            PropertiesBag properties = (PropertiesBag)value;
+            var properties = (PropertiesBag)value;
 
             writer.WriteStartObject();
 

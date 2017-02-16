@@ -30,7 +30,7 @@ namespace Hercules.Win2D.Rendering.Utils
             Guard.NotNull(renderNode, nameof(renderNode));
             Guard.NotNull(resourceCreator, nameof(resourceCreator));
 
-            NodeBase node = renderNode.Node;
+            var node = renderNode.Node;
 
             if (!node.HasChildren || node.IsCollapsed)
             {
@@ -48,22 +48,22 @@ namespace Hercules.Win2D.Rendering.Utils
                 return null;
             }
 
-            ConvexHull hull = ConvexHull.Compute(childBounds);
+            var hull = ConvexHull.Compute(childBounds);
 
-            List<Vector2> points = RoundCorners(hull);
+            var points = RoundCorners(hull);
 
             return BuildGeometry(resourceCreator, points);
         }
 
         private static List<Vector2> RoundCorners(ConvexHull hull)
         {
-            int size = hull.Points.Count;
+            var size = hull.Points.Count;
 
-            List<Vector2> points = new List<Vector2>(size * 3);
+            var points = new List<Vector2>(size * 3);
 
-            int e = size - 1;
+            var e = size - 1;
 
-            for (int i = 0; i < size; i++)
+            for (var i = 0; i < size; i++)
             {
                 Vector2 c = hull.Points[i], next, prev, back, forw;
 
@@ -73,8 +73,8 @@ namespace Hercules.Win2D.Rendering.Utils
                 back = prev - c;
                 forw = next - c;
 
-                float lengthNext = Math.Min(Radius, back.Length() * 0.5f);
-                float lengthForw = Math.Min(Radius, forw.Length() * 0.5f);
+                var lengthNext = Math.Min(Radius, back.Length() * 0.5f);
+                var lengthForw = Math.Min(Radius, forw.Length() * 0.5f);
 
                 points.Add(c + (Vector2.Normalize(back) * lengthNext));
                 points.Add(c);
@@ -86,15 +86,15 @@ namespace Hercules.Win2D.Rendering.Utils
 
         private static CanvasGeometry BuildGeometry(ICanvasResourceCreator resourceCreator, IReadOnlyList<Vector2> points)
         {
-            using (CanvasPathBuilder builder = new CanvasPathBuilder(resourceCreator.Device))
+            using (var builder = new CanvasPathBuilder(resourceCreator.Device))
             {
                 builder.BeginFigure(points[0]);
 
-                for (int i = 0; i < points.Count / 3; i++)
+                for (var i = 0; i < points.Count / 3; i++)
                 {
                     builder.AddQuadraticBezier(points[(i * 3) + 1], points[(i * 3) + 2]);
 
-                    int lastIndex = (i * 3) + 3;
+                    var lastIndex = (i * 3) + 3;
 
                     if (lastIndex < points.Count - 1)
                     {
@@ -117,13 +117,13 @@ namespace Hercules.Win2D.Rendering.Utils
                 return null;
             }
 
-            Rect2 targetRect = target.RenderBounds;
-            Rect2 parentRect = parent.RenderBounds;
+            var targetRect = target.RenderBounds;
+            var parentRect = parent.RenderBounds;
 
-            float targetOffset = target.VerticalPathRenderOffset;
+            var targetOffset = target.VerticalPathRenderOffset;
 
-            Vector2 point1 = Vector2.Zero;
-            Vector2 point2 = Vector2.Zero;
+            var point1 = Vector2.Zero;
+            var point2 = Vector2.Zero;
 
             CalculateCenter(parentRect, ref point1);
 
@@ -144,9 +144,9 @@ namespace Hercules.Win2D.Rendering.Utils
 
         private static CanvasGeometry CreateFilledPath(ICanvasResourceCreator session, Vector2 point1, Vector2 point2)
         {
-            float halfX = (point1.X + point2.X) * 0.5f;
+            var halfX = (point1.X + point2.X) * 0.5f;
 
-            using (CanvasPathBuilder builder = new CanvasPathBuilder(session.Device))
+            using (var builder = new CanvasPathBuilder(session.Device))
             {
                 builder.BeginFigure(new Vector2(point1.X, point1.Y - StartHeightHalf));
 
@@ -176,14 +176,14 @@ namespace Hercules.Win2D.Rendering.Utils
                 return null;
             }
 
-            Rect2 targetRect = target.RenderBounds;
-            Rect2 parentRect = parent.RenderBounds;
+            var targetRect = target.RenderBounds;
+            var parentRect = parent.RenderBounds;
 
-            float targetOffset = target.VerticalPathRenderOffset;
-            float parentOffset = parent.VerticalPathRenderOffset;
+            var targetOffset = target.VerticalPathRenderOffset;
+            var parentOffset = parent.VerticalPathRenderOffset;
 
-            Vector2 point1 = Vector2.Zero;
-            Vector2 point2 = Vector2.Zero;
+            var point1 = Vector2.Zero;
+            var point2 = Vector2.Zero;
 
             if (targetRect.CenterX > parentRect.CenterX)
             {
@@ -220,9 +220,9 @@ namespace Hercules.Win2D.Rendering.Utils
 
         private static CanvasGeometry CreateLinePath(ICanvasResourceCreator resourceCreator, Vector2 point1, Vector2 point2)
         {
-            float halfX = (point1.X + point2.X) * 0.5f;
+            var halfX = (point1.X + point2.X) * 0.5f;
 
-            using (CanvasPathBuilder builder = new CanvasPathBuilder(resourceCreator.Device))
+            using (var builder = new CanvasPathBuilder(resourceCreator.Device))
             {
                 builder.BeginFigure(point1);
 

@@ -12,22 +12,21 @@ using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Threading.Tasks;
-using Windows.Storage;
 using Hercules.Model.Storing.Json;
 
 namespace Hercules.Model.Storing
 {
-    public sealed class BackupMaker
+    public static class BackupMaker
     {
-        public async Task MakeBackupAsync(IEnumerable<DocumentFile> files)
+        public static async Task MakeBackupAsync(IEnumerable<DocumentFile> files)
         {
-            StorageFile backupFile = await LocalStore.CreateOrOpenFileQueuedAsync("Backup.zip");
+            var backupFile = await LocalStore.CreateOrOpenFileQueuedAsync("Backup.zip");
 
-            Dictionary<string, JsonHistory> histories = new Dictionary<string, JsonHistory>();
+            var histories = new Dictionary<string, JsonHistory>();
 
             foreach (var file in files.Where(x => x.Document != null))
             {
-                string name = file.Name + ".mmd";
+                var name = file.Name + ".mmd";
 
                 if (file.Path != null)
                 {
@@ -42,15 +41,15 @@ namespace Hercules.Model.Storing
 
             await FileQueue.EnqueueAsync(async () =>
             {
-                using (StorageStreamTransaction transaction = await backupFile.OpenTransactedWriteAsync())
+                using (var transaction = await backupFile.OpenTransactedWriteAsync())
                 {
-                    using (ZipArchive archive = new ZipArchive(transaction.Stream.AsStream(), ZipArchiveMode.Update))
+                    using (var archive = new ZipArchive(transaction.Stream.AsStream(), ZipArchiveMode.Update))
                     {
                         foreach (var kvp in histories)
                         {
-                            ZipArchiveEntry entry = archive.GetEntry(kvp.Key) ?? archive.CreateEntry(kvp.Key);
+                            var entry = archive.GetEntry(kvp.Key) ?? archive.CreateEntry(kvp.Key);
 
-                            using (Stream entrySteam = entry.Open())
+                            using (var entrySteam = entry.Open())
                             {
                                 JsonDocumentSerializer.Serialize(kvp.Value, entrySteam);
                             }

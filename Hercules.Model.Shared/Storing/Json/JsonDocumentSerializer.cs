@@ -11,6 +11,7 @@ using GP.Utils;
 using Hercules.Model.Storing.Utils;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
+// ReSharper disable UnusedMethodReturnValue.Global
 
 namespace Hercules.Model.Storing.Json
 {
@@ -29,7 +30,7 @@ namespace Hercules.Model.Storing.Json
         {
             Guard.NotNull(history, nameof(history));
 
-            using (MemoryStream stream = new MemoryStream())
+            using (var stream = new MemoryStream())
             {
                 Serialize(history, stream);
 
@@ -49,7 +50,7 @@ namespace Hercules.Model.Storing.Json
         {
             Guard.NotNull(contents, nameof(contents));
 
-            using (MemoryStream stream = new MemoryStream(contents))
+            using (var stream = new MemoryStream(contents))
             {
                 return Deserialize(stream);
             }
@@ -59,7 +60,7 @@ namespace Hercules.Model.Storing.Json
         {
             Guard.NotNull(stream, nameof(stream));
 
-            JsonHistory history = JsonStreamConvert.DeserializeAsJson<JsonHistory>(stream, HistorySerializerSettings);
+            var history = JsonStreamConvert.DeserializeAsJson<JsonHistory>(stream, HistorySerializerSettings);
 
             return history.ToDocument();
         }

@@ -41,15 +41,15 @@ namespace Hercules.Model.ExImport.Formats.XMind
 
         public static void CreateXmlEntry(this ZipArchive archive, string path, Action<XDocument> xmlWriter)
         {
-            ZipArchiveEntry contentEntry = archive.CreateEntry(path);
+            var contentEntry = archive.CreateEntry(path);
 
-            using (Stream stream = contentEntry.Open())
+            using (var stream = contentEntry.Open())
             {
-                XDocument content = new XDocument();
+                var content = new XDocument();
 
                 xmlWriter(content);
 
-                using (XmlWriter writer = XmlWriter.Create(stream))
+                using (var writer = XmlWriter.Create(stream))
                 {
                     content.WriteTo(writer);
                 }

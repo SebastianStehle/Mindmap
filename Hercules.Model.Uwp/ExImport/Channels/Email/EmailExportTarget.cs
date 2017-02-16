@@ -38,21 +38,21 @@ namespace Hercules.Model.ExImport.Channels.Email
         {
             if (await dialogService.ConfirmAsync(LocalizationManager.GetString("Export_EmailConfirm")))
             {
-                FileExtension extension = exporter.Extensions.FirstOrDefault();
+                var extension = exporter.Extensions.FirstOrDefault();
 
                 if (extension == null)
                 {
                     throw new InvalidOperationException("The exporter needs to specify at least one file extension.");
                 }
 
-                byte[] buffer = await SerializeAsync(document, exporter, renderer);
+                var buffer = await SerializeAsync(document, exporter, renderer);
 
-                string downloadUri = await UploadAsync(name, extension, buffer);
+                var downloadUri = await UploadAsync(name, extension, buffer);
 
-                string subj = LocalizationManager.GetFormattedString("Export_EmailSubject");
-                string body = LocalizationManager.GetFormattedString("Export_EmailBody", downloadUri);
+                var subj = LocalizationManager.GetFormattedString("Export_EmailSubject");
+                var body = LocalizationManager.GetFormattedString("Export_EmailBody", downloadUri);
 
-                EmailMessage message = new EmailMessage { Subject = subj, Body = body };
+                var message = new EmailMessage { Subject = subj, Body = body };
 
                 await EmailManager.ShowComposeNewEmailAsync(message);
             }
@@ -62,9 +62,9 @@ namespace Hercules.Model.ExImport.Channels.Email
         {
             object upload = new { ContentType = extension.MimeType, Content = Convert.ToBase64String(buffer), Name = name + extension.Extension };
 
-            HttpClient httpClient = new HttpClient();
+            var httpClient = new HttpClient();
 
-            HttpResponseMessage response = await httpClient.PostAsJsonAsync("http://upload.getmindapp.com/api/upload", upload);
+            var response = await httpClient.PostAsJsonAsync("http://upload.getmindapp.com/api/upload", upload);
 
             response.EnsureSuccessStatusCode();
 
@@ -73,7 +73,7 @@ namespace Hercules.Model.ExImport.Channels.Email
 
         private static async Task<byte[]> SerializeAsync(Document document, IExporter exporter, IRenderer renderer)
         {
-            MemoryStream memoryStream = new MemoryStream();
+            var memoryStream = new MemoryStream();
 
             await exporter.ExportAsync(document, renderer, memoryStream);
 

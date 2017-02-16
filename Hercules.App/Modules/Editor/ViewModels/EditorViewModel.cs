@@ -296,10 +296,10 @@ namespace Hercules.App.Modules.Editor.ViewModels
 
             if (Document != null)
             {
-                int checkableCount = 0;
-                int checkedCount = 0;
+                var checkableCount = 0;
+                var checkedCount = 0;
 
-                foreach (NodeBase node in Document.Nodes.Where(node => node.IsCheckable))
+                foreach (var node in Document.Nodes.Where(node => node.IsCheckable))
                 {
                     checkableCount++;
 

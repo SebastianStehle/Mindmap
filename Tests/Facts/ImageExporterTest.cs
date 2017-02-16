@@ -42,7 +42,7 @@ namespace Tests.Facts
         [Fact]
         public async Task ExportAsync_WithDefaultDpi()
         {
-            MemoryStream stream = new MemoryStream();
+            var stream = new MemoryStream();
 
             using (Mocks.Record())
             {
@@ -58,10 +58,10 @@ namespace Tests.Facts
         [Fact]
         public async Task ExportAsync_WithDpi()
         {
-            PropertiesBag properties = new PropertiesBag();
+            var properties = new PropertiesBag();
             properties.Set("DPI", 500);
 
-            MemoryStream stream = new MemoryStream();
+            var stream = new MemoryStream();
 
             using (Mocks.Record())
             {

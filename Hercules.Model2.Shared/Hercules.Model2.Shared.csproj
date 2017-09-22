@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netstandard1.4</TargetFramework>
+    <AssemblyName>Hercules.Model2.Shared</AssemblyName>
+    <RootNamespace>Hercules.Model2</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Redux.NET" Version="2.0.0" />
+    <PackageReference Include="System.Collections.Immutable" Version="1.4.0" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.4.0" />
+    <PackageReference Include="System.Reactive" Version="3.1.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\Utils\GP.Utils.Shared\GP.Utils.Shared.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -11,25 +11,19 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using FakeItEasy;
 using GP.Utils;
 using Hercules.Model;
 using Hercules.Model.ExImport.Formats.Image;
 using Hercules.Model.Rendering;
-using Rhino.Mocks;
-using Tests.Given;
 using Xunit;
 
 namespace Tests.Facts
 {
-    public sealed class ImageExporterTest : GivenMocks
+    public sealed class ImageExporterTest
     {
         private readonly ImageExporter exporter = new ImageExporter();
-        private readonly IRenderer renderer;
-
-        public ImageExporterTest()
-        {
-            renderer = Mocks.StrictMock<IRenderer>();
-        }
+        private readonly IRenderer renderer = A.Fake<IRenderer>();
 
         [Fact]
         public void CorrectMetadata()
@@ -44,34 +38,25 @@ namespace Tests.Facts
         {
             var stream = new MemoryStream();
 
-            using (Mocks.Record())
-            {
-                renderer.Expect(x => x.RenderScreenshotAsync(stream, new Vector3(1, 1, 1), 300)).Return(Task.FromResult(300));
-            }
+            A.CallTo(() => renderer.RenderScreenshotAsync(stream, new Vector3(1, 1, 1), 300, 20))
+                .Returns(Task.FromResult(300));
 
-            using (Mocks.Playback())
-            {
-                await exporter.ExportAsync(new Document(Guid.NewGuid()), renderer, stream);
-            }
+            await exporter.ExportAsync(new Document(Guid.NewGuid()), renderer, stream);
         }
 
         [Fact]
         public async Task ExportAsync_WithDpi()
         {
-            var properties = new PropertiesBag();
-            properties.Set("DPI", 500);
+            var properties = 
+                new PropertiesBag()
+                    .Set("DPI", 500);
 
             var stream = new MemoryStream();
 
-            using (Mocks.Record())
-            {
-                renderer.Expect(x => x.RenderScreenshotAsync(stream, new Vector3(1, 1, 1), 500)).Return(Task.FromResult(300));
-            }
+            A.CallTo(() => renderer.RenderScreenshotAsync(stream, new Vector3(1, 1, 1), 500, 20))
+                .Returns(Task.FromResult(300));
 
-            using (Mocks.Playback())
-            {
-                await exporter.ExportAsync(new Document(Guid.NewGuid()), renderer, stream, properties);
-            }
+            await exporter.ExportAsync(new Document(Guid.NewGuid()), renderer, stream, properties);
         }
     }
 }

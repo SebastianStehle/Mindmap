@@ -7,26 +7,18 @@
 // ==========================================================================
 
 using System;
+using FakeItEasy;
 using Hercules.Model;
 using Hercules.Model.Layouting;
 using Hercules.Model.Rendering;
-using Rhino.Mocks;
-using Tests.Given;
 using Xunit;
 
 namespace Tests.Facts
 {
-    public class VisibilityUpdaterTest : GivenMocks
+    public class VisibilityUpdaterTest
     {
-        private readonly IRenderScene scene;
-        private readonly ILayout layout;
-
-        public VisibilityUpdaterTest()
-        {
-            scene = Mocks.StrictMock<IRenderScene>();
-
-            layout = Mocks.StrictMock<ILayout>();
-        }
+        private readonly IRenderScene scene = A.Fake<IRenderScene>();
+        private readonly ILayout layout = A.Fake<ILayout>();
 
         [Fact]
         public void VisibilityTest()
@@ -39,28 +31,30 @@ namespace Tests.Facts
 
             child11.ToggleCollapseTransactional();
 
-            var renderNodeChild1 = Mocks.StrictMock<IRenderNode>();
-            var renderNodeChild11 = Mocks.StrictMock<IRenderNode>();
-            var renderNodeChild111 = Mocks.StrictMock<IRenderNode>();
-            var renderNodeChild112 = Mocks.StrictMock<IRenderNode>();
+            var renderNodeChild1 = A.Fake<IRenderNode>();
+            var renderNodeChild11 = A.Fake<IRenderNode>();
+            var renderNodeChild111 = A.Fake<IRenderNode>();
+            var renderNodeChild112 = A.Fake<IRenderNode>();
 
-            using (Record())
-            {
-                scene.Expect(x => x.FindRenderNode(child1)).Return(renderNodeChild1);
-                scene.Expect(x => x.FindRenderNode(child11)).Return(renderNodeChild11);
-                scene.Expect(x => x.FindRenderNode(child111)).Return(renderNodeChild111);
-                scene.Expect(x => x.FindRenderNode(child112)).Return(renderNodeChild112);
+            A.CallTo(() => scene.FindRenderNode(child1))
+                .Returns(renderNodeChild1);
+            A.CallTo(() => scene.FindRenderNode(child11))
+                .Returns(renderNodeChild11);
+            A.CallTo(() => scene.FindRenderNode(child111))
+                .Returns(renderNodeChild111);
+            A.CallTo(() => scene.FindRenderNode(child112))
+                .Returns(renderNodeChild112);
 
-                renderNodeChild1.Expect(x => x.Show());
-                renderNodeChild11.Expect(x => x.Show());
-                renderNodeChild111.Expect(x => x.Hide());
-                renderNodeChild112.Expect(x => x.Hide());
-            }
+            new VisibilityUpdater<ILayout>(layout, scene, document).UpdateVisibility();
 
-            using (Playback())
-            {
-                new VisibilityUpdater<ILayout>(layout, scene, document).UpdateVisibility();
-            }
+            A.CallTo(() => renderNodeChild1.Show())
+                .MustHaveHappened();
+            A.CallTo(() => renderNodeChild11.Show())
+                .MustHaveHappened();
+            A.CallTo(() => renderNodeChild111.Hide())
+                .MustHaveHappened();
+            A.CallTo(() => renderNodeChild112.Hide())
+                .MustHaveHappened();
         }
     }
 }

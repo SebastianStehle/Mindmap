@@ -19,7 +19,7 @@ namespace Tests.Properties {
     // class via a tool like ResGen or Visual Studio.
     // To add or remove a member, edit your .ResX file then rerun ResGen
     // with the /str option, or rebuild your VS project.
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "15.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -39,7 +39,7 @@ namespace Tests.Properties {
         internal static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    var temp = new global::System.Resources.ResourceManager("Tests.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Tests.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -65,7 +65,7 @@ namespace Tests.Properties {
         /// </summary>
         internal static byte[] Format0 {
             get {
-                var obj = ResourceManager.GetObject("Format0", resourceCulture);
+                object obj = ResourceManager.GetObject("Format0", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -75,7 +75,7 @@ namespace Tests.Properties {
         /// </summary>
         internal static byte[] Format1 {
             get {
-                var obj = ResourceManager.GetObject("Format1", resourceCulture);
+                object obj = ResourceManager.GetObject("Format1", resourceCulture);
                 return ((byte[])(obj));
             }
         }
@@ -85,7 +85,7 @@ namespace Tests.Properties {
         /// </summary>
         internal static byte[] Format2 {
             get {
-                var obj = ResourceManager.GetObject("Format2", resourceCulture);
+                object obj = ResourceManager.GetObject("Format2", resourceCulture);
                 return ((byte[])(obj));
             }
         }

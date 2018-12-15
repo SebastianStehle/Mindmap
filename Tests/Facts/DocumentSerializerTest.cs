@@ -10,31 +10,27 @@ using System.IO;
 using System.Linq;
 using System.Numerics;
 using System.Threading.Tasks;
+using FakeItEasy;
 using GP.Utils;
 using Hercules.Model;
 using Hercules.Model.ExImport.Formats.XMind;
 using Hercules.Model.Rendering;
 using Hercules.Model.Storing;
 using Hercules.Model.Storing.Json;
-using Rhino.Mocks;
 using Tests.Given;
 using Tests.Properties;
 using Xunit;
 
 namespace Tests.Facts
 {
-    public class JsonStoreTests : GivenMocks
+    public class JsonStoreTests : GivenLocalization
     {
-        private readonly IRenderer renderer;
-        private readonly IRenderColor color;
+        private readonly IRenderer renderer = A.Fake<IRenderer>();
+        private readonly IRenderColor color = A.Fake<IRenderColor>();
 
         public JsonStoreTests()
         {
             LocalizationManager.Provider = new NoopLocalizationProvider();
-
-            renderer = Mocks.StrictMock<IRenderer>();
-
-            color = Mocks.StrictMock<IRenderColor>();
         }
 
         [Fact]
@@ -80,37 +76,33 @@ namespace Tests.Facts
         [Fact]
         public async Task Format2_LoadAndWrite_XMind()
         {
-            using (Record())
-            {
-                renderer.Expect(x => x.FindColor(null)).Repeat.Any().IgnoreArguments().Return(color);
+            A.CallTo(() => renderer.FindColor(A<NodeBase>.Ignored))
+                .Returns(color);
 
-                color.Expect(x => x.Normal).Repeat.Any().Return(new Vector3(1, 0, 0));
-            }
+            A.CallTo(() => color.Normal)
+                .Returns(new Vector3(1, 0, 0));
 
-            using (Playback())
-            {
-                var file = Resources.Format2;
+            var file = Resources.Format2;
 
-                var document = JsonDocumentSerializer.Deserialize(file);
+            var document = JsonDocumentSerializer.Deserialize(file);
 
-                var exporter = new XMindExporter();
-                var importer = new XMindImporter();
+            var exporter = new XMindExporter();
+            var importer = new XMindImporter();
 
-                var stream = new MemoryStream();
+            var stream = new MemoryStream();
 
-                await exporter.ExportAsync(document, renderer, stream);
+            await exporter.ExportAsync(document, renderer, stream);
 
-                stream = new MemoryStream(stream.ToArray());
+            stream = new MemoryStream(stream.ToArray());
 
-                var imported = await importer.ImportAsync(stream, "Name");
+            var imported = await importer.ImportAsync(stream, "Name");
 
-                Assert.Equal(1, imported.Count);
-                Assert.Equal("Test", imported[0].Name);
+            Assert.Single(imported);
+            Assert.Equal("Test", imported[0].Name);
 
-                document = imported[0].Document;
+            document = imported[0].Document;
 
-                AssertDocument(document, false);
-            }
+            AssertDocument(document, false);
         }
 
         private static void TestFileLoading(byte[] file)

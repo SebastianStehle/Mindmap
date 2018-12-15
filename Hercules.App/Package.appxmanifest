@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/manifest/foundation/windows10" xmlns:mp="http://schemas.microsoft.com/appx/2014/phone/manifest" xmlns:uap="http://schemas.microsoft.com/appx/manifest/uap/windows10" IgnorableNamespaces="uap mp">
-  <Identity Name="25800SebastianStehle.Mindapp" Publisher="CN=5D4C76CA-B364-4856-B733-905C99D43D19" Version="1.3.13.0" />
+  <Identity Name="25800SebastianStehle.Mindapp" Publisher="CN=5D4C76CA-B364-4856-B733-905C99D43D19" Version="1.3.17.0" />
   <mp:PhoneIdentity PhoneProductId="217df5e2-0b5b-43a1-b78f-dcdf6a7510d5" PhonePublisherId="00000000-0000-0000-0000-000000000000" />
   <Properties>
     <DisplayName>Mindapp</DisplayName>
@@ -38,7 +38,6 @@
     </Application>
   </Applications>
   <Capabilities>
-    <Capability Name="internetClient" />
     <uap:Capability Name="removableStorage" />
   </Capabilities>
 </Package>

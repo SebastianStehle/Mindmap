@@ -1,1 +1,1 @@
-C:\Dev\Win10\App_Mindmap\Hercules.App\AppPackages\Hercules.App_1.3.9.0\Hercules.App_1.3.9.0_x86_x64_arm.appxbundle
+E:\Mindmap\Hercules.App\bin\ARM\Release\Upload\Hercules.App_1.3.17.0\Hercules.App_1.3.17.0_x86_x64_arm.appxbundle

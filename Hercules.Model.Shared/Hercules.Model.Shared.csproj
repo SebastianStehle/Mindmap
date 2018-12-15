@@ -1,154 +1,16 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <MinimumVisualStudioVersion>14.0</MinimumVisualStudioVersion>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{C8E9741D-CC6D-4131-90D5-87866F25EE89}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Hercules.Model</RootNamespace>
-    <AssemblyName>Hercules.Model.Shared</AssemblyName>
-    <DefaultLanguage>en-US</DefaultLanguage>
-    <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{786C830F-07A1-408B-BD7F-6EE04809D6DB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <TargetFrameworkProfile>
-    </TargetFrameworkProfile>
-    <TargetFrameworkVersion>v5.0</TargetFrameworkVersion>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DocumentationFile>
-    </DocumentationFile>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <OutputPath>bin\Release\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <Optimize>true</Optimize>
-    <NoStdLib>true</NoStdLib>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <ErrorReport>prompt</ErrorReport>
-    <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
+    <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="AttachmentIcon.cs" />
-    <Compile Include="ChangeCheckableModeCommand.cs" />
-    <Compile Include="ChangeColorCommand.cs" />
-    <Compile Include="ChangeIconCommand.cs" />
-    <Compile Include="ChangeIconPositionCommand.cs" />
-    <Compile Include="ChangeIconSizeCommand.cs" />
-    <Compile Include="ChangeNotesCommand.cs" />
-    <Compile Include="ChangeShapeCommand.cs" />
-    <Compile Include="ChangeTextCommand.cs" />
-    <Compile Include="CheckableMode.cs" />
-    <Compile Include="ChildNodeCommandBase.cs" />
-    <Compile Include="CommandBase.cs" />
-    <Compile Include="Document.cs" />
-    <Compile Include="DocumentExtensions.cs" />
-    <Compile Include="DocumentObject.cs" />
-    <Compile Include="DocumentObjectWithId.cs" />
-    <Compile Include="ExImport\Formats\Html\HtmlOutlineExporter.cs" />
-    <Compile Include="ExImport\Formats\Image\ImageExporter.cs" />
-    <Compile Include="ExImport\Formats\Mindapp\MindappExporter.cs" />
-    <Compile Include="ExImport\Formats\Mindapp\MindappImporter.cs" />
-    <Compile Include="ExImport\Formats\XMind\ContentReader.cs" />
-    <Compile Include="ExImport\Formats\XMind\ContentWriter.cs" />
-    <Compile Include="ExImport\Formats\XMind\Extensions.cs" />
-    <Compile Include="ExImport\Formats\XMind\MarkerMapping.cs" />
-    <Compile Include="ExImport\Formats\XMind\Namespaces.cs" />
-    <Compile Include="ExImport\Formats\XMind\StylesReader.cs" />
-    <Compile Include="ExImport\Formats\XMind\StylesWriter.cs" />
-    <Compile Include="ExImport\Formats\XMind\XMindExporter.cs" />
-    <Compile Include="ExImport\Formats\XMind\XMindImporter.cs" />
-    <Compile Include="ExImport\Formats\XMind\XMindStyle.cs" />
-    <Compile Include="ExImport\IExporter.cs" />
-    <Compile Include="ExImport\IExportTarget.cs" />
-    <Compile Include="ExImport\IImporter.cs" />
-    <Compile Include="ExImport\IImportSource.cs" />
-    <Compile Include="ExImport\ImportResult.cs" />
-    <Compile Include="ExImport\IOutlineGenerator.cs" />
-    <Compile Include="GlobalSuppressions.cs" />
-    <Compile Include="IconCategory.cs" />
-    <Compile Include="IconPosition.cs" />
-    <Compile Include="IconSize.cs" />
-    <Compile Include="IDocumentCommands.cs" />
-    <Compile Include="INodeColor.cs" />
-    <Compile Include="INodeIcon.cs" />
-    <Compile Include="InsertChildCommand.cs" />
-    <Compile Include="IUndoRedoCommand.cs" />
-    <Compile Include="IWritable.cs" />
-    <Compile Include="KeyIcon.cs" />
-    <Compile Include="Layouting\AttachTarget.cs" />
-    <Compile Include="Layouting\HorizontalStraight\HorizontalStraightAttachTargetProcess.cs" />
-    <Compile Include="Layouting\HorizontalStraight\HorizontalStraightLayout.cs" />
-    <Compile Include="Layouting\HorizontalStraight\HorizontalStraightLayoutNode.cs" />
-    <Compile Include="Layouting\HorizontalStraight\HorizontalStraightLayoutProcess.cs" />
-    <Compile Include="Layouting\ILayout.cs" />
-    <Compile Include="Layouting\LayoutOperationBase.cs" />
-    <Compile Include="Layouting\VisibilityUpdater.cs" />
-    <Compile Include="LegacyIconMapper.cs" />
-    <Compile Include="Node.cs" />
-    <Compile Include="NodeBase.cs" />
-    <Compile Include="NodeCache.cs" />
-    <Compile Include="NodeEventArgs.cs" />
-    <Compile Include="NodeExtensions.cs" />
-    <Compile Include="NodeNavigationExtensions.cs" />
-    <Compile Include="NodeShape.cs" />
-    <Compile Include="NodeSide.cs" />
-    <Compile Include="NodeSideExtensions.cs" />
-    <Compile Include="NodeTransactionExtensions.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RemoveChildCommand.cs" />
-    <Compile Include="Rendering\IAdornerRenderNode.cs" />
-    <Compile Include="Rendering\IRenderable.cs" />
-    <Compile Include="Rendering\IRenderColor.cs" />
-    <Compile Include="Rendering\IRenderer.cs" />
-    <Compile Include="Rendering\IRenderIcon.cs" />
-    <Compile Include="Rendering\IRenderNode.cs" />
-    <Compile Include="Rendering\IRenderScene.cs" />
-    <Compile Include="RootNode.cs" />
-    <Compile Include="Storing\CommandFactory.cs" />
-    <Compile Include="Storing\Constants.cs" />
-    <Compile Include="Storing\Json\JsonDocumentSerializer.cs" />
-    <Compile Include="Storing\Json\JsonHistory.cs" />
-    <Compile Include="Storing\Json\JsonHistoryStep.cs" />
-    <Compile Include="Storing\Json\JsonHistoryStepsCommand.cs" />
-    <Compile Include="Storing\Json\PropertiesBagConverter.cs" />
-    <Compile Include="Storing\LegacyNameAttribute.cs" />
-    <Compile Include="Storing\Utils\JsonStreamConvert.cs" />
-    <Compile Include="SupportedIcons.cs" />
-    <Compile Include="ThemeColor.cs" />
-    <Compile Include="ToggleCollapseCommand.cs" />
-    <Compile Include="ToggleCheckableCommand.cs" />
-    <Compile Include="ToggleCheckedCommand.cs" />
-    <Compile Include="ToggleHullCommand.cs" />
-    <Compile Include="ToggleNotesCommand.cs" />
-    <Compile Include="UndoRedoExtensions.cs" />
-    <Compile Include="ValueColor.cs" />
+    <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
+    <PackageReference Include="PropertyChanged.Fody" Version="2.5.4" />
+    <PackageReference Include="System.ComponentModel" Version="4.3.0" />
+    <PackageReference Include="System.ComponentModel.Annotations" Version="4.4.1" />
+    <PackageReference Include="System.Numerics.Vectors" Version="4.4.0" />
+    <PackageReference Include="System.Runtime.Numerics" Version="4.3.0" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="project.json" />
+    <ProjectReference Include="..\..\Utils\GP.Utils.Shared\GP.Utils.Shared.csproj" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\Utils\GP.Utils.Shared\GP.Utils.Shared.csproj">
-      <Project>{1666ffbb-520f-466c-ba04-406968246bf6}</Project>
-      <Name>GP.Utils.Shared</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
-  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
-       Other similar extension points exist, see Microsoft.Common.targets.
-  <Target Name="BeforeBuild">
-  </Target>
-  <Target Name="AfterBuild">
-  </Target>
-  -->
 </Project>

@@ -19,12 +19,10 @@ using GP.Utils.Mvvm;
 using Hercules.App.Components;
 using Hercules.App.Messages;
 using Hercules.Model.ExImport;
-using Microsoft.Practices.Unity;
-using PropertyChanged;
+using Unity.Attributes;
 
 namespace Hercules.App.Modules.Mindmaps.ViewModels
 {
-    [ImplementPropertyChanged]
     public sealed class MindmapsViewModel : ViewModelBase
     {
         private readonly IMindmapStore mindmapStore;

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25420.1
+# Visual Studio 15
+VisualStudioVersion = 15.0.27428.2043
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hercules.App", "Hercules.App\Hercules.App.csproj", "{36491669-D3EF-4EA6-A8E1-5EB82C5BBD84}"
 EndProject
@@ -22,7 +22,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		RunCoverage.bat = RunCoverage.bat
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GP.Utils.Shared", "..\Utils\GP.Utils.Shared\GP.Utils.Shared.csproj", "{1666FFBB-520F-466C-BA04-406968246BF6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "GP.Utils.Shared", "..\Utils\GP.Utils.Shared\GP.Utils.Shared.csproj", "{1666FFBB-520F-466C-BA04-406968246BF6}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GP.Utils.Uwp", "..\Utils\GP.Utils.Uwp\GP.Utils.Uwp.csproj", "{BF45F42D-D00C-4AC5-AC3F-CE261DA43F99}"
 EndProject
@@ -168,5 +168,8 @@ Global
 		{33210F45-5D90-4AB9-9332-2EE1BE3B299B} = {2BECD756-F193-4F1B-96CB-2BF438B83FEC}
 		{1666FFBB-520F-466C-BA04-406968246BF6} = {37B4F83F-81F1-44D8-B0FA-920CED17F02C}
 		{BF45F42D-D00C-4AC5-AC3F-CE261DA43F99} = {37B4F83F-81F1-44D8-B0FA-920CED17F02C}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {982A362F-FE81-461E-BE06-D16EF6A693A1}
 	EndGlobalSection
 EndGlobal

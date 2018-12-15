@@ -14,7 +14,6 @@ using PropertyChanged;
 
 namespace Hercules.Model
 {
-    [ImplementPropertyChanged]
     public class Node : NodeBase
     {
         private readonly List<Node> children = new List<Node>();

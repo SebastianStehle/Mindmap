@@ -18,8 +18,7 @@ using GP.Utils.UI;
 using Hercules.App.Components;
 using Hercules.Model;
 using Hercules.Win2D.Rendering;
-using Microsoft.Practices.Unity;
-using PropertyChanged;
+using Unity.Attributes;
 
 // ReSharper disable ClassNeverInstantiated.Global
 // ReSharper disable MemberCanBePrivate.Global
@@ -27,7 +26,6 @@ using PropertyChanged;
 
 namespace Hercules.App.Modules.Editor.ViewModels
 {
-    [ImplementPropertyChanged]
     public sealed class EditorPropertiesViewModel : DocumentViewModelBase
     {
         private static readonly string[] ImageExtensions = { ".png", ".jpg", ".jpeg" };

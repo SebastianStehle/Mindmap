@@ -19,7 +19,6 @@ using PropertyChanged;
 
 namespace Hercules.App.Modules.Editor.ViewModels
 {
-    [ImplementPropertyChanged]
     public abstract class DocumentViewModelBase : ViewModelBase
     {
         private readonly IWin2DRendererProvider rendererProvider;

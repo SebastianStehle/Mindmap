@@ -15,7 +15,6 @@ using PropertyChanged;
 
 namespace Hercules.Model
 {
-    [ImplementPropertyChanged]
     public abstract class NodeBase : DocumentObjectWithId
     {
         private Document document;

@@ -17,12 +17,10 @@ using Hercules.App.Messages;
 using Hercules.Model;
 using Hercules.Model.ExImport;
 using Hercules.Win2D.Rendering;
-using Microsoft.Practices.Unity;
-using PropertyChanged;
+using Unity.Attributes;
 
 namespace Hercules.App.Modules.Editor.ViewModels
 {
-    [ImplementPropertyChanged]
     public sealed class EditorViewModel : DocumentViewModelBase
     {
         private RelayCommand<ExportModel> exportCommand;

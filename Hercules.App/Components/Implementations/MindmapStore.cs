@@ -24,7 +24,6 @@ using PropertyChanged;
 
 namespace Hercules.App.Components.Implementations
 {
-    [ImplementPropertyChanged]
     public sealed class MindmapStore : IMindmapStore
     {
         private readonly ObservableCollection<IDocumentFileModel> allFiles = new ObservableCollection<IDocumentFileModel>();

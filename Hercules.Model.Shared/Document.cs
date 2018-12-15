@@ -19,7 +19,6 @@ using PropertyChanged;
 
 namespace Hercules.Model
 {
-    [ImplementPropertyChanged]
     public sealed class Document : DocumentObject, IDocumentCommands
     {
         private readonly NodeCache nodeCache = new NodeCache();
